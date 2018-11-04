@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <link rel="import" href="./common/header.html?__inline">
+    <!-- css for this page only -->
+    <link rel="stylesheet" type="text/css" href="../static/css/index.css">
+    <link rel="stylesheet" type="text/css" href="../static/css/interfacesManagement.css">
+    <link rel="stylesheet" type="text/css" href="../static/css/metroStyle.css">
+    <link rel="stylesheet" href="../static/css/bootstrap-select.min.css">
+    <title>接口管理</title>
+    <style type="text/css">
+        hr{
+            border-top-width: 3px;
+        }
+    </style>
+</head>
+
+<body id="interfacesManagement" v-cloak>
+    <div>
+        <!--header start-->
+        <link rel="import" href="./common/header-guide.html?__inline">
+        <!--header end-->
+        <!--sidebar start-->
+        <link rel="import" href="./common/aside-guide.html?__inline">
+        <!--sidebar end-->
+        <!--main content start-->
+        <section id="main-content">
+            <section class="wrapper">
+                <!-- <element-library :bread-show="true" :top-select="true"></element-library> -->
+                <interfaces-management :bread-show="true"></interfaces-management>
+            </section>
+        </section>
+        <!--main content end-->
+        <div class="footer">
+                <link rel="import" href="./common/copy-right.html?__inline">
+        </div>
+    </div>
+    <!-- successModal start -->
+    <div class="modal fade" id="successModal" tabindex="-1"  role="dialog" aria-labelledby="successModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title">操作成功</h4>
+                </div>
+                <div class="modal-body">
+                    <h4>操作成功！</h4>
+                </div>
+                <div class="modal-footer">
+                    <button data-dismiss="modal" class="btn btn-success" type="button">确定</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- successModal end -->
+</body>
+
+</html>
+<link rel="import" href="./common/footer.html?__inline">
+<!--script for this page only-->
+<script type="text/javascript" src="../static/js/interfacesManagement.js"></script>
+<script src="../lib/vue-resource.min.js"></script>
+<script src="../static/js/vac-functions.es.js"></script>
+<script type="text/javascript" src="../lib/bootstrap-select.min.js"></script>
+<script>
+    var app = new Vue({
+        el: '#interfacesManagement',
+    })
+
+</script>
