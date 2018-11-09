@@ -44,6 +44,7 @@ var app = new Vue({
         // getTestPhase();
         // getTestRound();
         getScene();
+        
         // setTimeout(getRecord(), 500);
         changeListNum();
 
@@ -195,28 +196,52 @@ function getTestPhase(resolve){
         url: address3+'testphaseController/selectAllTestphase',
         type: 'get',
         success:function(data){
-            app.testPhaseList=data.obj;
-            app.testphase = data.obj[0].id;
+            if (data.respCode === '0000'){
+                var temp;             
+                app.testPhaseList=data.testphaseEntityList;                       
+                temp = data.testphaseEntityList[0];                          
+                app.testphase = temp.name;
+                // console.log(app.testphase);
+            }           
             if (resolve) {
                 resolve();
             }
         }
     });
 }
-//获取测试轮次
+//获取测试轮次----刘瑞卿修改
 function getTestRound(resolve){
     $.ajax({
         url: address3+'testroundController/selectAllTestround',
         type: 'get',
         success: function(data){
-            app.testRoundList=data.obj;
-            app.testround = data.obj[0] ? data.obj[0].id : '';
+            var temp;
+            // console.log(data);
+            app.testRoundList = data.testroundEntityList;
+            // console.log(app.testRoundList);
+            temp = data.testroundEntityList[0];
+            app.testround = temp.name;
             if(resolve) {
                 resolve();
             }
         }
     });
 }
+//--------初始代码-----//
+// //获取测试轮次
+// function getTestRound(resolve){
+//     $.ajax({
+//         url: address3+'testroundController/selectAllTestround',
+//         type: 'get',
+//         success: function(data){
+//             app.testRoundList=data.obj;
+//             app.testround = data.obj[0] ? data.obj[0].id : '';
+//             if(resolve) {
+//                 resolve();
+//             }
+//         }
+//     });
+// }
 //获取场景
 function getScene(){
     $.ajax({

@@ -213,13 +213,15 @@
                                             <label class="col-sm-1 control-label">测试阶段</label>
                                             <div class="col-sm-2">
                                                 <select class="form-control" name="testphase" v-model="testphase">
-                                                    <option v-for="item in testPhaseList" :value="item.id">{{item.phasename}}</option>
+                                                    <option v-for="item in testPhaseList" :value="item.name">{{item.name}}</option>                                                                                                    
+                                                                                                        <!--原来是 item.phasename -->
                                                 </select>
                                             </div>
                                             <label class="col-sm-1 control-label">测试轮次</label>
                                             <div class="col-sm-2">
                                                 <select class="form-control" name="testround" v-model="testround">
-                                                    <option v-for="item in testRoundList" :value="item.id">{{item.roundname}}</option>
+                                                    <option v-for="item in testRoundList" :value="item.name">{{item.name}}</option>
+                                                                                                        <!--原来是 roundname -->
                                                 </select>
                                             </div>
                                             <label class="col-sm-2 control-label">记录单状态</label>
