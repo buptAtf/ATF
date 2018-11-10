@@ -2013,7 +2013,7 @@ var app = new Vue({
         deleteTemplate: function() {
             var _this = this;
             if (!_this.checkedTemplate.length) {
-                Vac.alert('请选择要删除的模板！')
+                Vac.alert('请选择要删除脚本！')
                 return
             }
             var templateId = this.checkedTemplate[0];

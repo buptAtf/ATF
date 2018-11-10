@@ -49,9 +49,9 @@ var app = new Vue({
         runResult: generateConst(1, 3, '全部成功', '部分成功', '全部失败')
     },
     ready: function() {
-        getScene(this.currentPage, this.pageSize, this.order, this.sort);
+        //queryExecutionRecord(this.currentPage, this.pageSize, this.order, this.sort);
         changeListNum();
-        this.queryExecutionRecord()
+        this.queryExecutionRecord(this.currentPage, this.pageSize, this.order, this.sort)
 
         console.log('ss');
         $('.3').addClass('open')
@@ -114,7 +114,7 @@ var app = new Vue({
             ts.currentPage = pageNum;
 
             //页数变化时的回调
-            getScene(ts.currentPage, ts.pageSize, 'id', 'asc');
+            ts.queryExecutionRecord(ts.currentPage, ts.pageSize, 'id', 'asc');
         },
 
 
@@ -144,7 +144,7 @@ var app = new Vue({
                         console.log(data);
                         if (data.success) {
                             $('#successModal').modal();
-                            getScene(self.currentPage, self.pageSize, self.order, self.sort);
+                            self.queryExecutionRecord(self.currentPage, self.pageSize, self.order, self.sort);
                         } else {
                             $('#failModal').modal();
                         }
@@ -157,7 +157,9 @@ var app = new Vue({
             
         },
         getRecord: function (id) {
-           window.open('testRecord-of-runid.html?runId=' + id);
+            sessionStorage.setItem("batchId", id);
+            sessionStorage.setItem("batchShow", true);
+            location.href = "testRecord.html";
         },
         //传递当前页选中的场景id到场景管理页面
         toSceneManagement: function(e) {
@@ -166,19 +168,27 @@ var app = new Vue({
             location.href = "scene-setting.html?sceneid=" + sceneid + "&" + "scenename=" + scenename;
         },
         //查询执行记录
-        queryExecutionRecord: function(){
+        queryExecutionRecord: function(page, listnum, order, sort){
             var _this=this;
             $.ajax({
-                url: address2 + '/batchRunCtrlController/pagedBatchQueryBatchRunCtrl',
+                url: address2 + 'batchRunCtrlController/pagedBatchQueryBatchRunCtrl',
                 type: 'post',
                 contentType: 'application/json',
                 data: JSON.stringify({
-                    'pageSize': _this.pageSize,
-                    'currentPage': _this.currentPage
+                    'pageSize': listnum,
+                    'currentPage': page
                 }),
-                success: function(date) {
-                    _this.sceneList = date.batchRunCtrlList;
-        
+                success: function(data) {
+                    if (data.respCode === '0000') {
+                        _this.sceneList = data.batchRunCtrlList;
+                        _this.tt = data.totalCount;
+                        _this.totalPage = data.totalPage;
+                    } else {
+                        _this.sceneList = [];
+                        _this.tt = 0;
+                        _this.totalPage = 0;
+                        _this.pageSize = 5;
+                    }
                 }
             });
         
@@ -189,10 +199,10 @@ var app = new Vue({
 });
 
 //获取场景
-function getScene(page, listnum, order, sort) {
+function queryExecutionRecord(page, listnum, order, sort) {
     //获取list通用方法，只需要传入多个所需参数
     $.ajax({
-        url: address2 + '/batchRunCtrlController/selectAllBatchRunCtrlByPage',
+        url: address2 + 'batchRunCtrlController/pagedBatchQueryBatchRunCtrl',
         type: 'POST',
         contentType: 'application/json',
         data: JSON.stringify({
@@ -240,11 +250,12 @@ function getCase(currentPage, listnum, order, sort) {
 
 //改变页面大小
 function changeListNum() {
+    var _this=this;
     $('#mySelect').change(function() {
         listnum = $(this).children('option:selected').val();
         $("#mySelect").find("option[text='" + listnum + "']").attr("selected", true);
         app.currentPage=1;
-        getScene(1, listnum, 'id', 'asc');
+        _this.queryExecutionRecord(1, listnum, 'id', 'asc');
     });
 }
 
@@ -271,7 +282,7 @@ function resort(target) {
         target.setAttribute("data-sort", "desc");
     }
     app.order = target.getAttribute("data-order");
-    getScene(1, 10, app.order, app.sort);
+    queryExecutionRecord(1, 10, app.order, app.sort);
 }
 //重新排序 结束
 

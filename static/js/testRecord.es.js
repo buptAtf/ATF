@@ -155,7 +155,12 @@ var app = new Vue({
             $('#updateForm textarea[name="aut_desc"]').val(selectedInput.parent().next().next().next().next().html());
         },
     },
-
+    //传递当前页选中批次信息id到功能点页面
+    linkToTransact: function(selectedId,selectedName) {
+        sessionStorage.setItem("autId", selectedId);
+        sessionStorage.setItem("autName", selectedName); 
+        location.href = "transact.html";
+    },
 
 });
 
@@ -164,21 +169,22 @@ function getRecord(page, listnum, order, sort) {
     //获取list通用方法，只需要传入多个所需参数
     $.ajax({
         // url: address + 'testrecordController/selectAllByPage',
-        url: address3+'testRecordController/selectByTestPhase',
+        url: address3+'testRecordController/batchQueryTestRecordByRunId',
         type: 'POST',
         contentType: 'application/json',
         data: JSON.stringify({
-            testPhaseId: app.testphase,
-            testRoundId: app.testround,
-            sourceChannel: 'PE4'
+            "runId":sessionStorage.getItem('batchId')
+            // testPhaseId: app.testphase,
+            // testRoundId: app.testround,
+            // sourceChannel: 'PE4'
             // caseLibId: '',
             // sceneId: '',
             // testPlanId: ''
         }),
         success: function(data) {
-            app.recordList = data.list;
             if (data.respCode === '0000') {
-
+                app.recordList = data.list;
+                
             } else {
                 // $('#failModal').modal();
             }

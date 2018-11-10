@@ -78,9 +78,9 @@
                                         </tr>
                                     </thead>
                                     <tbody id="sceneTable">
-                                        <tr class="odd gradeX" v-for="scene in sceneList" id="{{scene.id}}">
-                                            <td class="center " width="" :data-id="scene.id">
-                                                <button class="btn btn-xs btn-success" @click="getRecord(scene.id)">记录单</button>
+                                        <tr class="odd gradeX" v-for="scene in sceneList" id="{{scene.batchId}}">
+                                            <td class="center " width="" :data-id="scene.batchId">
+                                                <button class="btn btn-xs btn-success" @click="getRecord(scene.batchId)">记录单</button>
                                             </td>
                                             <td class="center " width="">{{ scene.startUser }}</td>
                                             <!-- <td class="center " width="">{{ scene.createDatze }}</td> -->
