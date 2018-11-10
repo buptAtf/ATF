@@ -29,7 +29,7 @@
                                     <i class="icon-home"></i> 项目测试</a>
                             </li>
                             <li class="active">
-                                <a href="#"> 批量执行管理</a>
+                                <a href="#"> 批量执行查询</a>
                             </li>
                         </ul>
                     </div>
@@ -40,7 +40,7 @@
                     <div class="col-lg-12">
                         <section class="panel">
                             <header class="panel-heading">
-                                批量执行管理
+                                批量执行查询
                             </header>
                             <!-- 表格 -->
                             <style>
@@ -57,23 +57,23 @@
                                             <th class="text-center" data-order="autId" data-sort="desc">发起用户</th>
                                             <!-- <th class="hidden-phone text-center" data-order="transId">创建日期</th> -->
                                             <th class="hidden-phone text-center" width="120px" data-order="transId">创建时间</th>
-                                            <th class="hidden-phone text-center" data-order="transId">执行产品</th>
+                                            <!-- <th class="hidden-phone text-center" data-order="transId">执行产品</th> -->
                                             <th class="hidden-phone text-center" data-order="transId">用例来源</th>
-                                            <th class="hidden-phone text-center" data-order="transId">用例库</th>
+                                            <!-- <th class="hidden-phone text-center" data-order="transId">用例库</th> -->
+                                            <th class="hidden-phone text-center" data-order="transId">测试计划</th>
                                             <th class="hidden-phone text-center" data-order="transId">测试阶段</th>
                                             <th class="hidden-phone text-center" data-order="transId">测试轮次</th>
-                                            <th class="hidden-phone text-center" data-order="transId">场景名称</th>
                                             <th class="hidden-phone text-center" data-order="transId">执行轮次</th>
-                                            <th class="hidden-phone text-center" data-order="transId">执行范围</th>
+                                            <th class="hidden-phone text-center" data-order="transId">场景名称</th>
                                             <th class="hidden-phone text-center" data-order="transId">用例总数</th>
-                                            <th class="hidden-phone text-center" data-order="transId">执行单保存类型</th>
-                                            <th class="hidden-phone text-center" data-order="transId">轮次最大执行单数</th>
-                                            <th class="hidden-phone text-center" data-order="transId">记录单保存库</th>
-                                            <th class="hidden-phone text-center" data-order="transId">执行单详细度</th>
+                                            <th class="hidden-phone text-center" data-order="transId">成功用例数</th>
+                                            <th class="hidden-phone text-center" data-order="transId">失败用例数</th>
+                                            <th class="hidden-phone text-center" data-order="transId">跳过用例数</th>
+                                            <!-- <th class="hidden-phone text-center" data-order="transId">执行单详细度</th> -->
                                             <th class="hidden-phone text-center" data-order="transId">执行状态</th>
                                             <th class="hidden-phone text-center" data-order="transId">执行结果</th>
                                             <th class="hidden-phone text-center" data-order="transId">执行结果信息</th>
-                                            <th class="hidden-phone text-center" data-order="transId">完成日期</th>
+                                            <!-- <th class="hidden-phone text-center" data-order="transId">完成日期</th> -->
                                             <th class="hidden-phone text-center" data-order="transId">完成时间</th>
                                         </tr>
                                     </thead>
@@ -82,27 +82,36 @@
                                             <td class="center " width="" :data-id="scene.id">
                                                 <button class="btn btn-xs btn-success" @click="getRecord(scene.id)">记录单</button>
                                             </td>
-                                            <td class="center " width="">{{ scene.creatorId }}</td>
-                                            <!-- <td class="center " width="">{{ scene.createDate }}</td> -->
+                                            <td class="center " width="">{{ scene.startUser }}</td>
+                                            <!-- <td class="center " width="">{{ scene.createDatze }}</td> -->
                                             <td class="center " width="">{{ formatDate(scene.createTime) }}</td>
-                                            <td class="center " width="">{{ executeProduct[scene.executeProduct] }}</td>
-                                            <td class="center " width="">{{ caseSourceChannel[scene.caseSourceChannel] }}</td>
-                                            <td class="center " width="">{{ scene.caseLibId }}</td>
+                                            <!-- <td class="center " width="">{{ executeProduct[scene.executeProduct] }}</td> -->
+                                            <!-- <td class="center " width="">{{ caseSourceChannel[scene.caseSourceChannel] }}</td> -->
+                                            <td class="center " width="">{{ scene.instanceSource }}</td>                                        
+                                            <!-- <td class="center " width="">{{ scene.caseLibId }}</td> -->
+                                            <td class="center " width="">{{ scene.testPlan }}</td>
                                             <td class="center " width="">{{ scene.testPhase }}</td>
                                             <td class="center " width="">{{ scene.testRound }}</td>
+                                            <td class="center " width="">{{ scene.executionRound }}</td>
                                             <td class="center " width="">{{ scene.sceneId }}</td>
-                                            <td class="center " width="">{{ scene.executeRound }}</td>
-                                            <td class="center " width="">{{ runScopeFlag[scene.runScopeFlag] }}</td>
-                                            <td class="center " width="">{{ scene.totalCount }}</td>
-                                            <td class="center " width="">{{ recordSaveType[scene.recordSaveType] }}</td>
+                                            <!-- <td class="center " width="">{{ runScopeFlag[scene.runScopeFlag] }}</td> -->
+                                            <td class="center " width="">{{ scene.totalInsCount }}</td>
+                                            <td class="center " width="">{{ scene.successInsCount }}</td>
+                                            <td class="center " width="">{{ scene.failedInsCount }}</td>
+                                            <td class="center " width="">{{ scene.notRunInsCount }}</td>
+                                            <td class="center " width="">{{ scene.executingStatus }}</td>
+                                            <td class="center " width="">{{ scene.executedResult }}</td>
+                                            <td class="center " width="">{{ scene.resultMessage }}</td>
+
+                                            <!-- <td class="center " width="">{{ recordSaveType[scene.recordSaveType] }}</td>
                                             <td class="center " width="">{{ scene.maxRecordPerRound }}</td>
                                             <td class="center " width="">{{ recordVerboseType[scene.recordVerboseType] }}</td>
                                             <td class="center " width="">{{ runStatus[scene.runStatus] }}</td>
                                             <td class="center " width="">{{ runResult[scene.runResult] }}</td>
-                                            <td class="center " width="">{{ scene.runResultMessage }}</td>
-                                            <td class="center " width="">{{ scene.creatorId }}</td>
-                                            <td class="center " width="">{{ scene.finishDate }}</td>
-                                            <td class="center " width="">{{ scene.finishTime }}</td>
+                                            <td class="center " width="">{{ scene.runResultMessage }}</td> -->
+                                            <!-- <td class="center " width="">{{ scene.creatorId }}</td>
+                                            <td class="center " width="">{{ scene.finishDate }}</td> -->
+                                            <td class="center " width="">{{ formatDate(scene.finishTime) }}</td>
                                         </tr>
                                     </tbody>
                                 </table>

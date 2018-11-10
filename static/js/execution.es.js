@@ -51,6 +51,8 @@ var app = new Vue({
     ready: function() {
         getScene(this.currentPage, this.pageSize, this.order, this.sort);
         changeListNum();
+        this.queryExecutionRecord()
+
         console.log('ss');
         $('.3').addClass('open')
         $('.3 .arrow').addClass('open')
@@ -162,6 +164,24 @@ var app = new Vue({
             var sceneid = $(e.target).parent().prev().prev().prev().children().attr('id'),
                 scenename = $(e.target).parent().prev().prev().html();
             location.href = "scene-setting.html?sceneid=" + sceneid + "&" + "scenename=" + scenename;
+        },
+        //查询执行记录
+        queryExecutionRecord: function(){
+            var _this=this;
+            $.ajax({
+                url: address2 + '/batchRunCtrlController/pagedBatchQueryBatchRunCtrl',
+                type: 'post',
+                contentType: 'application/json',
+                data: JSON.stringify({
+                    'pageSize': _this.pageSize,
+                    'currentPage': _this.currentPage
+                }),
+                success: function(date) {
+                    _this.sceneList = date.batchRunCtrlList;
+        
+                }
+            });
+        
         }
 
     },
@@ -276,3 +296,5 @@ function queryScene() {
         }
     });
 }
+
+
