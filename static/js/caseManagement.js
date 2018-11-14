@@ -48,8 +48,6 @@ var app = new Vue({
     },
     ready: function() {
         this.getCase(this.currentPage, this.pageSize, this.order, this.sort);
-      //  this.changeListNum();
-        this.downloadTemplate();
         this.getUsers();
         this.getCaseLibId();
         this.getMission(); //获取案例添加表单任务编号下拉列表
@@ -729,23 +727,15 @@ var app = new Vue({
             });
         },  
         //下载模板
-        downloadTemplate:function() {
-            $('#exampleDownload').click(function() {
-                 
-            var val=$('input:radio[name="templateType"]:checked').val();
-            
-            if(val==null){
-                return false;
-            }
-            else if(val==0){
+        downloadTemplate(val){
+            if(val==0){
                 let url = address3+"testcase/batchImport/file/template/simple";
                 window.location.href = url;
-                } 
-                else{ 
+            }
+            else{
                 let url =address3+"testcase/batchImport/file/template/standard";
                 window.location.href = url;
-                } 
-            });
+            } 
         },
         // 执行方式数据处理
         convertExecMe(em){
@@ -849,45 +839,45 @@ var app = new Vue({
         },
         //上传
         upload:function() {
-                        var _this=this;
-                        $.ajax({
-                            url: address3+'testcase/batchImportTestcase',
-                            type: 'POST',
-                            cache: false,
-                            data: new FormData($('#importForm')[0]),
-                            processData: false,
-                            contentType: false, 
-                            success: function(data) {                        
-                                $('#importModal').modal('hide');
-                                if (data.respCode==0000) {
-                                    $('#successModal').modal('show');
-                                } else {
-                                    _this.failMSG=data.respMsg;
-                                    $('#failModal2').modal('show');
-                                }
-                         }, error: function(data) { 
-                         $('#importModal').modal('hide');
-                         $('#failModal').modal('show');
+                var _this=this;
+                $.ajax({
+                    url: address3+'testcase/batchImportTestcase',
+                    type: 'POST',
+                    cache: false,
+                    data: new FormData($('#importForm')[0]),
+                    processData: false,
+                    contentType: false, 
+                    success: function(data) {                        
+                        $('#importModal').modal('hide');
+                        if (data.respCode==0000) {
+                            $('#successModal').modal('show');
+                        } else {
+                            _this.failMSG=data.respMsg;
+                            $('#failModal2').modal('show');
+                        }
+                    }, error: function(data) { 
+                        $('#importModal').modal('hide');
+                        $('#failModal').modal('show');
                     }
-                        }) ;  
+                }) ;  
         },
         //添加案例
         insert: function() {
             var self = this;
             var insertForm=$('#insertForm div[class="tab-pane active"]');
             var casecompositetype = $(insertForm).find('input[name="casecompositetype"]').val(),
-                caselibId=sessionStorage.getItem('caselibid'),
+                caselibId=sessionStorage.getItem('caselibId'),
                 casecode = $(insertForm).find('input[name="casecode"]').val(),
-                missionId = $(insertForm).find('select[name="missionId"]').val(),
                 autid = $(insertForm).find('select[name="autid"]').val(),
                 versioncode = $(insertForm).find('input[name="versioncode"]').val(),
                 transid = $(insertForm).find('select[name="transid"]').val(),
                 scriptmodeflag = $(insertForm).find('select[name="scriptmodeflag"]').val(),
                 testpoint = $(insertForm).find('input[name="testpoint"]').val(),
-                testDesign = $(insertForm).find('textarea[name="testDesign"]').val(),
+                testdesign  = $(insertForm).find('textarea[name="testDesign"]').val(),
                 preRequisites = $(insertForm).find('textarea[name="preRequisites"]').val(),
                 dataRequest = $(insertForm).find('textarea[name="dataRequest"]').val(),
                 testStep = $(insertForm).find('textarea[name="testStep"]').val(),
+                submissionId = $(insertForm).find('select[name="submissionId"]').val(),
                 expectResult = $(insertForm).find('textarea[name="expectResult"]').val(),
                 checkPoint = $(insertForm).find('textarea[name="checkPoint"]').val(),
                 caseProperty = $(insertForm).find('select[name="caseProperty"]').val(),
@@ -898,64 +888,87 @@ var app = new Vue({
                 executor = $(insertForm).find('select[name="executor"]').val(),
                 executemethod = $(insertForm).find('select[name="executemethod"]').val(),
                 scriptmode = $(insertForm).find('select[name="scriptmode"]').val(),
-                usestatus = $(insertForm).find('select[name="usestatus"]').val(),
+                useStatus  = $(insertForm).find('select[name="usestatus"]').val(),
                 note = $(insertForm).find('textarea[name="note"]').val();
-            // $.ajax({
-            //     url: address + 'TestcaseController/import111',
-            //     type: "POST",
-            //     contentType: 'application/json',
-            //     data: JSON.stringify({
-            //         'casecompositetype': casecompositetype,
-            //         'caselibId': caselibId,
-            //         'casecode': casecode,
-            //         'missionId': missionId,
-            //         'autid': autid,
-            //         'versioncode': versioncode,
-            //         'transid': transid,
-            //         'scriptmodeflag': scriptmodeflag,
-            //         'testpoint': testpoint,
-            //         'testDesign': testDesign,
-            //         'preRequisites': preRequisites,
-            //         'dataRequest': dataRequest,
-            //         'testStep': testStep,
-            //         'expectResult': expectResult,
-            //         'checkPoint': checkPoint,
-            //         'caseProperty': caseProperty,
-            //         'caseType': caseType,
-            //         'priority': priority,
-            //         'author': author,
-            //         'reviewer': reviewer,
-            //         'executor': executor,
-            //         'executemethod': executemethod,
-            //         'scriptmode': scriptmode,
-            //         'usestatus': usestatus,
-            //         'note': note,
-            //         'subcasecode': '',
-            //         'actioncode': '',
-            //         'steporder': '',
-            //         'subautid': '',
-            //         'subversioncode': '',
-            //         'subtransid': '',
-            //         'subscriptmodeflag': '',
-            //         'subusestatus': '',
-            //         'subexecutemethod': '',
-            //         'subexecutor': '',
-            //         'subscriptmode': '',
-            //         'subnote': ''
-            //     }),
-            //     success: function(data) {
-            //         // console.log(data);
-            //         if (data.success) {
-            //             $('#successModal').modal();
-            //             self.getCase(self.currentPage, self.pageSize, self.order, self.sort);
-            //         } else {
-            //             $('#failModal').modal();
-            //         }
-            //     },
-            //     error: function() {
-            //         $('#failModal').modal();
-            //     }
-            // });
+                actionList=[];
+                //处理流程节点
+                if(casecompositetype=="2"){
+                    for(let i=0;i<self.caseNodeNums.length;i++)
+                    {
+                        if(self.caseNodeNums[i].status&&self.caseNodeNums[i].display){
+                            let form=$('#'+self.caseNodeNums[i].name);
+                            let AddTestcaseActionDTO={};
+                            AddTestcaseActionDTO.actioncasecode=$(form).find('input[name="actioncasecode"]').val();
+                            AddTestcaseActionDTO.actioncode=$(form).find('input[name="actioncode"]').val();
+                            AddTestcaseActionDTO.steporder=$(form).find('input[name="steporder"]').val();
+                            AddTestcaseActionDTO.autId=$(form).find('select[name="autid"]').val();
+                            AddTestcaseActionDTO.transId=$(form).find('select[name="transid"]').val();
+                            AddTestcaseActionDTO.scriptModeFlag=$(form).find('select[name="scriptmodeflag"]').val();
+                            AddTestcaseActionDTO.testpoint=$(form).find('input[name="testpoint"]').val();
+                            AddTestcaseActionDTO.prerequisites=$(form).find('textarea[name="preRequisites"]').val();
+                            AddTestcaseActionDTO.datarequest=$(form).find('textarea[name="dataRequest"]').val();
+                            AddTestcaseActionDTO.testdesign=$(form).find('textarea[name="testDesign"]').val();
+                            AddTestcaseActionDTO.teststep=$(form).find('textarea[name="testStep"]').val();
+                            AddTestcaseActionDTO.expectresult=$(form).find('textarea[name="expectResult"]').val();
+                            AddTestcaseActionDTO.checkpoint=$(form).find('textarea[name="checkPoint"]').val();
+                            AddTestcaseActionDTO.executeMethod=$(form).find('select[name="executeMethod"]').val();
+                            AddTestcaseActionDTO.scriptMode=$(form).find('select[name="scriptmode"]').val();
+                            AddTestcaseActionDTO.note=$(form).find('textarea[name="note"]').val();
+                            actionList.push(AddTestcaseActionDTO);
+                        }
+                    }
+                }
+            $.ajax({
+                url: address3 + '/testcase/addTestcase',
+                type: "POST",
+                contentType: 'application/json',
+                data: JSON.stringify({
+                    'caseCompositeType': casecompositetype,
+                    'caseLibId': caselibId,
+                    'casecode': casecode,
+                    'submissionId': submissionId,
+                    'autId': autid,
+                    'version': versioncode,
+                    'transId': transid,
+                    'scriptModeFlag': scriptmodeflag,
+                    'testpoint': testpoint,
+                    'testdesign': testdesign,
+                    'prerequisites': preRequisites,
+                    'datarequest': dataRequest,
+                    'teststep': testStep,
+                    'expectresult': expectResult,
+                    'checkpoint': checkPoint,
+                    'caseproperty': caseProperty,
+                    'casetype': caseType,
+                    'priority': priority,
+                    'author': author,
+                    'reviewer': reviewer,
+                    'executor': executor,
+                    'automaton':"",
+                    'executeMethod': executemethod,
+                    'scriptMode': scriptmode,
+                    'useStatus': useStatus ,
+                    'note': note,
+                    'modifyChannel':'',
+                    'modifyChannelNo':'',
+                    'functionModule':"",
+                    'tags':"",
+                    'categoryTeam':"",
+                    'actionList':actionList
+                }),
+                success: function(data) {
+                    if (data.respCode=="0000") {
+                        $('#successModal').modal();
+                        self.getCase(self.currentPage, self.pageSize, self.order, self.sort);
+                    } else {
+                        _this.failMSG=data.failMSG;
+                        $('#failModal').modal();
+                    }
+                },
+                error: function() {
+                    $('#failModal').modal();
+                }
+            });
         },
         // //改变页面大小
         // changeListNum:function() {
@@ -993,11 +1006,12 @@ var app = new Vue({
                 contentType: false,
                 processData: false,
                 success: function(data) {
-                    if (data.success) {
+                    if (data.respCode=="0000") {
                         $('#successModal').modal();
                         this.getCase(self.currentPage, self.pageSize, self.order, self.sort);
                     } else {
-                        $('#failModal').modal();
+                        _this.failMSG==data.respMsg;
+                        $('#failModal2').modal();
                     }
                 },
                 error: function() {

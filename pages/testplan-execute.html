@@ -17,13 +17,14 @@
     <style>
     </style>
   </head>
-  <body id="v-body" v-cloak>
+  <body>
     <!--header start-->
     <link rel="import" href="./common/header-guide.html?__inline">
     <!--header end-->
     <!--sidebar start-->
     <link rel="import" href="./common/aside-guide.html?__inline">
     <!--sidebar end-->
+    <div id ="v-body" v-cloak>
     <div class="content">
       <!--main content start-->
       <section id="main-content" >
@@ -34,7 +35,7 @@
               <div class="col-lg-12">
                 <ul class="breadcrumb">
                   <li><a><i class="icon-home"></i> 项目测试 </a></li>
-                  <li><a href="testplan-execute.html"> 测试计划及执行</a></li>
+                  <li><a href="#"> 测试计划及执行</a></li>
                   <!-- <li class="active"> 对象库</li> -->
                 </ul>
               </div>
@@ -43,15 +44,18 @@
               <form id="test-options" class=" form-horizontal form-inline">
                 <div class="form-group col-sm-6">
                   <label class="option-name control-label col-sm-3">测试计划</label>
-                  <div class="col-sm-9">
+                  <div class="col-sm-5">
                     <select class="testphase form-control" v-model="testPlanId">
                       <option v-for="(index,item) in testPlans" v-bind:value="item.id">{{item.nameMedium}}</option>
                     </select>
                   </div>
+                  <div class="col-sm-4">
+                      <button class="btn btn-white" @click="testPlanManager()"> 测试计划管理</button>
+                    </div>
                 </div>
                 <div class="form-group col-sm-6">
                   <label class="option-name col-sm-3 control-label">
-                    测试轮次
+                    执行轮次
                   </label>
                   <div class="col-sm-9">
                     <input type="text" class="form-control" name="" v-model="executionround">
@@ -275,13 +279,164 @@
           <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
           <button type="button" class="btn btn-primary" @click="sendSceneData()">确认</button>
         </div>
-        </div><!-- /.modal-content -->
+      </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+  </div>
+  <!-- /.modal -->
+</div>
+    <!--content end -->
+  <app>
+    <div class="modal fade" id="testplan_modal" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+              <h4 class="modal-title">测试计划管理</h4>
+            </div>
+            <div class="modal-body">
+                <div class="top-bar">
+                    <button type="button" class="btn btn-white" data-toggle='modal' @click='showAddModal()'><i class="icon-plus" ></i>
+                    新增</button>
+                    <button class="btn btn-white" @click="showDeleteConfirm"><i class="icon-remove"></i>
+                    删除</button>
+                    <button class="btn btn-white" @click="showUpdateModal"><i class="icon-edit"></i>
+                    修改</button>
+                </div>
+                <div class="main-content" style="padding: 20px;">
+                    <table id="testplan-table" class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th scope="col" class="text-center" style="width: 5%;">操作</th>
+                                <th scope="col" class="text-center"  data-sort="desc" data-order="id" onclick="resort(this);">id<span class="icon-sort-up" aria-hidden="true"></span></th>
+                                <th scope="col" class="text-center">名称</th>
+                                <th scope="col" class="text-center">描述</th>
+                                <th scope="col" class="text-center">测试阶段</th>
+                                <th scope="col" class="text-center">测试轮次</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr v-for="testPlan in testPlanArray">
+                                <td style="width: 5%;">
+                                    <input  type="radio" v-bind:value="testPlan.id" @click="changeSelect(testPlan.id)" v-model="selectTestPlan">
+                                </td>
+                                <td>{{testPlan.id}}</td>
+                                <td>{{testPlan.nameMedium}}</td>
+                                <td>{{testPlan.descMedium}}</td>
+                                <td>{{testPlan.testPhaseName}}</td>
+                                <td>{{testPlan.testRoundName}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <!-- 分页 -->
+                    <div class="row">
+                        <div class="col-lg-12 text-center">
+                            <div class="pagination-wrap" v-if="page.totalPage!=0">
+                                <div class="num">
+                                        <select size="1" name="sample_1_length" aria-controls="sample_1" class="form-control" v-model="page.pageSize" @change='turnToPage(1)'>
+                                            <option value="5" selected>5条/页</option>
+                                            <option value="10">10条/页</option>
+                                            <option value="20">20条/页</option>
+                                            <option value="50">50条/页</option>
+                                        </select> 
+                                </div>
+                                <ul class="pagination">
+                                    <li :class="page.currentPage==1?'disabled':''"><a href="javascript:;" @click="turnToPage(1)">首页</a></li>
+                                    <li :class="page.currentPage==1?'disabled':''"><a @click="turnToPage(page.currentPage-1)" href="javascript:;">上一页</a></li>
+                                    <li>
+                                        <a href="javascript:;" @click="turnToPage(page.currentPage-3)" v-text="page.currentPage-3" v-if="page.currentPage-3>0"></a>
+                                    </li>
+                                    <li>
+                                        <a href="javascript:;" @click="turnToPage(page.currentPage-2)" v-text="page.currentPage-2" v-if="page.currentPage-2>0"></a>
+                                    </li>
+                                    <li>
+                                        <a href="javascript:;" @click="turnToPage(page.currentPage-1)" v-text="page.currentPage-1" v-if="page.currentPage-1>0"></a>
+                                    </li>
+                                    <li class="active"><a href="javascript:;" @click="turnToPage(page.currentPage)" v-text="page.currentPage">3</a></li>
+                                    <li>
+                                        <a href="javascript:;" @click="turnToPage(page.currentPage+1)" v-text="page.currentPage+1" v-if="page.currentPage+1<=page.totalPage"></a>
+                                    </li>
+                                    <li>
+                                        <a href="javascript:;" @click="turnToPage(page.currentPage+2)" v-text="page.currentPage+2" v-if="page.currentPage+2<=page.totalPage"></a>
+                                    </li>
+                                    <li>
+                                        <a href="javascript:;" @click="turnToPage(page.currentPage+3)" v-text="page.currentPage+3" v-if="page.currentPage+3<=page.totalPage"></a>
+                                    </li>
+                                    <li :class="page.currentPage==page.totalPage?'disabled':''"><a href="javascript:;" @click="turnToPage(page.currentPage+1)">下一页</a></li>
+                                    <li :class="page.currentPage==page.totalPage?'disabled':''"><a href="javascript:;" @click="turnToPage(page.totalPage)">尾页</a></li>
+                                </ul>
+                                <div class="go">
+                                    <div :class="isPageNumberError?'input-group error':'input-group'">
+                                        <input class="form-control" type="number" v-model="goToPage" min="1"><a href="javascript:;" class="input-group-addon" @click="turnToPage(goToPage)">Go</a>
+                                    </div>
+                                </div>
+                                <small class="small nowrap"> 当前第 <span class="text-primary" v-text="page.currentPage"></span> / <span class="text-primary" v-text="page.totalPage"></span>页，共有 <span class="text-primary" v-text="page.totalCount"></span> 条</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+              <button type="button" class="btn btn-primary" @click="sendSceneData()">确认</button>
+            </div>
+          </div><!-- /.modal-content -->
         </div><!-- /.modal-dialog -->
-        </div><!-- /.modal -->
+    </div>
+        <!--新增测试轮次 -->
+        <div class='modal fade' tabindex='-1' role='dialog' id='addTestRoundId' aria-hidden='true' aria-labelledby='addTestRound' data-toggle='modal'>
+            <div class='modal-dialog'>
+                <div class='modal-content'>
+                    <div class='modal-header'>
+                        <button type='button' class='close' data-dismiss="modal" aria-hidden="true">&times;</button>
+                        <h4 class='modal-title' id='addTestRound'>新增测试轮次</h4>
+                    </div>
+                    <div class="modal-body">
+                            <form class="form-horizontal">
+                                    <div class="form-group">
+                                        <label class="col-sm-2 control-label">名称</label>
+                                        <div class="col-sm-10">
+                                            <input type="text" v-model="addRoundRowData.roundName" class="form-control" autocomplete="off">
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-sm-2 control-label">描述</label>
+                                        <div class="col-sm-10">
+                                            <textarea resize="disabled" v-model="addRoundRowData.roundDesc" class="form-control" autocomplete="off"></textarea>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-sm-2 control-label">记录单保存方式</label>
+                                        <div class="col-sm-10">
+                                            <select class="form-control" v-model="addRoundRowData.recordmanagementflag">
+                                                <option v-for="option in [{ value: 1, label: '仅保存一份' }, { value: 2, label: '保存多份' }]" 
+                                                    :value="option.value" :key="option.value">
+                                                    {{option.label}}
+                                                </option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-sm-2 control-label">定时执行方式</label>
+                                        <div class="col-sm-10">
+                                            <input type="text" v-model="addRoundRowData.timeexecutesetting" class="form-control" autocomplete="off">
+                                        </div>
+                                    </div>
+                                </form>
+                            <div class='modal-footer'>
+                                    <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                                    <button type="button" class="btn btn-primary" @click=addTestRound()>确认</button>
+                            </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+      </app>
+      <!-- /.modal -->
         <link rel="import" href="./common-vac/alert.html?__inline">
         <link rel="import" href="./common-vac/confirm.html?__inline">
         <script src="../static/js/config.js"></script>
         <script src="../static/js/vac-functions.es.js"></script>
+        <script src="../static/js/testplan.js"></script>
         <script src="../static/js/testplan-execute.es.js"></script>
         <script src="../../lib/common-scripts.js"></script>
       </body>

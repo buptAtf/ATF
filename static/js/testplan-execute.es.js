@@ -1,6 +1,9 @@
 __inline('./testexecution/check.js')
 var vBody = new Vue({
 	el: '#v-body',
+	components:{
+		app
+	},
 	data: {
 		// tooltipMessage:'',
 		runners:[],
@@ -282,9 +285,22 @@ var vBody = new Vue({
 				}
 			}
 		},
+		testPlanManager: function() {
+			console.log("aaaaaaaaaaaaaa");			
+			// Vac.ajax({
+			// 	url: address3 + 'sceneController/selectAllScene',
+			// 	data: { caseLibId: this.caselibId },
+			// 	success: function(data){
+			// 		if(data.respCode == '0000'){
+			// 			_this.allscenes = data.scenequeryDtoList;
+			// 			$('testplan_modal').modal('show');
+			// 		}
+			// 	}
+			// });
+			// $('#testplan_modal').modal("show");
+		},
 		addScene: function() {
 			var _this = this;
-			
 			Vac.ajax({
 				url: address3 + 'sceneController/selectAllScene',
 				data: { caseLibId: this.caselibId },

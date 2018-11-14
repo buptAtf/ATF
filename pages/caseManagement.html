@@ -2,7 +2,7 @@
 <html>
 
 <head>
-    <script src="https://unpkg.com/vue/dist/vue.js"></script>
+    <!-- <script src="https://unpkg.com/vue/dist/vue.js"></script> -->
     <link rel="import" href="./common/header.html?__inline">
     <!-- css for this page only -->
     <link rel="stylesheet" type="text/css" href="../static/css/index.css">
@@ -103,6 +103,15 @@
         }
         .hrLine{
             vertical-align:middle; display:inline-block;
+        }
+        .col-center-block {
+        position: absolute;
+        top: 50%;
+        -webkit-transform: translateY(25%);
+        -moz-transform:  translateY(25%);
+        -ms-transform:  translateY(25%);
+        -o-transform:  translateY(25%);
+        transform:  translateY(25%);
         }
     </style>
 </head>
@@ -604,22 +613,29 @@
                                                                 </div>
                                                             </div>
                                                             <div id="addCaseNode">
-                                                                <div v-for="caseNodeNum in  caseNodeNums" v-if="caseNodeNum.status" v-show="caseNodeNum.display">
-                                                                        <h3>流程节点案例<a @click="caseNodeNums[caseNodeNum.num-1].status=false"><i class="glyphicon glyphicon-remove"></i></a></h3>
-                                                                    <div class="form-group" :name="">
+                                                                <div v-for="caseNodeNum in  caseNodeNums" v-if="caseNodeNum.status" v-show="caseNodeNum.display" :id="caseNodeNum.name">
+                                                                        <h3>流程节点案例
+                                                                            <!-- <a @click="caseNodeNums[caseNodeNum.num-1].status=false"><i class="glyphicon glyphicon-remove"></i></a>
+                                                                         --></h3>
+                                                                    <div class="form-group" >
                                                                         <label class="col-lg-2 control-label hidden">案例组成类型</label>
                                                                         <div class="col-lg-4 hidden">
                                                                             <input type="text" class="form-control" name="caseCompositeType" value="3">
                                                                         </div>
                                                                         <label class="col-lg-2 control-label">流程节点编号</label>
                                                                         <div class="col-lg-4">
-                                                                            <input type="text" class="form-control" name="subcasecode">
+                                                                            <input type="text" class="form-control" name="actioncasecode">
+                                                                        </div>
+                                                                        <div class="col-lg-2">
+                                                                            <a class="btn btn-white" v-on:click="caseNodeNums[caseNodeNum.num-1].status=false">
+                                                                                <span>删除用例</span>
+                                                                            </a>
                                                                         </div>
                                                                         <div class="col-lg-2">
                                                                             <a class="btn btn-white" v-on:click="caseNodeNum.show=!caseNodeNum.show">
-                                                                                    <span v-if="caseNodeNum.show">显示详情</span>
-                                                                                    <span v-else>收起详情</span>
-                                                                                    <i :class="{'icon-angle-down':caseNodeNum.show, 'icon-angle-up':!caseNodeNum.show}"></i>
+                                                                                <span v-if="caseNodeNum.show">显示详情</span>
+                                                                                <span v-else>收起详情</span>
+                                                                                <i :class="{'icon-angle-down':caseNodeNum.show, 'icon-angle-up':!caseNodeNum.show}"></i>
                                                                             </a>
                                                                         </div>
                                                                     </div>
@@ -657,7 +673,7 @@
                                                                                 </div>
                                                                             </div>
                                                                             <div class="col-lg-4 nopadding">
-                                                                                <label class="col-lg-3 control-label">步骤循序号</label>
+                                                                                <label class="col-lg-3 control-label">步骤顺序号</label>
                                                                                 <div class="col-lg-9">
                                                                                     <input class="form-control" name="steporder">
                                                                                 </div>
@@ -673,7 +689,7 @@
                                                                             <div class="col-lg-4 nopadding">
                                                                                 <label class="col-lg-3 control-label">执行方式</label>
                                                                                 <div class="col-lg-9">
-                                                                                    <select class="form-control" size="1" name="actioncode">
+                                                                                    <select class="form-control" size="1" name="executeMethod">
                                                                                         <option value="1">手工</option>
                                                                                         <option value="2">自动化</option>
                                                                                         <option value="3">配合</option>
@@ -766,44 +782,49 @@
                                         <h4 class="modal-title">导入</h4>
                                     </div>
                                     <form role="form" id="importForm" method='post' :action="importUrl" enctype="multipart/form-data" >
-                                        
                                     <div class="modal-body">
-                                            
-                                            <div class="form-group hidden"> 
-                                                <input type="text" class="text" name="caseLibId" v-bind:value="caselibid" >
-                                                <input type="text" class="text" name="uploadUserId" v-bind:value="userId" >
+                                        <div class="form-group hidden"> 
+                                            <input type="text" class="text" name="caseLibId" v-bind:value="caselibid" >
+                                            <input type="text" class="text" name="uploadUserId" v-bind:value="userId" >
+                                        </div>
+                                        <div class="form-group">        
+                                            <div class="col-lg-6">
+                                                <input type="text" class="form-control show" disabled>
                                             </div>
-                                            
-                                            <div class="form-group">        
-                                                <div class="col-lg-6">
-                                                    <input type="text" class="form-control show" disabled>
-                                                </div>
-                                                <span class="btn  btn-white fileinput-button"><span>选择文件</span>
-                                                <input type="file" class="myFileUpload" name="file" id='theFile'>
-                                                </span>
-                                            </div>
-                                            <input type="submit" value="submit" class="hide">
-                                       
-                                       
+                                            <span class="btn  btn-white fileinput-button"><span>选择文件</span>
+                                            <input type="file" class="myFileUpload" name="file" id='theFile'>
+                                            </span>
+                                        </div>
+                                        <input type="submit" value="submit" class="hide">
                                     </div> 
-                                        <hr>
-                                          <div class="row">
-                                                <div class="col-lg-12">
-                                                            <div class="col-lg-1"> 
-                                                          </div>    
-                                                          <div class="col-lg-4"> 
-                                                          <label class=control-label">上传方式：</label>
-                                                          </div> 
-                                                          <div class="col-lg-4">
-                                                           <form>
-                                                            <input type="radio" name="templateType" value="0" checked>简单版 
-                                                            <input type="radio" name="templateType" value="1">标准版 
-                                                            </form> 
-                                                          </div>  
-                                              </div> 
+                                    <hr>
+                                    <div class="row ">
+                                        <div class="col-lg-12">
+                                            <div class="col-lg-1"> 
+                                            </div>    
+                                            <div class="col-lg-2"> 
+                                                <label class="control-label col-center-block">上传方式：</label>
+                                            </div>
+                                            <div class="col-lg-2 radio-inline">
+                                                <label class="col-center-block"><input type="radio" name="templateType" id="templateType0" value="0" checked>简单版</label>
+                                            </div>
+                                            <div class="col-lg-4">
+                                                <a class="  btn  btn-white" style="float:left"  id="templateType0" @click="downloadTemplate(0)">模板下载</a>  
+                                            </div>
                                         </div> 
+                                    </div>
+                                    <div class="row  ">
+                                        <div class="col-lg-12">
+                                            <div class="col-lg-2 radio-inline col-lg-offset-3" >
+                                                    <label class="col-center-block"><input type="radio" name="templateType" id="templateType" value="1">标准版</label>
+                                            </div>
+                                            <div class="col-lg-4">
+                                                <a class="  btn  btn-white" style="float:left" id="templateType1" @click="downloadTemplate(1)">模板下载</a>  
+                                            </div>
+                                        </div> 
+                                    </div> 
                                     <div class="modal-footer">
-                                         <a class="  btn  btn-white" style="float:left" id="exampleDownload">模板下载</a>  
+                                       <!-- <a class="  btn  btn-white" style="float:left" id="exampleDownload">模板下载</a>   -->
                                        <a class="  btn  btn-white"     id="submitFile"  @click="upload()">导入</a>  
                                        <button data-dismiss="modal" class="btn btn-default" type="button">取消</button>
                                     </div>
