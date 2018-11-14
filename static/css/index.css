@@ -91,9 +91,12 @@
     flex-flow: column;
     min-height: 100vh;
 }
-
 #main-content .wrapper {
     flex: 1;
+}
+#main-content .fixedwh {
+    width: 1100px;
+    height: 650px;
 }
 
 .icon-angle-right,

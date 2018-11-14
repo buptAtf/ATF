@@ -25,6 +25,7 @@ var app = new Vue({
         getAut(this.currentPage, this.pageSize, this.order, this.sort);
         getAbstr();
         changeListNum();
+        showTips();
         $('.2').addClass('open');
         $('.2 .arrow').addClass('open');
         $('.2-ul').css({display: 'block'});
@@ -271,6 +272,8 @@ var app = new Vue({
                 return '';
             }     
         }
+
+
     },
 
 
@@ -371,4 +374,13 @@ function getAbstr(){
             app.abstrList=data.architectureRespDTOList;
         }
     });
+}
+
+function showTips(){
+    var fromPage = sessionStorage.getItem('towhere');
+    if(fromPage === 'newfunpoint'){
+        alert("请进入被测系统后管理功能点");
+        sessionStorage.setItem('towhere','');
+    }
+    
 }
