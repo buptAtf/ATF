@@ -151,7 +151,7 @@
                         <a class="btn btn-white" data-toggle="modal" @click="checkExport"><i class="icon-reply"></i> 导出</a>
                         <a class="btn btn-white" data-toggle="modal" @click="checkExe"><i class="icon-user"></i> 分配</a>
                         <a class="btn btn-white" data-toggle="modal" @click="checkExeM"><i class="icon-retweet"></i> 更改执行方式</a>
-                        <a class="btn btn-white" data-toggle="modal" @click="checkTransid"><i class="icon-cog"></i> 设置功能点及模板脚本</a>
+                        <a class="btn btn-white" data-toggle="modal" @click="checkTransid"><i class="icon-cog"></i> 设置功能点及基础脚本</a>
                         <a class="btn btn-white" data-toggle="modal" @click="modifyMore"><i class="icon-cog"></i> 更改多种用例信息</a>
                         <!-- addModal start -->
                         <div class="modal fade" id="addModal" tabindex="-1" role="dialog" aria-labelledby="addModalLabel" aria-hidden="true">
@@ -944,7 +944,7 @@
                                 <div class="modal-content">
                                     <div class="modal-header">
                                         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                                        <h4 class="modal-title">设置功能点及模板脚本</h4>
+                                        <h4 class="modal-title">设置功能点及基础脚本</h4>
                                     </div>
                                     <div class="modal-body">
                                         <form class="form-horizontal" id="transidForm">
@@ -967,7 +967,7 @@
                                                 </div>
                                             </div>
                                             <div class="form-group">
-                                                <label class="col-lg-3 control-label">模板脚本</label>
+                                                <label class="col-lg-3 control-label">基础脚本</label>
                                                 <div class="col-lg-3">
                                                     <select class="form-control" name="scriptmodeflag" id="3ji">
                                                     </select>
@@ -1028,7 +1028,7 @@
                                                 </div>
                                             </div>
                                             <div class="form-group">
-                                                <label class="col-lg-2 control-label">模板脚本</label>
+                                                <label class="col-lg-2 control-label">基础脚本</label>
                                                 <div class="col-lg-3">
                                                     <select class="form-control" name="scriptmodeflag1" id="3ji">
                                                     </select>
@@ -1100,7 +1100,7 @@
                                                                     <select class="form-control selectpicker"  name="transid" id="casetransid"  data-live-search="true" >
                                                                     </select>
                                                                 </div>
-                                                                <label class="col-lg-2 control-label">所属脚本</label>
+                                                                <label class="col-lg-2 control-label">基础脚本</label>
                                                                 <div class="col-lg-4">
                                                                     <select class="form-control selectpicker" size="1" name="scriptmodeflag" id="scriptmodeflag" data-live-search="true">
                                                                     </select>
@@ -1429,7 +1429,7 @@
                                             <th class="hidden-phone text-center" data-order="caseCompositeType" data-sort="desc" onclick="resort(this)">案例组成类型 <span class="icon-sort-up" aria-hidden="true"></span></th>
                                             <th class="hidden-phone text-center" data-order="useStatus" data-sort="desc" onclick="resort(this)">状态 <span class="icon-sort-up" aria-hidden="true"></span></th>
                                             <th class="hidden-phone text-center" data-order="" data-sort="desc" onclick="resort(this)">关联脚本名称 <span class="icon-sort-up" aria-hidden="true"></span></th>
-                                            <th class="hidden-phone text-center" data-order="author" data-sort="desc" onclick="resort(this)">脚本编辑者 <span class="icon-sort-up" aria-hidden="true"></span></th>
+                                            <th class="hidden-phone text-center" data-order="author" data-sort="desc" onclick="resort(this)">作者 <span class="icon-sort-up" aria-hidden="true"></span></th>
                                             <th class="hidden-phone text-center" data-order="executor" data-sort="desc" onclick="resort(this)">执行者 <span class="icon-sort-up" aria-hidden="true"></span></th>
                                             <th class="hidden-phone text-center" data-order="reviewer" data-sort="desc" onclick="resort(this)">评审者 <span class="icon-sort-up" aria-hidden="true"></span></th>
                                             <th class="hidden-phone text-center" data-order="executeMethod" data-sort="desc" onclick="resort(this)">执行方式 <span class="icon-sort-up" aria-hidden="true"></span></th>

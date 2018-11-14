@@ -626,7 +626,7 @@ function createTable(dataSet){
     tbody.empty();
     dataSet.forEach(value => {
     let tr = $('<tr></tr>');
-    let tdId = $(`<td class="td-itemId"></td>`).text(value.id); // id
+    // let tdId = $(`<td class="td-itemId"></td>`).text(value.id); // id
     let tdName = $(`<td class="td-name"></td>`).text(value.nameMedium);  // 编号
     let tdType = $(`<td class="td-type"></td>`).text(value.codeLong); // 项目id
     let createTime = $(`<td class="td-name" style="word-break: keep-all;"></td>`).text(getDate(value.createTime));  // 编号
@@ -635,7 +635,8 @@ function createTable(dataSet){
     let tdOperation = $(`<td class="td-operation" style="padding-bottom: 7px;padding-top: 7px;">
     <a data-toggle="modal" class="btn btn-xs btn-view btn-success" onclick="showViewModal(this);" href=''>详情</a> 
         <a class="btn btn-xs btn-alter btn-primary" onclick="showAlterModal(this);" data-toggle="modal" href=''>修改</a></td>`);
-    tr.append(tdId, tdName, tdType, tdProjectCode, createTime, modifiedTime, tdOperation);
+    // tr.append(tdId, tdName, tdType, tdProjectCode, createTime, modifiedTime, tdOperation);
+    tr.append( tdType, tdName, tdProjectCode, createTime, modifiedTime, tdOperation);
     tbody.append(tr);
     });
 }
