@@ -53,10 +53,10 @@ var app = new Vue({
         this.getTestPlans();
         this.getTestPhases();
         this.getTestRound();
-        $('.3').addClass('open');
-        $('.3 .arrow').addClass('open');
-        $('.3-ul').css({display: 'block'});
-        $('.3-9').css({color: '#ff6c60'});
+        // $('.3').addClass('open');
+        // $('.3 .arrow').addClass('open');
+        // $('.3-ul').css({display: 'block'});
+        // $('.3-9').css({color: '#ff6c60'});
     },
     methods: {
         turnToPage(currentPageParam){
@@ -231,20 +231,20 @@ var app = new Vue({
                         Vac.alert('网络错误，请稍候再试');
                     }
                 });
+        },
+         resort(target) {
+            if (target.getAttribute("data-sort") === "desc") {
+                app.orderType = "asc";
+                target.getElementsByTagName("span")[0].setAttribute("class", "icon-sort-up")
+                target.setAttribute("data-sort", "asc");
+            } else {
+                app.orderType = "desc";
+                target.getElementsByTagName("span")[0].setAttribute("class", "icon-sort-down")
+                target.setAttribute("data-sort", "desc");
+            }
+            app.orderColumns = target.getAttribute("data-order");
+            app.getTestPlans();
         }
     }
 });
-
-function resort(target) {
-    if (target.getAttribute("data-sort") === "desc") {
-        app.orderType = "asc";
-        target.getElementsByTagName("span")[0].setAttribute("class", "icon-sort-up")
-        target.setAttribute("data-sort", "asc");
-    } else {
-        app.orderType = "desc";
-        target.getElementsByTagName("span")[0].setAttribute("class", "icon-sort-down")
-        target.setAttribute("data-sort", "desc");
-    }
-    app.orderColumns = target.getAttribute("data-order");
-    app.getTestPlans();
-}
+export {app}  
