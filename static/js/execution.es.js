@@ -192,6 +192,10 @@ var app = new Vue({
                 }
             });
         
+        },
+        goTestExec: function(testPlan){
+            sessionStorage.setItem('testPlanId',testPlan);
+            location.href="./testplan-execute.html";
         }
 
     },

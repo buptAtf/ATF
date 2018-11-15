@@ -1,9 +1,7 @@
 __inline('./testexecution/check.js')
 var vBody = new Vue({
 	el: '#v-body',
-	components:{
-		app
-	},
+
 	data: {
 		// tooltipMessage:'',
 		runners:[],
@@ -20,7 +18,7 @@ var vBody = new Vue({
 		testPlans: [], 
 		testrounds: [],
 		// save the values which is selected by users and will be send to the back end
-		testPlanId: null,
+		testPlanId: sessionStorage.getItem('testPlanId'),
 		// the cases and scenes obtained from back end
 		testCaseList: [],
 		testSceneList:[],
@@ -77,11 +75,12 @@ var vBody = new Vue({
 	},
 	created: function(){
 		var _this = this;
+		var tempTestPlanId = sessionStorage.getItem('testPlanId');
 		_this.caselibId = sessionStorage.getItem('caselibId');
 		var getPlans = new Promise((resolve, reject) => {
 			Vac.ajax({
 				url: address3 + 'testPlanController/queryTestPlan',
-				data: { 
+				data: {
 					caseLibId: _this.caselibId,
 					"nameMedium": "",
 					"descMedium": "",
@@ -89,14 +88,23 @@ var vBody = new Vue({
 				success: function(data){
 					if (data.respCode === '0000') {
 						if (data.testPlanEntityList && data.testPlanEntityList.length) {
-							_this.testPlanId = data.testPlanEntityList[0].id;
+							if(tempTestPlanId === ''){		//从执行记录查询跳转过来所需
+								_this.testPlanId = data.testPlanEntityList[0].id;
+								
+							} else{
+								_this.testPlanId = tempTestPlanId;
+								sessionStorage.setItem('testPlanId','');
+							}
+							
 							_this.testPlans = data.testPlanEntityList;
 							resolve();
 						} else {
 							reject('请添加测试计划！');
 						}
+					
 						return;
 					}
+					
 					reject();
 				}
 			});
