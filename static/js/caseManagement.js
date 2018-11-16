@@ -840,11 +840,16 @@ var app = new Vue({
         //上传
         upload:function() {
                 var _this=this;
+                let caseLibId = sessionStorage.getItem('caselibId')
+                    uploadUserId = sessionStorage.getItem('userId') 
+                    formData = new FormData($('#importForm')[0]);
+                formData.append('caseLibId', caseLibId);
+                formData.append('uploadUserId', uploadUserId);
                 $.ajax({
                     url: address3+'testcase/batchImportTestcase',
                     type: 'POST',
                     cache: false,
-                    data: new FormData($('#importForm')[0]),
+                    data: formData,
                     processData: false,
                     contentType: false, 
                     success: function(data) {                        

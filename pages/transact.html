@@ -45,6 +45,7 @@
                 <div class="row">
                     <div class="col-lg-12 top-btn">
                         <a class="btn btn-white" data-toggle="modal" href="#insertModal"><i class="icon-plus"></i> 添加</a>
+                        <a class="btn btn-white" data-toggle="modal" href="#importModal" @click="getCaseLibId"><i class="icon-share-alt"></i>批量导入</a>
                         <!-- <a class="btn btn-white" @click="checkDel"><i class="icon-trash"></i> 删除</a> -->
                         <a class="btn btn-white" @click="checkUpdate"><i class="icon-edit"></i> 修改</a>
                         <!--
@@ -399,6 +400,37 @@
                     </div>
                 </div>
                 <!-- selectAlertModal end -->
+                <!-- importModal start-->
+                    <div class="modal fade" id="importModal" tabindex="-1" role="dialog" aria-labelledby="importModalLabel" aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                                    <h4 class="modal-title">导入</h4>
+                                </div>
+                                <form role="form" id="importForm" method='post' :action="importUrl" enctype="multipart/form-data" >
+                                <div class="modal-body">
+                                    <div class="form-group">        
+                                        <div class="col-lg-6">
+                                            <input type="text" class="form-control show" disabled>
+                                        </div>
+                                        <span class="btn  btn-white fileinput-button"><span>选择文件</span>
+                                        <input type="file" class="myFileUpload" name="file" id='theFile'>
+                                        </span>
+                                        
+                                    </div>
+                                </div> 
+        
+                                <div class="modal-footer">
+                                   <a class="  btn  btn-white" style="float:left" id="exampleDownload" @click="downloadTemplate()" >模板下载</a>  
+                                   <a class="  btn  btn-white"     id="submitFile"  @click="upload()">导入</a>  
+                                   <button data-dismiss="modal" class="btn btn-default" type="button">取消</button>
+                                </div>
+                              </form>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- importModal end -->
             </section>
             <link rel="import" href="./common/copy-right.html?__inline">
         </section>
