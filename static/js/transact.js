@@ -25,6 +25,11 @@ var app = new Vue({
         $('.2 .arrow').addClass('open');
         $('.2-ul').css({display: 'block'});
         $('.2-0').css({color: '#ff6c60'});
+        $(".myFileUpload").change(function() {
+            var arrs = $(this).val().split('\\');
+            var filename = arrs[arrs.length - 1];
+            $(".show").val(filename);
+        });
     },
     methods: {
         //获取选中的id
@@ -275,7 +280,48 @@ var app = new Vue({
                 sessionStorage.setItem("autId",autId);
                 location.href = "interfacesManagement.html";
              }
-        }
+        },
+        //获取caseLibid
+        getCaseLibId: function() {
+            var caselibid = sessionStorage.getItem('caselibId');
+             console.log("caselibId的Id:="+caselibid);
+            $('#caselibid').val(caselibid);
+            this.caselibid = caselibid;
+        },
+        //下载模版
+        downloadTemplate(){
+            let url = address3+"transactController/downloadTemplate"
+            window.location.href = url;
+        },
+        //导入
+        upload:function() {
+                var _this=this;
+                let autId = sessionStorage.getItem('autId')
+                    creatorId = sessionStorage.getItem('userId')
+                    formData = new FormData($('#importForm')[0]);
+                formData.append('autId', autId);
+                formData.append('creatorId', creatorId);
+                $.ajax({
+                    url: address3+'transactController/batchImportTransact',
+                    type: 'POST',
+                    cache: false,
+                    data: formData,
+                    processData: false,
+                    contentType: false, 
+                    success: function(data) {                        
+                        $('#importModal').modal('hide');
+                        if (data.respCode==0000) {
+                            $('#successModal').modal('show');
+                        } else {
+                            _this.failMSG=data.respMsg;
+                            $('#failModal2').modal('show');
+                        }
+                    }, error: function(data) { 
+                        $('#importModal').modal('hide');
+                        $('#failModal').modal('show');
+                    }
+                }) ;  
+        },
     },
 
 });

@@ -252,7 +252,7 @@
                                             <th class="text-center">
                                                 <input type="checkbox" v-model="checked" v-on:click="" name="chk_all" id="chk_all" />
                                             </th>
-                                            <th class="text-center">场景ID</th>
+                                            <th class="text-center">场景名称</th>
                                             <th class="text-center">测试阶段</th>
                                             <th class="text-center">测试轮次</th>
                                             <th class="text-center">执行轮次</th>
@@ -271,9 +271,9 @@
                                             <td width="5%">
                                                 <input type="checkbox" v-model="" name="chk_list" id="{{item.id}}" />
                                             </td>
-                                            <td class="center" width="5%">{{ item.sceneId }}</td>
-                                            <td class="center" width="10%">{{ item.testPhaseId }}</td>
-                                            <td width="">{{ item.testRoundId }}</td>
+                                            <td class="center" width="5%">{{ item.sceneName }}</td>
+                                            <td class="center" width="10%">{{ item.testPhase }}</td>
+                                            <td width="">{{ item.testRound }}</td>
                                             <td class="" width="">{{item.executeRound}}</td>
                                             <td class="" width="">{{item.caseId}}</td>
                                             <td class="" width="">{{item.flownodeName}}</td>

@@ -25,10 +25,12 @@ var app = new Vue({
         getAut(this.currentPage, this.pageSize, this.order, this.sort);
         getAbstr();
         changeListNum();
+        
         $('.2').addClass('open');
         $('.2 .arrow').addClass('open');
         $('.2-ul').css({display: 'block'});
         $('.2-0').css({color: '#ff6c60'});
+        this.showTips();
     },
     methods: {
         //获取选中的id
@@ -270,6 +272,22 @@ var app = new Vue({
             }else{
                 return '';
             }     
+        },
+        showTips: function(){
+            var fromPage = sessionStorage.getItem('towhere');
+            if(fromPage === 'newfunpoint'){
+                Vac.alert("请进入被测系统后管理功能点");
+                sessionStorage.setItem('towhere','');
+            }
+            else if(fromPage === 'elelibrary'){
+                Vac.alert("请新建或进入功能点后,再配置元素库");
+                sessionStorage.setItem('towhere','');
+            }
+            else if(fromPage === 'basicscript'){
+                Vac.alert("请新建或进入功能点后,再配置基础脚本");
+                sessionStorage.setItem('towhere','');
+            }
+            
         }
     },
 
@@ -372,3 +390,4 @@ function getAbstr(){
         }
     });
 }
+

@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <link rel="import" href="./common/header.html?__inline">
+    <link rel="stylesheet" type="text/css" href="../static/css/index.css">
+    <link rel="stylesheet" type="text/css" href="../static/css/pagination.css">
+    <title>home</title>
+</head>
+<body id="v-home">
+        <div class="content">
+        <!--header start-->
+        <link rel="import" href="./common/header-guide.html?__inline">
+        <link rel="import" href="./common/aside-guide.html?__inline">
+
+        <section id="main-content">
+            <section class="wrapper fixedwh" >
+                <div>
+                    <img  src="../static/images/Operationflow.png" width="100%"  usemap="#Map">
+                    <map name="Map" id = "CribMap">
+                        <area shape="rect" coords="32,205,193,247"  href="./architecture.html"> <!--编写自动化构件库-->
+                        <area shape="rect" coords="269,207,475,247" href="./aut.html"> <!--被测系统管理-->
+                        <area shape="rect" coords="269,294,475,336" href="./aut.html" onclick="goHere('newfunpoint')"> <!--新建功能点-->
+                        <area shape="rect" coords="269,378,475,421" href="./aut.html" onclick="goHere('elelibrary')"> <!--配置元素库-->
+                        <area shape="rect" coords="269,463,475,505" href="./aut.html" onclick="goHere('basicscript')"> <!--生成基础脚本-->
+                        <area shape="rect" coords="570,204,686,246" href="./testplan-execute.html"> <!--批量执行-->
+                        <area shape="rect" coords="561,294,696,336" href="./scene.html"> <!--场景管理-->
+                        <area shape="rect" coords="545,379,713,420" href="./datatable.html"> <!--测试资源配置-->
+                        <area shape="rect" coords="545,460,713,508" href="./caseManagement.html"> <!--新增用例-->               
+                        <area shape="rect" coords="803,204,914,247" href="./execution.html">   <!--执行记录查询-->
+                        <area shape="rect" coords="786,379,932,421" href="./testProject.html">   <!--新增测试项目-->
+                        
+                    </map>
+                </div>
+            </section>
+        </section>
+
+        <div>
+            <section class="wrapper">
+                <link rel="import" href="./common/copy-right.html?__inline">
+            </section>
+        </div>
+</body>
+</html>
+<link rel="import" href="./common/footer.html?__inline">
+<script src="../lib/vue-resource.min.js"></script>
+<script type="text/javascript" src="../static/js/home.js"></script>
+

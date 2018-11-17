@@ -64,7 +64,7 @@
                                             <th class="hidden-phone text-center" data-order="transId">测试阶段</th>
                                             <th class="hidden-phone text-center" data-order="transId">测试轮次</th>
                                             <th class="hidden-phone text-center" data-order="transId">执行轮次</th>
-                                            <th class="hidden-phone text-center" data-order="transId">场景名称</th>
+                                            <!-- <th class="hidden-phone text-center" data-order="transId">场景名称</th> -->
                                             <th class="hidden-phone text-center" data-order="transId">用例总数</th>
                                             <th class="hidden-phone text-center" data-order="transId">成功用例数</th>
                                             <th class="hidden-phone text-center" data-order="transId">失败用例数</th>
@@ -72,7 +72,7 @@
                                             <!-- <th class="hidden-phone text-center" data-order="transId">执行单详细度</th> -->
                                             <th class="hidden-phone text-center" data-order="transId">执行状态</th>
                                             <th class="hidden-phone text-center" data-order="transId">执行结果</th>
-                                            <th class="hidden-phone text-center" data-order="transId">执行结果信息</th>
+                                            <!-- <th class="hidden-phone text-center" data-order="transId">执行结果信息</th> -->
                                             <!-- <th class="hidden-phone text-center" data-order="transId">完成日期</th> -->
                                             <th class="hidden-phone text-center" data-order="transId">完成时间</th>
                                         </tr>
@@ -89,11 +89,14 @@
                                             <!-- <td class="center " width="">{{ caseSourceChannel[scene.caseSourceChannel] }}</td> -->
                                             <td class="center " width="">{{ scene.instanceSource }}</td>                                        
                                             <!-- <td class="center " width="">{{ scene.caseLibId }}</td> -->
-                                            <td class="center " width="">{{ scene.testPlan }}</td>
+                                            <!-- <td class="center " width=""  @click="goTestExec(scene.testPlan)">{{ scene.testPlanName }}</td> -->
+                                            <td class="center " width="" >
+                                                <button class="btn btn-xs btn-success" @click="goTestExec(scene.testPlan)">{{ scene.testPlanName }}</button>
+                                            </td>
                                             <td class="center " width="">{{ scene.testPhase }}</td>
                                             <td class="center " width="">{{ scene.testRound }}</td>
                                             <td class="center " width="">{{ scene.executionRound }}</td>
-                                            <td class="center " width="">{{ scene.sceneId }}</td>
+                                            <!-- <td class="center " width="">{{ scene.sceneId }}</td> -->
                                             <!-- <td class="center " width="">{{ runScopeFlag[scene.runScopeFlag] }}</td> -->
                                             <td class="center " width="">{{ scene.totalInsCount }}</td>
                                             <td class="center " width="">{{ scene.successInsCount }}</td>
@@ -101,7 +104,7 @@
                                             <td class="center " width="">{{ scene.notRunInsCount }}</td>
                                             <td class="center " width="">{{ scene.executingStatus }}</td>
                                             <td class="center " width="">{{ scene.executedResult }}</td>
-                                            <td class="center " width="">{{ scene.resultMessage }}</td>
+                                            <!-- <td class="center " width="">{{ scene.resultMessage }}</td> -->
 
                                             <!-- <td class="center " width="">{{ recordSaveType[scene.recordSaveType] }}</td>
                                             <td class="center " width="">{{ scene.maxRecordPerRound }}</td>
