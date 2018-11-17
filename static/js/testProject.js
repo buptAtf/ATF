@@ -57,7 +57,10 @@ var app = new Vue({
         turnToPage(pageNum) {
             var ts = this;
             pageNum = parseInt(pageNum);
-
+            if(pageNum=="-42"){
+                sessionStorage.setItem("caselibId", "-42");
+                location.href = "caseManagement.html";
+            }
             //页数不合法则退出
             if (!pageNum || pageNum > ts.totalPage || pageNum < 1) {
                 console.log('页码输入有误！');
@@ -182,7 +185,7 @@ var app = new Vue({
                 $('#selectAlertModal').modal();
             } else {
                 if(caseLibId==null)
-                    caseLibId= selectedInput.parent().next().next().next().next().html();
+                caseLibId= selectedInput.parent().next().next().next().next().html();
                 //存储测试项目id到sessionstorage
                 sessionStorage.setItem("caselibId", caseLibId);
                 location.href = "caseManagement.html";

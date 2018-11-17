@@ -233,6 +233,7 @@ var app = new Vue({
                 });
         },
          resort(target) {
+             var app=this;
             if (target.getAttribute("data-sort") === "desc") {
                 app.orderType = "asc";
                 target.getElementsByTagName("span")[0].setAttribute("class", "icon-sort-up")
@@ -247,4 +248,3 @@ var app = new Vue({
         }
     }
 });
-export {app}  

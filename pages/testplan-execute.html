@@ -5,26 +5,29 @@
     <link rel="import" href="./common/header.html?__inline">
     <link rel="import" href="./noLoginAlert.html?__inline">
     <link rel="stylesheet" type="text/css" href="../static/css/index.css">
-    <!-- <link rel="stylesheet" type="text/css" href="../static/css/base.scss"> -->
     <link rel="stylesheet" type="text/css" href="../static/css/pagination.css">
     <link rel="stylesheet" type="text/css" href="../static/css/metroStyle.css">
+    <link rel="stylesheet" type="text/css" href="../static/css/base.scss">
     <link rel="stylesheet" type="text/css" href="../static/css/scene-setting.scss">
     <script src="../lib/jquery.js"></script>
     <script src="../lib/jquery-ui.js"></script>
-    <script src="../lib/bootstrap.min.js"></script>
+    <script src="../lib/bootstrap3.37.min.js"></script>
     <script type="text/javascript" src="../lib/vue.js"></script>
     <title>Testphase Manager</title>
     <style>
+      .modal-width{
+        width: 1000px;
+      } 
     </style>
   </head>
-  <body>
+  <body  id ="v-body">
     <!--header start-->
     <link rel="import" href="./common/header-guide.html?__inline">
     <!--header end-->
     <!--sidebar start-->
     <link rel="import" href="./common/aside-guide.html?__inline">
     <!--sidebar end-->
-    <div id ="v-body" v-cloak>
+    <div v-cloak>
     <div class="content">
       <!--main content start-->
       <section id="main-content" >
@@ -50,7 +53,7 @@
                     </select>
                   </div>
                   <div class="col-sm-4">
-                      <button class="btn btn-white" @click="testPlanManager()"> 测试计划管理</button>
+                      <a class="btn btn-white" @click="testPlanManager()"> 测试计划管理</a>
                     </div>
                 </div>
                 <div class="form-group col-sm-6">
@@ -285,9 +288,9 @@
   <!-- /.modal -->
 </div>
     <!--content end -->
-  <app>
+
     <div class="modal fade" id="testplan_modal" tabindex="-1" role="dialog">
-        <div class="modal-dialog" role="document">
+        <div class="modal-dialog modal-width" role="document">
           <div class="modal-content">
             <div class="modal-header">
               <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
@@ -382,62 +385,148 @@
           </div><!-- /.modal-content -->
         </div><!-- /.modal-dialog -->
     </div>
-        <!--新增测试轮次 -->
-        <div class='modal fade' tabindex='-1' role='dialog' id='addTestRoundId' aria-hidden='true' aria-labelledby='addTestRound' data-toggle='modal'>
-            <div class='modal-dialog'>
-                <div class='modal-content'>
-                    <div class='modal-header'>
-                        <button type='button' class='close' data-dismiss="modal" aria-hidden="true">&times;</button>
-                        <h4 class='modal-title' id='addTestRound'>新增测试轮次</h4>
-                    </div>
-                    <div class="modal-body">
-                            <form class="form-horizontal">
-                                    <div class="form-group">
-                                        <label class="col-sm-2 control-label">名称</label>
-                                        <div class="col-sm-10">
-                                            <input type="text" v-model="addRoundRowData.roundName" class="form-control" autocomplete="off">
-                                        </div>
+      <!--新增测试轮次 -->
+      <div class='modal fade' tabindex='-1' role='dialog' id='addTestRoundId' aria-hidden='true' aria-labelledby='addTestRound' data-toggle='modal'>
+          <div class='modal-dialog '>
+              <div class='modal-content'>
+                  <div class='modal-header'>
+                      <button type='button' class='close' data-dismiss="modal" aria-hidden="true">&times;</button>
+                      <h4 class='modal-title' id='addTestRound'>新增测试轮次</h4>
+                  </div>
+                  <div class="modal-body">
+                      <form class="form-horizontal">
+                              <div class="form-group">
+                                  <label class="col-sm-2 control-label">名称</label>
+                                  <div class="col-sm-10">
+                                      <input type="text" v-model="addRoundRowData.roundName" class="form-control" autocomplete="off">
+                                  </div>
+                              </div>
+                              <div class="form-group">
+                                  <label class="col-sm-2 control-label">描述</label>
+                                  <div class="col-sm-10">
+                                      <textarea resize="disabled" v-model="addRoundRowData.roundDesc" class="form-control" autocomplete="off"></textarea>
+                                  </div>
+                              </div>
+                              <div class="form-group">
+                                  <label class="col-sm-2 control-label">记录单保存方式</label>
+                                  <div class="col-sm-10">
+                                      <select class="form-control" v-model="addRoundRowData.recordmanagementflag">
+                                          <option v-for="option in [{ value: 1, label: '仅保存一份' }, { value: 2, label: '保存多份' }]" 
+                                              :value="option.value" :key="option.value">
+                                              {{option.label}}
+                                          </option>
+                                      </select>
+                                  </div>
+                              </div>
+                              <div class="form-group">
+                                  <label class="col-sm-2 control-label">定时执行方式</label>
+                                  <div class="col-sm-10">
+                                      <input type="text" v-model="addRoundRowData.timeexecutesetting" class="form-control" autocomplete="off">
+                                  </div>
+                              </div>
+                          </form>
+                      <div class='modal-footer'>
+                              <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                              <button type="button" class="btn btn-primary" @click=addTestRound()>确认</button>
+                      </div>
+                  </div>
+              </div>
+          </div>
+      </div>
+          <!--新增模态框-->
+    <div class="modal fade" data-toggle="modal" id="addTestPlan" tabindex="-1" role="dialog" aria-labelledby="testPlanLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title" id="testPlanLabel">新增测试计划</h4>
+                </div>
+            <div class="modal-body">
+                        <form class="form-horizontal">
+                                <div class="form-group">
+                                    <label for="testplan-name" class="col-sm-2 control-label">测试计划名称</label>
+                                    <div class="col-sm-10">
+                                        <input type="text" v-model="addRowData.nameMedium" class="form-control" autocomplete="off">
                                     </div>
-                                    <div class="form-group">
-                                        <label class="col-sm-2 control-label">描述</label>
-                                        <div class="col-sm-10">
-                                            <textarea resize="disabled" v-model="addRoundRowData.roundDesc" class="form-control" autocomplete="off"></textarea>
-                                        </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="testplan-desc" class="col-sm-2 control-label">测试计划描述</label>
+                                    <div class="col-sm-10">
+                                        <input type="text" v-model="addRowData.descMedium" class="form-control" autocomplete="off">
                                     </div>
-                                    <div class="form-group">
-                                        <label class="col-sm-2 control-label">记录单保存方式</label>
+                                </div>
+                                <div class="form-group" v-show="1 === editType">
+                                    <label class="col-sm-2 control-label">测试阶段</label>
+                                    <div class="col-sm-10">
+                                        <select name="testPhaseId" id="" class="form-control" v-model="addRowData.testPhaseId">
+                                            <option v-for="testPhase in testPhaseArray" :value="testPhase.id" :key="testPhase.id">
+                                                {{testPhase.name}}</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="form-group" v-show="1 === editType">
+                                        <label class="col-sm-2 control-label">测试轮次</label>
                                         <div class="col-sm-10">
-                                            <select class="form-control" v-model="addRoundRowData.recordmanagementflag">
-                                                <option v-for="option in [{ value: 1, label: '仅保存一份' }, { value: 2, label: '保存多份' }]" 
-                                                    :value="option.value" :key="option.value">
-                                                    {{option.label}}
+                                            <select name="testRoundId" v-model="addRowData.testRoundId" style="width:80%;height: 34px;" filterable placeholder="请选择">
+                                                <option
+                                                    v-for="testRound in testRoundArray"
+                                                    :key="testRound.id"
+                                                    :label="testRound.name"
+                                                    :value="testRound.id">
                                                 </option>
                                             </select>
+                                            <button type="button" class="btn btn-primary btn-sm" data-toggle='modal' style="margin-left: 20px;" data-target="#addTestRoundId">新增</button>
                                         </div>
                                     </div>
-                                    <div class="form-group">
-                                        <label class="col-sm-2 control-label">定时执行方式</label>
-                                        <div class="col-sm-10">
-                                            <input type="text" v-model="addRoundRowData.timeexecutesetting" class="form-control" autocomplete="off">
-                                        </div>
-                                    </div>
-                                </form>
-                            <div class='modal-footer'>
-                                    <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
-                                    <button type="button" class="btn btn-primary" @click=addTestRound()>确认</button>
-                            </div>
-                    </div>
+                        </form>
+                </div>
+                <div class="modal-footer">
+                        <button data-dismiss="modal" class="btn btn-default" type="button">取消</button>
+                        <button class="btn btn-success" type="button" id="btn-add" @click="add()">确定</button>
                 </div>
             </div>
         </div>
-      </app>
+    </div>>
       <!-- /.modal -->
         <link rel="import" href="./common-vac/alert.html?__inline">
         <link rel="import" href="./common-vac/confirm.html?__inline">
         <script src="../static/js/config.js"></script>
         <script src="../static/js/vac-functions.es.js"></script>
-        <script src="../static/js/testplan.js"></script>
         <script src="../static/js/testplan-execute.es.js"></script>
         <script src="../../lib/common-scripts.js"></script>
+        <script>
+          jQuery(function($){
+              //解决模态框背景色越来越深的问题
+              $(document).on('show.bs.modal', '.modal', function(event) {
+                  $(this).appendTo($('body'));
+              }).on('shown.bs.modal', '.modal.in', function(event) {
+                  setModalsAndBackdropsOrder();
+              }).on('hidden.bs.modal', '.modal', function(event) {
+                  setModalsAndBackdropsOrder();
+              });
+              function setModalsAndBackdropsOrder() {
+                  var modalZIndex = 1040;
+                  $('.modal.in').each(function(index) {
+                      var $modal = $(this);
+                      modalZIndex++;
+                      $modal.css('zIndex', modalZIndex);
+                      $modal.next('.modal-backdrop.in').addClass('hidden').css('zIndex', modalZIndex - 1);
+                  });
+                  $('.modal.in:visible:last').focus().next('.modal-backdrop.in').removeClass('hidden');
+              }
+              //覆盖Modal.prototype的hideModal方法
+              $.fn.modal.Constructor.prototype.hideModal = function () {
+                  var that = this
+                  this.$element.hide()
+                  this.backdrop(function () {
+                      //判断当前页面所有的模态框都已经隐藏了之后body移除.modal-open，即body出现滚动条。
+                      $('.modal.fade.in').length === 0 && that.$body.removeClass('modal-open')
+                      that.resetAdjustments()
+                      that.resetScrollbar()
+                      that.$element.trigger('hidden.bs.modal')
+                  })
+                }
+            });
+        </script>
       </body>
     </html>

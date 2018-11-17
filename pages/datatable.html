@@ -4,13 +4,13 @@
 <head>
   <meta charset="utf-8">
 
-  <link rel="stylesheet" type="text/css" href="../static/css/index.css">
   <link rel="stylesheet" type="text/css" href="../static/css/handsontable.full.css">
   <link rel="stylesheet" type="text/css" href="../static/css/base.scss">
   <!-- <link rel="stylesheet" type="text/css" href="../static/css/base/bootstrap.min.css"> -->
   <link rel="stylesheet" type="text/css" href="../static/css/pagination.css">
   <link rel="stylesheet" type="text/css" href="../static/css/metroStyle.css">
   <link rel="stylesheet" type="text/css" href="../static/css/datatable.scss">
+  <link rel="stylesheet" type="text/css" href="../static/css/index.css">
   <link rel="stylesheet" href="../static/css/bootstrap-select.min.css">
   <script src="../lib/jquery.js"></script>
   <script src="../lib/bootstrap.min.js"></script>
@@ -24,7 +24,7 @@
 
     .filterScene {
       display: inline-block;
-      float: left;
+      
     }
 
     .panel-body {
@@ -84,7 +84,6 @@
 
     .val_select {
       display: inline;
-      width: 150px !important;
     }
 
     .saveFilter {
@@ -265,7 +264,7 @@
                         <tr>
                           <td colspan="2">
                             <button @click="cancelEditParam($event, 1)">取消</button>
-                            <button style="matgin-left: 10px;" @click="saveParam($event, 1)">保存</button>
+                            <button  @click="saveParam($event, 1)">保存</button>
                           </td>
                         </tr>
                       </tbody>
@@ -379,7 +378,7 @@
                         <tr class="bottom-row">
                           <td colspan="2">
                             <button @click="cancelEditParam($event, 2)">取消</button>
-                            <button style="matgin-left: 10px;" @click="saveParam($event, 2)">保存</button>
+                            <button @click="saveParam($event, 2)">保存</button>
                           </td>
                         </tr>
                       </tbody>
@@ -582,9 +581,15 @@
           </div>
           <div class="col-g-12">
             <div class="top-bar">
-               <button class="btn btn-white" id="saveAll">
+                <button class="btn btn-white" id="saveAll">
                 <i class="icon-save"></i>
                 保存</button>
+                <button class="btn btn-white export-show" id="excel-export" style="display: none;">
+                  <i class="icon-save"></i>
+                  下载模板</button>
+                <button class="btn btn-white export-show" id="excel-import" style="display: none;">
+                  <i class="icon-save"></i>
+                  模板导入</button>
             </div>
           </div>
 
@@ -786,6 +791,61 @@
       </div>
     </div>
     <!-- view script end -->
+    <!-- importModal start-->
+    <div class="modal fade" id="importModal" tabindex="-1" role="dialog" aria-labelledby="importModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+          <div class="modal-content">
+              <div class="modal-header">
+                  <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                  <h4 class="modal-title">模板导入</h4>
+              </div>
+              <form role="form" id="importForm" method='post' :action="importUrl" enctype="multipart/form-data" >
+              <div class="modal-body">
+                  <div class="form-group hidden"> 
+                      <input type="text" class="text" name="caseLibId" v-bind:value="caselibid" >
+                      <input type="text" class="text" name="uploadUserId" v-bind:value="userId" >
+                  </div>
+                  <div class="form-group">        
+                      <div class="col-lg-6">
+                          <input type="text" class="form-control show" disabled>
+                      </div>
+                      <div class="col-lg-6">
+                          <span class="btn  btn-white fileinput-button"><span>选择文件</span>
+                          <input type="file" class="myFileUpload" name="file" id='theFile'>
+                      </div>
+                      </span>
+                  </div>
+                  <input type="submit" value="submit" class="hide">
+              </div>
+              <div class="modal-footer">
+                  <!-- <a class="  btn  btn-white" style="float:left" id="exampleDownload">模板下载</a>   -->
+                  <a class="  btn  btn-white"     id="submitFile"  @click="upload()">导入</a>  
+                  <button data-dismiss="modal" class="btn btn-default" type="button">取消</button>
+              </div>
+            </form>
+          </div>
+      </div>
+      <!-- failModal2 start 与failmsg绑定提示 -->
+    <div class="modal fade" id="failModal2" tabindex="-1" role="dialog" aria-labelledby="failModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title">操作失败</h4>
+                </div>
+                <div class="modal-body">
+                    <h4>{{failMSG}}</h4>
+                </div>
+                <div class="modal-footer">
+                    <button data-dismiss="modal" class="btn btn-success" type="button">确定</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- failModal end -->
+  </div>
+  <!-- importModal end -->
+    
   </div>
   <!-- <script type="text/x-template" id="view-script-template"> -->
 

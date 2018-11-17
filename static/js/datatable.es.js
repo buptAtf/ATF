@@ -734,34 +734,34 @@ $(document).ready(function () {
 				addFilter(){
 		            // this.filterList.push('c');
 		            let liStr=`<li>
-		                                                    <label>筛选项目</label>
-		                                                    <select name="propertyName" class="selectpicker prop_select" data-live-search="true">
-		                                                        <option value="">请选择</option>
-		                                                        <option value="caseCompositeType">用例组成类型</option>
-		                                                        <option value="casecode">用例编号</option>
-		                                                        <option value="missionId">测试任务</option>
-		                                                        <option value="autId">被测系统</option>
-		                                                        <option value="testDesign">测试意图</option>
-		                                                        <option value="preRequisites">前置条件</option>
-		                                                        <option value="dataRequest">数据需求</option>
-		                                                        <option value="testStep">测试步骤</option>
-		                                                        <option value="expectResult">预期结果</option>
-		                                                        <option value="checkPoint">附加检查点</option>
-		                                                        <option value="caseProperty">用例性质</option>
-		                                                        <option value="caseType">测试用例类型</option>
-		                                                        <option value="priority">优先级</option>
-		                                                        <option value="author">作者</option>
-		                                                        <option value="reviewer">评审者</option>
-		                                                        <option value="scriptModeFlag">所属模板</option>
-		                                                    </select>                
-		                                                    <select name="compareType" class="selectpicker compare_select">
-		                                                        <option value="">请选择</option>
-		                                                    </select> 
-		                                                    <label>值</label>
-		                                                    <select name="propertyValue" class="selectpicker val_select" data-live-search="true" multiple>
-		                                                    </select>
-		                                                    <button class="btn btn-xs btn-danger" @click="removeFilter($index,$event)"><i class="glyphicon glyphicon-remove"></i></button> 
-		                                                </li>`;
+							<label>筛选项目</label>
+							<select name="propertyName" class="selectpicker prop_select" data-live-search="true">
+								<option value="">请选择</option>
+								<option value="caseCompositeType">用例组成类型</option>
+								<option value="casecode">用例编号</option>
+								<option value="missionId">测试任务</option>
+								<option value="autId">被测系统</option>
+								<option value="testDesign">测试意图</option>
+								<option value="preRequisites">前置条件</option>
+								<option value="dataRequest">数据需求</option>
+								<option value="testStep">测试步骤</option>
+								<option value="expectResult">预期结果</option>
+								<option value="checkPoint">附加检查点</option>
+								<option value="caseProperty">用例性质</option>
+								<option value="caseType">测试用例类型</option>
+								<option value="priority">优先级</option>
+								<option value="author">作者</option>
+								<option value="reviewer">评审者</option>
+								<option value="scriptModeFlag">所属模板</option>
+							</select>                
+							<select name="compareType" class="selectpicker compare_select">
+								<option value="">请选择</option>
+							</select> 
+							<label>值</label>
+							<select name="propertyValue" class="selectpicker val_select" data-live-search="true" multiple>
+							</select>
+							<button class="btn btn-xs btn-danger" @click="removeFilter($index,$event)"><i class="glyphicon glyphicon-remove"></i></button> 
+						</li>`;
 		            $('.filterList').append(liStr);
 		            Vue.nextTick(function(){
 		                $('.selectpicker').selectpicker('refresh')
@@ -1662,16 +1662,52 @@ $(document).ready(function () {
 				},
 			}
 		});
+		var importModal = new Vue({
+			el: '#importModal',
+			data: {
+				failMSG:"",
+			},
+			created: function () {
+				$(".myFileUpload").change(function() {
+					var arrs = $(this).val().split('\\');
+					var filename = arrs[arrs.length - 1];
+					$(".show").val(filename);
+				});
+			},
+			methods: {
+				//上传
+				upload:function() {
+					var _this=this;
+					$.ajax({
+						url: address3+'dataCenter/importDataFromFile',
+						type: 'POST',
+						cache: false,
+						data: new FormData($('#importForm')[0]),
+						processData: false,
+						contentType: false, 
+						success: function(data) {                        
+							$('#importModal').modal('hide');
+							if (data.respCode=='0000') {
+								$('#successModal').modal('show');
+							} else {
+								_this.failMSG=data.respMsg;
+								$('#failModal2').modal('show');
+							}
+						}, error: function(data) { 
+							$('#importModal').modal('hide');
+							$('#failModal').modal('show');
+						}
+					}) ;  
+				},
+			}
+		});
 		var setting = {
 			callback: {
 				onDblClick: zTreeOnDblClick
 			},
 		};
 		var zTreeObj;
-		var data = {
-			testpoint: 6,
-			executor: 6,
-			caseLib_id: 6
+		var infoOfTreeOnOpen = {
 		};
 		var sub = new Vue({
 			el: '#submenu',
@@ -2015,6 +2051,8 @@ $(document).ready(function () {
 					transId: transid,
 					scriptId: scriptId
 				};
+				infoOfTreeOnOpen=data;
+				$(".export-show").css("display","inline")
 				Vac.ajax({
 					url: address3 + "dataCenter/queryTestcaseInfo",
 					data: data,
@@ -2292,6 +2330,48 @@ $(document).ready(function () {
 					}
 				}
 			});
+		};
+		//导出模板按钮
+		document.getElementById('excel-export').onclick = function () {
+			$.ajax({
+				url: address3 + 'dataCenter/downloadDataFile',
+				data: {
+					"autId": infoOfTreeOnOpen.autId,
+					"caseLibId" :infoOfTreeOnOpen.caseLibId,
+					'conditionList': infoOfTreeOnOpen.conditionList,
+					'executorId': infoOfTreeOnOpen.executorId,
+					'scriptId': infoOfTreeOnOpen.scriptId,
+					'transId': infoOfTreeOnOpen.transId
+				},
+				success: function (data) {
+					if (data.respCode === '0000') {
+						Vac.alert('保存成功')
+					}
+				}
+			});
+				var inputs = '';
+				inputs+='<input type="hidden" name="autId" value="'+ infoOfTreeOnOpen.autId +'" />'; 
+				inputs+='<input type="hidden" name="caseLibId" value="'+ infoOfTreeOnOpen.caseLibId +'" />'; 
+				inputs+='<input type="hidden" name="executorId" value="'+ infoOfTreeOnOpen.executorId +'" />'; 
+				inputs+='<input type="hidden" name="scriptId" value="'+ infoOfTreeOnOpen.scriptId +'" />'; 
+				inputs+='<input type="hidden" name="transId" value="'+ infoOfTreeOnOpen.transId +'" />'; 
+				var conditions="["
+				for(let i=0;i<infoOfTreeOnOpen.conditionList.length;i++){
+					var condition=infoOfTreeOnOpen.conditionList[i];
+					conditions+='{"propertyName":"'+condition.propertyName+'","compareType":"'+condition.compareType+'","propertyValueList":["'+(condition.propertyValueList+"")+'"]},';
+				}
+				conditions=conditions.slice(0,conditions.length-1);
+				conditions+="]";
+				console.log(conditions)
+				inputs+=`<input type="hidden" name="conditionList" value='`+ conditions +`' />`; 
+				inputs+='</table>';
+				// request发送请求
+				jQuery('<form action="'+ address3 + 'dataCenter/downloadDataFile" method="post">'+inputs+'</form>')
+				.appendTo('body').submit().remove();
+		};
+		//导入模板按钮
+		document.getElementById('excel-import').onclick = function () {
+			$('#importModal').modal('show');
 		};
 		// 查看脚本
 		//双击单元格，跳出编辑数据框

@@ -6,7 +6,7 @@
 		overflow: auto;
 		&>div {
 			float: left;
-			width: 48%;
+			width: 100%;
 			padding: 10px 5px;
 			border-radius: 5px;
 			border: 1px solid #ddd;
@@ -257,7 +257,6 @@ html, body{
 							width: 20px;
 							height: 20px;
 							font-size: 18px;
-							float: right;
 						}
 
 						.param-table {
