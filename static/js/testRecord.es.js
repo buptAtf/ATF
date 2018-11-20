@@ -28,6 +28,7 @@ var app = new Vue({
         searchKey:'', //搜索条件
         searchVal: '',
         ids: '',
+        
     },
     ready: function() {
         // getRecord(this.currentPage, this.pageSize, this.order, this.sort);
