@@ -1,38 +1,5 @@
 var template_obj = `
 <div style="min-height: 0;">
-    <div class="row" v-if="breadShow">
-        <div class="col-xs-12">
-            <ul class="breadcrumb">
-                <li><a href="aut.html"><i class="icon-home"></i> 被测系统管理</a></li>
-                <li><a href="transact.html"> 功能点</a></li>
-                <li class="active"> 对象库</li>
-            </ul>
-        </div>
-    </div>
-    <div class="row" v-if="topSelect">
-        <div class="col-xs-12">
-            <section class="panel panel-pad">
-                <!-- select start -->
-                <form class="form-horizontal">
-                    <div class="form-group">
-                        <label class="col-xs-1 control-label">被测系统</label>
-                        <div class="col-xs-2">
-                            <select class="form-control" id="autSelect">
-                            </select>
-                        </div>
-                        <label class="col-xs-1 control-label">功能点</label>
-                        <div class="col-xs-2">
-                            <select class="form-control" id="transactSelect" v-model="transid">
-                            </select>
-                        </div>
-                        <a class="btn btn-white"  @click="toElementLib"><i class="icon-external-link"></i> 元素库</a>
-                        <a class="btn btn-white" @click="toScript"><i class="icon-external-link"></i> 基础脚本</a>
-                    </div>
-                </form>
-                <!-- select end -->
-            </section>
-        </div>
-    </div>
     <div class="row">
         <div class="col-xs-4">
             <section class="panel tree-panel">

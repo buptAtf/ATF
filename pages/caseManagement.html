@@ -113,9 +113,6 @@
         -o-transform:  translateY(25%);
         transform:  translateY(25%);
         }
-        .form-control {
-            width: auto;
-        }
     </style>
 </head>
 
@@ -155,7 +152,7 @@
                         <a class="btn btn-white" data-toggle="modal" @click="checkExe"><i class="icon-user"></i> 分配</a>
                         <a class="btn btn-white" data-toggle="modal" @click="checkExeM"><i class="icon-retweet"></i> 更改执行方式</a>
                         <a class="btn btn-white" data-toggle="modal" @click="checkTransid"><i class="icon-cog"></i> 设置功能点及基础脚本</a>
-                        <a class="btn btn-white" data-toggle="modal" @click="modifyMore"><i class="icon-cog"></i> 更改多种用例信息</a>
+                        <a class="btn btn-white" data-toggle="modal" @click="modifyMoreModalShow"><i class="icon-cog"></i> 更改多种用例信息</a>
                         <!-- addModal start -->
                         <div class="modal fade" id="addModal" tabindex="-1" role="dialog" aria-labelledby="addModalLabel" aria-hidden="true">
                             <div class="modal-dialog">
@@ -776,6 +773,158 @@
                             </div>
                         </div>
                         <!-- addModal end -->
+                        <!-- modifiedModal start -->
+                        <div class="modal fade" id="modifiedModal" tabindex="-1" role="dialog" aria-labelledby="modifiedModalLabel" aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content" style="width: 860px;">
+                                    <div class="modal-header">
+                                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                                        <h4 class="modal-title">更改用例信息</h4>
+                                    </div>
+                                    <div class="modal-body" style="width: 860px;">
+                                        <!-- modal-body start -->
+                                        <section class="panel nopadding">
+                                            <br>
+                                            <div class="panel-body">
+                                                <form class="form-horizontal" role="form" id="modifiedForm">
+                                                    <div class="row" v-show="caseshow">
+                                                        <div class="form-group">
+                                                            <div class="col-lg-4 nopadding">
+                                                                <label class="col-lg-3 control-label"><i>测试任务</i></label>
+                                                                <div class="col-lg-9">
+                                                                    <!-- <input type="text" class="form-control" name="submissionId"> -->
+                                                                    <select type="text" class="form-control" name="submissionId">
+                                                                        <option value='-1'>未选择</option>
+                                                                        <option v-for="item in missionList" value="{{item.id}}">{{item.nameMedium}}</option>
+                                                                    </select>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="form-group" name = "boundGroup">
+                                                            <div class="col-lg-4 nopadding">
+                                                                <label class="col-lg-3 control-label"><i>被测系统</i></label>
+                                                                <div class="col-lg-9">
+                                                                    <select type="text" class="form-control autid" name="autid">
+                                                                        <option value='-1'>未选择</option>
+                                                                    </select>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-lg-4 nopadding">
+                                                                <label class="col-lg-3 control-label"><i>功能点</i></label>
+                                                                <div class="col-lg-9">
+                                                                    <select class="form-control transid" id="" name="transid">
+                                                                    </select>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-lg-4 nopadding">
+                                                                <label class="col-lg-3 control-label scriptmodeflag">基础脚本</label>
+                                                                <div class="col-lg-9">
+                                                                    <select class="form-control" size="1" name="scriptmodeflag" id="">
+                                                                    </select>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <div class="col-lg-4 nopadding">
+                                                                <label class="col-lg-3 control-label">案例性质</label>
+                                                                <div class="col-lg-9">
+                                                                    <select class="form-control" size="1" name="caseProperty">
+                                                                        <option value='-1'>未选择</option>
+                                                                        <option value="1">正常值</option>
+                                                                        <option value="2">错误值</option>
+                                                                        <option value="3">边界值</option>
+                                                                        <option value="4">要素级</option>
+                                                                        <option value="5">流程级</option>
+                                                                    </select>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-lg-4 nopadding">
+                                                                <label class="col-lg-3 control-label">测试案例类型</label>
+                                                                <div class="col-lg-9">
+                                                                    <select class="form-control" size="1" name="caseType">
+                                                                        <option value='-1'>未选择</option>
+                                                                        <option value="1">联机</option>
+                                                                        <option value="2">批量</option>
+                                                                        <option value="3">接口</option>
+                                                                    </select>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-lg-4 nopadding">
+                                                                <label class="col-lg-3 control-label">优先级</label>
+                                                                <div class="col-lg-9">
+                                                                    <select class="form-control" size="1" name="priority">
+                                                                        <option value='-1'>未选择</option>
+                                                                        <option value="1">1级</option>
+                                                                        <option value="2">2级</option>
+                                                                        <option value="3">3级</option>
+                                                                        <option value="4">4级</option>
+                                                                        <option value="5">5级</option>
+                                                                        <option value="6">6级</option>
+                                                                        <option value="7">7级</option>
+                                                                        <option value="8">8级</option>
+                                                                        <option value="9">9级</option>
+                                                                    </select>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <div class="col-lg-4 nopadding">
+                                                                <label class="col-lg-3 control-label">评审者</label>
+                                                                <div class="col-lg-9">
+                                                                    <select class="form-control" name="reviewer">
+                                                                        <option value='-1'>未选择</option>
+                                                                        <option v-for="user in users" value="{{user.id}}">{{user.username}}</option>
+                                                                    </select>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-lg-4 nopadding">
+                                                                <label class="col-lg-3 control-label">执行者</label>
+                                                                <div class="col-lg-9">
+                                                                    <select class="form-control" name="executor">
+                                                                        <option value='-1'>未选择</option>
+                                                                        <option v-for="user in users" value="{{user.id}}">{{user.username}}</option>
+                                                                    </select>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <div class="col-lg-4 nopadding">
+                                                                <label class="col-lg-3 control-label">执行方式</label>
+                                                                <div class="col-lg-9">
+                                                                    <select class="form-control" size="1" name="executemethod">
+                                                                        <option value='-1'>未选择</option>
+                                                                        <option value="1">手工</option>
+                                                                        <option value="2">自动化</option>
+                                                                        <option value="3">配合</option>
+                                                                    </select>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-lg-4 nopadding">
+                                                                <label class="col-lg-3 control-label">脚本管理方式</label>
+                                                                <div class="col-lg-9">
+                                                                    <select class="form-control" name="scriptmode">
+                                                                        <option value='-1'>未选择</option>
+                                                                        <option value="1">脚本</option>
+                                                                        <option value="2">人工</option>
+                                                                    </select>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </form>
+                                            </div>
+                                        </section>
+                                        <!-- modal-body end -->
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button data-dismiss="modal" class="btn btn-default" type="button">取消</button>
+                                        <a class="btn btn-success" v-on:click="Reset()">重置</a>
+                                        <a data-dismiss="modal" class="btn btn-success" v-on:click="modifyMore()">修改</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- modifiedModal end -->
                         <!-- importModal start-->
                       <div class="modal fade" id="importModal" tabindex="-1" role="dialog" aria-labelledby="importModalLabel" aria-hidden="true">
                             <div class="modal-dialog">

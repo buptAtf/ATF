@@ -96,14 +96,14 @@ var app = new Vue({
             //页数变化时的回调
             getRecord(ts.currentPage, ts.pageSize, 'id', 'asc');
         },
-        viewCase: function (sceneId, caseid, sourcechannel, item) {
+        viewCase: function (sceneId=15, caseid, sourcechannel, item) {
 			var o = {
 				sceneId,
                 recorderStatus: '2',
                 item
             }
 			var args = encodeURIComponent(JSON.stringify(o));
-			window.open('case-operation.html?activeName=exec-record&viewcaseargs='+args, 'case_record');
+			window.open('case-operation.html?testcaseId='+caseid+'&activeName=exec-record&viewcaseargs='+args, 'case_record');
 		},
         //合并
         merge: function(){

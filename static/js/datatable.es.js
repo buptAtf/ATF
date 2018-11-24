@@ -1685,10 +1685,145 @@ $(document).ready(function () {
 						data: new FormData($('#importForm')[0]),
 						processData: false,
 						contentType: false, 
-						success: function(data) {                        
+						success: function(data) {
 							$('#importModal').modal('hide');
 							if (data.respCode=='0000') {
 								$('#successModal').modal('show');
+								Vac.ajax({
+									url: address3 + "dataCenter/queryTestcaseInfo",
+									data: infoOfTreeOnOpen,
+									success: function (data) {
+										if ('0000' === data.respCode) {
+											var dataKey = [];
+											dataKey = getDataKey(data.tableHead);
+											console.log("getColumnsOptions中dataKey:" + dataKey);
+											var destrutData = [];
+											if (data.tableData) {
+												if (data.tableData.length == 0) {
+													Vac.alert('该脚本下未查询到相关数据！')
+													$('#no-data-tip').css({display: 'block'});
+												}
+												data.tableData.forEach((value) => {
+													var data = {};
+													({
+														id: data.testcaseId,
+														expectResult: data.expectresult,
+														caseCompositeType: data.caseCompositeType,
+														testPoint: data.testpoint,
+														testStep: data.teststep,
+														checkPoint: data.checkpoint,
+														testDesign: data.testdesign,
+														caseCode: data.casecode
+													} = value);
+													console.log(value);
+													dataKey.forEach((key) => {
+														console.log("12Key:" + key+"data_"+key+"qweqwe"+value["data_"+key]);
+														data[key] = value["data_"+key];
+													});
+													destrutData.push(data);
+												});
+											}
+											console.log(destrutData);
+											dataSource = destrutData;
+											console.log(dataSource)
+											rowSelectFlags.length = dataSource.length;
+											getTotalColHeaders(data.tableHead);
+											// console.log(totalColumnsHeaders);
+											var totalColumnsOptions = getColumnsOptions(data.tableHead);
+											// handsontable 配置与生成
+											if (handsontable === null) {
+												handsontable = new Handsontable(tableContainer, {
+													data: dataSource,
+													hiddenColumns: {
+														columns: [2, 3],
+														indicators: false
+													},
+													// 配置列表头
+													columns: totalColumnsOptions,
+													colHeaders: colHeadersRenderer,
+													// colWidths: [50, 90, 90, 90, 90, 90, 90],
+													// stretchH: 'all',
+													rowHeaders: true,
+													cells: function (row, col, prop) {
+														var cellProperties = {};
+														return cellProperties;
+													},
+													// 配置可以改变行的大小
+													manualRowResize: true,
+													multiSelect: true,
+													outsideClickDeselects: true,
+													// 配置contextMenu
+													contextMenu: contextMenuObj,
+													undo: true,
+													copyPaste: true,
+													allowInsertRow: false,
+													allowInsertColumn: false,
+													fillHandle: false,
+													search: {
+														searchResultClass: ''
+													},
+													afterRender: function () {
+														if (searchResults && searchResults.length) {
+															var trs = document.querySelectorAll('#handsontable tbody tr');
+															searchResults.forEach((value, index) => {
+																var tds = trs[value.row].getElementsByTagName('td');
+																if (index === currentResult) {
+																	tds[value.col].style.backgroundColor = "#f00";
+																} else {
+																	tds[value.col].style.backgroundColor = "#0f0";
+																}
+				
+															})
+														}
+														document.querySelectorAll(".handsontable table th")[0].style.display = "none";
+													},
+													afterChange: function (changes, source) {
+														if (changes) {
+															// console.log(changes)
+															changes.forEach((value) => {
+																var data = {};
+																// data.testcaseId = handsontable.getDataAtRowProp(value[0], 'casecode');
+																data.testcaseId = dataSource[value[0]].testcaseId;
+																data.caseCompositeType = dataSource[value[0]].caseCompositeType;
+																data.tbHead = value[1];
+																data.value = value[3];
+																var changedIndex;
+																changedData.forEach((value, index) => {
+																	if (value.testcaseId == data.testcaseId && value.tbHead == data.tbHead) {
+																		changedIndex = index;
+																	}
+																});
+																if (changedIndex !== undefined) {
+																	changedData.splice(changedIndex, 1, data);
+																} else {
+																	changedData.push(data);
+																}
+															});
+														}
+													},
+												});
+												// handsontable.updateSettings(contextMenuObj);
+												$('#no-data-tip').css({display: 'none'});
+											}
+											else {
+												handsontable.updateSettings({
+													data: dataSource,
+													columns: totalColumnsOptions,
+													colHeaders: colHeadersRenderer
+												});
+												handsontable.render();
+												$('#no-data-tip').css({display: 'none'});
+											}
+										} else {
+											Vac.alert(data.respMsg);
+										}
+									},
+									error: function () {
+										Vac.alert('获取数据失败，请确认该脚本中含有数据！')
+										$('#no-data-tip').css({display: 'block'});
+									}
+								});
+
 							} else {
 								_this.failMSG=data.respMsg;
 								$('#failModal2').modal('show');
@@ -2038,6 +2173,7 @@ $(document).ready(function () {
 
 			return dataKey;
 		};
+		//双击显示脚本
 		function zTreeOnDblClick(event, treeId, treeNode) {
 			if (treeNode && !treeNode.isParent) {
 				autId = treeNode.getParentNode().getParentNode().id;

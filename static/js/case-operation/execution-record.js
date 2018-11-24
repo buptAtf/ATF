@@ -22,10 +22,10 @@ var execRecord = Vue.extend({
 			if (newVal) {
 				var data = JSON.parse(decodeURIComponent(newVal));
 				$.ajax({
-					url: address + 'testrecordController/selectRecordWithTestcaseId',
+					url: address3 + 'testrecordController/selectRecordWithTestcaseId',
 					data: {
-						sceneId: o.sceneId,
-            recorderStatus: o.recorderStatus,
+						sceneId: me.recorddata.sceneId,
+            			recorderStatus: me.recorddata.recorderStatus,
 					},
 					type: 'post',
 					dataType: 'json',

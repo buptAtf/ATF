@@ -130,7 +130,8 @@ var app = new Vue({
                     this.delete();
                 }, () => {});
         },
-        showUpdateModal() {
+        showUpdateModal(id) {
+            this.selectTestPlan=id
             if ('' === this.selectTestPlan) {
                 Vac.alert('请选择测试计划');
                 return;
@@ -142,7 +143,7 @@ var app = new Vue({
             })
             $('#addTestPlan').modal('show');
 
-            ({  
+            ({
                 nameMedium: this.addRowData.nameMedium,
                 descMedium: this.addRowData.descMedium,
                 testPhaseId: this.addRowData.testPhaseId,
@@ -168,8 +169,8 @@ var app = new Vue({
 				success: (data) => {
 					if ('0000' === data.respCode) {
                         this.testPlanArray = data.testPlanEntityList;
-                                this.page.totalCount=data.totalCount;
-                                this.page.totalPage=data.totalPage;
+                        this.page.totalCount=data.totalCount;
+                        this.page.totalPage=data.totalPage;
 					} else {
 						Vac.alert('出错啦~');
 					}

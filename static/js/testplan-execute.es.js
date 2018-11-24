@@ -116,25 +116,23 @@ var vBody = new Vue({
 				},
 				success: function(data){
 					if (data.respCode === '0000') {
-						if (data.testPlanEntityList && data.testPlanEntityList.length) {
-							if(tempTestPlanId === ''){		//从执行记录查询跳转过来所需
+						if (data.testPlanEntityList && (data.testPlanEntityList.length>0)) {
+							if(tempTestPlanId==null){		//从执行记录查询跳转过来所需
 								_this.testPlanId = data.testPlanEntityList[0].id;
-								
+								console.log("我来自查询出来的");
 							} else{
+								console.log("我来自跳转转过来的出来的");
 								_this.testPlanId = tempTestPlanId;
 								sessionStorage.setItem('testPlanId','');
 							}
-							
 							_this.testPlans = data.testPlanEntityList;
 							resolve();
 						} else {
 							reject('请添加测试计划！');
 						}
-					
 						return;
 					}
-					
-					reject();
+					reject("出了点问题吧");
 				}
 			});
 		});
@@ -447,28 +445,34 @@ var vBody = new Vue({
 				});
 			}
 		},
-		setDraggable: function () {	
-				$('#sortable_caselist').sortable({
+		setDraggable: function () {
+				//$('#id').sortable()函數实现拖动 disableSelection文章不能被选择
+				$('.sortable_caselist').sortable({
 					handle: '.handle'
 				})
-				$( "#sortable_caselist" ).disableSelection();
+				$( ".sortable_caselist" ).disableSelection();
 
 				$('#sortable_sceneslist').sortable({
 					handle: '.handle2'
 				})
-				$( "#sortable_caselist" ).disableSelection();
+				$("#sortable_sceneslist" ).disableSelection();
 
 				$('.sortable_scene_caselist').sortable({
 					handle: '.handle1'
 				})
 				$( '.sortable_scene_caselist' ).disableSelection();
-
-
-				
-
-
 				$('#testround-main').disableSelection();
 		},
+		senceAddedStatus(sceneId){//判断是否已经添加
+			let _this=this;
+			var testSceneList=_this.testSceneList
+			for(let i =0;i<testSceneList.length;i++){
+				if(+testSceneList[i].sceneId===+sceneId)
+				return true
+			}
+			return false
+		},
+
 		getCases() {
 			var data = {
 				caselibId: this.caselibId,
@@ -753,7 +757,8 @@ var vBody = new Vue({
                     this.delete();
                 }, () => {});
         },
-        showUpdateModal() {
+        showUpdateModal(id) {
+			this.selectTestPlan=id;
             if ('' === this.selectTestPlan) {
                 Vac.alert('请选择测试计划');
                 return;
@@ -764,8 +769,7 @@ var vBody = new Vue({
                 modal.find('.modal-title').text("修改测试计划");
             })
             $('#addTestPlan').modal('show');
-
-            ({  
+            ({
                 nameMedium: this.addRowData.nameMedium,
                 descMedium: this.addRowData.descMedium,
                 testPhaseId: this.addRowData.testPhaseId,

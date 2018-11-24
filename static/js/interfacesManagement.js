@@ -254,13 +254,11 @@ var template_int = `
                             <option value="2">XML</option>
                             </select>
                         </div>
-                        <!-- vb
                         <div class="col-xs-1">
                             <button class="btn btn-info" type="button" @click="jiema()">
                                 <span>解码</span>
                             </button>
                         </div>
-                        -->
                     </div>
                     <br>
                     <div class="row">
@@ -611,22 +609,25 @@ var interfacesManagement = Vue.extend({
         jiema: function() {
             var _this=this;
             if(this.bodyFormat==1){
-                Vac.ajax({
-                    async: true,
-                    url: address3 + 'interface/parseJsonBody',
-                    data: JSON.stringify({
-                        "interfaceId":_this.transid,
-                        "jsonBody":$("#bodyContent").val()
-                    }),
-                    type: "POST",
-                    success: function(data) {
-                        if (data.respCode === '0000') {
-                            $('#successModal').modal();
-                        } else {
-                            alert(data.respMsg);
-                        }
-                    }
-                });
+                var text = $("#bodyContent").val(); //获取json格式内容
+                var result = JSON.stringify(JSON.parse(text), null, 2);//将字符串转换成json对象
+            　　$("#bodyContent").val(result);
+                // Vac.ajax({
+                //     async: true,
+                //     url: address3 + 'interface/parseJsonBody',
+                //     data: JSON.stringify({
+                //         "interfaceId":_this.transid,
+                //         "jsonBody":$("#bodyContent").val()
+                //     }),
+                //     type: "POST",
+                //     success: function(data) {
+                //         if (data.respCode === '0000') {
+                //             $('#successModal').modal();
+                //         } else {
+                //             alert(data.respMsg);
+                //         }
+                //     }
+                // });
             }
             else if(this.bodyFormat==2){
                 Vac.ajax({

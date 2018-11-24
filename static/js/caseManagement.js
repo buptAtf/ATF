@@ -13,7 +13,6 @@ var app = new Vue({
         flowcaseflag: true,
         caseNodeNum: 1,
         caseNodeNums: [{num:1,status:true,show:true,name:"boundGroup1",display:false}],
-        // caseNode: '</h3><div class="form-group"><label class="col-lg-2 control-label hidden">案例组成类型</label><div class="col-lg-4 hidden"><input type="text" class="form-control" name="caseCompositeType" value="3"></div><label class="col-lg-2 control-label">流程节点编号</label><div class="col-lg-4"><input type="text" class="form-control" name="subcasecode"></div><label class="col-lg-2 control-label">动作标识</label><div class="col-lg-4"><input type="text" class="form-control" name="actioncode"></div></div><div class="form-group"><label class="col-lg-2 control-label">被测系统</label><div class="col-lg-4"><select class="form-control" size="1" name="subautid" id=""></select></div><label class="col-lg-2 control-label">被测系统版本号</label><div class="col-lg-4"><input class="form-control" name="subversioncode"></div></div><div class="form-group"><label class="col-lg-2 control-label">功能码</label><div class="col-lg-4"><select class="form-control" size="1" name="subtransid"><option></option></select></div><label class="col-lg-2 control-label">所属模板</label><div class="col-lg-4"><select class="form-control" size="1" name="subscriptmodeflag"></select></div></div><div class="form-group"><label class="col-lg-2 control-label">执行方式</label><div class="col-lg-4"><select class="form-control" size="1" name="executemethod"><option>手工</option><option>自动化</option><option>配合</option></select></div><label class="col-lg-2 control-label">脚本管理方式</label><div class="col-lg-4"><select class="form-control" size="1" name="scriptmode"><option>模板</option></select></div></div><div class="form-group"><label class="col-lg-2 control-label">执行者</label><div class="col-lg-4"><select class="form-control" size="1" name="executor"><option v-for="user in users" value="{{user.id}}">{{user.reallyname}}</option></select></div><label class="col-lg-2 control-label">测试顺序</label><div class="col-lg-4"><input class="form-control" name="steporder"></div></div><div class="form-group"><label class="col-lg-2 control-label">案例使用状态</label><div class="col-lg-4"><select class="form-control" size="1" name="subusestatus"><option value="1">新增</option><option value="2">评审通过</option></select></div></div><div class="form-group"><label class="col-lg-2 control-label">备注</label><div class="col-lg-10"><textarea class="form-control" rows="3" name="note"></textarea></div></div>',
         caseList: [], //案例
         users: [], //所有用户
         priority: [], // 优先级
@@ -1268,7 +1267,7 @@ var app = new Vue({
                     success: function(data) {
                         that.subCaseList = data.testcaseActionViewList;
                         // console.log(that.subCaseList);
-                        for (var i = 0; i < that.subCaseList.length; i++) {
+                        for (var i = that.subCaseList.length-1; i >-1; i--) {
                             var subTr = $("<tr class='subShow'></tr>"),
                                 iconTd = $("<td></td>"),
                                 checkTd = $("<td><input type='checkbox' id="+that.subCaseList[i].id+" name='chksub_list'/></td>"),
@@ -1401,13 +1400,13 @@ var app = new Vue({
                 $('#transid').modal();
             }
         },        
-        modifyMore: () => {
+        modifyMoreModalShow: () => {
             app.getIds();
             var selectedInput = $('input[name="chk_list"]:checked');
             if (selectedInput.length === 0) {
                 $('#selectAlertModal').modal();
             } else {
-                $('#modifyMore').modal();
+                $('#modifiedModal').modal();
             }
         },
         showDetail(event){
@@ -1548,7 +1547,6 @@ var app = new Vue({
                 }
             });
         },
-        
         //获取添加案例任务编号下拉列表
         getMission: function(){
             $.ajax({
@@ -1684,7 +1682,7 @@ var app = new Vue({
 
                 });
         },
-        //筛选案例
+        //修改案例
         modifyCase(){
             let data={};
             let list=$("#filterList1>li");
@@ -1713,15 +1711,69 @@ var app = new Vue({
                 success:function(data){
                     if(data.respCode=="0000"){
                         $('#successModal').modal();
-                    }
+                        }
                     else{
                         _this.failMSG=data.failMSG;
                         $('#failModal').modal();
+                        }
+                    }
+                });
+            },    //更改多用例信息
+            modifyMore :function() {
+               let self =this;
+               let modifiedModal=$('#modifiedModal');
+                   autid = $(modifiedModal).find('select[name="autid"]').val(),
+                   transid = $(modifiedModal).find('select[name="transid"]').val(),
+                   submissionId = $(modifiedModal).find('select[name="submissionId"]').val(),
+                   scriptmodeflag = $(modifiedModal).find('select[name="scriptmodeflag"]').val(),
+                   caseProperty = $(modifiedModal).find('select[name="caseProperty"]').val(),
+                   caseType = $(modifiedModal).find('select[name="caseType"]').val(),
+                   priority = $(modifiedModal).find('select[name="priority"]').val(),
+                   reviewer = $(modifiedModal).find('select[name="reviewer"]').val(),
+                   executor = $(modifiedModal).find('select[name="executor"]').val(),
+                   executemethod = $(modifiedModal).find('select[name="executemethod"]').val(),
+                   scriptmode = $(modifiedModal).find('select[name="scriptmode"]').val();
+                let data={};
+                let modifiedForm=$(modifiedModal).find('select');
+                let that=this;
+                for(let i=0;i<modifiedForm.length;i++){
+                    let key=$(modifiedForm[i]).attr('name');
+                    let value=$(modifiedForm[i]).val();
+                    if(value!="-1"){
+                        data[key]=value;
                     }
                 }
-
-            });
+                $.ajax({
+                    url:address3 + 'testcase/batchModifyMultiProperty',
+                    contentType: 'application/json',
+                    data: JSON.stringify({
+                        'testcaseIds': that.ids,
+                        'testcaseActionIds': that.subids,
+                        'propertyValueMap': data,
+                        }),
+                    type:'post',
+                    success:function(data){
+                        if(data.respCode=="0000"){
+                            $('#successModal').modal();
+                            self.getCase(self.currentPage, self.pageSize, self.order, self.sort);
+                        }
+                        else{
+                            _this.failMSG=data.failMSG;
+                            $('#failModal').modal();
+                        }
+                    }
+                });
             },
+        Reset:function(){
+            let modifiedForm=$('#modifiedModal').find('select');
+            for(let i=0;i<modifiedForm.length;i++){
+                let value=$(modifiedForm[i]).val('-1');
+            }
+            $('#modifiedModal').find
+            let str2="<option value='-1'>未选择</option>";
+            $('#modifiedModal').find('select[name="transid"]').html(str2);
+            $('#modifiedModal').find('select[name="scriptmodeflag"]').html(str2);
+        },
         groupBound:function(name){
             var boundGroup="";
             if(name=="")
@@ -1738,8 +1790,14 @@ var app = new Vue({
                 second(); //第二级函数
                 third(); //第三极函数
                 $(_this).children().eq(0).children().eq(1).children().change(function() {
-                    second();
-                    third();
+                    if($(_this).children().eq(0).children().eq(1).children().val()=="-1"){
+                        let str = '<option value="-1">未选择</option>';
+                        $(_this).children().eq(1).children().eq(1).children().html(str);
+                        $(_this).children().eq(2).children().eq(1).children().html(str);
+                    }else{
+                        second();
+                        third();
+                    }
                 })
                 $(_this).children().eq(1).children().eq(1).children().change(function() {
                     third();
@@ -1758,7 +1816,7 @@ var app = new Vue({
 
                                 str += " <option value='" + autList[i].id + "' >" + autList[i].nameMedium + "</option> ";
                             }
-                            $(_this).children().eq(0).children().eq(1).children().html(str);
+                            $(_this).children().eq(0).children().eq(1).children().append(str);
                         }
                     });
                 }
@@ -1766,56 +1824,72 @@ var app = new Vue({
                 //二级 功能点
                 function second() {
                     var val = $(_this).children().eq(0).children().eq(1).children().val();
-                    $.ajax({
-                        async: false,
-                        url: address3 + 'transactController/pagedBatchQueryTransact',
-                        data: JSON.stringify({ 
-                            autId: val,
-                            currentPage: 1,
-                            orderColumns: 'id',
-                            orderType: 'asc',
-                            pageSize: 100000
-                        }),
-                        type: "POST",
-                        contentType: 'application/json',
-                        success: function(data) {
-                            var transactList = data.list;
-                            var str = "";
-                            for (var i = 0; i < transactList.length; i++) {
-
-                                str += " <option value='" + transactList[i].id + "'>" + transactList[i].nameMedium + "</option> ";
+                    if(val=='-1'||val==null){
+                        let str2="<option value='-1'>未选择</option>";
+                        $(_this).children().eq(1).children().eq(1).children().html(str2);
+                    }
+                    else{
+                        $.ajax({
+                            async: false,
+                            url: address3 + 'transactController/pagedBatchQueryTransact',
+                            data: JSON.stringify({ 
+                                autId: val,
+                                currentPage: 1,
+                                orderColumns: 'id',
+                                orderType: 'asc',
+                                pageSize: 100000
+                            }),
+                            type: "POST",
+                            contentType: 'application/json',
+                            success: function(data) {
+                                var transactList = data.list;
+                                if(transactList.length<1){
+                                    let str2='<option value="-1">该系统无功能点</option>'
+                                    $(_this).children().eq(1).children().eq(1).children().html(str2);
+                                }
+                                else{
+                                    var str = "";
+                                    for (var i = 0; i < transactList.length; i++) {
+                                        str += " <option value='" + transactList[i].id + "'>" + transactList[i].nameMedium + "</option> ";
+                                    }
+                                    $(_this).children().eq(1).children().eq(1).children().html(str);
+                                }
                             }
-                            $(_this).children().eq(1).children().eq(1).children().html(str);
-
-                        }
-
-                    });
+                        });
+                    }
                 }
 
                 //三级 模板脚本
                 function third() {
 
                     var val = $(_this).children().eq(1).children().eq(1).children().val();
-                    $.ajax({
-                        url: address3 + "scripttemplateController/queryTemplateByTransId",
-                        data: JSON.stringify({ "id": val }),
-                        type: "POST",
-                        contentType: 'application/json',
-                        success: function(data) {
-
-                            var lie = data.scriptTemplateList;
-                            var str = "";
-                            if(lie==null)
-                            {}
-                            else{
-                                for (var i = 0; i < lie.length; i++) {
-
-                                    str += " <option value='" + lie[i].id + "'>" + lie[i].name + "</option> ";
+                    if(val=="-1"||val==null){
+                        let str2='<option value="-1">未选择</option>'
+                        $(_this).children().eq(2).children().eq(1).children().html(str2);
+                    }
+                    else{
+                        $.ajax({
+                            url: address3 + "scripttemplateController/queryTemplateByTransId",
+                            data: JSON.stringify({ "id": val }),
+                            type: "POST",
+                            contentType: 'application/json',
+                            success: function(data) {
+                                var lie = data.scriptTemplateList;
+                                var str = "";
+                                if(lie.length<1)
+                                {
+                                    let str2='<option value="0">该功能点无脚本数据</option>'
+                                    $(_this).children().eq(2).children().eq(1).children().html(str2);
                                 }
-                                $(_this).children().eq(2).children().eq(1).children().html(str);
+                                else{
+                                    for (var i = 0; i < lie.length; i++) {
+                                        str += " <option value='" + lie[i].id + "'>" + lie[i].name + "</option> ";
+                                    }
+                                    $(_this).children().eq(2).children().eq(1).children().html(str);
+                                }
                             }
-                        }
-                    });
+                        });
+                    }
                 }
              });
         }
@@ -1883,72 +1957,6 @@ var app = new Vue({
                 testcaseIds: id_array,
                 property: 'scriptModeFlag',
                 value: $("#transidForm select[name='scriptmodeflag']").val()
-            }),
-            success: function(data) {
-                app.getCase(app.currentPage, app.pageSize, app.order, app.sort);
-            }
-        });
-    }
-    //更改多用例信息
-    function modifyMore() {
-        var id_array = new Array();
-        $('input[name="chk_list"]:checked').each(function() {
-            id_array.push($(this).attr('id'));
-        });
-        $('#executorForm input[name="ids"]').val(id_array.join(','));
-        $.ajax({//executor
-            url: address3 + 'testcase/batchModifyTestCaseProperty',
-            type: 'post',
-            contentType: 'application/json',
-            data: JSON.stringify({
-                testcaseIds: id_array,
-                property: 'executor',
-                value: $("#transidForm select[name='executor']").val()
-            }),
-            success: function(data) {
-                // console.info(data.msg);
-                app.getCase(app.currentPage, app.pageSize, app.order, app.sort);
-            }
-            
-        });
-        $.ajax({//executeMethod
-                    url: address3 + 'testcase/batchModifyTestCaseProperty',
-                    type: 'post',
-                    contentType: 'application/json',
-                    data: JSON.stringify({
-                        'testcaseIds': id_array,
-                        'property': 'executeMethod',
-                        'value': $("#transidForm select[name='executeMethod']").val()
-                    }),
-                    success: function(data) {
-                        // console.info(data.msg);
-                        app.getCase(app.currentPage, app.pageSize, app.order, app.sort);
-                    }
-                
-                });
-        $.ajax({//transId
-            url: address3 + 'testcase/batchModifyTestCaseProperty',
-            type: 'post',
-            contentType: 'application/json',
-            data: JSON.stringify({
-                testcaseIds: id_array,
-                property: 'transId',
-                value: $("#transidForm select[name='transid1']").val()
-            }),
-            success: function(data) {
-                // console.info(data.msg);
-                $('#successModal').modal();
-                app.getCase(app.currentPage, app.pageSize, app.order, app.sort);
-            }
-        });
-        $.ajax({//scriptModeFlag
-            url: address3 + 'testcase/batchModifyTestCaseProperty',
-            type: 'post',
-            contentType: 'application/json',
-            data: JSON.stringify({
-                testcaseIds: id_array,
-                property: 'scriptModeFlag',
-                value: $("#transidForm select[name='scriptmodeflag1']").val()
             }),
             success: function(data) {
                 app.getCase(app.currentPage, app.pageSize, app.order, app.sort);

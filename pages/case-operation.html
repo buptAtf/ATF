@@ -33,7 +33,7 @@
     <section id="main-content" style="margin-left: 0;">
       <section class="wrapper">
         <ul class="nav nav-tabs" role="tablist">
-          <!-- <li role="presentation" :class="{active: activeName=='object-rep'}">
+          <li role="presentation" :class="{active: activeName=='object-rep'}">
             <a href="#object-rep" aria-controls="object-rep" role="tab" data-toggle="tab">对象库</a>
           </li>
           <li role="presentation" :class="{active: activeName=='element-library'}">
@@ -41,12 +41,21 @@
           </li>
           <li role="presentation" :class="{active: activeName=='messages'}">
             <a href="#messages" aria-controls="messages" role="tab" data-toggle="tab">用例数据</a>
-          </li> -->
+          </li>
           <li role="presentation" :class="{active: activeName=='exec-record'}">
             <a href="#exec-record" aria-controls="exec-record" role="tab" data-toggle="tab">执行记录</a>
           </li>
           <li role="presentation" :class="{active: activeName=='view-script'}">
               <a href="#view-script" aria-controls="view-script" role="tab" data-toggle="tab">查看脚本</a>
+          </li>
+          <li role="presentation" :class="{active: activeName=='view-script'}">
+              <a href="#view-script" aria-controls="view-script" role="tab" data-toggle="tab">用例详情</a>
+          </li>
+          <li role="presentation" :class="{active: activeName=='view-script'}">
+              <a href="#view-script" aria-controls="view-script" role="tab" data-toggle="tab">自动化脚本</a>
+          </li>
+          <li role="presentation" :class="{active: activeName=='view-script'}">
+              <a href="#view-script" aria-controls="view-script" role="tab" data-toggle="tab">对象库元素库</a>
           </li>
         </ul>
 
@@ -68,9 +77,8 @@
             <view-script :testcaseid="viewScriptTestcaseId"></view-script>
           </di>
         </di>
-
-        <!-- <el-tab-pane label="对象库" name="first"><object-repo></object-repo></el-tab-pane> -->
-        <!-- <el-tab-pane label="元素库" name="second"><element-library></element-library></el-tab-pane> -->
+    
+        <el-tab-pane label="对象库" name="first"><object-repo></object-repo></el-tab-pane>
 
         </el-tabs>
       </section>
@@ -82,7 +90,6 @@
       <link rel="import" href="./common/copy-right.html?__inline">
     </div>
   </di>
-
 <script type="text/x-template" id="case-data">
 	<div class="tab-content">
 		<div class="top-selector">
@@ -225,7 +232,6 @@
       <div v-else style="text-align: center;margin: 20px auto;">暂无数据</div>
   </div>
 </script>
-  
 <script type="text/x-template" id="execution-record">
   <div class="tab-content" style="display: flex; flex-direction: column;">
     <!-- <iframe src="http://10.108.223.23:8080/ATFCloud/Record/reporter.html" frameborder="0" style="width: 100%; height: 300px;"></iframe> -->
@@ -305,6 +311,7 @@
         let a = item.split('=');
         o[a[0]] = a[1];
       }
+      console.log(o)
       this.recordData = o.viewcaseargs ?  o.viewcaseargs : '';console.log( this.recordData);
       this.activeName = o.activeName;
       switch(this.activeName) {
