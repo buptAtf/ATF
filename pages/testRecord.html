@@ -28,7 +28,7 @@
                             <li class="active"><a href="#"> 执行记录查询</a></li>
                         </ul>
                     </div>
-                </div>
+                </div><a class="btn btn-primary" @click="getRecordByClick(querymode)">查询</a>
                 <!-- breadcrumb end -->
                 <!--top-button start-->
                 <div class="row">
@@ -210,30 +210,47 @@
                                 <div class="row">
                                     <form class="form-horizontal col-sm-12">
                                         <div class="form-group">
-                                            <label class="col-sm-1 control-label">测试阶段</label>
+                                            <label class="col-sm-1 control-label">查询方式</label>
                                             <div class="col-sm-2">
-                                                <select class="form-control" name="testphase" v-model="testphase">
-                                                    <option v-for="item in testPhaseList" :value="item.name">{{item.name}}</option>                                                                                                    
+                                                <select class="form-control" name="querymode" v-model="querymode"><!--选择查询的方式，批量执行或者是测试轮次查询 -->                                          
+                                                    <option value="rounds" selected>测试轮次</option> 
+                                                    <option value="batchs" >批量执行</option>                                                                                                     
                                                                                                         <!--原来是 item.phasename -->
                                                 </select>
                                             </div>
-                                            <label class="col-sm-1 control-label">测试轮次</label>
-                                            <div class="col-sm-2">
+                                            <label class="col-sm-1 control-label" v-if="querymode=='rounds'">测试轮次</label>
+                                            <label class="col-sm-1 control-label" v-else>测试计划</label>
+                                            <div class="col-sm-2" v-if="querymode=='rounds'">       <!--通过测试轮次查询，选择测试轮次 -->
                                                 <select class="form-control" name="testround" v-model="testround">
                                                     <option v-for="item in testRoundList" :value="item.name">{{item.name}}</option>
                                                                                                         <!--原来是 roundname -->
                                                 </select>
                                             </div>
-                                            <label class="col-sm-2 control-label">记录单状态</label>
-                                            <div class="col-sm-2">
-                                                <select class="form-control" v-model="recorderstate">
+                                            <div class="col-sm-2" v-else>
+                                                <select class="form-control" v-model="testplan"><!--通过批量执行查询，选择测试计划 -->
+                                                    <option v-for="item in testRoundList" :value="item.name">{{item.name}}</option>
+                                                                                                        
+                                                </select>
+                                            </div>
+
+                                            <label class="col-sm-1 control-label" v-if="querymode=='rounds'">记录单状态</label>
+                                            <label class="col-sm-1 control-label" v-else>执行轮次</label>
+                                            <div class="col-sm-2" v-if="querymode=='rounds'">
+                                                <select class="form-control" v-model="recorderstate" ><!--通过测试轮次查询，选择记录单状态 -->
                                                     <option value="2">激活</option>
-                                                    <!-- <option value="1">未激活</option>
-                                                    <option value="3">所有状态</option> -->
+                                                    <option value="1">未激活</option>
+                                                    <!-- <option value="3">所有状态</option> -->
                                                 </select>  
                                             </div>
+                                            <div class="col-sm-2" v-model="execround" v-else> <!--通过批量执行查询，输入执行轮次 -->
+                                                <input type="text" class="form-control" placeholder="请输入执行轮次" :value={{ execround }}>   
+                                            </div>   
+                                            <!-- <label class="col-sm-2 control-label">用例编号</label>
+                                            
+                                            <label class="col-sm-2 control-label">所属场景</label> -->
+
                                             <div class="col-sm-1">
-                                                <a class="btn btn-primary" onclick="getRecord()">查询</a>
+                                                <a class="btn btn-primary" @click="getRecordByClick(querymode)">查询</a>
                                             </div>
                                         </div>
                                     </form>
