@@ -129,14 +129,15 @@
 				                                        </div>
 				                                        <br>
 				                                    </div>
-				                                    <div class="form-group form-horizontal">
+				                                    <div class="form-group panel-pad form-horizontal">
 				                                        <div class="col-xs-12">
 				                                            <a class="btn btn-info btn-sm" data-toggle="modal" href="#addUIModal">添加UI</a>
 				                                            <a class="btn btn-info btn-sm" @click="delUI">删除UI</a>
 				                                            <a class="btn btn-info btn-sm" data-toggle="modal" @click="addElementsingle">添加元素</a>
-				                                            <a class="btn btn-info btn-sm" @click="delElement">删除元素</a>
-				                                        </div>
-				                                    </div>
+															<a class="btn btn-info btn-sm" @click="delElement">删除元素</a>
+															<a class="btn btn-info btn-sm" data-toggle="modal" href="#batchImportModal">批量添加</a>
+														</div>
+													</div>
 				                                    <ul id="elementtree" class="ztree tree"></ul>
 				                                </div>
 				                            </section>
@@ -762,7 +763,38 @@
 		                    </div>
 		                </div>
 		            </div>
-		            <!-- addElementModal end -->
+					<!-- addElementModal end -->
+					<!-- batchImportModal start-->
+                    <div class="modal fade" id="batchImportModal" tabindex="-1" role="dialog" aria-labelledby="importModalLabel" aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                                    <h4 class="modal-title">导入</h4>
+                                </div>
+                                <form role="form" id="importForm" method='post' :action="importUrl" enctype="multipart/form-data" >
+                                <div class="modal-body">
+                                    <div class="form-group">        
+                                        <div class="col-lg-6">
+                                            <input type="text" class="form-control show" disabled>
+                                        </div>
+                                        <span class="btn  btn-white fileinput-button"><span>选择文件</span>
+                                        <input type="file" class="myFileUpload" name="file" id='theFile'>
+                                        </span>
+                                        
+                                    </div>
+                                </div> 
+        
+                                <div class="modal-footer">
+                                   <a class="  btn  btn-white" style="float:left" id="exampleDownload" @click="downloadTemplate()" >模板下载</a>  
+                                   <a class="  btn  btn-white"     id="submitFile"  @click="upload()">导入</a>  
+                                   <button data-dismiss="modal" class="btn btn-default" type="button">取消</button>
+                                </div>
+                              </form>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- batchImportModal end -->
 		            <!-- addElementModalbatch start -->
 		            <div class="modal fade" id="addElementModalbatch" tabindex="-1" role="dialog" aria-hidden="true">
 		                <div class="modal-dialog">
@@ -809,7 +841,7 @@
 		                        </div>
 		                        <div class="modal-footer">
 		                            <button data-dismiss="modal" class="btn btn-success" type="button" @click="addElementsingle" style="float:left">单个添加</button>	 
-		                            <button  data-dismiss="modal"  class="btn btn-default"  data-toggle="modal" href="#addUIModal type="button">取消</button>
+		                            <button data-dismiss="modal" class="btn btn-default" data-toggle="modal" href="#addUIModal" type="button">取消</button>
 		                            <button data-dismiss="modal" class="btn btn-success" type="button" @click="addElementinbatch">添加</button>
 		                        </div>
 		                    </div>

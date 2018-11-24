@@ -28,11 +28,15 @@ var app = new Vue({
         searchKey:'', //搜索条件
         searchVal: '',
         ids: '',
+        querymode: 'rounds',    //用于查询
+        testplan: 0 ,           //用于查询
+        execround: 0,
+        testPlanId:'',
     },
     ready: function() {
         // getRecord(this.currentPage, this.pageSize, this.order, this.sort);
         var p1 = new Promise((resolve, reject) => {
-            getTestPhase(resolve);
+            //  getTestPhase(resolve);
         });
         var p2 = new Promise((resolve, reject) => {
             getTestRound(resolve);
@@ -44,7 +48,7 @@ var app = new Vue({
         // getTestPhase();
         // getTestRound();
         getScene();
-        
+        getRecord();
         // setTimeout(getRecord(), 500);
         changeListNum();
 
@@ -154,14 +158,47 @@ var app = new Vue({
             $('#updateForm input[name="abstractarchitecture_name"]').val(selectedInput.parent().next().next().next().html());
             $('#updateForm textarea[name="aut_desc"]').val(selectedInput.parent().next().next().next().next().html());
         },
-    },
-    //传递当前页选中批次信息id到功能点页面
-    linkToTransact: function(selectedId,selectedName) {
-        sessionStorage.setItem("autId", selectedId);
-        sessionStorage.setItem("autName", selectedName); 
-        location.href = "transact.html";
-    },
+        getRecordByClick: function(mode){      
+            if(mode=='rounds'){
+                this.queryByRounds();
+            } else if(mode=='batchs'){
+                this.queryByBatchs();
+            }
+        },
+        queryByRounds: function(){
+            var _this = this;
+            $.ajax({
+                url: address3 + 'testRecordController/batchQueryTestRecordByTestRound',
+                type: 'post',
+                contentType: 'application/json',
+                data: JSON.stringify({
+                    'testRound': _this.testround,
+                    'recorderStatus': _this.recorderstate,
+                }),
+                success: function(data){
+                    _this.recordList = data.list;
+                },
+            });
+            alert('轮次查询');
+        },
+        queryByBatchs: function(){          //通过查询批次的方式进行查询，输入执行轮次和测试计划，进行查询
+            var _this = this;
+            $.ajax({
+                url: address3 +'testRecordController/batchQueryTestRecordByRunId',
+                type: 'post',
+                contentType: 'application/json',
+                data:JSON.stringify({
+                    'execround': _this.execround,
+                    'testPlanId': _this.testPlanId
+                }),
+                success: function(data){
+                    _this.recordList = data.list;
+                }
 
+            });
+            alert('批量查询');
+        },
+    }
 });
 
 //获取测试记录
@@ -197,24 +234,24 @@ function getRecord(page, listnum, order, sort) {
 
 }
 //获取测试阶段
-function getTestPhase(resolve){
-    $.ajax({
-        url: address3+'testphaseController/selectAllTestphase',
-        type: 'get',
-        success:function(data){
-            if (data.respCode === '0000'){
-                var temp;             
-                app.testPhaseList=data.testphaseEntityList;                       
-                temp = data.testphaseEntityList[0];                          
-                app.testphase = temp.name;
-                // console.log(app.testphase);
-            }           
-            if (resolve) {
-                resolve();
-            }
-        }
-    });
-}
+// function getTestPhase(resolve){
+//     $.ajax({
+//         url: address3+'testphaseController/selectAllTestphase',
+//         type: 'get',
+//         success:function(data){
+//             if (data.respCode === '0000'){
+//                 var temp;             
+//                 app.testPhaseList=data.testphaseEntityList;                       
+//                 temp = data.testphaseEntityList[0];                          
+//                 app.testphase = temp.name;
+//                 // console.log(app.testphase);
+//             }           
+//             if (resolve) {
+//                 resolve();
+//             }
+//         }
+//     });
+// }
 //获取测试轮次----刘瑞卿修改
 function getTestRound(resolve){
     $.ajax({

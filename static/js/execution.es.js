@@ -49,11 +49,12 @@ var app = new Vue({
         runResult: generateConst(1, 3, '全部成功', '部分成功', '全部失败')
     },
     ready: function() {
+        var _this = this;
         //queryExecutionRecord(this.currentPage, this.pageSize, this.order, this.sort);
-        changeListNum();
+        _this.changeListNum();
         this.queryExecutionRecord(this.currentPage, this.pageSize, this.order, this.sort)
 
-        console.log('ss');
+        // console.log('ss');
         $('.3').addClass('open')
         $('.3 .arrow').addClass('open')
         $('.3-ul').css({display: 'block'})
@@ -193,6 +194,18 @@ var app = new Vue({
             });
         
         },
+
+        //改变页面大小
+        changeListNum: function(){
+            var _this=this;
+            $('#mySelect').change(function() {           
+                _this.listnum = $(this).children('option:selected').val();
+                $("#mySelect").find("option[text='" + _this.listnum + "']").attr("selected", true);
+                app.currentPage=1;
+                _this.queryExecutionRecord(1, _this.listnum, 'id', 'asc');    
+            });
+        },
+
         goTestExec: function(testPlan){
             sessionStorage.setItem('testPlanId',testPlan);
             location.href="./testplan-execute.html";
@@ -227,7 +240,6 @@ function queryExecutionRecord(page, listnum, order, sort) {
             }
         }
     });
-
 }
 
 //获取案例
@@ -252,16 +264,18 @@ function getCase(currentPage, listnum, order, sort) {
     });
 }
 
-//改变页面大小
-function changeListNum() {
-    var _this=this;
-    $('#mySelect').change(function() {
-        listnum = $(this).children('option:selected').val();
-        $("#mySelect").find("option[text='" + listnum + "']").attr("selected", true);
-        app.currentPage=1;
-        _this.queryExecutionRecord(1, listnum, 'id', 'asc');
-    });
-}
+// //改变页面大小
+// function changeListNum() {
+//     var _this=this;
+//     $('#mySelect').change(function() {
+//         console.log('Am I here 1?');
+//         listnum = $(this).children('option:selected').val();
+//         $("#mySelect").find("option[text='" + listnum + "']").attr("selected", true);
+//         app.currentPage=1;
+//         _this.queryExecutionRecord(1, listnum, 'id', 'asc');
+//         console.log('Am I here 2?');
+//     });
+// }
 
 //全选反选
 $("#chk_all").click(function() {　　
