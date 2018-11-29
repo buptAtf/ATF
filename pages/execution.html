@@ -103,7 +103,8 @@
                                             <td class="center " width="">{{ scene.failedInsCount }}</td>
                                             <td class="center " width="">{{ scene.notRunInsCount }}</td>
                                             <td class="center " width="">{{ scene.executingStatus }}</td>
-                                            <td class="center " width="">{{ scene.executedResult }}</td>
+                                            <td class="center " width="" v-if="scene.executedResult==null">执行中</td>
+                                            <td class="center " width="" v-else>{{ scene.executedResult }}</td>
                                             <!-- <td class="center " width="">{{ scene.resultMessage }}</td> -->
 
                                             <!-- <td class="center " width="">{{ recordSaveType[scene.recordSaveType] }}</td>

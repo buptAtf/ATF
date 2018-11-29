@@ -213,8 +213,8 @@
                                             <label class="col-sm-1 control-label">查询方式</label>
                                             <div class="col-sm-2">
                                                 <select class="form-control" name="querymode" v-model="querymode"><!--选择查询的方式，批量执行或者是测试轮次查询 -->                                          
-                                                    <option value="rounds" selected>测试轮次</option> 
-                                                    <option value="batchs" >批量执行</option>                                                                                                     
+                                                    <option value="rounds" selected>按测试轮次</option> 
+                                                    <option value="batchs" >按批量执行</option>                                                                                                     
                                                                                                         <!--原来是 item.phasename -->
                                                 </select>
                                             </div>
@@ -255,6 +255,23 @@
                                         </div>
                                     </form>
                                 </div>
+                            </div>
+                            <div class="row">
+                                <form class="form-horizontal col-sm-12">
+                                    <div class="form-group">
+                                        <label class="col-sm-1 control-label">(选)场景列表</label>
+                                        <div class="col-sm-2">
+                                            <select class="form-control" name="" v-model="scene">                                       
+                                                <option v-for="scene in sceneList" :value="scene">{{scene}}</option>                                                                                           
+                                                                                                    <!--原来是 item.phasename -->
+                                            </select>
+                                        </div>
+                                        <label class="col-sm-1 control-label">(选)用例编号</label>
+                                        <div class="col-sm-2" v-model="caseId" > <!--通过批量执行查询，输入执行轮次 -->
+                                            <input type="text" class="form-control" placeholder="请输入用例编号" :value={{ caseId }}>   
+                                        </div>   
+                                    </div>
+                                </form>
                             </div>
                             <!-- 表格 -->
                             <style>
