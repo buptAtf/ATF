@@ -28,7 +28,7 @@
                             <li class="active"><a href="#"> 执行记录查询</a></li>
                         </ul>
                     </div>
-                </div><a class="btn btn-primary" @click="getRecordByClick(querymode)">查询</a>
+                </div>
                 <!-- breadcrumb end -->
                 <!--top-button start-->
                 <div class="row">
@@ -249,8 +249,9 @@
                                             
                                             <label class="col-sm-2 control-label">所属场景</label> -->
 
-                                            <div class="col-sm-1">
+                                            <div class="col-sm-2">
                                                 <a class="btn btn-primary" @click="getRecordByClick(querymode)">查询</a>
+                                                <a class="btn btn-primary" data-toggle="modal" href="#deleteModal">删除</a>
                                             </div>
                                         </div>
                                     </form>

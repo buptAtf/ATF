@@ -112,7 +112,7 @@ var app = new Vue({
         //合并
         merge: function(){
             $.ajax({
-                url: address3+'testrecordController/merge',
+                url: address3+'testRecordController/merge',
                 type:'post',
                 data: $('#mergeForm').serializeArray(),
                 success:function(data){
@@ -127,16 +127,19 @@ var app = new Vue({
         //删除
         del: function() {
             this.getIds();
+            var ids=[app.ids];
             console.log(app.ids);
             $.ajax({
-                url: address3+'testrecordController/batchDelete',
+                url: address3+'testRecordController/batchDelete',
                 type: 'post',
-                data: {
-                    'ids': app.ids
-                },
+                contentType: 'application/json',
+                data:  JSON.stringify({
+                    'ids': ids
+                }),
                 success: function(data) {
                     console.info(data);
-                    if (data.success) {
+                    if (data.respMsg=='0000') {
+                        getRecord(app.currentPage, app.pageSize, 'id', 'asc');
                         $('#successModal').modal();
                     } else {
                         $('#failModal').modal();
@@ -205,7 +208,7 @@ var app = new Vue({
 function getRecord(page, listnum, order, sort) {
     //获取list通用方法，只需要传入多个所需参数
     $.ajax({
-        // url: address + 'testrecordController/selectAllByPage',
+        // url: address + 'testRecordController/selectAllByPage',
         url: address3+'testRecordController/batchQueryTestRecordByRunId',
         type: 'POST',
         contentType: 'application/json',
@@ -314,7 +317,7 @@ $("#chk_all").click(function() {　　
 //搜索测试记录
 function queryRecord() {
     $.ajax({
-        url: address3+'testrecordController/selectByPage',
+        url: address3+'testRecordController/selectByPage',
         type: 'POST',
         data: {
             'page': app.currentPage,
