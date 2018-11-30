@@ -6,6 +6,8 @@
     <link rel="stylesheet" type="text/css" href="../static/css/index.css">
     <link rel="stylesheet" type="text/css" href="../static/css/pagination.css">
     <link rel="stylesheet" type="text/css" href="../static/css/scene.css">
+    <link rel="stylesheet" type="text/css" href="../static/css/base/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="../static/css/bootstrap-datetimepicker.min.css">
     <title>批量执行管理</title>
 </head>
 
@@ -42,6 +44,54 @@
                             <header class="panel-heading">
                                 批量执行查询
                             </header>
+                            <div class="filter">
+                                <div class="row">
+                                    <form class="form-horizontal col-sm-12">
+                                        <div class="form-group">
+                                            <label class="col-sm-1 control-label">创建时间</label>
+                                            <div class="form-group">  
+                                                <div class="input-group date form_date col-md-5" data-date="" data-date-format="yyyy MM dd  " data-link-field="dtp_input2" data-link-format="yyyy-mm-dd">
+                                                    <input class="form-control" size="16" type="text" value="" readonly>
+                                                    <span class="input-group-addon"><span class="glyphicon glyphicon-remove"></span></span>
+                                                    <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
+                                                </div>
+                                                <input type="hidden" id="dtp_input2" value="" /><br/>
+                                                </div>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                            <div class="filter">
+                                <div class="row">
+                                    <form class="form-horizontal col-sm-12">
+                                        <div class="form-group">
+                                            <label class="col-sm-1 control-label">用例来源</label>
+                                            <div class="col-sm-2">
+                                                <select class="form-control" name="" v-model="">       
+                                                    <option value="" selected>未知来源</option>                                                                                                                                                                                                                                               <!--原来是 item.phasename -->
+                                                </select>
+                                            </div>
+                                            <label class="col-sm-1 control-label">测试计划</label>
+                                            <div class="col-sm-2">
+                                                <select class="form-control" name="" v-model="">       
+                                                    <option value="" selected>  待填  </option>                                                                                                                                                                                                                                                       <!--原来是 item.phasename -->
+                                                </select>
+                                            </div>
+                                            <label class="col-sm-1 control-label">执行状态</label>
+                                            <div class="col-sm-2">
+                                                <select class="form-control" name="" v-model="">       
+                                                    <option value="" selected>  待填  </option>                                                                                                                                                                                                                                                       <!--原来是 item.phasename -->
+                                                </select>
+                                            </div>
+                                            <div class="col-sm-1">
+                                                <a class="btn btn-primary" @click=" ">查询</a><!-- 留待@click中写函数-->
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+
+
                             <!-- 表格 -->
                             <style>
                                 #sample_1 th,
@@ -103,7 +153,8 @@
                                             <td class="center " width="">{{ scene.failedInsCount }}</td>
                                             <td class="center " width="">{{ scene.notRunInsCount }}</td>
                                             <td class="center " width="">{{ scene.executingStatus }}</td>
-                                            <td class="center " width="">{{ scene.executedResult }}</td>
+                                            <td class="center " width="" v-if="scene.executedResult==null">执行中</td>
+                                            <td class="center " width="" v-else>{{ scene.executedResult }}</td>
                                             <!-- <td class="center " width="">{{ scene.resultMessage }}</td> -->
 
                                             <!-- <td class="center " width="">{{ recordSaveType[scene.recordSaveType] }}</td>
@@ -240,4 +291,8 @@
 </html>
 <link rel="import" href="./common/footer.html?__inline">
 <script src="../lib/vue-resource.min.js"></script>
+
 <script type="text/javascript" src="../static/js/execution.es.js"></script>
+<script type="text/javascript" src="../lib/jquery-1.8.3.min.js"></script>
+<script type="text/javascript" src="../lib/bootstrap-datetimepicker.min.js"></script>
+<script type="text/javascript" src="../lib/bootstrap-datetimepicker.fr.js"></script>
