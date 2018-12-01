@@ -236,7 +236,6 @@ var template_obj = `
 </div>
 `;
 
-var address2='http://10.108.223.23:8080/atfcloud2.0a';
 var objectRepo =  Vue.extend({
     // el: '#main-content',
     name: 'object-repo',
@@ -250,12 +249,17 @@ var objectRepo =  Vue.extend({
             type: Boolean,
             default: true
         },
-        componentMode: false,
-        transid: {
-            default: 79
-        }
+        'componentMode': false,
+        'transid': {
+            type: Number,
+            default: 0
+        },
+        'autid': {
+            type: Number,
+            default: 0
+        },
     },
-    data: function(){ 
+    data: function(){
         var _this = this;
         return {
             autId: '',
@@ -413,21 +417,6 @@ var objectRepo =  Vue.extend({
         }},
     ready: function() {
         var _this = this;
-        if(!this.componentMode){
-            this.getAutandTrans();
-            $('#autSelect').change(function() {
-                _this.transactSelect();
-                _this.autId = $('#autSelect').val();
-                _this.transactId = $('#transactSelect').val();
-                _this.getObjTree();
-            });
-            $('#transactSelect').change(() => {
-                _this.transactId = $('#transactSelect').val();
-                _this.getObjTree();
-            });
-            // 搜索节点
-            
-        }
         if(this.componentMode) {
             this.getObjTree();
         }
@@ -442,128 +431,55 @@ var objectRepo =  Vue.extend({
         // 如果引入的是组件
         
     },
+    watch: {
+        transid: {
+                handler(newValue, oldValue) {
+                    this.getObjTree();
+                    this.classtypeSelect();
+        　　　　},
+        　　　　deep: true
+        　　},
+    },
     methods: {
+        // 页面初始化获取对象库
+        getObjTree: function(){
+            var _this = this;
+            if(!_this.transid)
+                return
+            else{
+                var transid = this.transid;
+                $.ajax({
+                    url: address2 + '/objectRepository/queryAllObjectForATransact',
+                    type: 'post',
+                    contentType: 'application/json',
+                    data: JSON.stringify({ "transactId": transid }),
+                    success: function(data) {
+                            var objects = data.objects;
+                            $.fn.zTree.init($("#objectTree"), _this.setting1, objects);
+                            _this.repositoryId = data.repositoryId;
+                        }
+                });
+            }
+        },
         //获取classtype
         classtypeSelect: function() {
             var _this = this
-            const val = $('#autSelect').val();
-            $.ajax({
-                url: address2 + '/aut/queryAutVisibleOmClasses',
-                contentType: 'application/json',
-                data: JSON.stringify({ 'id': _this.autId }),
-                type: "POST",
-                success: function(data) {
-                    // console.log(data)
-                    _this.classtypeList = data.omClassRespDTOList.concat(data.arcClassRespDTOList);
-                }
-            });
-        },
-        //初始化获取测试系统和功能点
-        getAutandTrans: function() {
-            var _this = this
-            $.ajax({
-                url: address2 + "/aut/queryListAut",
-                type: "POST",
-                contentType:'application/json',
-                success: function(data) {
-                    var autList = data.autRespDTOList;
-                    var str = "";
-                    for (var i = 0; i < autList.length; i++) {
-
-                        str += " <option value='" + autList[i].id + "' >" + autList[i].nameMedium + "</option> ";
+            if(_this.autid)
+                return
+            else{
+                $.ajax({
+                    url: address2 + '/aut/queryAutVisibleOmClasses',
+                    contentType: 'application/json',
+                    data: JSON.stringify({ 'id': _this.autId }),
+                    type: "POST",
+                    success: function(data) {
+                        // console.log(data)
+                        _this.classtypeList = data.omClassRespDTOList.concat(data.arcClassRespDTOList);
                     }
-
-                    $('#autSelect').html(str);
-                    _this.autId = sessionStorage.getItem("autId");
-                    $("#autSelect").val(_this.autId);
-                    $.ajax({
-                        url: address2 + '/transactController/pagedBatchQueryTransact',
-                        type: 'POST',
-                        contentType: 'application/json',
-                        data: JSON.stringify({
-                            'currentPage': 1,
-                            'pageSize': 100000,
-                            'orderColumns': 'id',
-                            'orderType': 'asc',
-                            'autId': _this.autId
-                        }),
-                        success: function(data) {
-                            var transactList = data.list;
-                            var str = "";
-                            for (var i = 0; i < transactList.length; i++) {
-
-                                str += " <option value='" + transactList[i].id + "'>" + transactList[i].nameMedium + "</option> ";
-                            }
-                            $('#transactSelect').html(str);
-                            _this.transactId = sessionStorage.getItem("transactId");
-                            $("#transactSelect").val(_this.transactId);
-                            // 获取对象树
-                            _this.getObjTree();
-
-                        }
-
-                    });
-                    // 获取classtype
-                    _this.classtypeSelect();
-                }
-            });
-        }, 
-        
-        //获取测试系统
-        autSelect: function() {
-            $.ajax({
-                async: false,
-                url: address2 + "/aut/queryListAut",
-                type: "POST",
-                contentType:'application/json',
-                success: function(data) {
-                    var autList = data.autRespDTOList;
-                    var str = "";
-                    for (var i = 0; i < autList.length; i++) {
-
-                        str += " <option value='" + autList[i].id + "' >" + autList[i].nameMedium + "</option> ";
-                    }
-
-                    $('#autSelect').html(str);
-
-                }
-            });
+                });
+            }
         },
-        //功能点
-        transactSelect: function() {
-            var val = $('#autSelect').val();
-            $.ajax({
-                async: false,
-                url: address2 + '/transactController/pagedBatchQueryTransact',
-                type: 'POST',
-                contentType: 'application/json',
-                data: JSON.stringify({
-                    'currentPage': 1,
-                    'pageSize': 100000,
-                    'orderColumns': 'id',
-                    'orderType': 'asc',
-                    'autId': val,
-                }),
-                success: function(data) {
-                    var transactList = data.list;
-                    var str = "";
-                    for (var i = 0; i < transactList.length; i++) {
 
-                        str += " <option value='" + transactList[i].id + "'>" + transactList[i].nameMedium + "</option> ";
-                    }
-                    $('#transactSelect').html(str);
-                }
-
-            });
-        },
-       
-        //设置所属测试系统和所属功能点为上级页面选中的值
-        setval: function() {
-            this.autId=sessionStorage.getItem("autId");
-            this.transactId=sessionStorage.getItem("transactId");
-            $("#autSelect").val(this.autId);
-            $("#transactSelect").val(this.transactId);
-        },
         addObj: function() {
             var _this = this;
             var objName = $("#addObjName").val(),
@@ -755,22 +671,7 @@ var objectRepo =  Vue.extend({
             var selectedTr = $(e.target).parent().next().find('input[name="chk_list"]:checked').parent().parent();
             selectedTr.remove();
         },
-        // 页面初始化获取对象库
-        getObjTree: function(){
-            var _this = this;
-            var transid = !this.componentMode ? this.transactId : this.transid;
-            $.ajax({
-                url: address2 + '/objectRepository/queryAllObjectForATransact',
-                type: 'post',
-                contentType: 'application/json',
-                data: JSON.stringify({ "transactId": transid }),
-                success: function(data) {
-                        var objects = data.objects;
-                        $.fn.zTree.init($("#objectTree"), _this.setting1, objects);
-                        _this.repositoryId = data.repositoryId;
-                    }
-            });
-        },
+
         //禁止拖动
        zTreeBeforeDrag : function (treeId, treeNodes) {
             return false;
@@ -876,14 +777,6 @@ var objectRepo =  Vue.extend({
                         $('#failModal').modal();
                 }
             });
-        },
-        // 跳转到元素库页面配置上级页面选中的功能点的元素库
-        toElementLib: function() {
-            location.href = "elementLibrary.html";
-        },
-        // 跳转到基础脚本页面配置上级页面选中的功能点的基础脚本
-        toScript: function() {
-            location.href = "script.html";
         },
     },
 });

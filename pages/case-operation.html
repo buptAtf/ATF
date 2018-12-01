@@ -62,10 +62,10 @@
         <!-- Tab panes -->
         <di class="tab-content">
           <div role="tabpanel" class="tab-pane" :class="{active: activeName=='object-rep'}" id="object-rep">
-            <object-repo :bread-show="false" :top-select="false" :component-mode="true" :transid="79"></object-repo>
+            <object-repo :bread-show="false" :top-select="true" :component-mode="true" :transid="transid" :autid="autid"></object-repo>
           </div>
           <div role="tabpanel" class="tab-pane" id="element-library" :class="{active: activeName=='element-library'}">
-            <element-library :bread-show="false" :top-select="false" :component-mode="true" :transid="79"></element-library>
+            <element-library :transid="transid" :autid="autid"></element-library>
           </div>
           <div role="tabpanel" class="tab-pane" id="messages" :class="{active: activeName=='messages'}">
             <case-data></case-data>
@@ -78,7 +78,7 @@
           </di>
         </di>
     
-        <el-tab-pane label="对象库" name="first"><object-repo></object-repo></el-tab-pane>
+        <!-- <el-tab-pane label="对象库" name="first"><object-repo></object-repo></el-tab-pane> -->
 
         </el-tabs>
       </section>
@@ -193,45 +193,6 @@
     </div><!-- /.modal -->
 	</div>
 </script>
-<script type="text/x-template" id="view-script-template">
-  <div class="tab-content">
-      <table class="table table-bordered" v-if="tableData.length">
-          <thead>
-            <tr>
-              <th>#</th>
-              <th>操作项</th>
-              <th>方法</th>
-              <th>参数</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr v-for="(index, row) in tableData">
-              <td class="index">{{ +index + 1 }}</td>
-              <td class="operations">
-                  <template v-if="row.ui != '' && row.element != ''">
-                      <label >UI:</label>
-                      <span class="operation-ui">{{row.ui}}</span>
-                      <label>元素:</label>
-                      <span class="operation-element" :data-classtype="row.classType">{{row.element}}</span>
-                  </template>
-                  <template v-else>
-                      <label >公共函数:</label>
-                      <span class="operation-ui" style="display: none;">{{row.ui}}</span>
-                      <span class="operation-element"  style="display: none;" :data-classtype="row.classType">{{row.element}}</span>
-                  </template>
-              </td>
-              <td class="functions">{{ row.method }}</td>
-              <td class="parameters">
-                  <div class="param-show">
-                    <span v-for="(index,parameter) in row.parameters" class="param-name-show">参数{{index+1}}: <b class="param-value-show">{{parameter}}</b>;&nbsp;&nbsp;</span>
-                  </div>
-              </td>
-            </tr>
-          </tbody>
-      </table>
-      <div v-else style="text-align: center;margin: 20px auto;">暂无数据</div>
-  </div>
-</script>
 <script type="text/x-template" id="execution-record">
   <div class="tab-content" style="display: flex; flex-direction: column;">
     <!-- <iframe src="http://10.108.223.23:8080/ATFCloud/Record/reporter.html" frameborder="0" style="width: 100%; height: 300px;"></iframe> -->
@@ -279,11 +240,11 @@
 <!-- 先引入 Vue -->
 <!-- <script src="https://unpkg.com/vue/dist/vue.js"></script> -->
 <!--script for this page only-->
-<script type="text/javascript" src="../static/js/objectRepo.js"></script>
-<script type="text/javascript" src="../static/js/elementLibrary.js"></script>
+<script type="text/javascript" src="../static/js/case-operation/elementemplate.js"></script>
 <script type="text/javascript" src="../static/js/case-operation/case-data.js"></script>
 <script type="text/javascript" src="../static/js/case-operation/execution-record.js"></script>
 <script type="text/javascript" src="../static/js/case-operation/view-script.js"></script>
+<script type="text/javascript" src="../static/js/objectRepo.js"></script>
 <!-- ztree -->
 <script type="text/javascript" src="../lib/jquery.ztree.all.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.17.0/jquery.validate.js"></script>
@@ -291,6 +252,9 @@
 <link rel="import" href="./common-vac/confirm.html?__inline">
 <script src="../static/js/config.js"></script>
 <script src="../static/js/vac-functions.es.js"></script>
+<script type="text/javascript" src="../static/js/fuzzysearch.js"></script>
+<script type="text/javascript" src="../lib/jquery.ztree.exhide.min.js"></script>
+
 <!-- 引入组件库 -->
 <!-- <script src="https://unpkg.com/element-ui/lib/index.js"></script> -->
 <script>
@@ -300,10 +264,13 @@
       return {
         activeName: 'object-repo',
         recordData: '',
-        viewScriptTestcaseId: ''
+        viewScriptTestcaseId: '',
+        autid:"",
+        transid:""
       }
     },
     ready: function() {
+      var _this=this;
       var queryArgs = location.search.slice(1);
       var o = {};
       var arr = queryArgs.split('&');
@@ -312,17 +279,38 @@
         o[a[0]] = a[1];
       }
       console.log(o)
-      this.recordData = o.viewcaseargs ?  o.viewcaseargs : '';console.log( this.recordData);
-      this.activeName = o.activeName;
-      switch(this.activeName) {
-        case 'exec-record': {
-          this.caseId = o.caseid;
-          this.caseCompositeType = o.type;
-        }
-        case 'view-script': {
-          this.viewScriptTestcaseId = o.testcaseId;
-        }
+      
+      _this.recordData = o.viewcaseargs ?  o.viewcaseargs : '';console.log( _this.recordData);
+      _this.activeName = o.activeName;//链接过来我是要看哪个界面的
+      _this.viewScriptTestcaseId = o.testcaseId;
+      $.ajax({
+                url: address3+'testcase/getSingleTestCaseInfo',
+                type: 'post',
+                contentType: 'application/json',
+                data: JSON.stringify({
+                    "id": _this.viewScriptTestcaseId
+                }),
+                success: function(res){
+                    var caseData=res.testcaseViewRespDTO;
+                    _this.autid=caseData.autId;
+                    _this.transid=caseData.transId;
+                }
+            });
+      if(_this.activeName=='exec-record'){
+        _this.caseId = o.caseid;
+        _this.caseCompositeType = o.type;
       }
+      else if(_this.activeName=='view-script'){
+
+      }
+      else if(_this.activeName=='object-rep'){
+        _this.viewScriptTestcaseId = o.testcaseId;
+      }
+      else if(_this.activeName=='exec-record'){
+        _this.viewScriptTestcaseId = o.testcaseId;
+      }
+      else{}
+      console.log(' _this.autid'+ _this.autid+'_this.transid'+_this.transid)
       // $('#'+this.activeName).tab('show')
     }
   })

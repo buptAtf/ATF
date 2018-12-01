@@ -37,6 +37,7 @@ var app = new Vue({
         
     },
     ready: function() {
+        var ts=this;
         // getRecord(this.currentPage, this.pageSize, this.order, this.sort);
         var p1 = new Promise((resolve, reject) => {
             //  getTestPhase(resolve);
@@ -46,12 +47,12 @@ var app = new Vue({
         });
         var p = Promise.all([p1, p2]);
         p.then(() => {
-            getRecord();
+            getRecord(ts.currentPage, ts.pageSize, 'id', 'asc');
         });
         // getTestPhase();
         // getTestRound();
         getScene();
-        getRecord();
+        getRecord(ts.currentPage, ts.pageSize, 'id', 'asc');
         // setTimeout(getRecord(), 500);
         changeListNum();
 
@@ -109,8 +110,9 @@ var app = new Vue({
                 recorderStatus: '2',
                 item
             }
-			var args = encodeURIComponent(JSON.stringify(o));
-			window.open('case-operation.html?testcaseId='+caseid+'&activeName=exec-record&viewcaseargs='+args, 'case_record');
+            var args = encodeURIComponent(JSON.stringify(o));
+            window.open('case-operation.html?testcaseId='+caseid)
+			//window.open('case-operation.html?testcaseId='+caseid+'&activeName=exec-record&viewcaseargs='+args, 'case_record');
 		},
         //合并
         merge: function(){
@@ -214,33 +216,37 @@ var app = new Vue({
 });
 
 //获取测试记录
-function getRecord(page, listnum, order, sort) {
+function getRecord(page=1, listnum=10, order='id', sort='asc') {
+    var _this=this;
     //获取list通用方法，只需要传入多个所需参数
     $.ajax({
+<<<<<<< HEAD
+        // url: address + 'testrecordController/selectAllByPage',
+        url: address3+'testRecordController/pagedBatchQueryTestRecordByRunId',
+=======
         // url: address + 'testRecordController/selectAllByPage',
         url: address3+'testRecordController/batchQueryTestRecordByRunId',
+>>>>>>> origin/master
         type: 'POST',
         contentType: 'application/json',
         data: JSON.stringify({
-            "runId":sessionStorage.getItem('batchId')
-            // testPhaseId: app.testphase,
-            // testRoundId: app.testround,
-            // sourceChannel: 'PE4'
-            // caseLibId: '',
-            // sceneId: '',
-            // testPlanId: ''
+            "runId":sessionStorage.getItem('batchId'),
+            "testPlanId":"",
+            "pageSize":listnum,
+            "currentPage":page,
+            "orderType":sort,
+            "orderColumns":order
         }),
         success: function(data) {
             if (data.respCode === '0000') {
                 app.recordList = data.list;
-                
+                app.tt = data.totalCount;
+                app.totalPage = data.totalPage;
+                app.pageSize = listnum;
             } else {
-                // $('#failModal').modal();
+                 $('#failModal').modal();
             }
-            // app.recordList = data.rows;
-            // app.tt = data.total;
-            // app.totalPage = Math.ceil(app.tt / listnum);
-            // app.pageSize = listnum;
+
         }
     });
 
