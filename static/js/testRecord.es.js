@@ -111,7 +111,7 @@ var app = new Vue({
                 item
             }
             var args = encodeURIComponent(JSON.stringify(o));
-            window.open('case-operation.html?testcaseId='+caseid)
+            window.open('case-operation.html?testcaseId='+caseid+'&activeName=element-library')
 			//window.open('case-operation.html?testcaseId='+caseid+'&activeName=exec-record&viewcaseargs='+args, 'case_record');
 		},
         //合并
@@ -214,13 +214,8 @@ function getRecord(page=1, listnum=10, order='id', sort='asc') {
     var _this=this;
     //获取list通用方法，只需要传入多个所需参数
     $.ajax({
-<<<<<<< HEAD
         // url: address + 'testrecordController/selectAllByPage',
         url: address3+'testRecordController/pagedBatchQueryTestRecordByRunId',
-=======
-        // url: address + 'testRecordController/selectAllByPage',
-        url: address3+'testRecordController/batchQueryTestRecordByRunId',
->>>>>>> origin/master
         type: 'POST',
         contentType: 'application/json',
         data: JSON.stringify({
@@ -240,7 +235,6 @@ function getRecord(page=1, listnum=10, order='id', sort='asc') {
             } else {
                  $('#failModal').modal();
             }
-
         }
     });
 
