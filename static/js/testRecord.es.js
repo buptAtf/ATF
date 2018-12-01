@@ -174,12 +174,18 @@ var app = new Vue({
         queryByRounds: function(){
             var _this = this;
             $.ajax({
-                url: address3 + 'testRecordController/batchQueryTestRecordByTestRound',
+                url: address3 + 'testRecordController/pagedBatchQueryTestRecordByTestRound',
                 type: 'post',
                 contentType: 'application/json',
                 data: JSON.stringify({
                     'testRound': _this.testround,
-                    'recorderStatus': _this.recorderstate,
+                    'recorderStatus':+_this.recorderstate,  //在字符串类型前加+，将类型转换为整形"123"+5                    
+                    'caseId': +_this.caseId,
+                    'sceneName': '',
+                    'pageSize': 10,     //整形
+                    'currentPage': 1,   //整形
+                    'orderType': '',
+                    'orderColumns': ''
                 }),
                 success: function(data){
                     _this.recordList = data.list;
