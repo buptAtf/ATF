@@ -123,7 +123,7 @@ var vBody = new Vue({
 							} else{
 								console.log("我来自跳转转过来的出来的");
 								_this.testPlanId = tempTestPlanId;
-								sessionStorage.setItem('testPlanId','');
+								sessionStorage.removeItem('testPlanId');
 							}
 							_this.testPlans = data.testPlanEntityList;
 							resolve();

@@ -435,10 +435,15 @@ var objectRepo =  Vue.extend({
         transid: {
                 handler(newValue, oldValue) {
                     this.getObjTree();
-                    this.classtypeSelect();
         　　　　},
         　　　　deep: true
         　　},
+        autid: {
+            handler(newValue, oldValue) {
+                this.classtypeSelect();
+    　　　　},
+    　　　　deep: true
+    　　},
     },
     methods: {
         // 页面初始化获取对象库
@@ -464,17 +469,17 @@ var objectRepo =  Vue.extend({
         //获取classtype
         classtypeSelect: function() {
             var _this = this
-            if(_this.autid)
+            if(!_this.autid)
                 return
             else{
                 $.ajax({
                     url: address2 + '/aut/queryAutVisibleOmClasses',
                     contentType: 'application/json',
-                    data: JSON.stringify({ 'id': _this.autId }),
+                    data: JSON.stringify({ 'id': _this.autid}),
                     type: "POST",
                     success: function(data) {
                         // console.log(data)
-                        _this.classtypeList = data.omClassRespDTOList.concat(data.arcClassRespDTOList);
+                        _this.classtypeList = data.omClassRespDTOList;
                     }
                 });
             }

@@ -115,7 +115,7 @@ var app = new Vue({
                 item
             }
             var args = encodeURIComponent(JSON.stringify(o));
-            window.open('case-operation.html?testcaseId='+caseid)
+            window.open('case-operation.html?testcaseId='+caseid+'&activeName=element-library')
 			//window.open('case-operation.html?testcaseId='+caseid+'&activeName=exec-record&viewcaseargs='+args, 'case_record');
 		},
         //合并
@@ -280,7 +280,6 @@ function getRecord(page=1, listnum=10, order='id', sort='asc') {
             } else {
                  $('#failModal').modal();
             }
-
         }
     });
 

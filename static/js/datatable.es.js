@@ -5,11 +5,12 @@ var vac_conditionList = null;
 var autId = null;
 function viewScriptHandler (event) {
 	var testcaseId = event.target.getAttribute('data-id');
+	var caseCompositeType = event.target.getAttribute('caseCompositeType');
 	// var data = { testcaseId
 	// };
 	// window.open('case-operation.html?activeName=view-script&testcaseId='+testcaseId);
 	// view.viewScriptTestcaseId  = testcaseId;
-	view.getData(testcaseId);
+	view.getData(testcaseId,caseCompositeType);
 	event.stopPropagation();
 }
 var view = new Vue({
@@ -19,7 +20,7 @@ var view = new Vue({
 		tableData: []
 	},
 	methods: {
-		getData: function(testcaseId) {
+		getData: function(testcaseId,caseCompositeType) { 
 			var _this = this;
 			//var data = {"testcaseId":testcaseId,"caseCompositeType":1};
 			$('#view-script').modal('show');
@@ -27,7 +28,7 @@ var view = new Vue({
         url: address3 + 'dataCenter/getTestcaseScript',
         data: JSON.stringify({
 			"testcaseId":testcaseId,
-			"caseCompositeType":1
+			"caseCompositeType":caseCompositeType
 		}),
         type: 'post',
 		contentType:"application/json",

@@ -24,7 +24,7 @@
 <body id="" v-cloak>
   <di class="content" id="app1">
     <!--header start-->
-    <link rel="import" href="./common/header-guide.html?__inline">
+    <!-- <link rel="import" href="./common/header-guide.html?__inline"> -->
     <!--header end-->
     <!--sidebar start-->
     <!-- <link rel="import" href="./common/aside-guide.html?__inline"> -->
@@ -33,22 +33,22 @@
     <section id="main-content" style="margin-left: 0;">
       <section class="wrapper">
         <ul class="nav nav-tabs" role="tablist">
-          <li role="presentation" :class="{active: activeName=='object-rep'}">
-            <a href="#object-rep" aria-controls="object-rep" role="tab" data-toggle="tab">对象库</a>
-          </li>
           <li role="presentation" :class="{active: activeName=='element-library'}">
             <a href="#element-library" aria-controls="element-library" role="tab" data-toggle="tab">元素库</a>
           </li>
-          <li role="presentation" :class="{active: activeName=='messages'}">
-            <a href="#messages" aria-controls="messages" role="tab" data-toggle="tab">用例数据</a>
-          </li>
-          <li role="presentation" :class="{active: activeName=='exec-record'}">
-            <a href="#exec-record" aria-controls="exec-record" role="tab" data-toggle="tab">执行记录</a>
+          <li role="presentation" :class="{active: activeName=='object-rep'}">
+            <a href="#object-rep" aria-controls="object-rep" role="tab" data-toggle="tab">对象库</a>
           </li>
           <li role="presentation" :class="{active: activeName=='view-script'}">
               <a href="#view-script" aria-controls="view-script" role="tab" data-toggle="tab">查看脚本</a>
           </li>
-          <li role="presentation" :class="{active: activeName=='view-script'}">
+          <li role="presentation" :class="{active: activeName=='messages'}">
+            <a href="#messages" aria-controls="messages" role="tab" data-toggle="tab">用例数据</a>
+          </li>
+          <!-- <li role="presentation" :class="{active: activeName=='exec-record'}">
+            <a href="#exec-record" aria-controls="exec-record" role="tab" data-toggle="tab">执行记录</a>
+          </li> -->
+          <!-- <li role="presentation" :class="{active: activeName=='view-script'}">
               <a href="#view-script" aria-controls="view-script" role="tab" data-toggle="tab">用例详情</a>
           </li>
           <li role="presentation" :class="{active: activeName=='view-script'}">
@@ -56,7 +56,7 @@
           </li>
           <li role="presentation" :class="{active: activeName=='view-script'}">
               <a href="#view-script" aria-controls="view-script" role="tab" data-toggle="tab">对象库元素库</a>
-          </li>
+          </li> -->
         </ul>
 
         <!-- Tab panes -->
