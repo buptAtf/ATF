@@ -51,13 +51,16 @@ var app = new Vue({
         creatTimeEnd:'',
         instanceSource:'',
         instanceSourceList:[],//用例来源下拉框
-        executingStatus:'',
+        executeStatus:'',
+        testPlans:[],
     },
     ready: function() {
         var _this = this;
         //queryExecutionRecord(this.currentPage, this.pageSize, this.order, this.sort);
         _this.changeListNum();
-        this.queryExecutionRecord(this.currentPage, this.pageSize, this.order, this.sort)
+        this.queryExecutionRecord(this.currentPage, this.pageSize, this.order, this.sort);
+        this.queryTestPlan();
+
 
         // console.log('ss');
         $('.3').addClass('open')
@@ -215,12 +218,61 @@ var app = new Vue({
             sessionStorage.setItem('testPlanId',testPlan);
             location.href="./testplan-execute.html";
         },
-        queryBatchRecord: function(){
-            
-
+        queryTestPlan: function(){
+            var _this = this;
+            $.ajax({
+                url: address3 + 'testPlanController/queryTestPlan',
+                type: 'post',
+                contentType: 'application/json',
+                data:JSON.stringify({
+                    "caseLibId": 50,
+                    "nameMedium": "",
+                    "descMedium": "",
+                }),
+                success: function(data){
+                    if (data.respCode === '0000') {
+						if (data.testPlanEntityList && (data.testPlanEntityList.length>0)) {
+                            _this.testPlans = data.testPlanEntityList;
+                            _this.testPlanId = data.testPlanEntityList[0].id;
+                        }
+                    }
+                }
+            });
         },
+        creatTimeChange: function(startTime,endTime){           
+            startTime = startTime + ' 00:00:00:000';
+            endTime = endTime + ' 00:00:00:000';
+            var startTimeObj = new Date(startTime.replace(/-/g,'/'));
+            var endTimeObj = new Date(endTime.replace(/-/g,'/'));
+            var timeList = [startTimeObj.getTime(),endTimeObj.getTime()];
+            return timeList;
+        },
+        queryBatchByClick: function(){
+            var _this = this;
+            var timeList = _this.creatTimeChange(_this.creatTimeStart,_this.creatTimeEnd);
+            var startTime = timeList[0];
+            var endTime = timeList[1];
+            $.ajax({
+                url :address3 + '/testRecordController/pagedPagedBatchQueryTestRecordByTestPlan',
+                type :'post',
+                contentType: 'application/json',
+                data:JSON.stringify({
+                    'testPlanId': + _this.testPlanId,
+                    'executeRound': '',
+                    'caseId': '',
+                    'sceneName': '',
+                    'sourceChannel': _this.sourceChannel,
+                    'executeStatus': + _this.executeStatus,     //执行状态
+                    'queryStartTime': startTime,
+                    'queryEndTime': endTime,
+                    'pageSize': 5,
+                    'currentPage': 1,
+                    'orderType': '',
+                    'orderColumns': ''
+                }),
+            })
+        }
     },
-
 });
 
 //获取场景
@@ -333,7 +385,7 @@ function queryScene() {
         }
     });
 }
-
+//创建时间的开始
 $('.form_date_start').datetimepicker({
     language:  'zh-CN',
     weekStart: 1,
@@ -344,6 +396,7 @@ $('.form_date_start').datetimepicker({
     minView: 2,
     forceParse: 0
 });
+//创建时间的结束
 $('.form_date_end').datetimepicker({
     language:  'zh-CN',
     weekStart: 1,
@@ -354,5 +407,6 @@ $('.form_date_end').datetimepicker({
     minView: 2,
     forceParse: 0
 });
+
 
 

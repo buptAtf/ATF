@@ -49,19 +49,19 @@
                                     <form class="form-horizontal col-sm-12">
                                         <div class="form-group">
                                             <label class="col-sm-1 control-label">创建时间</label>
-                                                <div class="input-group date form_date_start col-sm-2" data-date="" data-date-format="yyyy-mm-dd  " data-link-field="dtp_input0" data-link-format="yyyy-mm-dd">
-                                                    <input class="form-control"  type="text" value=""  v-model="creatTimeStart" readonly>
+                                                <div class="input-group date form_date_start col-sm-2" data-date-format="yyyy-mm-dd" >
+                                                    <input class="form-control"  type="text" value="" v-model="creatTimeStart" readonly>
                                                     <span class="input-group-addon"><span class="glyphicon glyphicon-remove"></span></span>
                                                     <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
                                                 </div>
-                                                <input type="hidden" id="dtp_input0" value=""  />
+                                                <!-- <input type="hidden" id="dtp_input0" value=""  /> -->
 
-                                                <div class="input-group date form_date_end col-sm-2" data-date="" data-date-format="yyyy-mm-dd  " data-link-field="dtp_input1" data-link-format="yyyy-mm-dd">
+                                                <div class="input-group date form_date_end col-sm-2" data-date-format="yyyy-mm-dd" >
                                                     <input class="form-control"  type="text" value=""  v-model="creatTimeEnd" readonly>
                                                     <span class="input-group-addon"><span class="glyphicon glyphicon-remove"></span></span>
                                                     <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
                                                 </div>
-                                                <input type="hidden" id="dtp_input1" value=""  />
+                                                <!-- <input type="hidden" id="dtp_input1" value=""/> -->
                                         </div>
                                     </form>
                                 </div>
@@ -72,21 +72,24 @@
                                         <div class="form-group">
                                             <label class="col-sm-1 control-label">用例来源</label>
                                             <div class="col-sm-2">
-                                                <select class="form-control" name="instanceSource" v-model="instanceSource">       
-                                                    <option value="" selected>未知来源</option>
-                                                    <option v-for="item in instanceSourceList" :value="item">{{ item }}</option>                                                                                                                                                                                                                                                 <!--原来是 item.phasename -->
+                                                <select class="form-control" name="sourceChannel" v-model="sourceChannel">       
+                                                    <option value="PE3" selected>PE3</option>
+                                                    <option value="PE4" >PE4</option>
+                                                    <option value="PE5" >PE5</option>
+                                                    <option value="PE5" >PE6</option>
+                                                                                                                                                                                                                                                                                                     <!--原来是 item.phasename -->
                                                 </select>
                                             </div>
                                             <label class="col-sm-1 control-label">测试计划</label>
                                             <div class="col-sm-2">
-                                                <select class="form-control" name="" v-model="testPlan">       
-                                                    <option value="" selected>  待填  </option>
-                                                    <option v-for="item in testPlanList" :value="item">{{ item }}</option>                                                                                                                                                                                                                                                       <!--原来是 item.phasename -->
+                                                <select class="form-control"  v-model="testPlanId">       
+                                                    
+                                                    <option v-for="(index,item) in testPlans" v-bind:value="item.id">{{item.nameMedium}}</option>                                                                                                                                                                                                                                                       <!--原来是 item.phasename -->
                                                 </select>
                                             </div>
                                             <label class="col-sm-1 control-label">执行状态</label>
                                             <div class="col-sm-2">
-                                                <select class="form-control" name="" v-model="executingStatus">       
+                                                <select class="form-control"  v-model="executeStatus">       
                                                     <option value="" selected>执行完毕</option>   
                                                     <option value="" selected>错误终止</option>
                                                     <option value="" selected>执行中</option> 
@@ -94,7 +97,7 @@
                                                 </select>
                                             </div>
                                             <div class="col-sm-1">
-                                                <a class="btn btn-primary" @click="">查询</a><!-- 留待@click中写函数-->
+                                                <a class="btn btn-primary" @click="queryBatchByClick()">查询</a><!-- 留待@click中写函数-->
                                             </div>
                                         </div>
                                     </form>

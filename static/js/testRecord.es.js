@@ -34,6 +34,8 @@ var app = new Vue({
         execround: 0,
         testPlanId:'',
         caseId:'',
+        testPlans:[],
+        sceneName:'',
         
     },
     ready: function() {
@@ -55,6 +57,8 @@ var app = new Vue({
         getRecord(ts.currentPage, ts.pageSize, 'id', 'asc');
         // setTimeout(getRecord(), 500);
         changeListNum();
+        this.queryTestPlan();
+        this.queryScene();
 
         $('.3').addClass('open')
 		$('.3 .arrow').addClass('open')
@@ -182,7 +186,7 @@ var app = new Vue({
                 data: JSON.stringify({
                     'testRound': _this.testround,
                     'recorderStatus':+_this.recorderstate,  //在字符串类型前加+，将类型转换为整形"123"+5                    
-                    'caseId': +_this.caseId,
+                    'caseId': _this.caseId,
                     'sceneName': '',
                     'pageSize': 10,     //整形
                     'currentPage': 1,   //整形
@@ -193,7 +197,7 @@ var app = new Vue({
                     _this.recordList = data.list;
                 },
             });
-            alert('轮次查询');
+            
         },
         queryByBatchs: function(){          //通过查询批次的方式进行查询，输入执行轮次和测试计划，进行查询
             var _this = this;
@@ -210,8 +214,43 @@ var app = new Vue({
                 }
 
             });
-            alert('批量查询');
+            // alert('批量查询');
         },
+        queryTestPlan: function(){
+            var _this = this;
+            $.ajax({
+                url: address3 + 'testPlanController/queryTestPlan',
+                type: 'post',
+                contentType: 'application/json',
+                data:JSON.stringify({
+                    "caseLibId": 50,
+                    "nameMedium": "",
+                    "descMedium": "",
+                }),
+                success: function(data){
+                    if (data.respCode === '0000') {
+						if (data.testPlanEntityList && (data.testPlanEntityList.length>0)) {
+                            _this.testPlans = data.testPlanEntityList;
+                            _this.testPlanId = data.testPlanEntityList[0].id;
+                        }
+                    }
+                }
+            });
+        },
+        queryScene: function(){
+            var _this = this;
+            $.ajax({
+                url: address3 + 'sceneController/selectAllScene',
+                type: 'post',
+                contentType:'application/json',
+                data:JSON.stringify({
+                    "caseLibId": 50,
+                }),
+                success: function(data){
+                    _this.sceneList = data.scenequeryDtoList;
+                }
+            })
+        }
     }
 });
 
@@ -220,13 +259,8 @@ function getRecord(page=1, listnum=10, order='id', sort='asc') {
     var _this=this;
     //获取list通用方法，只需要传入多个所需参数
     $.ajax({
-<<<<<<< HEAD
         // url: address + 'testrecordController/selectAllByPage',
         url: address3+'testRecordController/pagedBatchQueryTestRecordByRunId',
-=======
-        // url: address + 'testRecordController/selectAllByPage',
-        url: address3+'testRecordController/batchQueryTestRecordByRunId',
->>>>>>> origin/master
         type: 'POST',
         contentType: 'application/json',
         data: JSON.stringify({
@@ -316,10 +350,10 @@ function getScene(){
 //改变页面大小
 function changeListNum() {
     $('#mySelect').change(function() {
-        listnum = $(this).children('option:selected').val();
-        $("#mySelect").find("option[text='" + listnum + "']").attr("selected", true);
+        app.listnum = $(this).children('option:selected').val();
+        $("#mySelect").find("option[text='" + app.listnum + "']").attr("selected", true);
          app.currentPage=1;
-        getRecord(1, listnum, 'id', 'asc');
+        getRecord(1, app.listnum, 'id', 'asc');
     });
 }
 
