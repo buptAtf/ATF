@@ -1550,15 +1550,21 @@ var app = new Vue({
         //获取添加案例任务编号下拉列表
         getMission: function(){
             $.ajax({
-                url: address3+"missionController/selectMission",
+                url: address3 + "missionController/pagedBatchQueryTestMission",
                 type: 'post',
                 contentType: 'application/json',
                 data: JSON.stringify({
-                    "caseLibId": sessionStorage.getItem('caselibId')
+                    'pageSize': 10000,
+                    'currentPage': 1,
+                    'orderType': "desc",
+                    'orderColumns': 'modified_time',
+                    'nameMedium': '',
+                    'descMedium': '',
+                    'codeLong': ''
                 }),
                 success:function(data){
                     // console.log(data)
-                    app.missionList=data.missionEntityList;
+                    app.missionList=data.list;
                 }
             });
         },

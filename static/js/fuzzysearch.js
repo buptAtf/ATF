@@ -9,7 +9,7 @@
  function fuzzySearch(zTreeId, searchField, isHighLight, isExpand){
 	var zTreeObj = $.fn.zTree.getZTreeObj(zTreeId);//获取树对象
 	if(!zTreeObj){
-		alter("获取树对象失败");
+		console.log("获取树对象失败");
 	}
 	var nameKey = zTreeObj.setting.data.key.name; //获取name属性的key
 	isHighLight = isHighLight===false?false:true;//除直接输入false的情况外,都默认为高亮
