@@ -4,6 +4,7 @@ var app = new Vue({
         recordList: [], //测试记录
         testPhaseList:[],//测试阶段下拉列表
         testRoundList:[],//测试轮次下拉列表
+        testPlanList:[],//测试计划下拉表
         sceneList:[],//场景下拉列表
         testphase: '',//测试阶段
         testround: '',//测试轮次
@@ -32,6 +33,8 @@ var app = new Vue({
         testplan: 0 ,           //用于查询
         execround: 0,
         testPlanId:'',
+        caseId:'',
+        
     },
     ready: function() {
         // getRecord(this.currentPage, this.pageSize, this.order, this.sort);

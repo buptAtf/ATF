@@ -6,7 +6,7 @@
     <link rel="stylesheet" type="text/css" href="../static/css/index.css">
     <link rel="stylesheet" type="text/css" href="../static/css/pagination.css">
     <link rel="stylesheet" type="text/css" href="../static/css/scene.css">
-    <link rel="stylesheet" type="text/css" href="../static/css/base/bootstrap.min.css">
+    <!-- <link rel="stylesheet" type="text/css" href="../static/css/base/bootstrap.min.css"> -->
     <link rel="stylesheet" type="text/css" href="../static/css/bootstrap-datetimepicker.min.css">
     <title>批量执行管理</title>
 </head>
@@ -49,14 +49,19 @@
                                     <form class="form-horizontal col-sm-12">
                                         <div class="form-group">
                                             <label class="col-sm-1 control-label">创建时间</label>
-                                            <div class="form-group">  
-                                                <div class="input-group date form_date col-md-5" data-date="" data-date-format="yyyy MM dd  " data-link-field="dtp_input2" data-link-format="yyyy-mm-dd">
-                                                    <input class="form-control" size="16" type="text" value="" readonly>
+                                                <div class="input-group date form_date_start col-sm-2" data-date="" data-date-format="yyyy-mm-dd  " data-link-field="dtp_input0" data-link-format="yyyy-mm-dd">
+                                                    <input class="form-control"  type="text" value=""  v-model="creatTimeStart" readonly>
                                                     <span class="input-group-addon"><span class="glyphicon glyphicon-remove"></span></span>
                                                     <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
                                                 </div>
-                                                <input type="hidden" id="dtp_input2" value="" /><br/>
+                                                <input type="hidden" id="dtp_input0" value=""  />
+
+                                                <div class="input-group date form_date_end col-sm-2" data-date="" data-date-format="yyyy-mm-dd  " data-link-field="dtp_input1" data-link-format="yyyy-mm-dd">
+                                                    <input class="form-control"  type="text" value=""  v-model="creatTimeEnd" readonly>
+                                                    <span class="input-group-addon"><span class="glyphicon glyphicon-remove"></span></span>
+                                                    <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
                                                 </div>
+                                                <input type="hidden" id="dtp_input1" value=""  />
                                         </div>
                                     </form>
                                 </div>
@@ -67,24 +72,29 @@
                                         <div class="form-group">
                                             <label class="col-sm-1 control-label">用例来源</label>
                                             <div class="col-sm-2">
-                                                <select class="form-control" name="" v-model="">       
-                                                    <option value="" selected>未知来源</option>                                                                                                                                                                                                                                               <!--原来是 item.phasename -->
+                                                <select class="form-control" name="instanceSource" v-model="instanceSource">       
+                                                    <option value="" selected>未知来源</option>
+                                                    <option v-for="item in instanceSourceList" :value="item">{{ item }}</option>                                                                                                                                                                                                                                                 <!--原来是 item.phasename -->
                                                 </select>
                                             </div>
                                             <label class="col-sm-1 control-label">测试计划</label>
                                             <div class="col-sm-2">
-                                                <select class="form-control" name="" v-model="">       
-                                                    <option value="" selected>  待填  </option>                                                                                                                                                                                                                                                       <!--原来是 item.phasename -->
+                                                <select class="form-control" name="" v-model="testPlan">       
+                                                    <option value="" selected>  待填  </option>
+                                                    <option v-for="item in testPlanList" :value="item">{{ item }}</option>                                                                                                                                                                                                                                                       <!--原来是 item.phasename -->
                                                 </select>
                                             </div>
                                             <label class="col-sm-1 control-label">执行状态</label>
                                             <div class="col-sm-2">
-                                                <select class="form-control" name="" v-model="">       
-                                                    <option value="" selected>  待填  </option>                                                                                                                                                                                                                                                       <!--原来是 item.phasename -->
+                                                <select class="form-control" name="" v-model="executingStatus">       
+                                                    <option value="" selected>执行完毕</option>   
+                                                    <option value="" selected>错误终止</option>
+                                                    <option value="" selected>执行中</option> 
+                                                    
                                                 </select>
                                             </div>
                                             <div class="col-sm-1">
-                                                <a class="btn btn-primary" @click=" ">查询</a><!-- 留待@click中写函数-->
+                                                <a class="btn btn-primary" @click="">查询</a><!-- 留待@click中写函数-->
                                             </div>
                                         </div>
                                     </form>
@@ -292,7 +302,8 @@
 <link rel="import" href="./common/footer.html?__inline">
 <script src="../lib/vue-resource.min.js"></script>
 
-<script type="text/javascript" src="../static/js/execution.es.js"></script>
+
 <script type="text/javascript" src="../lib/jquery-1.8.3.min.js"></script>
 <script type="text/javascript" src="../lib/bootstrap-datetimepicker.min.js"></script>
-<script type="text/javascript" src="../lib/bootstrap-datetimepicker.fr.js"></script>
+<script type="text/javascript" src="../lib/bootstrap-datetimepicker.zh-CN.js"></script>
+<script type="text/javascript" src="../static/js/execution.es.js"></script>

@@ -46,7 +46,12 @@ var app = new Vue({
         recordSaveHouse: generateConst(1, 2, '正式库', '调试库'),
         recordVerboseType: generateConst(1, 2, '不保存', '标准', '简约'),
         runStatus: generateConst(0, 4, '未执行', '执行中', '执行完成-正常完成', '执行完成-错误终止', '执行完成-人工终止'),
-        runResult: generateConst(1, 3, '全部成功', '部分成功', '全部失败')
+        runResult: generateConst(1, 3, '全部成功', '部分成功', '全部失败'),
+        creatTimeStart: '',
+        creatTimeEnd:'',
+        instanceSource:'',
+        instanceSourceList:[],//用例来源下拉框
+        executingStatus:'',
     },
     ready: function() {
         var _this = this;
@@ -209,8 +214,11 @@ var app = new Vue({
         goTestExec: function(testPlan){
             sessionStorage.setItem('testPlanId',testPlan);
             location.href="./testplan-execute.html";
-        }
+        },
+        queryBatchRecord: function(){
+            
 
+        },
     },
 
 });
@@ -326,8 +334,18 @@ function queryScene() {
     });
 }
 
-$('.form_date').datetimepicker({
-    language:  'fr',
+$('.form_date_start').datetimepicker({
+    language:  'zh-CN',
+    weekStart: 1,
+    todayBtn:  1,
+    autoclose: 1,
+    todayHighlight: 1,
+    startView: 2,
+    minView: 2,
+    forceParse: 0
+});
+$('.form_date_end').datetimepicker({
+    language:  'zh-CN',
     weekStart: 1,
     todayBtn:  1,
     autoclose: 1,
