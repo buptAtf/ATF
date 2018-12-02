@@ -254,7 +254,7 @@
   </div>
   <!--content end -->
   <div class="modal fade" id="add-modal" tabindex="-1" role="dialog">
-    <div class="modal-dialog" role="document">
+    <div class="modal-dialog" role="document"  style = "min-width:max-content">
       <div class="modal-content">
         <div class="modal-header">
           <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
@@ -273,13 +273,57 @@
             </thead>
             <tbody>
               <tr v-for="scene in allscenes">
-                <td v-if="senceAddedStatus(scene.sceneId)">已选择</td>
-                <td v-else><input type="checkbox" v-model="selectedScene" v-bind:value="scene.sceneId"></td>
-                <td>{{scene.sceneName}}</td>
-                <td>{{scene.sceneDesc}}</td>
+                <td v-if="senceAddedStatus(scene.id)">已选择</td>
+                <td v-else><input type="checkbox" v-model="selectedScene" v-bind:value="scene.id"></td>
+                <td>{{scene.nameMedium}}</td>
+                <td>{{scene.descShort}}</td>
               </tr>
             </tbody>
           </table>
+        </div>
+        <div class="col-lg-12 text-center">
+          <div class="pagination-wrap" v-if="scenePage.totalPage!=0">
+              <div class="num">
+                      <select size="1" name="sample_1_length" aria-controls="sample_1" class="form-control" v-model="scenePage.pageSize" id="pageSizeSelect">
+                          <option value="5" selected>5条/页</option>
+                          <option value="10">10条/页</option>
+                          <option value="20">20条/页</option>
+                          <option value="50">50条/页</option>
+                      </select> 
+              </div>
+              <ul class="pagination">
+                  <li :class="scenePage.currentPage==1?'disabled':''"><a href="javascript:;" @click="turnToScenePage(1)">首页</a></li>
+                  <li :class="scenePage.currentPage==1?'disabled':''"><a @click="turnToScenePage(scenePage.currentPage-1)" href="javascript:;">上一页</a></li>
+                  <li>
+                      <a href="javascript:;" @click="turnToScenePage(scenePage.currentPage-3)" v-text="scenePage.currentPage-3" v-if="scenePage.currentPage-3>0"></a>
+                  </li>
+                  <li>
+                      <a href="javascript:;" @click="turnToScenePage(scenePage.currentPage-2)" v-text="scenePage.currentPage-2" v-if="scenePage.currentPage-2>0"></a>
+                  </li>
+                  <li>
+                      <a href="javascript:;" @click="turnToScenePage(scenePage.currentPage-1)" v-text="scenePage.currentPage-1" v-if="scenePage.currentPage-1>0"></a>
+                  </li>
+                  <li class="active"><a href="javascript:;" @click="turnToScenePage(scenePage.currentPage)" v-text="scenePage.currentPage">3</a></li>
+                  <li>
+                      <a href="javascript:;" @click="turnToScenePage(scenePage.currentPage+1)" v-text="scenePage.currentPage+1" v-if="scenePage.currentPage+1<=scenePage.totalPage"></a>
+                  </li>
+                  <li>
+                      <a href="javascript:;" @click="turnToScenePage(scenePage.currentPage+2)" v-text="scenePage.currentPage+2" v-if="scenePage.currentPage+2<=scenePage.totalPage"></a>
+                  </li>
+                  <!-- <li>
+                      <a href="javascript:;" @click="turnToScenePage(scenePage.currentPage+3)" v-text="scenePage.currentPage+3" v-if="scenePage.currentPage+3<=scenePage.totalPage"></a>
+                  </li> -->
+                  <li :class="scenePage.currentPage==scenePage.totalPage?'disabled':''"><a href="javascript:;" @click="turnToScenePage(scenePage.currentPage+1)">下一页</a></li>
+                  <li :class="scenePage.currentPage==scenePage.totalPage?'disabled':''"><a href="javascript:;" @click="turnToScenePage(scenePage.totalPage)">尾页</a></li>
+              </ul>
+              <div class="go">
+                  <div :class="isPageNumberError?'input-group error':'input-group'">
+                      <input class="form-control" type="number" v-model="goToPage" min="1" max="{{scenePage.totalPage}}">
+                      <a href="javascript:;" class="input-group-addon" @click="turnToScenePage(goToPage)">Go</a>
+                  </div>
+              </div>
+              <p class="page-info nowrap"> 当前第 <span class="text-primary" v-text="scenePage.currentPage"></span> / <span class="text-primary" v-text="scenePage.totalPage"></span>页，共有 <span class="text-primary" v-text="scenePage.totalCount"></span> 条</p>
+          </div>
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
