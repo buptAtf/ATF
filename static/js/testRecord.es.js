@@ -196,8 +196,7 @@ var app = new Vue({
                 success: function(data){
                     _this.recordList = data.list;
                 },
-            });
-            
+            });            
         },
         queryByBatchs: function(){          //通过查询批次的方式进行查询，输入执行轮次和测试计划，进行查询
             var _this = this;
