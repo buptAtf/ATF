@@ -225,7 +225,7 @@ var app = new Vue({
                 type: 'post',
                 contentType: 'application/json',
                 data:JSON.stringify({
-                    "caseLibId": 50,
+                    "caseLibId": 53,
                     "nameMedium": "",
                     "descMedium": "",
                 }),
@@ -245,6 +245,10 @@ var app = new Vue({
             var startTimeObj = new Date(startTime.replace(/-/g,'/'));
             var endTimeObj = new Date(endTime.replace(/-/g,'/'));
             var timeList = [startTimeObj.getTime(),endTimeObj.getTime()];
+            if(timeList[0]>timeList[1]){
+                Vac.alert('日期格式错误，请重新输入');
+            }
+
             return timeList;
         },
         queryBatchByClick: function(){
@@ -253,7 +257,7 @@ var app = new Vue({
             var startTime = timeList[0];
             var endTime = timeList[1];
             $.ajax({
-                url :address3 + '/testRecordController/pagedPagedBatchQueryTestRecordByTestPlan',
+                url :address3 + '/testRecordController/pagedBatchQueryTestRecordByTestPlan',
                 type :'post',
                 contentType: 'application/json',
                 data:JSON.stringify({
@@ -270,8 +274,17 @@ var app = new Vue({
                     'orderType': '',
                     'orderColumns': ''
                 }),
+                success: function(data){
+                    if(data.respMsg=='查询成功'){
+                        _this.sceneList = data.list;
+                    } else if(data.respMsg=='返回结果为空'){
+                        Vac.alert('查询结果为空');
+                    }
+                }
             })
         }
+
+
     },
 });
 

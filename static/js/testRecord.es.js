@@ -194,7 +194,13 @@ var app = new Vue({
                     'orderColumns': ''
                 }),
                 success: function(data){
-                    _this.recordList = data.list;
+                    if(data.respMsg=='查询成功'){
+                        _this.recordList = data.list;
+                    } else if(data.respMsg=='查询结果为空') {
+                        _this.recordList = [];
+                        Vac.alert('查询结果为空');
+                    }
+                    
                 },
             });            
         },
@@ -222,7 +228,7 @@ var app = new Vue({
                 type: 'post',
                 contentType: 'application/json',
                 data:JSON.stringify({
-                    "caseLibId": 50,
+                    "caseLibId": 53,
                     "nameMedium": "",
                     "descMedium": "",
                 }),
