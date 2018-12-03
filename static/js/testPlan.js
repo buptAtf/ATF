@@ -59,13 +59,6 @@ var app = new Vue({
         // $('.3-9').css({color: '#ff6c60'});
     },
     methods: {
-        turnToPage(currentPageParam){
-            if(currentPageParam>0 && currentPageParam<=this.page.totalPage){
-                this.page.currentPage = currentPageParam;
-                this.getTestPlans();
-            } 
-            else Vac.alert("不在页码范围");
-        },
         add() {
                 const url = 1 === this.editType ? 'testPlanController/insertTestPlan' : 'testPlanController/updateTestPlan';
                 const data = 1 === this.editType ? this.addRowData : {
@@ -154,12 +147,14 @@ var app = new Vue({
                 return +this.selectTestPlan === +item.id;
             }));
         },
-        getTestPlans() {
+        getTestPlans(page) {
+            var pageSize = page?page.pageSize:this.page.pageSize,
+                currentPage = page?page.currentPage:this.page.currentPage;
             Vac.ajax({
 				url: address3 + 'testPlanController/pagedBatchQueryTestPlan',
 				data: {
-                    "pageSize":this.page.pageSize,
-                    "currentPage":this.page.currentPage,
+                    "pageSize":pageSize,
+                    "currentPage":currentPage,
                     "orderType":this.orderType,
                     "orderColumns":this.orderColumns,
                     "nameMedium": "",
