@@ -49,17 +49,17 @@ var app = new Vue({
         runResult: generateConst(1, 3, '全部成功', '部分成功', '全部失败'),
         creatTimeStart: '',
         creatTimeEnd:'',
-        instanceSource:'',
-        instanceSourceList:[],//用例来源下拉框
-        executeStatus:'',
+        caseSourceChannel:'',
+        runStatus:'',
         testPlans:[],
     },
     ready: function() {
         var _this = this;
         //queryExecutionRecord(this.currentPage, this.pageSize, this.order, this.sort);
         _this.changeListNum();
-        this.queryExecutionRecord(this.currentPage, this.pageSize, this.order, this.sort);
-        this.queryTestPlan();
+        _this.queryTestPlan();
+        _this.queryExecutionRecord(this.currentPage, this.pageSize, this.order, this.sort);
+        
 
 
         // console.log('ss');
@@ -165,9 +165,10 @@ var app = new Vue({
             }
             
         },
-        getRecord: function (id) {
+        getRecord: function (id,testPlanId) {
             sessionStorage.setItem("batchId", id);
             sessionStorage.setItem("batchShow", true);
+            sessionStorage.setItem("testPlanId", testPlanId);
             location.href = "testRecord.html";
         },
         //传递当前页选中的场景id到场景管理页面
@@ -179,13 +180,21 @@ var app = new Vue({
         //查询执行记录
         queryExecutionRecord: function(page, listnum, order, sort){
             var _this=this;
+            var today = new Date();
+            var endTime = ''+ today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
+            var startTime = '1990-1-1';
+            let tempDate = _this.creatTimeChange(startTime,endTime);
+            startTime = tempDate[0];
+            endTime = tempDate[1];
             $.ajax({
-                url: address2 + 'batchRunCtrlController/pagedBatchQueryBatchRunCtrl',
+                url: address3 + 'batchRunCtrlController/pagedBatchQueryBatchRunCtrl',
                 type: 'post',
                 contentType: 'application/json',
                 data: JSON.stringify({
                     'pageSize': listnum,
-                    'currentPage': page
+                    'currentPage': page,
+                    'queryStartTime': startTime,
+                    'queryEndTime': endTime,
                 }),
                 success: function(data) {
                     if (data.respCode === '0000') {
@@ -199,10 +208,8 @@ var app = new Vue({
                         _this.pageSize = 5;
                     }
                 }
-            });
-        
+            });        
         },
-
         //改变页面大小
         changeListNum: function(){
             var _this=this;
@@ -221,13 +228,11 @@ var app = new Vue({
         queryTestPlan: function(){
             var _this = this;
             $.ajax({
-                url: address3 + 'testPlanController/queryTestPlan',
+                url: address3 + 'testPlanController/selectAllTestPlan',
                 type: 'post',
                 contentType: 'application/json',
                 data:JSON.stringify({
-                    "caseLibId": 53,
-                    "nameMedium": "",
-                    "descMedium": "",
+                   
                 }),
                 success: function(data){
                     if (data.respCode === '0000') {
@@ -239,7 +244,7 @@ var app = new Vue({
                 }
             });
         },
-        creatTimeChange: function(startTime,endTime){           
+        creatTimeChange: function(startTime,endTime){
             startTime = startTime + ' 00:00:00:000';
             endTime = endTime + ' 00:00:00:000';
             var startTimeObj = new Date(startTime.replace(/-/g,'/'));
@@ -248,7 +253,6 @@ var app = new Vue({
             if(timeList[0]>timeList[1]){
                 Vac.alert('日期格式错误，请重新输入');
             }
-
             return timeList;
         },
         queryBatchByClick: function(){
@@ -257,26 +261,21 @@ var app = new Vue({
             var startTime = timeList[0];
             var endTime = timeList[1];
             $.ajax({
-                url :address3 + '/testRecordController/pagedBatchQueryTestRecordByTestPlan',
+                url :address3 + '/batchRunCtrlController/pagedBatchQueryBatchRunCtrl',
                 type :'post',
                 contentType: 'application/json',
                 data:JSON.stringify({
                     'testPlanId': + _this.testPlanId,
-                    'executeRound': '',
-                    'caseId': '',
-                    'sceneName': '',
-                    'sourceChannel': _this.sourceChannel,
-                    'executeStatus': + _this.executeStatus,     //执行状态
+                    'caseSourceChannel': '',
+                    'runStatus': + _this.runStatus,     //执行状态
                     'queryStartTime': startTime,
                     'queryEndTime': endTime,
-                    'pageSize': 5,
+                    'pageSize': 10,
                     'currentPage': 1,
-                    'orderType': '',
-                    'orderColumns': ''
                 }),
                 success: function(data){
-                    if(data.respMsg=='查询成功'){
-                        _this.sceneList = data.list;
+                    if(data.respMsg=='操作成功'){
+                        _this.sceneList = data.batchRunCtrlList;
                     } else if(data.respMsg=='返回结果为空'){
                         Vac.alert('查询结果为空');
                     }
@@ -288,7 +287,10 @@ var app = new Vue({
     },
 });
 
-//获取场景
+
+
+
+// 获取场景
 function queryExecutionRecord(page, listnum, order, sort) {
     //获取list通用方法，只需要传入多个所需参数
     $.ajax({

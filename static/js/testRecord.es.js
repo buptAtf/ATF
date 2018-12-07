@@ -35,7 +35,7 @@ var app = new Vue({
         testPlanId:'',
         caseId:'',
         testPlans:[],
-        sceneName:'',
+        sceneId:'',
         
     },
     ready: function() {
@@ -187,11 +187,11 @@ var app = new Vue({
                     'testRound': _this.testround,
                     'recorderStatus':+_this.recorderstate,  //在字符串类型前加+，将类型转换为整形"123"+5                    
                     'caseId': _this.caseId,
-                    'sceneName': '',
-                    'pageSize': 10,     //整形
+                    'sceneId': _this.sceneId,
+                    'pageSize': 20,     //整形
                     'currentPage': 1,   //整形
-                    'orderType': '',
-                    'orderColumns': ''
+                    // 'orderType': '',
+                    // 'orderColumns': ''
                 }),
                 success: function(data){
                     if(data.respMsg=='查询成功'){
@@ -200,7 +200,6 @@ var app = new Vue({
                         _this.recordList = [];
                         Vac.alert('查询结果为空');
                     }
-                    
                 },
             });            
         },
@@ -224,13 +223,11 @@ var app = new Vue({
         queryTestPlan: function(){
             var _this = this;
             $.ajax({
-                url: address3 + 'testPlanController/queryTestPlan',
+                url: address3 + '/testPlanController/selectAllTestPlan',
                 type: 'post',
                 contentType: 'application/json',
                 data:JSON.stringify({
-                    "caseLibId": 53,
-                    "nameMedium": "",
-                    "descMedium": "",
+                    
                 }),
                 success: function(data){
                     if (data.respCode === '0000') {
@@ -270,7 +267,7 @@ function getRecord(page=1, listnum=10, order='id', sort='asc') {
         contentType: 'application/json',
         data: JSON.stringify({
             "runId":sessionStorage.getItem('batchId'),
-            "testPlanId":"",
+            "testPlanId":sessionStorage.getItem('testPlanId'),
             "pageSize":listnum,
             "currentPage":page,
             "orderType":sort,
@@ -287,7 +284,6 @@ function getRecord(page=1, listnum=10, order='id', sort='asc') {
             }
         }
     });
-
 }
 //获取测试阶段
 // function getTestPhase(resolve){
