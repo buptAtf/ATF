@@ -52,6 +52,12 @@ var app = new Vue({
         caseSourceChannel:'',
         runStatus:'',
         testPlans:[],
+        page: {
+            totalCount: 1,
+            currentPage: 1,
+            totalPage: 1,
+            pageSize:20
+        }
     },
     ready: function() {
         var _this = this;
@@ -178,7 +184,7 @@ var app = new Vue({
             location.href = "scene-setting.html?sceneid=" + sceneid + "&" + "scenename=" + scenename;
         },
         //查询执行记录
-        queryExecutionRecord: function(page, listnum, order, sort){
+        queryExecutionRecord: function(page, listnum, order, sort){ //一般查询记录的函数，与组件的区分开
             var _this=this;
             var today = new Date();
             var endTime = ''+ today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
@@ -201,6 +207,8 @@ var app = new Vue({
                         _this.sceneList = data.batchRunCtrlList;
                         _this.tt = data.totalCount;
                         _this.totalPage = data.totalPage;
+                        _this.page.totalCount=data.totalCount;
+                        _this.page.totalPage=data.totalPage;
                     } else {
                         _this.sceneList = [];
                         _this.tt = 0;
@@ -208,7 +216,41 @@ var app = new Vue({
                         _this.pageSize = 5;
                     }
                 }
-            });        
+            });
+        },
+        getExecutionRecord(page) {  //使用翻页组件时，调用的函数
+            var _this=this;
+            var pageSize = page?page.pageSize:this.page.pageSize,
+                currentPage = page?page.currentPage:this.page.currentPage;
+            var today = new Date();
+            var endTime = ''+ today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
+            var startTime = '1990-1-1';
+            let tempDate = _this.creatTimeChange(startTime,endTime);
+            startTime = tempDate[0];
+            endTime = tempDate[1];
+            $.ajax({
+                url: address3 + 'batchRunCtrlController/pagedBatchQueryBatchRunCtrl',
+                type: 'post',
+                contentType: 'application/json',
+				data: JSON.stringify({
+                    "pageSize":pageSize,
+                    "currentPage":currentPage,
+                    'queryStartTime': startTime,
+                    'queryEndTime': endTime,              
+                }),
+				success: (data) => {
+					if ('0000' === data.respCode) {
+                        _this.sceneList = data.batchRunCtrlList;
+                        this.page.totalCount=data.totalCount;
+                        this.page.totalPage=data.totalPage;
+					} else {
+						Vac.alert('出错啦~');
+					}
+				},
+				error: () => {
+					Vac.alert('出错啦~');
+				}
+			});
         },
         //改变页面大小
         changeListNum: function(){
@@ -282,6 +324,7 @@ var app = new Vue({
                 }
             })
         }
+  
 
 
     },

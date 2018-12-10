@@ -148,7 +148,7 @@ var app = new Vue({
             }));
         },
         getTestPlans(page) {
-            var pageSize = page?page.pageSize:this.page.pageSize,
+            var pageSize = page?page.pageSize:this.page.pageSize;
                 currentPage = page?page.currentPage:this.page.currentPage;
             Vac.ajax({
 				url: address3 + 'testPlanController/pagedBatchQueryTestPlan',
