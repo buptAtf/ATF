@@ -243,7 +243,7 @@ var app = new Vue({
 function getScene(page, listnum, order, sort) {
     // var caseLibId=sessionStorage.getItem('caselibId');
     $.ajax({
-        url: address3 + 'sceneController/selectAllSceneByPage',
+        url: address3 + 'sceneController/pagedBatchQueryScene',
         type: 'post',
         contentType: 'application/json',
         data: JSON.stringify({
