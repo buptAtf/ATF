@@ -857,6 +857,8 @@ $(document).ready(function () {
 								treeData.push(item);
 							});
 							zTreeObj = $.fn.zTree.init($("#tree-wrapper"), setting, treeData);
+							filterVue.isShow=!filterVue.isShow;
+							filterVue.iconflag=!filterVue.iconflag;
 						},
 
 	                });
