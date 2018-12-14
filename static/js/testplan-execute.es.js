@@ -712,11 +712,11 @@ var vBody = new Vue({
                             this.addRowData = {...initialAddRowData};
                             this.getTestPlans();
                         } else {
-                            Vac.alert('出错啦~');
+							Vac.alert(data.respMsg);
                         }
                     },
                     error: () => {
-                        Vac.alert('出错啦~');
+                        Vac.alert('出错啦~7');
                     }
                 });
         },
@@ -734,7 +734,7 @@ var vBody = new Vue({
                     Vac.alert(data.respMsg);
 				},
 				error: () => {
-					Vac.alert('出错啦~');
+					Vac.alert('出错啦~8');
 				}
 			});
         },
@@ -798,11 +798,11 @@ var vBody = new Vue({
                                 this.page.totalCount=data.totalCount;
                                 this.page.totalPage=data.totalPage;
 					} else {
-						Vac.alert('出错啦~');
+						Vac.alert(data.respMsg);
 					}
 				},
 				error: () => {
-					Vac.alert('出错啦~');
+					Vac.alert('出错啦~2');
 				}
 			});
         },
@@ -814,11 +814,11 @@ var vBody = new Vue({
 					if ('0000' === data.respCode) {
 						this.testPhaseArray = data.testphaseEntityList;
 					} else {
-						Vac.alert('出错啦~');
+						Vac.alert(data.respMsg);
 					}
 				},
 				error: () => {
-					Vac.alert('出错啦~');
+					Vac.alert('出错啦~4');
 				}
 			});
         },
@@ -830,7 +830,7 @@ var vBody = new Vue({
                     if ('0000' === data.respCode) {
 						this.testRoundArray = data.testroundEntityList;
 					} else {
-						Vac.alert('出错啦~');
+						Vac.alert(data.respMsg);
 					}
                 }
             });

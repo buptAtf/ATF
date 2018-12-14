@@ -149,9 +149,9 @@
                         <a class="btn btn-white" data-toggle="modal" href="#importModal" @click="getCaseLibId"><i class="icon-share-alt"></i> 导入</a>
                          <a class="btn btn-white" href="casePostRecord.html"  ><i class="icon-share-alt"></i> 导入记录</a>
                         <a class="btn btn-white" data-toggle="modal" @click="checkExport"><i class="icon-reply"></i> 导出</a>
-                        <a class="btn btn-white" data-toggle="modal" @click="checkExe"><i class="icon-user"></i> 分配</a>
+                        <!-- <a class="btn btn-white" data-toggle="modal" @click="checkExe"><i class="icon-user"></i> 分配</a>
                         <a class="btn btn-white" data-toggle="modal" @click="checkExeM"><i class="icon-retweet"></i> 更改执行方式</a>
-                        <a class="btn btn-white" data-toggle="modal" @click="checkTransid"><i class="icon-cog"></i> 设置功能点及基础脚本</a>
+                        <a class="btn btn-white" data-toggle="modal" @click="checkTransid"><i class="icon-cog"></i> 设置功能点及基础脚本</a> -->
                         <a class="btn btn-white" data-toggle="modal" @click="modifyMoreModalShow"><i class="icon-cog"></i> 更改多种用例信息</a>
                         <!-- addModal start -->
                         <div class="modal fade" id="addModal" tabindex="-1" role="dialog" aria-labelledby="addModalLabel" aria-hidden="true">
@@ -1135,7 +1135,7 @@
                             </div>
                         </div>
                         <!-- transidModal end -->
-                        <!-- modifyMore start -->
+                        <!-- modifyMore start开始时，第一种实现修改案例的方案被否决 暂时隐藏 -->
                         <div class="modal fade" id="modifyMore" tabindex="-1" role="dialog" aria-labelledby="tradeModalLabel" aria-hidden="true">
                             <div class="modal-dialog">
                                 <div class="modal-content">
