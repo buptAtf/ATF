@@ -8,9 +8,9 @@ var paginationTemplate=`
     <div class="pagination-wrap" v-if="page.totalPage!=0">
         <div class="num">
                 <select size="1" name="sample_1_length" aria-controls="sample_1" class="form-control" v-model="page.pageSize" @change='turnTopage(1)'>
-                    <option value="5" selected>5条/页</option>
+                    <option value="5" >5条/页</option>
                     <option value="10">10条/页</option>
-                    <option value="20">20条/页</option>
+                    <option value="20" selected>20条/页</option>
                     <option value="50">50条/页</option>
                 </select> 
         </div>
