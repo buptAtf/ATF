@@ -1152,7 +1152,7 @@ var app = new Vue({
                     }
                 }
             $.ajax({
-                url: address3 + '/testcase/addTestcase',
+                url: address3 + 'testcase/addTestcase',
                 type: "POST",
                 contentType: 'application/json',
                 data: JSON.stringify({
@@ -1194,8 +1194,8 @@ var app = new Vue({
                         $('#successModal').modal();
                         self.getCase(self.currentPage, self.pageSize, self.order, self.sort);
                     } else {
-                        _this.failMSG=data.failMSG;
-                        $('#failModal').modal();
+                        self.failMSG=data.respMsg;
+                        $('#failModal2').modal();
                     }
                 },
                 error: function() {
@@ -1243,7 +1243,7 @@ var app = new Vue({
                         $('#successModal').modal();
                         this.getCase(self.currentPage, self.pageSize, self.order, self.sort);
                     } else {
-                        _this.failMSG==data.respMsg;
+                        self.failMSG==data.respMsg;
                         $('#failModal2').modal();
                     }
                 },
@@ -1401,10 +1401,15 @@ var app = new Vue({
             }
         },        
         modifyMoreModalShow: () => {
+            var _this=this;
             app.getIds();
-            var selectedInput = $('input[name="chk_list"]:checked');
-            if (selectedInput.length === 0) {
-                $('#selectAlertModal').modal();
+            if (app.ids==null||app.ids.length === 0) {
+                if (app.subids==null||app.subids.length === 0) {
+                    $('#selectAlertModal').modal();
+                }
+                else {
+                    $('#modifiedModal').modal();
+                }
             } else {
                 $('#modifiedModal').modal();
             }
@@ -1688,11 +1693,11 @@ var app = new Vue({
 
                 });
         },
-        //修改案例
+        //修改案例 第一次 为更改多种用例信息写的函数，以防后用 但可以删除
         modifyCase(){
             let data={};
             let list=$("#filterList1>li");
-            let that=this;
+            let _this=this;
             for(let i=0;i<list.length;i++){
                     let key=$(list[i]).find('select[name="propertyName"]').val();
                     let value="";
@@ -1764,8 +1769,8 @@ var app = new Vue({
                             self.getCase(self.currentPage, self.pageSize, self.order, self.sort);
                         }
                         else{
-                            _this.failMSG=data.failMSG;
-                            $('#failModal').modal();
+                            self.failMSG=data.respMsg;
+                            $('#failModal2').modal();
                         }
                     }
                 });

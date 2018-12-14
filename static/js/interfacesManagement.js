@@ -129,7 +129,7 @@ var template_int = `
                             <span>保存</span>
                         </button>
                     </div>
-                </div> + 
+                </div>
                 <ul class="nav nav-tabs" id="navSwitchBar" style="padding-left:10px">
                     <li role="presentation" class="active"><a @click="navSwitch(0)">Authorization</a></li>
                     <!--
@@ -562,7 +562,7 @@ var interfacesManagement = Vue.extend({
                     "header": header,
                     "bodyFormat": 1,
                     "rawFormat": _this.bodyFormat,
-                    "bodyContent": $("#bodyContent").val(),
+                    "bodyContent": $("#bodyContent").val().replace(/[\r\n]/g,"").replace(/\ +/g,""),
                     "bodyParseContent": null,
                     "dataDictList": null,
                     "preRequestScript":null,
