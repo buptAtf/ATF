@@ -242,8 +242,8 @@
                                                     <option value="3">已删除</option>
                                                 </select>
                                             </div>
-                                            <div class="col-sm-2" v-model="execround" v-else> <!--通过批量执行查询，输入执行轮次 -->
-                                                <input type="text" class="form-control" placeholder="请输入执行轮次" :value={{ execround }}>   
+                                            <div class="col-sm-2"  v-else> <!--通过批量执行查询，输入执行轮次 -->
+                                                <input type="text" class="form-control" v-model="executeRound" placeholder="请输入执行轮次" :value={{ executeRound }}>   
                                             </div>   
                                             <!-- <label class="col-sm-2 control-label">用例编号</label>
                                             
