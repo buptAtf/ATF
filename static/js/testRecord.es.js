@@ -31,7 +31,7 @@ var app = new Vue({
         ids: '',
         querymode: 'rounds',    //用于查询
         testplan: 0 ,           //用于查询
-        execround: 0,
+        executeRound: '',
         testPlanId:'',
         caseId:'',
         testPlans:[],
@@ -206,17 +206,20 @@ var app = new Vue({
         queryByBatchs: function(){          //通过查询批次的方式进行查询，输入执行轮次和测试计划，进行查询
             var _this = this;
             $.ajax({
-                url: address3 +'testRecordController/batchQueryTestRecordByRunId',
+                url: address3 +'testRecordController/pagedBatchQueryTestRecordByTestPlan',
                 type: 'post',
                 contentType: 'application/json',
                 data:JSON.stringify({
-                    'execround': _this.execround,
-                    'testPlanId': _this.testPlanId
+                    'executeRound': +_this.executeRound,
+                    'testPlanId': +_this.testPlanId,
+                    'caseId': +_this.caseId,
+                    'sceneId': +_this.sceneId,
+                    'pageSize': 20,     //整形
+                    'currentPage': 1,   //整形
                 }),
                 success: function(data){
                     _this.recordList = data.list;
                 }
-
             });
             // alert('批量查询');
         },

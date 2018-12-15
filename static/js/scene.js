@@ -327,7 +327,8 @@ function resort(target) {
 //搜索场景
 function queryScene() {
     $.ajax({
-        url: address3 + 'sceneController/selectAllSceneByPage',
+        // url: address3 + 'sceneController/selectAllSceneByPage',
+        url: address3 + 'sceneController/pagedBatchQueryScene',
         type: 'POST',
         contentType: 'application/json',
         data: JSON.stringify({

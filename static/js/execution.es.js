@@ -12,10 +12,10 @@ var app = new Vue({
         sceneList: [],
         recordList: [],
         tt: 0, //总条数
-        pageSize: 10, //页面大小
+        pageSize: 20, //页面大小
         currentPage: 1, //当前页
         totalPage: 1, //总页数
-        listnum: 10, //页面大小
+        listnum: 20, //页面大小
         order: 'id',
         sort: 'asc',
         isPageNumberError: false,
@@ -312,7 +312,7 @@ var app = new Vue({
                     'runStatus': + _this.runStatus,     //执行状态
                     'queryStartTime': startTime,
                     'queryEndTime': endTime,
-                    'pageSize': 10,
+                    'pageSize': 20,
                     'currentPage': 1,
                 }),
                 success: function(data){
@@ -418,7 +418,7 @@ function resort(target) {
         target.setAttribute("data-sort", "desc");
     }
     app.order = target.getAttribute("data-order");
-    queryExecutionRecord(1, 10, app.order, app.sort);
+    queryExecutionRecord(1, 20, app.order, app.sort);
 }
 //重新排序 结束
 
