@@ -489,6 +489,9 @@ var vBody = new Vue({
 				url: address3 + 'caseExecuteInstance/queryCaseExecuteInstance',
 				data: data,
 				success: function(data){
+					if("0000"!=data.respCode){
+						Vac.alert(data.respMsg);
+					}
 					_this.testCaseList = data.executeInstanceResult.testCaseList;
 					_this.testSceneList = data.executeInstanceResult.testSceneList;
 					Vue.nextTick(() => {

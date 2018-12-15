@@ -323,7 +323,7 @@ $(document).ready(function () {
 		                    }else{
 		                        $(this).parent().next().next().remove();
 		                        $(this).parent().next().after('<select name="propertyValue" id="cpVal" class="selectpicker val_select"></select>')
-		                        $('#cpVal').append('<option value="">正常值</option><option value="">错误值</option><option value="">边界值</option><option value="">要素级</option><option value="">流程级</option>');
+		                        $('#cpVal').append('<option value="1">正常值</option><option value="2">错误值</option><option value="3">边界值</option><option value="4">要素级</option><option value="5">流程级</option>');
 		                        $('#cpVal').selectpicker('refresh');                    
 		                    }
 		                });
@@ -440,9 +440,9 @@ $(document).ready(function () {
 		                                if(data.respCode=='0000'){
 		                                    let userList=data.list;
 		                                    for(let item of userList){
-		                                        $('#authorVal').append(`<option value="${item.id}">${item.username}</option>`);
+		                                        $('#reviewerVal').append(`<option value="${item.id}">${item.username}</option>`);
 		                                    }
-		                                    $('#authorVal').selectpicker('refresh');
+		                                    $('#reviewerVal').selectpicker('refresh');
 		                                }
 		                            }
 		                        });                  
