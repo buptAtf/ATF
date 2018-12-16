@@ -212,13 +212,13 @@ var vBody = new Vue({
 						_this.caseMaxLength = caseMaxLength;
 						data.selectSceneDto.sceneEntity.caseGroup = caseGroup;
 						_this.sceneInfo = data.selectSceneDto.sceneEntity;
-						_this.exeStrategy1Status= data.selectSceneDto.sceneEntity.exe_strategy1_status || 1;
-						_this.exeStrategy2Start=data.selectSceneDto.sceneEntity.exe_strategy2_start || '1';
-						_this.exeStrategy2Order= data.selectSceneDto.sceneEntity.exe_strategy2_order || '1';
-						_this.exeStrategy2Status= data.selectSceneDto.sceneEntity.exe_strategy2_status || '1';
-						_this.exeStrategy3Start= data.selectSceneDto.sceneEntity.exe_strategy3_start || '1';
-						_this.exeStrategy3Order= data.selectSceneDto.sceneEntity.exe_strategy3_order || '1';
-						_this.exeStrategy3Status= data.selectSceneDto.sceneEntity.exe_strategy3_status || '1';
+						_this.exeStrategy1Status= data.selectSceneDto.sceneEntity.exeStrategy1Status || 1;
+						_this.exeStrategy2Start=data.selectSceneDto.sceneEntity.exeStrategy2Start || '1';
+						_this.exeStrategy2Order= data.selectSceneDto.sceneEntity.exeStrategy2Order || '1';
+						_this.exeStrategy2Status= data.selectSceneDto.sceneEntity.exeStrategy2Status || '1';
+						_this.exeStrategy3Start= data.selectSceneDto.sceneEntity.exeStrategy3Start || '1';
+						_this.exeStrategy3Order= data.selectSceneDto.sceneEntity.exeStrategy3Order || '1';
+						_this.exeStrategy3Status= data.selectSceneDto.sceneEntity.exeStrategy3Status || '1';
 						_this.exeStrategyErr= data.selectSceneDto.sceneEntity.exe_strategy_err || '1';
 						if(!(data.selectSceneDto.caseDtos && data.selectSceneDto.caseDtos.length)) {
 							Vac.alert('未查询到相关的用例信息')
@@ -566,7 +566,6 @@ var vBody = new Vue({
 			}
 		},
 		saveStrategy: function(){
-			
 			var _this = this;
 			const o = {
 				id: _this.sceneid,

@@ -6,6 +6,7 @@ var autId = null;
 function viewScriptHandler (event) {
 	var testcaseId = event.target.getAttribute('data-id');
 	var caseCompositeType = event.target.getAttribute('caseCompositeType');
+	console.log(caseCompositeType+"123456")
 	// var data = { testcaseId
 	// };
 	// window.open('case-operation.html?activeName=view-script&testcaseId='+testcaseId);
@@ -2106,6 +2107,7 @@ $(document).ready(function () {
 			{
 				data: "testcaseId",
 				renderer: function (instance, td, row, col, prop, value, cellProperties) {
+					console.log(cellProperties)
 					td.style.textAlign = 'center';
 					// td.innerHTML = "<input type='checkbox' data-index='" + row + "' class='checker' " + (rowSelectFlags[row] ? "checked='checked'" : "") + ">"+
 					// 	'<button onclick="viewScript(event)" style="padding: 3px 5px;" class="btn btn-primary" data-id="'+ value +'">查看脚本</button>';
@@ -2126,7 +2128,7 @@ $(document).ready(function () {
 			{ data: "testdesign", readOnly: true },
 			{ data: 'teststep', readOnly: true },
 			{ data: 'expectresult', readOnly: true },
-			{ data: 'checkpoint', readOnly: true }
+			{ data: 'checkpoint', readOnly: true },
 		];
 		var totalColumnsHeaders = [];
 		var getColumnsOptions = function (tableHead) {

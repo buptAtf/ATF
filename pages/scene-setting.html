@@ -271,7 +271,7 @@
                       <template v-else>
                         <div class="checkbox-wrapper">
                           <i class="icon-move handle" style="color: #ff6c60;"></i> &nbsp;&nbsp;
-                          <div style="display: inline-block; width: 20px; height: 20px;" @mousedown.stop="1"><input type="checkbox" :value="case_wrapper.id" class="checkall" v-model="selectedCases"
+                          <div style="display: inline-block; width: 20px; height: 20px;" @mousedown.stop="1"><input type="checkbox" :value="case_wrapper.id" name="sort" class="checkall" v-model="selectedCases"
                           @change="checkallToggle($event)"></div>
                         </div>
                         <div class="case-wrapper">
@@ -428,7 +428,7 @@
                   <div class="select-wrapper">
                     <div class="select-group">
                       <label>执行状态策略</label>
-                      <select v-model="exe_strategy1_status">
+                      <select v-model="exeStrategy1Status">
                         <!-- <option value="0">保持原样不做处理</option> -->
                         <option value="1">全部重新执行</option>
                         <option value="2">跳过执行成功的案例</option>
@@ -441,7 +441,7 @@
                   <div class="select-wrapper">
                     <div class="select-group">
                       <label>起始节点策略</label>
-                      <select v-model="exe_strategy2_start">
+                      <select v-model="exeStrategy2Start">
                         <!-- <option value="0">保持原样不做处理</option> -->
                         <option value="1">从第一个节点开始</option>
                         <option value="2">从第一个执行失败的节点开始</option>
@@ -449,7 +449,7 @@
                     </div>
                     <div class="select-group">
                       <label>执行顺序策略</label>
-                      <select v-model="exe_strategy2_order">
+                      <select v-model="exeStrategy2Order">
                         <!-- <option value="0">保持原样不做处理</option> -->
                         <option value="1">顺序无关执行</option>
                         <option value="2">强制顺序执行</option>
@@ -457,7 +457,7 @@
                     </div>
                     <div class="select-group">
                       <label>执行状态策略</label>
-                      <select v-model="exe_strategy2_status">
+                      <select v-model="exeStrategy2Status">
                         <!-- <option value="0">保持原样不做处理</option> -->
                         <option value="1">全部重新执行</option>
                         <option value="2">跳过执行成功的案例</option>
@@ -470,7 +470,7 @@
                   <div class="select-wrapper">
                     <div class="select-group">
                       <label>起始用例策略</label>
-                      <select v-model="exe_strategy3_start">
+                      <select v-model="exeStrategy3Start">
                         <!-- <option value="0">保持原样不做处理</option> -->
                         <option value="1">从第一个节点开始</option>
                         <option value="2">从第一个执行失败的节点开始</option>
@@ -478,7 +478,7 @@
                     </div>
                     <div class="select-group">
                       <label>执行顺序策略</label>
-                      <select v-model="exe_strategy3_order">
+                      <select v-model="exeStrategy3Order">
                         <!-- <option value="0">保持原样不做处理</option> -->
                         <option value="1">顺序无关执行</option>
                         <option value="2">强制顺序执行</option>
@@ -486,7 +486,7 @@
                     </div>
                     <div class="select-group">
                       <label>执行状态策略</label>
-                      <select v-model="exe_strategy3_status">
+                      <select v-model="exeStrategy3Status">
                         <!-- <option value="0">保持原样不做处理</option> -->
                         <option value="1">全部重新执行</option>
                         <option value="2">跳过执行成功的案例</option>
