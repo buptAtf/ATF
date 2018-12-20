@@ -1730,51 +1730,51 @@ var app = new Vue({
                     }
                 });
             },    //更改多用例信息
-            modifyMore :function() {
-               let self =this;
-               let modifiedModal=$('#modifiedModal');
-                   autid = $(modifiedModal).find('select[name="autid"]').val(),
-                   transid = $(modifiedModal).find('select[name="transid"]').val(),
-                   submissionId = $(modifiedModal).find('select[name="submissionId"]').val(),
-                   scriptmodeflag = $(modifiedModal).find('select[name="scriptmodeflag"]').val(),
-                   caseProperty = $(modifiedModal).find('select[name="caseProperty"]').val(),
-                   caseType = $(modifiedModal).find('select[name="caseType"]').val(),
-                   priority = $(modifiedModal).find('select[name="priority"]').val(),
-                   reviewer = $(modifiedModal).find('select[name="reviewer"]').val(),
-                   executor = $(modifiedModal).find('select[name="executor"]').val(),
-                   executemethod = $(modifiedModal).find('select[name="executemethod"]').val(),
-                   scriptmode = $(modifiedModal).find('select[name="scriptmode"]').val();
-                let data={};
-                let modifiedForm=$(modifiedModal).find('select');
-                let that=this;
-                for(let i=0;i<modifiedForm.length;i++){
-                    let key=$(modifiedForm[i]).attr('name');
-                    let value=$(modifiedForm[i]).val();
-                    if(value!="-1"){
-                        data[key]=value;
+        modifyMore :function() {
+            let self =this;
+            let modifiedModal=$('#modifiedModal');
+                // autid = $(modifiedModal).find('select[name="autid"]').val(),
+                // transid = $(modifiedModal).find('select[name="transid"]').val(),
+                // submissionId = $(modifiedModal).find('select[name="submissionId"]').val(),
+                // scriptmodeflag = $(modifiedModal).find('select[name="scriptmodeflag"]').val(),
+                // caseProperty = $(modifiedModal).find('select[name="caseProperty"]').val(),
+                // caseType = $(modifiedModal).find('select[name="caseType"]').val(),
+                // priority = $(modifiedModal).find('select[name="priority"]').val(),
+                // reviewer = $(modifiedModal).find('select[name="reviewer"]').val(),
+                // executor = $(modifiedModal).find('select[name="executor"]').val(),
+                // executemethod = $(modifiedModal).find('select[name="executemethod"]').val(),
+                // scriptmode = $(modifiedModal).find('select[name="scriptmode"]').val();
+            let data={};
+            let modifiedForm=$(modifiedModal).find('select');
+            let that=this;
+            for(let i=0;i<modifiedForm.length;i++){
+                let key=$(modifiedForm[i]).attr('name');
+                let value=$(modifiedForm[i]).val();
+                if(value!="-1"){
+                    data[key]=value;
+                }
+            }
+            $.ajax({
+                url:address3 + 'testcase/batchModifyMultiProperty',
+                contentType: 'application/json',
+                data: JSON.stringify({
+                    'testcaseIds': that.ids,
+                    'testcaseActionIds': that.subids,
+                    'propertyValueMap': data,
+                    }),
+                type:'post',
+                success:function(data){
+                    if(data.respCode=="0000"){
+                        $('#successModal').modal();
+                        self.getCase(self.currentPage, self.pageSize, self.order, self.sort);
+                    }
+                    else{
+                        self.failMSG=data.respMsg;
+                        $('#failModal2').modal();
                     }
                 }
-                $.ajax({
-                    url:address3 + 'testcase/batchModifyMultiProperty',
-                    contentType: 'application/json',
-                    data: JSON.stringify({
-                        'testcaseIds': that.ids,
-                        'testcaseActionIds': that.subids,
-                        'propertyValueMap': data,
-                        }),
-                    type:'post',
-                    success:function(data){
-                        if(data.respCode=="0000"){
-                            $('#successModal').modal();
-                            self.getCase(self.currentPage, self.pageSize, self.order, self.sort);
-                        }
-                        else{
-                            self.failMSG=data.respMsg;
-                            $('#failModal2').modal();
-                        }
-                    }
-                });
-            },
+            });
+        },
         Reset:function(){
             let modifiedForm=$('#modifiedModal').find('select');
             for(let i=0;i<modifiedForm.length;i++){

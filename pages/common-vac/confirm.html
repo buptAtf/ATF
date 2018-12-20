@@ -56,7 +56,9 @@
             };
             var cancelButtons = confirmDiv.querySelectorAll(cancelSelector);
             for (var i = 0; i < cancelButtons.length; i++) {
+                console.log("11"+i)
                 cancelButtons[i].onclick = function() {
+                    console.log("11")
                     reject();
                     $(divSelector).modal('hide');
                 }

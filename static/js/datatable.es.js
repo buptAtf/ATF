@@ -6,6 +6,7 @@ var autId = null;
 function viewScriptHandler (event) {
 	var testcaseId = event.target.getAttribute('data-id');
 	var caseCompositeType = event.target.getAttribute('caseCompositeType');
+	console.log(caseCompositeType+"123456")
 	// var data = { testcaseId
 	// };
 	// window.open('case-operation.html?activeName=view-script&testcaseId='+testcaseId);
@@ -323,7 +324,7 @@ $(document).ready(function () {
 		                    }else{
 		                        $(this).parent().next().next().remove();
 		                        $(this).parent().next().after('<select name="propertyValue" id="cpVal" class="selectpicker val_select"></select>')
-		                        $('#cpVal').append('<option value="">正常值</option><option value="">错误值</option><option value="">边界值</option><option value="">要素级</option><option value="">流程级</option>');
+		                        $('#cpVal').append('<option value="1">正常值</option><option value="2">错误值</option><option value="3">边界值</option><option value="4">要素级</option><option value="5">流程级</option>');
 		                        $('#cpVal').selectpicker('refresh');                    
 		                    }
 		                });
@@ -440,9 +441,9 @@ $(document).ready(function () {
 		                                if(data.respCode=='0000'){
 		                                    let userList=data.list;
 		                                    for(let item of userList){
-		                                        $('#authorVal').append(`<option value="${item.id}">${item.username}</option>`);
+		                                        $('#reviewerVal').append(`<option value="${item.id}">${item.username}</option>`);
 		                                    }
-		                                    $('#authorVal').selectpicker('refresh');
+		                                    $('#reviewerVal').selectpicker('refresh');
 		                                }
 		                            }
 		                        });                  
@@ -2106,6 +2107,7 @@ $(document).ready(function () {
 			{
 				data: "testcaseId",
 				renderer: function (instance, td, row, col, prop, value, cellProperties) {
+					console.log(cellProperties)
 					td.style.textAlign = 'center';
 					// td.innerHTML = "<input type='checkbox' data-index='" + row + "' class='checker' " + (rowSelectFlags[row] ? "checked='checked'" : "") + ">"+
 					// 	'<button onclick="viewScript(event)" style="padding: 3px 5px;" class="btn btn-primary" data-id="'+ value +'">查看脚本</button>';
@@ -2126,7 +2128,7 @@ $(document).ready(function () {
 			{ data: "testdesign", readOnly: true },
 			{ data: 'teststep', readOnly: true },
 			{ data: 'expectresult', readOnly: true },
-			{ data: 'checkpoint', readOnly: true }
+			{ data: 'checkpoint', readOnly: true },
 		];
 		var totalColumnsHeaders = [];
 		var getColumnsOptions = function (tableHead) {

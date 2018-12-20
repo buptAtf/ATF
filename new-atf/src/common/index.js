@@ -5,7 +5,7 @@
  * @Last Modified by:  ZhuQingguang
  */
 
- window.address3 = 'http://10.108.223.23:8080/atfcloud2.0a/';
+ window.address3 = 'http://10.101.167.184:8080/atfcloud2.0a/';
  // 所有页面都需要的库
 import Vue from 'vue';
 import * as uiv from 'uiv';
