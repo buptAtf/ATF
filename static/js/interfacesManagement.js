@@ -321,8 +321,8 @@ var interfacesManagement = Vue.extend({
     data: function() {
         var _this = this;
         return {
-            autId: '',
-            transid: '',
+            autId: sessionStorage.getItem("autId"),
+            transid: sessionStorage.getItem("transactId"),
             failMSG:'操作出问题了呢！',
             header:[],
             query:[],
@@ -363,7 +363,6 @@ var interfacesManagement = Vue.extend({
                         str += " <option value='" + autList[i].id + "' >" + autList[i].nameMedium + "</option> ";
                     }
                     $('#autSelect').html(str);
-                    _this.autId = sessionStorage.getItem("autId");
                     $("#autSelect").val(_this.autId);
                     $.ajax({
                         url: address3 + 'transactController/queryTransactsByAutId',
@@ -384,7 +383,6 @@ var interfacesManagement = Vue.extend({
                             _this.interfacesExist(str);
                             $('#transactSelect').html(str);
                             $('#transactSelect').selectpicker('refresh');
-                            _this.transid = sessionStorage.getItem("transactId");
                             $("#transactSelect").val(_this.transid);
                             _this.getInterfaces();
                         }
