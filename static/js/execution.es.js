@@ -187,7 +187,7 @@ var app = new Vue({
         queryExecutionRecord: function(page, listnum, order, sort){ //一般查询记录的函数，与组件的区分开
             var _this=this;
             var today = new Date();
-            var endTime = ''+ today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
+            var endTime = ''+ today.getFullYear()+'-'+(today.getMonth()+1)+'-'+(today.getDate()+1);
             var startTime = '1990-1-1';
             let tempDate = _this.creatTimeChange(startTime,endTime);
             startTime = tempDate[0];
@@ -223,7 +223,7 @@ var app = new Vue({
             var pageSize = page?page.pageSize:this.page.pageSize,
                 currentPage = page?page.currentPage:this.page.currentPage;
             var today = new Date();
-            var endTime = ''+ today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
+            var endTime = ''+ today.getFullYear()+'-'+(today.getMonth()+1)+'-'+(today.getDate()+1);
             var startTime = '1990-1-1';
             let tempDate = _this.creatTimeChange(startTime,endTime);
             startTime = tempDate[0];
