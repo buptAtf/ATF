@@ -391,7 +391,7 @@ var vBody = new Vue({
 					data: data,
 					success: function(data){
 						if(data.respCode === '0000'){
-							$('#add-modal').modal('hide');
+							$('#vac-confirm').modal('hide');
 							_this.selectedScenes = [];
 							Vac.alert('移除成功')
 							_this.getCases();
@@ -492,32 +492,34 @@ var vBody = new Vue({
 					if("0000"!=data.respCode){
 						Vac.alert(data.respMsg);
 					}
-					_this.testCaseList = data.executeInstanceResult.testCaseList;
-					_this.testSceneList = data.executeInstanceResult.testSceneList;
-					Vue.nextTick(() => {
-						_this.setDraggable()
-					})
-					/*if(!(data.testCaseList && data.testCaseList.length)) {
-						// Vac.alert('未查询到相关的用例信息！')
-						return;
-					}*/
-					if(!(_this.testSceneList && _this.testSceneList.length)) {
-						// Vac.alert('未查询到相关的场景信息！')
-						return;
-					}
-					_this.caseIds.length = 0
-					_this.flowNodeIds.clear();
-					if(_this.testCaseList != null){
-					_this.testCaseList.forEach((value) => {
-						Vac.pushNoRepeat(_this.caseIds, value.caseId)
-						if(value.caseCompositeType == 2) {
-							let arr = []
-							for (let flowNode of value.flowNodes) {
-								arr.push(+flowNode.flowNodeId)
-							}
-							_this.flowNodeIds.set(+value.caseId, arr)
+					else{
+						_this.testCaseList = data.executeInstanceResult.testCaseList;
+						_this.testSceneList = data.executeInstanceResult.testSceneList;
+						Vue.nextTick(() => {
+							_this.setDraggable()
+						})
+						/*if(!(data.testCaseList && data.testCaseList.length)) {
+							// Vac.alert('未查询到相关的用例信息！')
+							return;
+						}*/
+						if(!(_this.testSceneList && _this.testSceneList.length)) {
+							// Vac.alert('未查询到相关的场景信息！')
+							return;
 						}
-					})
+						_this.caseIds.length = 0
+						_this.flowNodeIds.clear();
+						if(_this.testCaseList != null){
+						_this.testCaseList.forEach((value) => {
+							Vac.pushNoRepeat(_this.caseIds, value.caseId)
+							if(value.caseCompositeType == 2) {
+								let arr = []
+								for (let flowNode of value.flowNodes) {
+									arr.push(+flowNode.flowNodeId)
+								}
+								_this.flowNodeIds.set(+value.caseId, arr)
+							}
+						})
+					}
 				}
 
 					_this.sceneIds.length = []
@@ -750,16 +752,16 @@ var vBody = new Vue({
             })
             $("#addTestPlan").modal("show");
         },
-        showDeleteConfirm() {
-            if ('' === this.selectTestPlan) {
-                Vac.alert('请选择测试计划');
-                return;
-            }
-            var pro = Vac.confirm('', '', '', '确认要删除吗？');
-                pro.then(() => {
-                    this.delete();
-                }, () => {});
-        },
+        // showDeleteConfirm() {
+        //     if ('' === this.selectTestPlan) {
+        //         Vac.alert('请选择测试计划');
+        //         return;
+        //     }
+        //     var pro = Vac.confirm('', '', '', '确认要删除吗？');
+        //         pro.then(() => {
+        //             this.delete();
+        //         }, () => {});
+        // },
         showUpdateModal(id) {
 			this.selectTestPlan=id;
             if ('' === this.selectTestPlan) {
