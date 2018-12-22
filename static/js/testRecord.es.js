@@ -219,6 +219,7 @@ var app = new Vue({
                 }),
                 success: function(data){
                     _this.recordList = data.list;
+                    _this.totalPage = data.totalPage;
                 }
             });
             // alert('批量查询');
