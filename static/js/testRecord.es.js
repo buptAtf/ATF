@@ -10,7 +10,7 @@ var app = new Vue({
         testround: '',//测试轮次
         recorderstate:'2',//记录单状态
         tt: 0, //总条数
-        pageSize: 10, //页面大小
+        pageSize: 20, //页面大小
         currentPage: 1, //当前页
         totalPage: 1, //总页数
         listnum: 10, //页面大小
@@ -90,23 +90,26 @@ var app = new Vue({
         // turnToPage为跳转到某页
         // 传入参数pageNum为要跳转的页数
         turnToPage(pageNum) {
-            var ts = this;
+            var _this = this;
             pageNum = parseInt(pageNum);
 
             //页数不合法则退出
-            if (!pageNum || pageNum > ts.totalPage || pageNum < 1) {
+            if (!pageNum || pageNum > _this.totalPage || pageNum < 1) {
                 console.log('页码输入有误！');
-                ts.isPageNumberError = true;
+                _this.isPageNumberError = true;
                 return false;
             } else {
-                ts.isPageNumberError = false;
+                _this.isPageNumberError = false;
             }
-
             //更新当前页
-            ts.currentPage = pageNum;
-
+            _this.currentPage = pageNum;
+            if(_this.querymode==='rounds'){
+                _this.queryByRounds();
+            } else if(_this.querymode==='batch'){
+                _this.queryByBatchs();
+            }
             //页数变化时的回调
-            getRecord(ts.currentPage, ts.pageSize, 'id', 'asc');
+            // getRecord(_this.currentPage, _this.pageSize, 'id', 'asc');
         },
         viewCase: function (sceneId=15, caseid, sourcechannel, item) {
 			var o = {
@@ -188,14 +191,16 @@ var app = new Vue({
                     'recorderStatus':+_this.recorderstate,  //在字符串类型前加+，将类型转换为整形"123"+5                    
                     'caseId': _this.caseId,
                     'sceneId': _this.sceneId,
-                    'pageSize': 20,     //整形
-                    'currentPage': 1,   //整形
+                    'pageSize': _this.pageSize,     //整形
+                    'currentPage': _this.currentPage,   //整形
                     // 'orderType': '',
                     // 'orderColumns': ''
                 }),
                 success: function(data){
                     if(data.respMsg=='查询成功'){
                         _this.recordList = data.list;
+                        _this.totalPage = data.totalPage;
+                        _this.tt = data.totalCount;
                     } else if(data.respMsg=='查询结果为空') {
                         _this.recordList = [];
                         Vac.alert('查询结果为空');
@@ -214,12 +219,13 @@ var app = new Vue({
                     'testPlanId': +_this.testPlanId,
                     'caseId': +_this.caseId,
                     'sceneId': +_this.sceneId,
-                    'pageSize': 20,     //整形
-                    'currentPage': 1,   //整形
+                    'pageSize': _this.pageSize,     //整形
+                    'currentPage': _this.currentPage,   //整形
                 }),
                 success: function(data){
                     _this.recordList = data.list;
                     _this.totalPage = data.totalPage;
+                    _this.tt = data.totalCount;
                 }
             });
             // alert('批量查询');
@@ -231,7 +237,7 @@ var app = new Vue({
                 type: 'post',
                 contentType: 'application/json',
                 data:JSON.stringify({
-                    
+
                 }),
                 success: function(data){
                     if (data.respCode === '0000') {
