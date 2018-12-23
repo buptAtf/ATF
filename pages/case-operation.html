@@ -30,8 +30,30 @@
     <!-- <link rel="import" href="./common/aside-guide.html?__inline"> -->
     <!--sidebar end-->
     <!--main content start-->
+    <div class="row">
+      <div class="col-xs-12">
+          <section class="panel panel-pad panel-bottom bar">
+              <!-- select start -->
+              <form class="form-horizontal">
+                  <div class="form-group bar ">
+                      <label class="col-xs-2 control-label">被测系统</label>
+                      <div class="col-xs-2">
+                          <input class="form-control" id="autid" v-model="autName" readonly>
+                          </input>
+                      </div>
+                      <label class="col-xs-1 control-label">功能点</label>
+                      <div class="col-xs-2">
+                          <input class="form-control " id="transid" v-model="transName" readonly>
+                          </input>
+                      </div>
+                  </div>
+              </form>
+              <!-- select end -->
+          </section>
+      </div>
+  </div>
     <section id="main-content" style="margin-left: 0;">
-      <section class="wrapper">
+      <section class="wrapper" style="margin-top: 0;">
         <ul class="nav nav-tabs" role="tablist">
           <li role="presentation" :class="{active: activeName=='element-library'}">
             <a href="#element-library" aria-controls="element-library" role="tab" data-toggle="tab">元素库</a>
@@ -44,6 +66,9 @@
           </li>
           <li role="presentation" :class="{active: activeName=='messages'}">
             <a href="#messages" aria-controls="messages" role="tab" data-toggle="tab">用例数据</a>
+          </li>
+          <li role="presentation" :class="{active: activeName=='detailModel'}">
+            <a href="#detailModel" aria-controls="detailModel" role="tab" data-toggle="tab">用例详情</a>
           </li>
           <!-- <li role="presentation" :class="{active: activeName=='exec-record'}">
             <a href="#exec-record" aria-controls="exec-record" role="tab" data-toggle="tab">执行记录</a>
@@ -69,6 +94,9 @@
           </div>
           <div role="tabpanel" class="tab-pane" id="messages" :class="{active: activeName=='messages'}">
             <case-data></case-data>
+          </div>
+          <div role="tabpanel" class="tab-pane" id="detailModel" :class="{active: activeName=='detailModel'}">
+            <detail-model :testcaseid="viewScriptTestcaseId"></detail-model>
           </div>
           <div role="tabpanel" class="tab-pane" id="exec-record" :class="{active: activeName=='exec-record'}">
             <exec-record :recorddata="recordData"></exec-record>
@@ -241,6 +269,7 @@
 <!-- <script src="https://unpkg.com/vue/dist/vue.js"></script> -->
 <!--script for this page only-->
 <script type="text/javascript" src="../static/js/case-operation/elementemplate.js"></script>
+<script type="text/javascript" src="../static/js/case-operation/detailModal.js"></script>
 <script type="text/javascript" src="../static/js/case-operation/case-data.js"></script>
 <script type="text/javascript" src="../static/js/case-operation/execution-record.js"></script>
 <script type="text/javascript" src="../static/js/case-operation/view-script.js"></script>
@@ -262,11 +291,15 @@
     el: '#app1',
     data: function () {
       return {
+        testcase:{},
+        flowTestcase:[],
         activeName: 'object-repo',
         recordData: '',
         viewScriptTestcaseId: '',
         autid:"",
-        transid:""
+        transid:"",
+        autName:"",
+        transName:""
       }
     },
     ready: function() {
@@ -294,6 +327,8 @@
                     var caseData=res.testcaseViewRespDTO;
                     _this.autid=caseData.autId;
                     _this.transid=caseData.transId;
+                    _this.autName=caseData.autName;
+                    _this.transName=caseData.transName;
                 }
             });
       if(_this.activeName=='exec-record'){

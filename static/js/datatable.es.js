@@ -3,10 +3,8 @@
 var tooltipwindow;
 var vac_conditionList = null;
 var autId = null;
-function viewScriptHandler (event) {
+function viewScriptHandler (event,caseCompositeType) {
 	var testcaseId = event.target.getAttribute('data-id');
-	var caseCompositeType = event.target.getAttribute('caseCompositeType');
-	console.log(caseCompositeType+"123456")
 	// var data = { testcaseId
 	// };
 	// window.open('case-operation.html?activeName=view-script&testcaseId='+testcaseId);
@@ -2109,9 +2107,7 @@ $(document).ready(function () {
 				renderer: function (instance, td, row, col, prop, value, cellProperties) {
 					console.log(cellProperties)
 					td.style.textAlign = 'center';
-					// td.innerHTML = "<input type='checkbox' data-index='" + row + "' class='checker' " + (rowSelectFlags[row] ? "checked='checked'" : "") + ">"+
-					// 	'<button onclick="viewScript(event)" style="padding: 3px 5px;" class="btn btn-primary" data-id="'+ value +'">查看脚本</button>';
-					td.innerHTML = '<button onclick="viewScriptHandler(event)" style="padding: 3px 5px;" class="btn btn-xs btn-primary" data-id="'+ value +'">查看脚本</button>';
+					td.innerHTML = '<button onclick="viewScriptHandler(event,'+ value.split(",",)[1] +')" style="padding: 3px 5px;" class="btn btn-xs btn-primary" data-id="'+ value.split(",",)[0] +'">查看脚本</button>';
 					return td;
 				},
 				readOnly: true
@@ -2218,6 +2214,7 @@ $(document).ready(function () {
 										testDesign: data.testdesign,
 										caseCode: data.casecode
 									} = value);
+									data.testcaseId=value.id+","+value.caseCompositeType;
 									console.log(value);
 									dataKey.forEach((key) => {
 										console.log("12Key:" + key+"data_"+key+"qweqwe"+value["data_"+key]);
@@ -2233,6 +2230,7 @@ $(document).ready(function () {
 							getTotalColHeaders(data.tableHead);
 							// console.log(totalColumnsHeaders);
 							var totalColumnsOptions = getColumnsOptions(data.tableHead);
+							console.log(totalColumnsOptions);
 							// handsontable 配置与生成
 							if (handsontable === null) {
 								handsontable = new Handsontable(tableContainer, {

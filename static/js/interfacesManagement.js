@@ -18,7 +18,7 @@ var template_int = `
                 <div class="form-group bar ">
                     <label class="col-xs-2 control-label">被测系统</label>
                     <div class="col-xs-2">
-                        <select class="form-control selectpicker" id="autSelect" data-live-search="true">
+                        <select class="form-control selectpicker" id="autSelect" v-model="autId" data-live-search="true">
                         </select>
                     </div>
                     <label class="col-xs-1 control-label">功能点</label>
@@ -364,6 +364,7 @@ var interfacesManagement = Vue.extend({
                     }
                     $('#autSelect').html(str);
                     $("#autSelect").val(_this.autId);
+                    $('#autSelect').selectpicker('refresh');
                     $.ajax({
                         url: address3 + 'transactController/queryTransactsByAutId',
                         type: 'POST',
@@ -382,8 +383,8 @@ var interfacesManagement = Vue.extend({
                             }
                             _this.interfacesExist(str);
                             $('#transactSelect').html(str);
-                            $('#transactSelect').selectpicker('refresh');
                             $("#transactSelect").val(_this.transid);
+                            $('#transactSelect').selectpicker('refresh');
                             _this.getInterfaces();
                         }
  
@@ -409,8 +410,8 @@ var interfacesManagement = Vue.extend({
                         }
                         _this.interfacesExist(str);
                         $('#transactSelect').html(str);
-                        $('#transactSelect').selectpicker('refresh');
                         _this.transid = $('#transactSelect').val();
+                        $('#transactSelect').selectpicker('refresh');
                     } else {
                         Vac.alert(respMsg);
                     }
