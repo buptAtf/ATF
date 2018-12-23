@@ -166,10 +166,10 @@
                                 <div class="modal-content">
                                     <div class="modal-header">
                                         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                                        <h4 class="modal-title">操作失败</h4>
+                                        <h4 class="modal-title">提示</h4>
                                     </div>
                                     <div class="modal-body">
-                                        <h4>请从批量执行查询点击记录单进入，或直接查询！</h4>
+                                        <h4>空记录！请尝试查询！</h4>
                                     </div>
                                     <div class="modal-footer">
                                         <button data-dismiss="modal" class="btn btn-success" type="button">确定</button>
@@ -203,11 +203,13 @@
                 <div class="row">
                     <div class="col-sm-12">
                         <section class="panel">
-                            <header class="panel-heading">
+                            <!-- <header class="panel-heading">
                                 执行记录
-                            </header>
+                            </header> -->
                             <div class="filter">
                                 <div class="row">
+                                    <div  style="padding: 10px 0;">
+                                    </div>
                                     <form class="form-horizontal col-sm-12">
                                         <div class="form-group">
                                             <label class="col-sm-1 control-label">查询方式</label>
@@ -251,7 +253,7 @@
 
                                             <div class="col-sm-2">
                                                 <a class="btn btn-primary" @click="getRecordByClick(querymode)">查询</a>
-                                                <a class="btn btn-primary" data-toggle="modal" href="#deleteModal">删除</a>
+                                                <a class="btn btn-primary" data-toggle="modal" href="#deleteModal" style="margin-left: 30px">丢弃</a>
                                             </div>
                                         </div>
                                     </form>
@@ -295,7 +297,7 @@
                                             <th class="text-center">记录单状态</th>
                                             <th class="text-center">执行结果状态</th>
                                             <th class="text-center">来源渠道</th>
-                                            <th class="text-center">资源路径</th>
+                                            <th class="text-center">执行报告</th>
                                             <!-- <th class="text-center">执行实例ID</th> -->
                                             <th class="text-center">操作</th>
                                         </tr>
@@ -309,12 +311,13 @@
                                             <td class="center" width="10%">{{ item.testPhase }}</td>
                                             <td width="">{{ item.testRound }}</td>
                                             <td class="" width="">{{item.executeRound}}</td>
-                                            <td class="" width="">{{item.caseId}}</td>
+                                            <td class="" width="">{{item.casecode}}</td>
                                             <td class="" width="">{{item.flownodeName}}</td>
                                             <td class="" width="">{{item.recorderStatus}}</td>
                                             <td class="" width="">{{item.executeStatus}}</td>
                                             <td class="" width="">{{item.sourceChannel}}</td>
-                                            <td class="" width=""> <a :href="'http://10.101.167.184:8080'+item.resourcePath">点击查看</a></td>
+                                            <td class="" width="" v-if="item.resourcePath!==null"> <a :href="'http://10.101.167.184:8080'+item.resourcePath">点击查看</a></td>
+                                            <td class="" width="" v-else>无记录</td>
                                             <!-- <td class="" width="">{{item.testexeinsid}}</td> -->
                                             <td width="80px">
                                                 <a class="btn btn-xs btn-success"

@@ -52,23 +52,24 @@ var app = new Vue({
         caseSourceChannel:'',
         runStatus:'',
         testPlans:[],
+        testPlanId:'',
         page: {
             totalCount: 1,
             currentPage: 1,
             totalPage: 1,
             pageSize:20
-        }
+        },
+        period_flag:'',  //创建日期使用的标志来确定是0-默认，1-今日，2-一周前，还是3-一月前
     },
     ready: function() {
         var _this = this;
         //queryExecutionRecord(this.currentPage, this.pageSize, this.order, this.sort);
         _this.changeListNum();
         _this.queryTestPlan();
-        _this.queryExecutionRecord(this.currentPage, this.pageSize, this.order, this.sort);
-        
+        // _this.queryExecutionRecord(this.currentPage, this.pageSize, this.order, this.sort);
+        _this.getExecutionRecord();
+        _this.creatTimeInit();
 
-
-        // console.log('ss');
         $('.3').addClass('open')
         $('.3 .arrow').addClass('open')
         $('.3-ul').css({display: 'block'})
@@ -197,6 +198,9 @@ var app = new Vue({
                 type: 'post',
                 contentType: 'application/json',
                 data: JSON.stringify({
+                    'testPlanId': '',
+                    'caseSourceChannel': '',
+                    'runStatus': '', 
                     'pageSize': listnum,
                     'currentPage': page,
                     'queryStartTime': startTime,
@@ -222,9 +226,9 @@ var app = new Vue({
             var _this=this;
             var pageSize = page?page.pageSize:this.page.pageSize,
                 currentPage = page?page.currentPage:this.page.currentPage;
-            var today = new Date();
-            var endTime = ''+ today.getFullYear()+'-'+(today.getMonth()+1)+'-'+(today.getDate()+1);
-            var startTime = '1990-1-1';
+            let originalData = _this.creatTimeInit();   //得到时间段
+            var startTime = originalData[0];
+            var endTime = originalData[1];
             let tempDate = _this.creatTimeChange(startTime,endTime);
             startTime = tempDate[0];
             endTime = tempDate[1];
@@ -233,6 +237,9 @@ var app = new Vue({
                 type: 'post',
                 contentType: 'application/json',
 				data: JSON.stringify({
+                    'testPlanId': + _this.testPlanId,
+                    'caseSourceChannel': '',
+                    'runStatus': + _this.runStatus,     //执行状态
                     "pageSize":pageSize,
                     "currentPage":currentPage,
                     'queryStartTime': startTime,
@@ -280,7 +287,7 @@ var app = new Vue({
                     if (data.respCode === '0000') {
 						if (data.testPlanEntityList && (data.testPlanEntityList.length>0)) {
                             _this.testPlans = data.testPlanEntityList;
-                            _this.testPlanId = data.testPlanEntityList[0].id;
+                            // _this.testPlanId = data.testPlanEntityList[0].id;
                         }
                     }
                 }
@@ -288,7 +295,7 @@ var app = new Vue({
         },
         creatTimeChange: function(startTime,endTime){
             startTime = startTime + ' 00:00:00:000';
-            endTime = endTime + ' 00:00:00:000';
+            endTime = endTime + ' 23:59:59:000';
             var startTimeObj = new Date(startTime.replace(/-/g,'/'));
             var endTimeObj = new Date(endTime.replace(/-/g,'/'));
             var timeList = [startTimeObj.getTime(),endTimeObj.getTime()];
@@ -297,35 +304,46 @@ var app = new Vue({
             }
             return timeList;
         },
-        queryBatchByClick: function(){
+        creatTimeInit: function(){      //初始化查询所需要的如期段
             var _this = this;
-            var timeList = _this.creatTimeChange(_this.creatTimeStart,_this.creatTimeEnd);
-            var startTime = timeList[0];
-            var endTime = timeList[1];
-            $.ajax({
-                url :address3 + '/batchRunCtrlController/pagedBatchQueryBatchRunCtrl',
-                type :'post',
-                contentType: 'application/json',
-                data:JSON.stringify({
-                    'testPlanId': + _this.testPlanId,
-                    'caseSourceChannel': '',
-                    'runStatus': + _this.runStatus,     //执行状态
-                    'queryStartTime': startTime,
-                    'queryEndTime': endTime,
-                    'pageSize': 20,
-                    'currentPage': 1,
-                }),
-                success: function(data){
-                    if(data.respMsg=='操作成功'){
-                        _this.sceneList = data.batchRunCtrlList;
-                    } else if(data.respMsg=='返回结果为空'){
-                        Vac.alert('查询结果为空');
-                    }
-                }
-            })
+            var today = new Date();                             //得到今天的日期值
+            var lastweek = new Date(today - 7*24*3600*1000);    //得到上周的日期值
+            var lastmonth = new Date();
+            var retDate=[];                                 //存储返回的日期值，0-开始日期，1-结束日期
+            lastmonth.setMonth(lastmonth.getMonth()-1);     //得到上一个月的日期值
+            
+            if(_this.period_flag==="0"){         //默认值
+                retDate[0] = '1990-1-1';
+                retDate[1] = ''+ today.getFullYear()+'-'+(today.getMonth()+1)+'-'+(today.getDate());
+            } else if(_this.period_flag==="1"){ //一天内
+                retDate[0] = ''+ today.getFullYear()+'-'+(today.getMonth()+1)+'-'+(today.getDate()-1);
+                retDate[1] = ''+ today.getFullYear()+'-'+(today.getMonth()+1)+'-'+(today.getDate());
+                _this.creatTimeStart = retDate[0];
+                _this.creatTimeEnd =retDate[1];
+            } else if(_this.period_flag==="2"){ //一周内
+                retDate[0] = ''+ lastweek.getFullYear()+'-'+(lastweek.getMonth()+1)+'-'+(lastweek.getDate());
+                retDate[1] = ''+ today.getFullYear()+'-'+(today.getMonth()+1)+'-'+(today.getDate());
+                _this.creatTimeStart = retDate[0];
+                _this.creatTimeEnd =retDate[1];
+            } else if(_this.period_flag==="3"){ //一个月内
+                retDate[0] = ''+ lastmonth.getFullYear()+'-'+(lastmonth.getMonth()+1)+'-'+(lastmonth.getDate());
+                retDate[1] = ''+ today.getFullYear()+'-'+(today.getMonth()+1)+'-'+(today.getDate());
+                _this.creatTimeStart = retDate[0];
+                _this.creatTimeEnd =retDate[1];
+            } 
+            if(_this.creatTimeStart==="" || _this.creatTimeEnd===""){     //如果初试的时间框没有选择的话，就还是查询全部记录
+                retDate[0] = '1990-1-1';
+                retDate[1] = ''+ today.getFullYear()+'-'+(today.getMonth()+1)+'-'+(today.getDate());
+            } else{                                                       //如果初始的时间框选择的话，那就查询时间段内的记录          
+                retDate[0] = _this.creatTimeStart;
+                retDate[1] = _this.creatTimeEnd;
+            }
+            return retDate;
+        },
+        queryBatchByClick: function(){
+            location.reload();
+            getExecutionRecord();
         }
-  
-
 
     },
 });

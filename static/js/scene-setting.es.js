@@ -13,7 +13,7 @@ var vBody = new Vue({
 		tooltipMessage: '',
 
 		sceneInfo: null,
-		caseMaxLength: {},
+		turnNumArr:[],
 		caseIds: [],
 		flowNodeIds: new Map(),
 
@@ -174,8 +174,9 @@ var vBody = new Vue({
 				data: { id: +_this.sceneid },
 				success: function(data){
 					if(data.respCode == '0000'){
-						let caseGroup = {}, caseMaxLength = {};
+						let caseGroup = {};
 						data.selectSceneDto.caseDtos.sort(function(a,b){return a.orderNum>b.orderNum})
+						let maxCaseCompositeType = 0;
 						for(var i = 0; i < data.selectSceneDto.caseDtos.length; i++) {
 							if(caseGroup[data.selectSceneDto.caseDtos[i].group]) {
 								// 已经有 group
@@ -201,15 +202,16 @@ var vBody = new Vue({
 								}
 								group.push(o);
 							}
-						}
-						for (var group in caseGroup) {
-							for (var i = 0; i < caseGroup[group].length; i++) {
-								for (var time in  caseGroup[group][i]){
-									caseMaxLength[time] = caseMaxLength[time] === undefined ? 0 : Math.max(caseGroup[group][i][time].length, caseMaxLength[time]);
-								}
+							let curCaseCompositeType = data.selectSceneDto.caseDtos[i].caseCompositeType;
+							if (curCaseCompositeType>maxCaseCompositeType){
+								maxCaseCompositeType = curCaseCompositeType;
 							}
 						}
-						_this.caseMaxLength = caseMaxLength;
+						let turnNumArr = [];
+						for (let i = 0 ; i < maxCaseCompositeType ; i++){
+							turnNumArr.push(i);
+						}
+						_this.turnNumArr = turnNumArr;
 						data.selectSceneDto.sceneEntity.caseGroup = caseGroup;
 						_this.sceneInfo = data.selectSceneDto.sceneEntity;
 						_this.exeStrategy1Status= data.selectSceneDto.sceneEntity.exeStrategy1Status || 1;
