@@ -294,8 +294,8 @@ var app = new Vue({
             });
         },
         creatTimeChange: function(startTime,endTime){
-            startTime = startTime + ' 00:00:00:000';
-            endTime = endTime + ' 23:59:59:000';
+            startTime = startTime + ' 00:00:00';
+            endTime = endTime + ' 23:59:59';
             var startTimeObj = new Date(startTime.replace(/-/g,'/'));
             var endTimeObj = new Date(endTime.replace(/-/g,'/'));
             var timeList = [startTimeObj.getTime(),endTimeObj.getTime()];
@@ -341,8 +341,9 @@ var app = new Vue({
             return retDate;
         },
         queryBatchByClick: function(){
-            location.reload();
-            getExecutionRecord();
+            var _this = this;
+            _this.page.currentPage = 1;
+            _this.getExecutionRecord();
         }
 
     },

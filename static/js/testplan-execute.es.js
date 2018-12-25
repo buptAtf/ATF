@@ -99,7 +99,7 @@ var vBody = new Vue({
             totalCount: 1,
             currentPage: 1,
             totalPage: 1,
-            pageSize:5
+            pageSize: 100
         }
 	},
 	created: function(){
@@ -697,6 +697,7 @@ var vBody = new Vue({
             else Vac.alert("不在页码范围");
         },
         add() {
+			
                 const url = 1 === this.editType ? 'testPlanController/insertTestPlan' : 'testPlanController/updateTestPlan';
                 const data = 1 === this.editType ? this.addRowData : {
                     id: this.selectTestPlan,
