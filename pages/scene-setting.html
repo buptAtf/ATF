@@ -238,12 +238,12 @@
                 <input type="checkbox"  @change="checkallBox($event)" v-model="checkall"> &nbsp;&nbsp;全选
               </div>
               <div style="height: 30px;margin-left: 50px;">
-                <div v-for="(key, val) in caseMaxLength" @mousedown.stop="1" 
+                <div v-for="val in turnNumArr" @mousedown.stop="1" 
                   style="float: left;height: 30px;margin-left: 20px;
                     text-align: center;border: 1px solid #ddd5d5;line-height: 30px;
                     font-size: 20px;" 
-                  :style="{ width: val * 170 + 'px'}">
-                  {{key}}
+                  :style="{ width: 170 + 'px'}">
+                  T+{{val}}
                 </div>
               </div>
               <div id="sortable">
@@ -259,7 +259,7 @@
                         <div v-for="time in case_wrapper">
                           <div class="case-wrapper" v-for="case in time">
                             <div class="" style="height: 30px; width: 30px; border-width: 15px; border-style: solid; border-color: transparent transparent  transparent #bebaba;margin: 0 -30px 0 20px; position: relative; top: 0%;"></div>
-                            <div class="case"  @click="changeCase(case.id, 1)"  @mousedown.stop="1" :style="{ marginRight: (index !== time.length - 1) ? '0px' : (caseMaxLength[key] - index - 1) * 170 + 'px'}">
+                            <div class="case"  @click="changeCase(case.id, 1)"  @mousedown.stop="1" :style="{ marginRight: (index !== time.length - 1) ? '0px' :170 + 'px'}">
                               <div class="case-header">
                                 <p :title="case.casecode" style="margin-left: 5px;">{{case.casecode}}</p>
                                 <input type="checkbox" v-bind:value="case.id" class="check-case single-case" v-model="selectedCases">
@@ -279,7 +279,7 @@
                             <div class="" style="height: 30px; width: 30px; border-width: 15px; border-style: solid; border-color: transparent transparent  transparent #bebaba;margin: 0 -30px 0 20px; position: relative; top: 0%;"></div>
                             <div class="case" v-for="(index, case) in time" @mousedown.stop="1"
                               @click="changeCase(case.id, 2)" 
-                              :style="{ marginRight: (index !== time.length - 1) ? '0px' : (caseMaxLength[key] - index - 1) * 170 + 'px'}">
+                              :style="{ marginRight: (index !== time.length - 1) ? '0px' : 170 + 'px'}">
                               <div class="case-header">
                                 <p :title="case.casecode" style="margin-left: 5px;">{{case.casecode}}</p>
                                 <input type="checkbox" v-bind:value="case.id"
