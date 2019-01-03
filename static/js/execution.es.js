@@ -248,8 +248,9 @@ var app = new Vue({
 				success: (data) => {
 					if ('0000' === data.respCode) {
                         _this.sceneList = data.batchRunCtrlList;
-                        this.page.totalCount=data.totalCount;
-                        this.page.totalPage=data.totalPage;
+                        _this.page.totalCount=data.totalCount;
+                        _this.page.totalPage=data.totalPage;
+                        _this.page.currentPage = 1;
 					} else {
 						Vac.alert('出错啦~');
 					}

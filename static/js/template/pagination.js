@@ -26,7 +26,7 @@ var paginationTemplate=`
             <li>
                 <a href="javascript:;" @click="turnTopage(page.currentPage-1)" v-text="page.currentPage-1" v-if="page.currentPage-1>0"></a>
             </li>
-            <li class="active"><a href="javascript:;" @click="turnTopage(page.currentPage)" v-text="page.currentPage">3</a></li>
+            <li class="active"><a href="javascript:;" @click="turnTopage(page.currentPage)" v-text="page.currentPage"></a></li>
             <li>
                 <a href="javascript:;" @click="turnTopage(page.currentPage+1)" v-text="page.currentPage+1" v-if="page.currentPage+1<=page.totalPage"></a>
             </li>
@@ -68,34 +68,34 @@ var pagination = Vue.extend({
        }
    },
    ready: function() {
-       console.log(""+this.totalCount+this.currentPage+this.totalPage+this.pageSize)
+       console.log(""+this.totalCount+this.currentPage+this.totalPage+this.pageSize);
    },
    watch: {
     totalCount: {
         handler(newValue, oldValue) {
-            console.log("totalCount"+newValue)
-            this.page.totalCount = newValue
+            console.log("totalCount"+newValue);
+            this.page.totalCount = newValue;
 　　　　},
 　　　　deep: true
 　　},
 currentPage: {
     handler(newValue, oldValue) {
-        console.log("currentPage"+newValue)
-        this.page.currentPage = newValue
+        console.log("currentPage"+newValue);
+        this.page.currentPage = newValue;
 　　　　},
 　　　　deep: true
 　　},
 totalPage: {
     handler(newValue, oldValue) {
-        console.log('totalPage'+newValue)
-        this.page.totalPage = newValue
+        console.log('totalPage'+newValue);
+        this.page.totalPage = newValue;
 　　　　},
 　　　　deep: true
 　　},
 pageSize: {
     handler(newValue, oldValue) {
-        console.log('pageSize'+newValue)
-        this.page.pageSize = newValue
+        console.log('pageSize'+newValue);
+        this.page.pageSize = newValue;
 　　　　},
 　　　　deep: true
 　　},
@@ -107,7 +107,7 @@ pageSize: {
         var _this=this;
         if(currentPageParam>0 && currentPageParam<=this.page.totalPage){
             _this.page.currentPage = currentPageParam;
-            _this.$emit("turn-topage", _this.page)
+            _this.$emit("turn-topage", _this.page);
         }
         else Vac.alert("不在页码范围");
     }
