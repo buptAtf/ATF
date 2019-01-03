@@ -226,6 +226,11 @@ var app = new Vue({
             var _this=this;
             var pageSize = page?page.pageSize:this.page.pageSize,
                 currentPage = page?page.currentPage:this.page.currentPage;
+            if(page){   //此处使page中的currentPage值发生改变，从而触发翻页控件中的事件发生,使当前页改变
+                _this.page.currentPage = page.currentPage;
+            } else{
+                _this.page.currentPage = 1;
+            }
             let originalData = _this.creatTimeInit();   //得到时间段
             var startTime = originalData[0];
             var endTime = originalData[1];
@@ -250,7 +255,7 @@ var app = new Vue({
                         _this.sceneList = data.batchRunCtrlList;
                         _this.page.totalCount=data.totalCount;
                         _this.page.totalPage=data.totalPage;
-                        _this.page.currentPage = 1;
+                        // _this.page.currentPage = 1;
 					} else {
 						Vac.alert('出错啦~');
 					}
@@ -343,7 +348,7 @@ var app = new Vue({
         },
         queryBatchByClick: function(){
             var _this = this;
-            _this.page.currentPage = 1;
+            // _this.page.currentPage = 1;
             _this.getExecutionRecord();
         }
 
