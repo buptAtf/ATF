@@ -34,7 +34,7 @@
                 <div class="row">
                     <div class="col-lg-12 top-btn">
                         <a class="btn btn-white" data-toggle="modal" href="#insertModal"><i class="icon-plus"></i> 添加</a>
-                        <!-- <a class="btn btn-white" @click="checkDel"><i class="icon-trash"></i> 删除</a> -->
+                        <a class="btn btn-white" @click="checkDel"><i class="icon-trash"></i> 删除</a>
                         <a class="btn btn-white" @click="checkUpdate"><i class="icon-edit"></i> 修改</a>
                         <!-- insertModal start -->
                         <div class="modal fade" id="insertModal" tabindex="-1" role="dialog" aria-labelledby="insertModalLabel" aria-hidden="true">
@@ -309,7 +309,7 @@
                                     </tr>
                                 </thead>
                                 <tbody id="sceneTable">
-                                    <tr class="odd gradeX" v-for="scene in sceneList" id="{{scene.id}}">
+                                    <tr class="odd gradeX" v-for="scene in sceneList" id="{{scene.id}}" v-if="scene.deleteFlag==1">
                                         <td width="5%">
                                             <input type="radio" v-model="" name="chk_list" id="{{scene.id}}" />
                                         </td>

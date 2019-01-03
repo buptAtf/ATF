@@ -133,9 +133,10 @@ var app = new Vue({
         },
         del: function() {
             this.getIds();
+            console.log("场景ID是："+app.ids);
             var self=this;
             $.ajax({
-                url: address3 + 'sceneController/deleteScene',
+                url: address3 + '/sceneController/deleteScene',
                 type: 'post',
                 contentType: 'application/json',
                 data: JSON.stringify({
