@@ -99,7 +99,7 @@ var vBody = new Vue({
             totalCount: 1,
             currentPage: 1,
             totalPage: 1,
-            pageSize: 100
+            pageSize: 10
         }
 	},
 	created: function(){
@@ -800,7 +800,8 @@ var vBody = new Vue({
                 },
 				success: (data) => {
 					if ('0000' === data.respCode) {
-                        this.testPlanArray = data.testPlanEntityList;
+						this.testPlanArray = data.testPlanEntityList;
+						this.testPlans = data.testPlanEntityList;
                                 this.page.totalCount=data.totalCount;
                                 this.page.totalPage=data.totalPage;
 					} else {
