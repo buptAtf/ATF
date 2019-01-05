@@ -36,7 +36,7 @@
               <!-- select start -->
               <form class="form-horizontal">
                   <div class="form-group bar ">
-                      <label class="col-xs-2 control-label">被测系统</label>
+                      <!-- <label class="col-xs-2 control-label">被测系统</label>
                       <div class="col-xs-2">
                           <input class="form-control" id="autid" v-model="autName" readonly>
                           </input>
@@ -45,6 +45,22 @@
                       <div class="col-xs-2">
                           <input class="form-control " id="transid" v-model="transName" readonly>
                           </input>
+                      </div> -->
+                      <label class="col-xs-2 control-label">测试项目</label>
+                      <div class="col-xs-2">
+                          <input class="form-control" id="caselibid" v-model="caselibid" readonly>
+                          </input>
+                      </div>
+                      <label class="col-xs-1 control-label">案例编号</label>
+                      <div class="col-xs-2">
+                          <input class="form-control " id="transid" v-model="casecode" readonly>
+                          </input>
+                      </div>
+                      <label class="col-xs-1 control-label" v-if="caseCompositeType==2">流程节点</label>
+                      <div class="col-xs-2" v-if="caseCompositeType==2">
+                          <select  class="form-control " id="flowcase" v-model="flowcase">
+                              <option v-for ="item in flowTestcase" :value="item.actioncasecode" >{{item.actioncasecode}}</option>
+                          </select>
                       </div>
                   </div>
               </form>
@@ -96,7 +112,7 @@
             <case-data></case-data>
           </div>
           <div role="tabpanel" class="tab-pane" id="detailModel" :class="{active: activeName=='detailModel'}">
-            <detail-model :testcaseid="viewScriptTestcaseId"></detail-model>
+            <detail-modal :test-case="testcase" :flow-cases="flowTestcase" ></detail-modal>
           </div>
           <div role="tabpanel" class="tab-pane" id="exec-record" :class="{active: activeName=='exec-record'}">
             <exec-record :recorddata="recordData"></exec-record>
@@ -293,13 +309,17 @@
       return {
         testcase:{},
         flowTestcase:[],
+        caseCompositeType:-1,
         activeName: 'object-repo',
         recordData: '',
         viewScriptTestcaseId: '',
         autid:"",
         transid:"",
         autName:"",
-        transName:""
+        transName:"",
+        casecode:null,
+        caselibid:null,
+        flowcase:null,
       }
     },
     ready: function() {
@@ -325,10 +345,18 @@
                 }),
                 success: function(res){
                     var caseData=res.testcaseViewRespDTO;
+                    _this.testcase=res.testcaseViewRespDTO;
+                    _this.caselibid=res.testcaseViewRespDTO.caseLibId;
+                    _this.caseCompositeType=caseData.caseCompositeType;
+                    if(caseData.caseCompositeType==2){
+                      _this.flowTestcase=res.testcaseActionList;
+                    _this.flowcase=res.testcaseActionList[0].actioncasecode;
+                    }
                     _this.autid=caseData.autId;
                     _this.transid=caseData.transId;
                     _this.autName=caseData.autName;
                     _this.transName=caseData.transName;
+                    _this.casecode=caseData.casecode;
                 }
             });
       if(_this.activeName=='exec-record'){

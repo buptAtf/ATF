@@ -241,12 +241,12 @@ var vBody = new Vue({
 				type: 'post',
 				contentType: 'application/json',
 				data: JSON.stringify({
-					"userId": this.userId,
-					"recordflag": this.recordFlag,
-					"exeScope": this.exeScope, 
-					"selectState": this.selectState,
-					"testPlanId": this.testPlanId,
-					"identifiableRunnerName":this.runner
+					"userId": _this.userId,
+					"recordflag": _this.recordFlag,
+					"exeScope": _this.exeScope, 
+					"selectState": _this.selectState,
+					"testPlanId": _this.testPlanId,
+					"identifiableRunnerName":_this.runner
 				}),
 				success: function(data) {
 					if (data.respCode === '0000') {
@@ -255,7 +255,7 @@ var vBody = new Vue({
 							type: 'post',
 							contentType: 'application/json',
 							data: JSON.stringify({
-								"testPlanId": this.testPlanId,
+								"testPlanId": _this.testPlanId,
 							}),
 							success: function(data) {
 								_this.startQueryResult(data.batchId);
@@ -292,13 +292,19 @@ var vBody = new Vue({
 					"sessionId":null, 
 				}),
 				success: function(data) {
-					if(data.respSyncNo==-1){
-						console.log("finish this branch")
+					if(data.result.respCode=="0000"){
+						if(data.result.respSyncNo==-1){
+							_this.setResultIcon(data.result.insStatuses)
+							console.log("finish this branch")
+						}
+						else{
+							_this.setResultIcon(data.result.insStatuses)
+							_this.syncQueryIncInsStatus(data)
+						}
 					}
 					else{
-						syncQueryIncInsStatus(data)
+						Vac.alert(data.result.respMsg);
 					}
-
 					// if (data.success) {
 						// _this.setResultIcon(data.obj);
 						// if (data.finished) {
@@ -329,15 +335,17 @@ var vBody = new Vue({
 					contentType: 'application/json',
 					data: JSON.stringify({
 						"batchId": values.batchId,
-						"reqSyncNo": values.reqSyncNo,
+						"reqSyncNo": values.respSyncNo,
 						"sessionId":values.sessionId, 
 					}),
 					success: function(data) {
-						if(data.respSyncNo==-1){
+						if(data.result.respSyncNo==-1){
+							_this.setResultIcon(data.result.insStatuses)
 							console.log("finish this branch")
 						}
 						else{
-							syncQueryIncInsStatus(data)
+							_this.setResultIcon(data.result.insStatuses)
+							_this.syncQueryIncInsStatus(data.result)
 							console.log("continue this branch")
 						}
 					},
@@ -358,7 +366,7 @@ var vBody = new Vue({
 				return;
 			}
 			for (let d of data) {
-				if (d.sourcechannel === 'PE4') {
+				if (d.sourcechannel === 'PE4') {	//直接选中执行的测试用例
 					if (d.flownodeid) {
 						document.querySelector(`#img-${d.flownodeid}`).src = this.exeImgs[d.resultstatus];
 					} else {
