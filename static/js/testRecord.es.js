@@ -34,6 +34,7 @@ var app = new Vue({
         executeRound: '',
         testPlanId:'',
         caseId:'',
+        casecode:'',
         testPlans:[],
         sceneId:'',
         
@@ -189,7 +190,7 @@ var app = new Vue({
                 data: JSON.stringify({
                     'testRound': _this.testround,
                     'recorderStatus':+_this.recorderstate,  //在字符串类型前加+，将类型转换为整形"123"+5                    
-                    'caseId': _this.caseId,
+                    'casecode': _this.casecode,
                     'sceneId': _this.sceneId,
                     'pageSize': _this.pageSize,     //整形
                     'currentPage': _this.currentPage,   //整形
@@ -217,7 +218,7 @@ var app = new Vue({
                 data:JSON.stringify({
                     'executeRound': +_this.executeRound,
                     'testPlanId': +_this.testPlanId,
-                    'caseId': +_this.caseId,
+                    'casecode': +_this.casecode,
                     'sceneId': +_this.sceneId,
                     'pageSize': _this.pageSize,     //整形
                     'currentPage': _this.currentPage,   //整形

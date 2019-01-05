@@ -226,6 +226,11 @@ var app = new Vue({
             var _this=this;
             var pageSize = page?page.pageSize:this.page.pageSize,
                 currentPage = page?page.currentPage:this.page.currentPage;
+            if(page){   //此处使page中的currentPage值发生改变，从而触发翻页控件中的事件发生,使当前页改变
+                _this.page.currentPage = page.currentPage;
+            } else{
+                _this.page.currentPage = 1;
+            }
             let originalData = _this.creatTimeInit();   //得到时间段
             var startTime = originalData[0];
             var endTime = originalData[1];
@@ -248,8 +253,9 @@ var app = new Vue({
 				success: (data) => {
 					if ('0000' === data.respCode) {
                         _this.sceneList = data.batchRunCtrlList;
-                        this.page.totalCount=data.totalCount;
-                        this.page.totalPage=data.totalPage;
+                        _this.page.totalCount=data.totalCount;
+                        _this.page.totalPage=data.totalPage;
+                        // _this.page.currentPage = 1;
 					} else {
 						Vac.alert('出错啦~');
 					}
@@ -294,8 +300,8 @@ var app = new Vue({
             });
         },
         creatTimeChange: function(startTime,endTime){
-            startTime = startTime + ' 00:00:00:000';
-            endTime = endTime + ' 23:59:59:000';
+            startTime = startTime + ' 00:00:00';
+            endTime = endTime + ' 23:59:59';
             var startTimeObj = new Date(startTime.replace(/-/g,'/'));
             var endTimeObj = new Date(endTime.replace(/-/g,'/'));
             var timeList = [startTimeObj.getTime(),endTimeObj.getTime()];
@@ -341,8 +347,9 @@ var app = new Vue({
             return retDate;
         },
         queryBatchByClick: function(){
-            location.reload();
-            getExecutionRecord();
+            var _this = this;
+            // _this.page.currentPage = 1;
+            _this.getExecutionRecord();
         }
 
     },

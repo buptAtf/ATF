@@ -270,7 +270,7 @@
                                         </div>
                                         <label class="col-sm-1 control-label">(选)用例编号</label>
                                         <div class="col-sm-2" > <!--通过批量执行查询，输入执行轮次 -->
-                                            <input type="text" class="form-control" placeholder="请输入用例编号" v-model="caseId" :value={{ caseId }}>   
+                                            <input type="text" class="form-control" placeholder="请输入用例编号" v-model="casecode" :value={{ casecode }}>   
                                         </div>
                                     </div>
                                 </form>
@@ -321,7 +321,7 @@
                                             <!-- <td class="" width="">{{item.testexeinsid}}</td> -->
                                             <td width="80px">
                                                 <a class="btn btn-xs btn-success"
-                                                    @click="viewCase(item.sceneId, item.caseId, item.sourcechannel, item)">
+                                                    @click="viewCase(item.sceneId, item.casecode, item.sourcechannel, item)">
                                                     详情
                                                 </a>
                                             </td>

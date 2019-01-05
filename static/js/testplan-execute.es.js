@@ -99,7 +99,7 @@ var vBody = new Vue({
             totalCount: 1,
             currentPage: 1,
             totalPage: 1,
-            pageSize:5
+            pageSize: 10
         }
 	},
 	created: function(){
@@ -631,20 +631,22 @@ var vBody = new Vue({
 		hideCaseList: function(event){
 			var _this = this
 			var el = $('.case-list', $(event.currentTarget).parent())[0]
-			var curHeight = el.offsetHeight;
-			el.style.height = curHeight + 'px';
+			// var curHeight = el.offsetHeight;
+			// el.style.height = curHeight + 'px';
+			el.style.display = 'block';
 			if($(event.currentTarget).find('span').html() == _this.unexpandString){  // unexpandString 收起
 				$(event.currentTarget).find('i').removeClass('icon-caret-down').addClass('icon-caret-right');
-				el.style.height = '0px'
+				// el.style.height = '0px'
+				el.style.display = 'none';
 				$(event.currentTarget).find('span').html(_this.expandString)
 			} else {
 				$(event.currentTarget).find('i').removeClass('icon-caret-right').addClass('icon-caret-down');
-				el.style.height = 'auto';
-				var curHeight = el.offsetHeight; 	// 展开
-				el.style.height = '0px';
-				window.requestAnimationFrame(function() {
-					el.style.height = curHeight+ 'px'
-				})
+				// el.style.height = 'auto';
+				// var curHeight = el.offsetHeight; 	// 展开
+				// el.style.height = '0px';
+				// window.requestAnimationFrame(function() {
+				// 	el.style.height = curHeight+ 'px'
+				// })
 				$(event.currentTarget).find('span').html(_this.unexpandString)
 			}
 			event.stopPropagation()
@@ -756,6 +758,7 @@ var vBody = new Vue({
             else Vac.alert("不在页码范围");
         },
         add() {
+			
                 const url = 1 === this.editType ? 'testPlanController/insertTestPlan' : 'testPlanController/updateTestPlan';
                 const data = 1 === this.editType ? this.addRowData : {
                     id: this.selectTestPlan,
@@ -856,7 +859,8 @@ var vBody = new Vue({
                 },
 				success: (data) => {
 					if ('0000' === data.respCode) {
-                        this.testPlanArray = data.testPlanEntityList;
+						this.testPlanArray = data.testPlanEntityList;
+						this.testPlans = data.testPlanEntityList;
                                 this.page.totalCount=data.totalCount;
                                 this.page.totalPage=data.totalPage;
 					} else {

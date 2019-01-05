@@ -26,7 +26,7 @@ var paginationTemplate=`
             <li>
                 <a href="javascript:;" @click="turnTopage(page.currentPage-1)" v-text="page.currentPage-1" v-if="page.currentPage-1>0"></a>
             </li>
-            <li class="active"><a href="javascript:;" @click="turnTopage(page.currentPage)" v-text="page.currentPage">3</a></li>
+            <li class="active"><a href="javascript:;" @click="turnTopage(page.currentPage)" v-text="page.currentPage" ></a></li>
             <li>
                 <a href="javascript:;" @click="turnTopage(page.currentPage+1)" v-text="page.currentPage+1" v-if="page.currentPage+1<=page.totalPage"></a>
             </li>
@@ -44,7 +44,7 @@ var paginationTemplate=`
                 <input class="form-control" type="number" v-model="goTopage" min="1"><a href="javascript:;" class="input-group-addon" @click="turnTopage(goTopage)">Go</a>
             </div>
         </div>
-        <small class="small nowrap"> 当前第 <span class="text-primary" v-text="page.currentPage"></span> / <span class="text-primary" v-text="page.totalPage"></span>页，共有 <span class="text-primary" v-text="page.totalCount"></span> 条</small>
+        <small class="small nowrap"> 当前第 <span class="text-primary" v-text="page.currentPage" ></span> / <span class="text-primary" v-text="page.totalPage"></span>页，共有 <span class="text-primary" v-text="page.totalCount"></span> 条</small>
     </div>
 </div>
 </div>
@@ -68,35 +68,39 @@ var pagination = Vue.extend({
        }
    },
    ready: function() {
-       console.log(""+this.totalCount+this.currentPage+this.totalPage+this.pageSize)
+       console.log(""+this.totalCount+this.currentPage+this.totalPage+this.pageSize);
    },
    watch: {
     totalCount: {
         handler(newValue, oldValue) {
-            console.log("totalCount"+newValue)
-            this.page.totalCount = newValue
+            console.log("totalCount"+newValue);
+            this.page.totalCount = newValue;
 　　　　},
+       immediate: true, 
 　　　　deep: true
 　　},
-currentPage: {
-    handler(newValue, oldValue) {
-        console.log("currentPage"+newValue)
-        this.page.currentPage = newValue
+    currentPage: {
+        handler(newValue, oldValue) {
+            console.log("currentPage"+newValue);
+            this.page.currentPage = newValue;
 　　　　},
+       immediate: true, 
 　　　　deep: true
 　　},
-totalPage: {
-    handler(newValue, oldValue) {
-        console.log('totalPage'+newValue)
-        this.page.totalPage = newValue
+    totalPage: {
+        handler(newValue, oldValue) {
+            console.log('totalPage'+newValue);
+            this.page.totalPage = newValue;
 　　　　},
+       immediate: true,        
 　　　　deep: true
 　　},
-pageSize: {
-    handler(newValue, oldValue) {
-        console.log('pageSize'+newValue)
-        this.page.pageSize = newValue
+    pageSize: {
+        handler(newValue, oldValue) {
+            console.log('pageSize'+newValue);
+            this.page.pageSize = newValue;
 　　　　},
+       immediate: true, 
 　　　　deep: true
 　　},
    },
@@ -107,7 +111,7 @@ pageSize: {
         var _this=this;
         if(currentPageParam>0 && currentPageParam<=this.page.totalPage){
             _this.page.currentPage = currentPageParam;
-            _this.$emit("turn-topage", _this.page)
+            _this.$emit("turn-topage", _this.page);
         }
         else Vac.alert("不在页码范围");
     }

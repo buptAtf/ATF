@@ -109,7 +109,7 @@
               <button class="btn btn-white" @click="addScene();"> <i class="icon-plus"></i> 添加场景</button>
               <button class="btn btn-white" @click="removeSceneAndCase();"> <i class="icon-remove"></i> 移除场景与用例</button>
               <button class="btn btn-white" @click="reQuery();"><i class="icon-refresh"></i> 重新查询执行结果</button>
-              <button class="btn btn-white" @click=";"><i class="icon-double-angle-down"></i> 执行机安装包下载</button>
+              <!-- <button class="btn btn-white" @click=";"><i class="icon-double-angle-down"></i> 执行机安装包下载</button> -->
             </div>
             <div id="">
               <div class="main-content2">
@@ -347,8 +347,8 @@
                             <div class="pagination-wrap" v-if="page.totalPage!=0">
                                 <div class="num">
                                         <select size="1" name="sample_1_length" aria-controls="sample_1" class="form-control" v-model="page.pageSize" @change='turnToPage(1)'>
-                                            <option value="5" selected>5条/页</option>
-                                            <option value="10">10条/页</option>
+                                            <option value="5" >5条/页</option>
+                                            <option value="10" selected>10条/页</option>
                                             <option value="20">20条/页</option>
                                             <option value="50">50条/页</option>
                                         </select> 
