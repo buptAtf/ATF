@@ -711,7 +711,7 @@ var elementLibrary  = Vue.extend({
                 contentType: 'application/json',
                 data: JSON.stringify({ "transactId": transid }),
                 success: function(data) {
-                    if (data !== null) {
+                    if (data.respCode == "0000") {
                         var nodes = [];
                         var uis = data.uis;
                         for (var i = 0; i < uis.length; i++) {
