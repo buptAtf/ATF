@@ -1069,11 +1069,14 @@ var app = new Vue({
         //导入
         upload: function () {
             var _this = this;
-            let repositoryId = app.elementRepositoryId;
-            uploadUserId = sessionStorage.getItem('userId');
+            let repositoryId = app.elementRepositoryId,
+                uploadUserId = sessionStorage.getItem('userId'),
+                autId = sessionStorage.getItem("autId");
+
             formData = new FormData($('#importForm')[0]);
             formData.append('repositoryId', repositoryId);
             formData.append('uploadUserId', uploadUserId);
+            formData.append('autId', autId);
             $.ajax({
                 url: address3 + 'elementRepository/batchImportElementAndUi',
                 type: 'POST',
