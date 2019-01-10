@@ -32,10 +32,11 @@
                 <!-- breadcrumb end -->
                 <!--top-button start-->
                 <div class="row">
-                    <div class="col-lg-12 top-btn">
+                    <div class="col-lg-3 top-btn">
                         <a class="btn btn-white" data-toggle="modal" href="#insertModal"><i class="icon-plus"></i> 添加</a>
                         <a class="btn btn-white" @click="checkDel"><i class="icon-trash"></i> 删除</a>
                         <a class="btn btn-white" @click="checkUpdate"><i class="icon-edit"></i> 修改</a>
+
                         <!-- insertModal start -->
                         <div class="modal fade" id="insertModal" tabindex="-1" role="dialog" aria-labelledby="insertModalLabel" aria-hidden="true">
                             <div class="modal-dialog">
@@ -258,6 +259,17 @@
                         </div>
                         <!-- selectAlertModal end -->
                     </div>
+                    <form class="form-horizontal col-lg-3" style="left:500px">
+                        <div class="form-group" >
+                            <label class="col-lg-3 control-label">搜索</label>
+                            <div class="col-lg-6">
+                                <input type="text" class="form-control" placeholder="请输入场景名称" name="" v-model="querySceneName">
+                            </div>
+                            <div class="col-lg-1" >
+                                <a class="btn btn-white" onclick="queryScene()">搜索</a>
+                            </div>
+                        </div>
+                    </form>
                 </div>
                 <!--topbutton end-->
                 <!-- table start -->
@@ -271,7 +283,7 @@
                                 <div class="row">
                                     <div  style="padding: 10px 0;">
                                     </div>
-                                    <form class="form-horizontal col-lg-12">
+                                    <!-- <form class="form-horizontal col-lg-12">
                                         <div class="form-group">
                                             <label class="col-lg-1 control-label">搜索</label>
                                             <div class="col-lg-2">
@@ -279,7 +291,7 @@
                                             </div>
                                             <div class="col-lg-1">
                                                 <a class="btn btn-white" onclick="queryScene()">搜索</a>
-                                            </div>
+                                            </div> -->
                                             <!-- <label class="col-lg-2 col-lg-offset-2 control-label">展示条目</label>
                                             <div class="col-lg-2">
                                                 <select size="1" name="sample_1_length" aria-controls="sample_1" class="form-control" v-model="pageSize" id="mySelect">
@@ -290,8 +302,8 @@
                                                 </select>
                                             </div>
                                             <div class="col-lg-1"><a class="btn btn-white" onclick="getScene(1, {{pageSize}}, 'id', 'asc')">刷新</a></div> -->
-                                        </div>
-                                    </form>
+                                        <!-- </div>
+                                    </form> -->
                                 </div>
                             </div>
                             <!-- 表格 -->
