@@ -241,16 +241,31 @@ var vBody = new Vue({
 				type: 'post',
 				contentType: 'application/json',
 				data: JSON.stringify({
-					"userId": this.userId,
-					"recordflag": this.recordFlag,
-					"exeScope": this.exeScope, 
-					"selectState": this.selectState,
-					"testPlanId": this.testPlanId,
-					"identifiableRunnerName":this.runner
+					"userId": _this.userId,
+					"recordflag": _this.recordFlag,
+					"exeScope": _this.exeScope, 
+					"selectState": _this.selectState,
+					"testPlanId": _this.testPlanId,
+					"identifiableRunnerName":_this.runner
 				}),
 				success: function(data) {
 					if (data.respCode === '0000') {
-						_this.startQueryResult(data.respMsg);
+						Vac.ajax({
+							url: address2 + 'batchRunCtrlController/queryLatestBatchIdForTestPlan',
+							type: 'post',
+							contentType: 'application/json',
+							data: JSON.stringify({
+								"testPlanId": _this.testPlanId,
+							}),
+							success: function(data) {
+								_this.startQueryResult(data.batchId);
+							},
+							error: function(){
+								Vac.alert('网络错误，执行失败！');
+								_this.setResultIcon();
+							}
+						})
+
 					} else {
 						Vac.alert(respMsg);
 						_this.setResultIcon();
@@ -263,38 +278,79 @@ var vBody = new Vue({
 			})
 		},
 		startQueryResult: function(batchExecuteNo) {
-			var me = this;
-			this.batchExecuteNo = batchExecuteNo;
-			this.hasStartExecute = true;
-			this.queryResultFun = setTimeout(queryAction, this.queryInterval);
-
-			function queryAction(){
+			var _this = this;
+			_this.batchExecuteNo = batchExecuteNo;
+			_this.hasStartExecute = true;
+			//_this.queryResultFun = setTimeout(queryAction, _this.queryInterval);
+			$.ajax({
+				url: address3 + 'batchRunCtrlController/syncQueryIncInsStatus',
+				type: 'post',
+				contentType: 'application/json',
+				data: JSON.stringify({
+					"batchId": _this.batchExecuteNo,
+					"reqSyncNo": null,
+					"sessionId":null, 
+				}),
+				success: function(data) {
+					if(data.result.respCode=="0000"){
+						if(data.result.respSyncNo==-1){
+							_this.setResultIcon(data.result.insStatuses)
+							console.log("finish this branch")
+						}
+						else{
+							_this.setResultIcon(data.result.insStatuses)
+							_this.syncQueryIncInsStatus(data)
+						}
+					}
+					else{
+						Vac.alert(data.result.respMsg);
+					}
+					// if (data.success) {
+						// _this.setResultIcon(data.obj);
+						// if (data.finished) {
+						// 	// 执行完毕
+						// 	_this.hasStartExecute = false;
+						// 	_this.batchExecuteNo = null;
+						// 	_this.queryResultFun = null;
+						// 	Vac.alert('执行完毕！');
+						// } else {
+						// 	// 未执行完毕
+						// 	_this.queryResultFun = setTimeout(queryAction, _this.queryInterval);
+						// }
+					// } else {
+					// 	Vac.alert('查询出错！请点击重新查询！');
+					// 	// me.queryResultFun = setTimeout(queryAction, me.reQueryInterval);
+					// }
+				},
+				error: function() {
+					Vac.alert('网络错误！请点击重新查询！');
+					// Vac.alert('查询执行结果失败，将在'+ me.reQueryInterval + '毫秒后继续查询');
+					// me.queryResultFun = setTimeout(queryAction, me.reQueryInterval);
+				}
+			});
+			function syncQueryIncInsStatus (values){
 				$.ajax({
-					url: address + 'testrecordController/selectByBatchExecuteNo',
+					url: address3 + 'batchRunCtrlController/syncQueryIncInsStatus',
 					type: 'post',
-					data: { batchExecuteNo }, 
+					contentType: 'application/json',
+					data: JSON.stringify({
+						"batchId": values.batchId,
+						"reqSyncNo": values.respSyncNo,
+						"sessionId":values.sessionId, 
+					}),
 					success: function(data) {
-						if (data.success) {
-							me.setResultIcon(data.obj);
-							if (data.finished) {
-								// 执行完毕
-								me.hasStartExecute = false;
-								me.batchExecuteNo = null;
-								me.queryResultFun = null;
-								Vac.alert('执行完毕！');
-							} else {
-								// 未执行完毕
-								me.queryResultFun = setTimeout(queryAction, me.queryInterval);
-							}
-						} else {
-							Vac.alert('查询出错！请点击重新查询！');
-							// me.queryResultFun = setTimeout(queryAction, me.reQueryInterval);
+						if(data.result.respSyncNo==-1){
+							_this.setResultIcon(data.result.insStatuses)
+							console.log("finish this branch")
+						}
+						else{
+							_this.setResultIcon(data.result.insStatuses)
+							_this.syncQueryIncInsStatus(data.result)
+							console.log("continue this branch")
 						}
 					},
 					error: function() {
 						Vac.alert('网络错误！请点击重新查询！');
-						// Vac.alert('查询执行结果失败，将在'+ me.reQueryInterval + '毫秒后继续查询');
-						// me.queryResultFun = setTimeout(queryAction, me.reQueryInterval);
 					}
 				});
 			}
@@ -310,7 +366,7 @@ var vBody = new Vue({
 				return;
 			}
 			for (let d of data) {
-				if (d.sourcechannel === 'PE4') {
+				if (d.sourcechannel === 'PE4') {	//直接选中执行的测试用例
 					if (d.flownodeid) {
 						document.querySelector(`#img-${d.flownodeid}`).src = this.exeImgs[d.resultstatus];
 					} else {
@@ -575,20 +631,22 @@ var vBody = new Vue({
 		hideCaseList: function(event){
 			var _this = this
 			var el = $('.case-list', $(event.currentTarget).parent())[0]
-			var curHeight = el.offsetHeight;
-			el.style.height = curHeight + 'px';
+			// var curHeight = el.offsetHeight;
+			// el.style.height = curHeight + 'px';
+			el.style.display = 'block';
 			if($(event.currentTarget).find('span').html() == _this.unexpandString){  // unexpandString 收起
 				$(event.currentTarget).find('i').removeClass('icon-caret-down').addClass('icon-caret-right');
-				el.style.height = '0px'
+				// el.style.height = '0px'
+				el.style.display = 'none';
 				$(event.currentTarget).find('span').html(_this.expandString)
 			} else {
 				$(event.currentTarget).find('i').removeClass('icon-caret-right').addClass('icon-caret-down');
-				el.style.height = 'auto';
-				var curHeight = el.offsetHeight; 	// 展开
-				el.style.height = '0px';
-				window.requestAnimationFrame(function() {
-					el.style.height = curHeight+ 'px'
-				})
+				// el.style.height = 'auto';
+				// var curHeight = el.offsetHeight; 	// 展开
+				// el.style.height = '0px';
+				// window.requestAnimationFrame(function() {
+				// 	el.style.height = curHeight+ 'px'
+				// })
 				$(event.currentTarget).find('span').html(_this.unexpandString)
 			}
 			event.stopPropagation()
@@ -688,7 +746,8 @@ var vBody = new Vue({
 				recorderStatus: recorderStatus || '2'
 			}
 			var args = encodeURIComponent(JSON.stringify(o));
-			window.open('case-operation.html?activeName=exec-record&viewcaseargs='+args, 'case_record');
+            window.open('case-operation.html?testcaseId='+caseid+'&activeName=element-library')
+			//window.open('case-operation.html?activeName=exec-record&viewcaseargs='+args, 'case_record');
 		},
 		
         turnToPage(currentPageParam){
