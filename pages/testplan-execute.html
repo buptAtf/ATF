@@ -191,7 +191,7 @@
                   <button class="hide-case-list btn btn-xs btn-info" @mousedown.stop="1" @click="saveSort(scene.sceneId)">保存排序</button>
                   <!-- <div class="case-list"> -->
                     <div class="case-list">
-                      <div class="check-all-case" v-if="scene.testCaseList.length" style="padding: 2px 5px;margin: 10px 10px;" @mousedown.stop="1">全选
+                      <div class="check-all-case" v-if="scene.testCaseList.length" style="padding: 2px 5px;margin: 10px 10px;" @mousedown.stop="1">全选用例
                         <input type="checkbox"  @change="checkAllInScene($event)" class="checkall-inscene" 
                           :value="scene.sceneId" v-model="checkallSceneIds" style="position: relative; top: 3px;">
                       </div>

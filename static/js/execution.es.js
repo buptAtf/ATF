@@ -228,8 +228,10 @@ var app = new Vue({
                 currentPage = page?page.currentPage:this.page.currentPage;
             if(page){   //此处使page中的currentPage值发生改变，从而触发翻页控件中的事件发生,使当前页改变
                 _this.page.currentPage = page.currentPage;
+                _this.page.pageSize = page.pageSize;
             } else{
                 _this.page.currentPage = 1;
+                _this.page.pageSize = _this.page.pageSize;
             }
             let originalData = _this.creatTimeInit();   //得到时间段
             var startTime = originalData[0];
