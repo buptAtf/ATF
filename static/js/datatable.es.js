@@ -1783,7 +1783,7 @@ $(document).ready(function () {
 															changes.forEach((value) => {
 																var data = {};
 																// data.testcaseId = handsontable.getDataAtRowProp(value[0], 'casecode');
-																data.testcaseId = dataSource[value[0]].testcaseId;
+																data.testcaseId = dataSource[value[0]].testcaseId.split(',')[0];
 																data.caseCompositeType = dataSource[value[0]].caseCompositeType;
 																data.tbHead = value[1];
 																data.value = value[3];
@@ -2284,7 +2284,7 @@ $(document).ready(function () {
 											changes.forEach((value) => {
 												var data = {};
 												// data.testcaseId = handsontable.getDataAtRowProp(value[0], 'casecode');
-												data.testcaseId = dataSource[value[0]].testcaseId;
+												data.testcaseId = dataSource[value[0]].testcaseId.split(',')[0];
 												data.caseCompositeType = dataSource[value[0]].caseCompositeType;
 												data.tbHead = value[1];
 												data.value = value[3];
