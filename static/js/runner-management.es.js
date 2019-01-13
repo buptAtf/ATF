@@ -50,10 +50,10 @@ var app = new Vue({
         
         // h获取用户id
         this.userId = sessionStorage.getItem('userId');
-        $('.1').addClass('open')
-        $('.1 .arrow').addClass('open')
-        $('.1-ul').css({display: 'block'})
-        $('.1-2').css({color: '#ff6c60'})
+        $('.0').addClass('open')
+        $('.0 .arrow').addClass('open')
+        $('.0-ul').css({display: 'block'})
+        $('.0-1').css({color: '#ff6c60'})
     },
     methods: {
         //获取选中的id
@@ -151,6 +151,12 @@ var app = new Vue({
                     $('#failModal').modal();
                 }
             });
+        },
+        //刷新
+        refresh: function() {
+            console.log('refresh');
+            getTestProject();
+
         },
         //获取当前选中行内容
         getSelected: function() {

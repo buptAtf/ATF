@@ -826,6 +826,74 @@
           </div>
       </div>
     </div>
+    <!-- importModal end-->
+    <!-- APIEditModal start -->
+    <div class="modal fade" id="APIEditModal" tabindex="-1" role="dialog" aria-labelledby="APIEditModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+          <div class="modal-content">
+              <div class="modal-header">
+                  <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                  <h4 class="modal-title">模板导入</h4>
+              </div>
+              <div class="modal-body" >
+                  <div class="form-group" id="APIEditParaListBody">
+                      <div class="form-group">
+                          <label class="col-lg-4">处理类型</label>
+                          <label class="radio-inline col-lg-2">
+                              <input type="radio" name="inlineRadioOptions" id="inlineRadio1" value="option1"> 验证
+                          </label>
+                          <label class="radio-inline">
+                              <input type="radio" name="inlineRadioOptions" id="inlineRadio2" value="option2"> 提取
+                          </label>
+                      </div>
+              
+                   
+                  <!-- <div class="form-group APIEditParaRow" v-for="singleData in APIEditModalData">
+                      <div class="col-lg-3">
+                          <input class="form-control" type="text" name="APIEditParaName" placeholder="字段" value="{{singleData.name}}">   
+                      </div>
+                      <div class="col-lg-4">
+                          <input class="form-control" type="text" name="APIEditParaVal" placeholder="表达式" value="{{singleData.val}}">
+                      </div>
+                      <div class="col-lg-4">
+                          <input class="form-control" type="text" name="APIEditParaDec" placeholder="字段保存名称" value="{{singleData.desc}}">
+                      </div>
+                      <div class="col-lg-0">
+                          <button class="btn" type="button" onclick="queryParaRowDelete(event)" style="color:red;background:transparent">
+                              <i class="icon-remove"></i>
+                          </button>
+                      </div>
+                  </div> -->
+                  <div class="form-group APIEditParaRow" >
+                      <div class="col-lg-3">
+                          <input class="form-control" type="text" name="APIEditParaName" placeholder="字段" >   
+                      </div>
+                      <div class="col-lg-4">
+                          <input class="form-control" type="text" name="APIEditParaVal" placeholder="表达式">
+                      </div>
+                      <div class="col-lg-4">
+                          <input class="form-control" type="text" name="APIEditParaDec" placeholder="字段保存名称" >
+                      </div>
+                  </div>                        
+                </div>
+                <div class="form-group" style="display:none">
+                    <div class="col-lg-1"></div>
+                    <div class="col-lg-0">
+                        <button class="btn btn-info" type="button" @click="APIEditParaListSave">
+                            <span>保存</span>
+                        </button>
+                    </div>
+                </div>
+              </div>
+              <div class="modal-footer">
+                  <!-- <a class="  btn  btn-white" style="float:left" id="exampleDownload">模板下载</a>   -->
+                  <a class="  btn  btn-white"     id="submitFile"  @click="upload()">导入</a>  
+                  <button data-dismiss="modal" class="btn btn-default" type="button">取消</button>
+              </div>
+          </div>
+      </div>
+    </div>
+    <!-- APIEditModal end -->
       <!-- failModal2 start 与failmsg绑定提示 -->
     <div class="modal fade" id="failModal2" tabindex="-1" role="dialog" aria-labelledby="failModalLabel" aria-hidden="true">
         <div class="modal-dialog">
@@ -861,9 +929,7 @@
           </div>
       </div>
   </div>
-  <!-- successModal end -->
-  <!-- importModal end -->
-    
+  <!-- successModal end -->    
   </div>
   <!-- <script type="text/x-template" id="view-script-template"> -->
 
