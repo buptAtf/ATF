@@ -23,7 +23,7 @@
                 <div class="row">
                     <div class="col-lg-12">
                         <ul class="breadcrumb">
-                            <li><a href="#"><i class="icon-home"></i> 测试基础设施测试</a></li>
+                            <li><a href="#"><i class="icon-home"></i> 系统管理</a></li>
                             <li class="active"><a href="#"> 执行机管理</a></li>
                         </ul>
                     </div>
@@ -32,9 +32,10 @@
                 <!--top-button start-->
                 <div class="row">
                     <div class="col-lg-12 top-btn">
-                        <a class="btn btn-white" data-toggle="modal" href="#insertModal"><i class="icon-plus"></i> 添加</a>
+                        <!-- <a class="btn btn-white" data-toggle="modal" href="#insertModal"><i class="icon-plus"></i> 添加</a>
                         <a class="btn btn-white" data-toggle="modal" href="#deleteModal"><i class="icon-trash"></i> 删除</a>
-                        <a class="btn btn-white" data-toggle="modal" href="#updateModal" @click="getSelected"><i class="icon-edit"></i> 修改</a>
+                        <a class="btn btn-white" data-toggle="modal" href="#updateModal" @click="getSelected"><i class="icon-edit"></i> 修改</a> -->
+                        <a class="btn btn-white" data-toggle="modal" @click="refresh"><i class="icon-refresh"></i> 刷新</a>
                         <a class="btn btn-white" @click=";"><i class="icon-double-angle-down"></i> 执行机安装包下载</a>
                         <!-- insertModal start -->
                         <div class="modal fade" id="insertModal" tabindex="-1" role="dialog" aria-labelledby="insertModalLabel" aria-hidden="true">

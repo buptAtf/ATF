@@ -3,6 +3,8 @@
 var tooltipwindow;
 var vac_conditionList = null;
 var autId = null;
+var APIEditModalData = [];
+
 function viewScriptHandler (event,caseCompositeType) {
 	var testcaseId = event.target.getAttribute('data-id');
 	// var data = { testcaseId
@@ -55,7 +57,8 @@ $(document).ready(function () {
 	// document.querySelector('#submenu').children[0].style.height = submenuHeight / 2 + 'px';
 	// document.querySelector('#submenu').children[1].style.height = submenuHeight / 2 + 'px';
 	var transid = '',
-		autId ='';
+		autId = ''
+		// scriptId = '';
 	tooltipwindow = new Vue({
 		el: '#tooltipwindow',
 		data: {
@@ -2172,12 +2175,14 @@ $(document).ready(function () {
 
 			return dataKey;
 		};
+		var scriptId = "";
 		//双击显示脚本
 		function zTreeOnDblClick(event, treeId, treeNode) {
 			if (treeNode && !treeNode.isParent) {
 				autId = treeNode.getParentNode().getParentNode().id;
 				transid = treeNode.getParentNode().id;
-				var scriptId = treeNode.id;
+				scriptId = treeNode.id;
+				console.log(scriptId);
 				var data = {
 					conditionList: vac_conditionList,
 					executorId: sessionStorage.getItem('userId'),
@@ -2195,7 +2200,7 @@ $(document).ready(function () {
 						if ('0000' === data.respCode) {
 							var dataKey = [];
 							dataKey = getDataKey(data.tableHead);
-							console.log("getColumnsOptions中dataKey:" + dataKey);
+							// console.log("getColumnsOptions中dataKey:" + dataKey);
 							var destrutData = [];
 							if (data.tableData) {
 								if (data.tableData.length == 0) {
@@ -2215,22 +2220,22 @@ $(document).ready(function () {
 										caseCode: data.casecode
 									} = value);
 									data.testcaseId=value.id+","+value.caseCompositeType;
-									console.log(value);
+									// console.log(value);
 									dataKey.forEach((key) => {
-										console.log("12Key:" + key+"data_"+key+"qweqwe"+value["data_"+key]);
+										// console.log("12Key:" + key+"data_"+key+"qweqwe"+value["data_"+key]);
 										data[key] = value["data_"+key];
 									});
 									destrutData.push(data);
 								});
 							}
-							console.log(destrutData);
+							// console.log(destrutData);
 							dataSource = destrutData;
-							console.log(dataSource)
+							// console.log(dataSource)
 							rowSelectFlags.length = dataSource.length;
 							getTotalColHeaders(data.tableHead);
 							// console.log(totalColumnsHeaders);
 							var totalColumnsOptions = getColumnsOptions(data.tableHead);
-							console.log(totalColumnsOptions);
+							// console.log(totalColumnsOptions);
 							// handsontable 配置与生成
 							if (handsontable === null) {
 								handsontable = new Handsontable(tableContainer, {
@@ -2698,7 +2703,14 @@ $(document).ready(function () {
 		function editCellData(key, selection) {
 			var header = handsontable.getColHeader(selection.start.col);
 			var testcaseId = dataSource[selection.start.row].testcaseId;
-			editDataVue.show(selection);
+			if (scriptId!=-1){
+				editDataVue.show(selection);
+			}
+			else{
+				$('input[name="APIEditParaName"]').last().change(APIEditParaAdd);
+				$('#APIEditModal').modal('show');
+				
+			}
 		}
 		// 编辑单元格数据
 		// 设置单元格数据，保证设置的数据不超过最大行，最大列
@@ -2724,3 +2736,38 @@ $(document).ready(function () {
 	Vac.startDrag(document.querySelector('#searchBox>header'), document.querySelector('#searchBox'))
 	Vac.startDrag(document.querySelector('#insertDiv>header'), document.querySelector('#insertDiv'))
 });
+
+// APIEditModal Function Start
+function APIEditParaAdd() {
+	$('input[name="APIEditParaName"]').last().unbind('change',APIEditParaAdd);    
+	
+	var deleteButtonTr = `
+					<div class="col-lg-0">
+						<button class="btn" type="button" onclick="APIEditParaRowDelete(event)" style="color:red;background:transparent">
+							<i class="icon-remove"></i>
+						</button>
+					</div>`;
+	$('.APIEditParaRow').last().append(deleteButtonTr);
+
+	var APIEditParaTr = `
+				<div class="form-group APIEditParaRow" >
+					<div class="col-lg-3">
+						<input class="form-control" type="text" name="APIEditParaName" placeholder="字段">   
+					</div>
+					<div class="col-lg-4">
+						<input class="form-control" type="text" name="APIEditParaVal" placeholder="表达式">
+					</div>
+					<div class="col-lg-4">
+						<input class="form-control" type="text" name="APIEditParaDec" placeholder="字段保存名称">
+					</div>
+				</div>`;
+	$('#APIEditParaListBody').append(APIEditParaTr);
+
+	$('input[name="APIEditParaName"]').last().change(APIEditParaAdd);    
+}
+
+function APIEditParaRowDelete(e) {
+	var tmp = $(e.target).parent().parent().find('button').parent().parent();
+	tmp.remove();
+}
+// APIEditModal Function End
