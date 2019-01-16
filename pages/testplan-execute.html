@@ -277,10 +277,10 @@
             </thead>
             <tbody>
               <tr v-for="scene in allscenes">
-                <td v-if="senceAddedStatus(scene.sceneId)">已选择</td>
-                <td v-else><input type="checkbox" v-model="selectedScene" v-bind:value="scene.sceneId"></td>
-                <td>{{scene.sceneName}}</td>
-                <td>{{scene.sceneDesc}}</td>
+                <td v-if="senceAddedStatus(scene.id)">已选择</td>
+                <td v-else><input type="checkbox" v-model="selectedScene" v-bind:value="scene.id"></td>
+                <td>{{scene.nameMedium}}</td>
+                <td>{{scene.descShort}}</td>
               </tr>
             </tbody>
           </table>

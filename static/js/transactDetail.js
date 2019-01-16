@@ -2109,7 +2109,7 @@ var app = new Vue({
                 for (var tr of trs) {
                     arr.push(+tr.getAttribute('data-index'));
                 }
-                this.operationRows = this.operationRows.filter((item, index) => {
+                _this.operationRows = _this.operationRows.filter((item, index) => {
                     return !arr.includes(index);
                 });
                 _this.scriptIsChanged = true;

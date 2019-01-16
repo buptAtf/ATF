@@ -235,7 +235,7 @@ var vBody = new Vue({
 			if(this.runner=="")
 			{
 				Vac.alert('请选择执行机');return;
-			}/*
+			}
 			Vac.ajax({
 				url: address2 + 'executeController/t1',
 				type: 'post',
@@ -275,7 +275,7 @@ var vBody = new Vue({
 					Vac.alert('网络错误，执行失败！');
 					_this.setResultIcon();
 				}
-			})*/
+			})
 		},
 		startQueryResult: function(batchExecuteNo) {
 			var _this = this;
@@ -398,11 +398,19 @@ var vBody = new Vue({
 		addScene: function() {
 			var _this = this;
 			Vac.ajax({
-				url: address3 + 'sceneController/selectAllScene',
-				data: { caseLibId: this.caselibId },
+				url: address3 + 'sceneController/pagedBatchQueryScene',
+				type: 'POST',
+				contentType: 'application/json',
+				data: JSON.stringify({
+					'currentPage': 1,
+					'pageSize':"100",
+					'orderColumns': "modified_time",
+					'orderType': "desc",
+					'caseLibId':_this.caselibId
+				}),
 				success: function(data){
 					if(data.respCode == '0000'){
-						_this.allscenes = data.scenequeryDtoList;
+						_this.allscenes = data.sceneEntityList;
 						$('#add-modal').modal('show');
 					}
 				}
@@ -492,8 +500,8 @@ var vBody = new Vue({
 		selectAll: function(event){
 			if(event.target.checked){
 				this.allscenes.forEach((scene) => {
-					if(!this.selectedScene.includes(scene.sceneId))
-						{this.selectedScene.push(scene.sceneId);}
+					if(!this.selectedScene.includes(scene.id))
+						{this.selectedScene.push(scene.id);}
 				});
 			}else{
 				this.allscenes.forEach((scene) => {
