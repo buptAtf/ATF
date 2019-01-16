@@ -235,7 +235,7 @@ var vBody = new Vue({
 			if(this.runner=="")
 			{
 				Vac.alert('请选择执行机');return;
-			}
+			}/*
 			Vac.ajax({
 				url: address2 + 'executeController/t1',
 				type: 'post',
@@ -275,7 +275,7 @@ var vBody = new Vue({
 					Vac.alert('网络错误，执行失败！');
 					_this.setResultIcon();
 				}
-			})
+			})*/
 		},
 		startQueryResult: function(batchExecuteNo) {
 			var _this = this;

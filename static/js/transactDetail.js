@@ -447,7 +447,7 @@ var app = new Vue({
                                     }
                                 } else {
                                     $('#addiProp').children().remove();
-                                    $('#addiProp').append(app.propTr);
+                                    $('#addiProp').append(_this.propTr);
                                 }
 
                                 //辅助属性
@@ -622,8 +622,8 @@ var app = new Vue({
                                         }
                                         // console.log(nodes)
                                         $.fn.zTree.init($("#elementtree"), _this.setting1, nodes);
-                                        app.elementRepositoryId = data.elementRepositoryId;
-                                        console.log(app.elementRepositoryId, data.elementRepositoryId);
+                                        _this.elementRepositoryId = data.elementRepositoryId;
+                                        console.log(_this.elementRepositoryId, data.elementRepositoryId);
                                         fuzzySearch('elementtree', '#keyword', null, true);
                                     }
                                 }
@@ -700,9 +700,9 @@ var app = new Vue({
                     // console.log(data)
                     if (data.respCode == "0000") {
                         if (data.arcClassRespDTOList == null)
-                            app.classtypeList = data.omClassRespDTOList;
+                        _this.classtypeList = data.omClassRespDTOList;
                         else
-                            app.classtypeList = data.omClassRespDTOList.concat(data.arcClassRespDTOList);
+                        _this.classtypeList = data.omClassRespDTOList.concat(data.arcClassRespDTOList);
                     }
                     else {
                         _this.failMSG = data.respMsg;
@@ -1069,7 +1069,7 @@ var app = new Vue({
         //导入
         upload: function () {
             var _this = this;
-            let repositoryId = app.elementRepositoryId,
+            let repositoryId = _this.elementRepositoryId,
                 uploadUserId = sessionStorage.getItem('userId'),
                 autId = sessionStorage.getItem("autId");
 
@@ -1166,7 +1166,7 @@ var app = new Vue({
                         $('#successModalEle').modal();
                         _this.getElementTree();
                     } else {
-                        app.failMSG = data.respMsg;
+                        _this.failMSG = data.respMsg;
                         $('#failModalEle').modal();
                     }
                 },
@@ -1219,7 +1219,7 @@ var app = new Vue({
                         $('#successModalEle').modal();
                         _this.getElementTree();
                     } else {
-                        app.failMSG = data.respMsg;
+                        _this.failMSG = data.respMsg;
                         $('#failModal').modal();
                     }
                 },
@@ -1332,14 +1332,15 @@ var app = new Vue({
         },
         addeleProp: function (e) {
             var curTbody;
+            var _this=this;
             if ($(e.target).context.className == "icon-plus")
                 curTbody = $(e.target).parent().parent().next().find('tbody');
             else
                 curTbody = $(e.target).parent().next().find('tbody');
 
             curTbody.children().filter('.text-center').remove();
-            var elepropTr = app.elepropTr,
-                classtype = app.classtypeList;
+            var elepropTr = _this.elepropTr,
+                classtype = _this.classtypeList;
             console.log(elepropTr);
             for (var i = 0; i < classtype.length; i++) {
                 elepropTr = elepropTr + "<option value=\"" + classtype[i].name + "\">" + classtype[i].name + "</option>";
@@ -1644,7 +1645,7 @@ var app = new Vue({
                             }
                         }
                         $.fn.zTree.init($("#elementtree"), _this.setting1, nodes);
-                        app.elementRepositoryId = data.elementRepositoryId;
+                        _this.elementRepositoryId = data.elementRepositoryId;
                         if (uiName != null) {
                             var zTree = $.fn.zTree.getZTreeObj("elementtree");
                             console.log(zTree);
@@ -1836,7 +1837,7 @@ var app = new Vue({
             if (_this.scriptIsChanged) {
                 var promise = Vac.confirm('#vac-confirm', '.okConfirm', '.cancelConfirm', "编辑后的基础脚本未保存，是否保存？");
                 promise.then(() => {
-                    app.tableSave();
+                    _this.tableSave();
                     getTemplate();
                     _this.scriptIsChanged = false
                 }, () => {
@@ -1860,10 +1861,10 @@ var app = new Vue({
                                     "aut_id": $('#autSelect').val(),
                                     "script_id": _this.templateList[0].id
                                 });
-                                app.selectedScript = 1;
+                                _this.selectedScript = 1;
                             } else {
                                 _this.checkedTemplate = [];
-                                app.selectedScript = 0;
+                                _this.selectedScript = 0;
                             }
                         } else {
                             Vac.alert(data.respMsg);
@@ -1881,7 +1882,7 @@ var app = new Vue({
                 if (this.scriptIsChanged) {
                     var promise = Vac.confirm('#vac-confirm', '.okConfirm', '.cancelConfirm', "编辑后的基础脚本未保存，是否保存？");
                     promise.then(() => {
-                        app.tableSave();
+                        _this.tableSave();
                         // this.checkedTemplate = this.checkedTemplate.slice(0, -1)
                         // event.preventDefault()
                         // return
@@ -1904,23 +1905,23 @@ var app = new Vue({
                 if (this.scriptIsChanged) {
                     var promise = Vac.confirm('#vac-confirm', '.okConfirm', '.cancelConfirm', "编辑后的基础脚本未保存，是否保存？");
                     promise.then(() => {
-                        app.tableSave();
+                        _this.tableSave();
                         // this.checkedTemplate = this.checkedTemplate.slice(0)
                         // this.checkedTemplate = [+value]
                         // return
                         _this.scriptIsChanged = false
                         _this.checkedTemplate = []
-                        app.selectedScript = 0;
+                        _this.selectedScript = 0;
                         event.target.checked = false;
                     }, () => {
                         _this.scriptIsChanged = false
                         _this.checkedTemplate = []
-                        app.selectedScript = 0;
+                        _this.selectedScript = 0;
                         event.target.checked = false;
                     })
                 } else {
                     _this.checkedTemplate = []
-                    app.selectedScript = 0
+                    _this.selectedScript = 0
                     // $(`input[value='${index}']`).prop('checked', false);
                 }
             }
@@ -1930,7 +1931,7 @@ var app = new Vue({
                 // if(length > 1) {
                 //     _this.checkedTemplate.shift()
                 // }
-                app.selectedScript = 1;
+                _this.selectedScript = 1;
                 if (length > 0) {
                     var templateId = +value;
                     _this.script_id = _this.templateList[templateId].id;
@@ -1942,13 +1943,13 @@ var app = new Vue({
                         aut_id: _this.autId,
                         script_id: _this.templateList[templateId].id
                     }
-                    app.operationRows = [];
+                    _this.operationRows = [];
                     Vac.ajax({
                         url: address3 + 'scripttemplateController/showScripttemplateTable',
                         data: data,
                         success: function (data) {
                             // _this.scriptIsChanged = false
-                            app.operationRows = []
+                            _this.operationRows = []
                             if (data.success === true) {
                                 // {id:Symbol(), functions: [], operation: {element:'', ui: '',parameters:[{Name:'', Value: ''}]}}
                                 _this.scriptLength = data.o.data.length
@@ -1976,8 +1977,8 @@ var app = new Vue({
                                         })
                                     }
                                     // 插入到operationRows中
-                                    app.operationRows.push(row)
-                                    // app.operationRows = [row]
+                                    _this.operationRows.push(row)
+                                    // _this.operationRows = [row]
                                 }
                             } else {
                                 Vac.alert(data.msg)
@@ -1994,7 +1995,7 @@ var app = new Vue({
                 data: args,
                 success: function (data) {
                     // _this.scriptIsChanged = false
-                    app.operationRows = []
+                    _this.operationRows = []
                     if (data.success === true) {
                         // {id:Symbol(), functions: [], operation: {element:'', ui: '',parameters:[{Name:'', Value: ''}]}}
                         _this.scriptLength = data.o.data.length
@@ -2022,8 +2023,8 @@ var app = new Vue({
                                 })
                             }
                             // 插入到operationRows中
-                            app.operationRows.push(row)
-                            // app.operationRows = [row]
+                            _this.operationRows.push(row)
+                            // _this.operationRows = [row]
                         }
                     } else {
                         Vac.alert(data.msg)
@@ -2077,7 +2078,8 @@ var app = new Vue({
             })
         },
         setChanged: function () {
-            app.scriptIsChanged = true
+            var _this=this
+            _this.scriptIsChanged = true
         },
         addRow: function () {
             let s = { id: Symbol(), operation: { element: '', ui: '', classType: '' }, functions: [], parameters: [] }
@@ -2098,7 +2100,7 @@ var app = new Vue({
         },
         // remove the row who is checked when 
         removeRow: function (event) {
-
+            var _this=this
             var parent = $(event.target).closest('.operation-wrapper')
             var trs = parent.find("tbody input[type='checkbox']:checked").closest('tr');
             if (!trs.length) return;
@@ -2110,7 +2112,7 @@ var app = new Vue({
                 this.operationRows = this.operationRows.filter((item, index) => {
                     return !arr.includes(index);
                 });
-                app.scriptIsChanged = true;
+                _this.scriptIsChanged = true;
             })
 
         },
@@ -2124,7 +2126,7 @@ var app = new Vue({
                 originIndex >= 1 &&
                     operationRows.splice(originIndex - 1, 0, operationRows.splice(originIndex, 1)[0])
             })
-            app.scriptIsChanged = true
+            _this.scriptIsChanged = true
         },
         moveDown: function (event) {
             console.log(JSON.parse(`[{"Name":"输入值1","Type":"","Desc":"","ParameterizeColumn":"{element}"},{"Name":"输入值2","Type":"","Desc":"","ParameterizeColumn":"{element}"}]`))
@@ -2232,6 +2234,7 @@ var app = new Vue({
         },
         //保存 
         tableSave: function () {
+            var _this=this;
             //UI("denglu").webedit("username").set(1,"123");
             var sendData = this.generateScriptString();
             // Vac.alert('这是生成的脚本代码:\n' + sendData)
@@ -2240,13 +2243,13 @@ var app = new Vue({
             Vac.ajax({
                 url: address3 + 'scripttemplateController/saveScriptTemplate',
                 data: {
-                    'scriptId': app.script_id || app.templateList[0].id,
+                    'scriptId': _this.script_id || _this.templateList[0].id,
                     'content': sendData
                 },
                 success: function (data) {
                     if (data.respCode === '0000') {
                         $('#success').modal();
-                        app.scriptIsChanged = false
+                        _this.scriptIsChanged = false
                     } else {
                         $('#fail').modal();
                     }
@@ -2259,19 +2262,20 @@ var app = new Vue({
         //参数化
         para: function () {
             var sendData = this.generateScriptString();
+            var _this = this;
             Vac.ajax({
                 url: address3 + 'scripttemplateController/showscripttemplateTableSave',
                 data: {
-                    'autId': app.autId,
-                    'script_id': app.script_id || app.templateList[0].id,
+                    'autId': _this.autId,
+                    'script_id': _this.script_id || _this.templateList[0].id,
                     'content': sendData
                 },
                 success: function (data) {
                     if (data.success == true) {
                         Vac.alert(data.msg);
-                        app.showScripttemplateTable({
-                            "aut_id": app.autId,
-                            "script_id": app.script_id || app.templateList[0].id
+                        _this.showScripttemplateTable({
+                            "aut_id": _this.autId,
+                            "script_id": _this.script_id || _this.templateList[0].id
                         });
                         return;
                     }
@@ -2295,6 +2299,7 @@ var app = new Vue({
         },
         getUIAndFunctions: function (type) {
             var str = +type === 1 ? '' : 2;
+            var _this = this;
             var setting = +type === 1 ? this.zTreeSettings : this.zTreeSettings2;
             var transid = !this.componentMode ? $("#transactSelect").val() : this.transid;
             Vac.ajax({
@@ -2330,7 +2335,7 @@ var app = new Vue({
             ajax2({
                 url: address3 + 'aut/selectFunctionSet',
                 contentType: 'application/json',
-                data: JSON.stringify({ 'id': app.autId }),
+                data: JSON.stringify({ 'id': _this.autId }),
                 type: 'post',
                 dataType: 'json',
                 success: (data) => {
@@ -2405,7 +2410,7 @@ var app = new Vue({
             })
             this.cancelEditParam(event)
             // 已经修改过
-            app.scriptIsChanged = true
+            this.scriptIsChanged = true
         },
         updateRow: function (rows, index) {
             // 使用splice方法，通过改变数组项的id更新绑定的数组，
@@ -2415,22 +2420,22 @@ var app = new Vue({
         },
         editRow: function () {
             // 已经修改过
-            app.scriptIsChanged = true
+            this.scriptIsChanged = true
             var _this = this;
-            if (!app.uiOrFunctions.changed) {
+            if (!this.uiOrFunctions.changed) {
                 return; // 没有点击树结构，则返回
             }
             // 保存当前点击行，行索引值以及当前需要操作的table所绑定的数组
-            var parentRow = $(app.uiOrFunctions.target).parents('tr')
+            var parentRow = $(_this.uiOrFunctions.target).parents('tr')
             var index = parentRow.attr('data-index');
-            var operationRows = app.operationRows;
+            var operationRows = _this.operationRows;
 
-            if (app.uiOrFunctions.type === 'ui') {
+            if (_this.uiOrFunctions.type === 'ui') {
                 // 点击了ui 与 元素后, 更新operation
                 operationRows[index].operation = {
-                    ui: app.uiOrFunctions.ui,
-                    element: app.uiOrFunctions.element,
-                    classType: app.uiOrFunctions.classType
+                    ui: _this.uiOrFunctions.ui,
+                    element: _this.uiOrFunctions.element,
+                    classType: _this.uiOrFunctions.classType
                 };
                 operationRows[index].functions = []
                 operationRows[index].parameters = []
@@ -2441,8 +2446,8 @@ var app = new Vue({
 
                 // 发送ajax请求函数的数据
                 var data = {
-                    id: app.autId, // autid
-                    classname: app.uiOrFunctions.classType, // classname
+                    id: _this.autId, // autid
+                    classname: _this.uiOrFunctions.classType, // classname
                 }
                 if (!data.classname) {
                     Vac.alert('请在元素库界面设置方法的类型');
@@ -2468,7 +2473,7 @@ var app = new Vue({
                     })
                 });
             } else {
-                operationRows[index].functions = [app.uiOrFunctions.function]
+                operationRows[index].functions = [_this.uiOrFunctions.function]
                 // parameters: [{"name":"11","valueclass":"11","parameterizedcolumn":"","defaultvalue":"","description":""}]
                 var parametersArray = JSON.parse(operationRows[index].functions[0].parameterlist)
 
@@ -2483,7 +2488,7 @@ var app = new Vue({
 
             }
             $('#ui-ele-modal').modal('hide')
-            // app.uiOrFunctions.changed = false;
+            // _this.uiOrFunctions.changed = false;
         },
         updateRow: function (rows, index) {
             // 使用splice方法，通过改变数组项的id更新绑定的数组，
@@ -2493,8 +2498,8 @@ var app = new Vue({
         },
         setFunctionAndParameter: function (data) {
             // set functino for ui and element 
-            var operationRows = app.operationRows;
-            var _this = this;
+            var _this = this
+            var operationRows = _this.operationRows;
             var functions = [];
             var parameterlist = [];
             try {
@@ -2519,7 +2524,8 @@ var app = new Vue({
         },
         editRowMultiple: function () {
             // 已经修改过
-            app.scriptIsChanged = true
+            var _this= this;
+            _this.scriptIsChanged = true
             var uiTree = $.fn.zTree.getZTreeObj("ui-element-ul2");
             var functionTree = $.fn.zTree.getZTreeObj("functions-ul2");
             var uiNodes = uiTree ? uiTree.getCheckedNodes(true) : [];
@@ -2539,17 +2545,17 @@ var app = new Vue({
                 newRow.functions = []
                 ajax2({
                     url: address3 + 'aut/selectMethod',
-                    data: JSON.stringify({ id: app.autId, classname: newRow.operation.classType }),
+                    data: JSON.stringify({ id: _this.autId, classname: newRow.operation.classType }),
                     contentType: 'application/json',
                     type: 'post',
                     dataType: 'json',
                     success: function (data, statusText) {
                         if (data.respCode === '0000' && data.omMethodRespDTOList) {
-                            var { functions, parameterlist } = app.setFunctionAndParameter(data.omMethodRespDTOList);
+                            var { functions, parameterlist } = _this.setFunctionAndParameter(data.omMethodRespDTOList);
                             newRow.functions = functions;
                             newRow.selectedFunc = functions.length ? functions[0].name : '';
                             newRow.parameters = parameterlist;
-                            app.operationRows.push(newRow);
+                            _this.operationRows.push(newRow);
                         } else {
                             Vac.alert('查询方法出错！');
                         }
@@ -2578,7 +2584,7 @@ var app = new Vue({
                         newRow.parameters = []
                     }
 
-                    app.operationRows.push(newRow)
+                    _this.operationRows.push(newRow)
                 }
             }
             $('#ui-ele-modal2').modal('hide')
