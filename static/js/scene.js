@@ -242,7 +242,7 @@ var app = new Vue({
 
 //获取场景
 function getScene(page, listnum, order, sort) {
-    // var caseLibId=sessionStorage.getItem('caselibId');
+    var caseLibId=sessionStorage.getItem('caselibId');
     $.ajax({
         url: address3 + 'sceneController/pagedBatchQueryScene',
         type: 'post',
@@ -252,7 +252,7 @@ function getScene(page, listnum, order, sort) {
             'pageSize': listnum,
             "orderType":"DESC",
             "orderColumns":"modified_time",
-            // "caseLibId": caseLibId
+            "caseLibId": parseInt(caseLibId)
         }),
         success: function(data) {
             console.log(data)
@@ -327,6 +327,7 @@ function resort(target) {
 
 //搜索场景
 function queryScene() {
+    var caseLibId = sessionStorage.getItem('caselibId');
     $.ajax({
         // url: address3 + 'sceneController/selectAllSceneByPage',
         url: address3 + 'sceneController/pagedBatchQueryScene',
@@ -337,7 +338,8 @@ function queryScene() {
             'pageSize': app.listnum,
             'orderColumns': app.order,
             'orderType': app.sort,
-            'nameMedium': app.querySceneName
+            'nameMedium': app.querySceneName,
+            'caseLibId': parseInt(caseLibId)
         }),
         success: function(data) {
             app.sceneList = data.sceneEntityList;
