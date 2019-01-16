@@ -928,7 +928,7 @@ var app = new Vue({
     methods: {
         //获取案例
         getCase:function(currentPage, pageSize, order, sort) {
-
+            var _this = this;
             let caseLibId=sessionStorage.getItem('caselibId');
             $.ajax({
                 url: address3 + 'testcase/pagedBatchQueryTestCase',
@@ -943,12 +943,12 @@ var app = new Vue({
                 }),
                 success: function(data) {
                     // console.log(data);
-                    app.caseList = data.testcaseViewRespDTOList;
-                    console.log(app.caseList);
-                    app.tt = data.totalCount;
-                    app.totalPage = Math.ceil(app.tt / pageSize);
-                    app.pageSize = pageSize;
-                    app.queryflag = true;
+                    _this.caseList = data.testcaseViewRespDTOList;
+                    console.log(_this.caseList);
+                    _this.tt = data.totalCount;
+                    _this.totalPage = Math.ceil(_this.tt / pageSize);
+                    _this.pageSize = pageSize;
+                    _this.queryflag = true;
                     $(".subShow").remove();;
 
                 }
@@ -1055,13 +1055,14 @@ var app = new Vue({
         },
         //获取用户
         getUsers:function() {
+            var _this = this;
             $.ajax({
                 url: address3+"userController/selectAllUsername",
                 type: 'post',
                 contentType: 'application/json',
                 data: JSON.stringify({}),
                 success: function(data) {
-                    app.users = data.list;
+                    _this.users = data.list;
                 }
             });
         },
@@ -1554,6 +1555,7 @@ var app = new Vue({
         },
         //获取添加案例任务编号下拉列表
         getMission: function(){
+            var _this = this;
             $.ajax({
                 url: address3 + "missionController/pagedBatchQueryTestMission",
                 type: 'post',
@@ -1569,7 +1571,7 @@ var app = new Vue({
                 }),
                 success:function(data){
                     // console.log(data)
-                    app.missionList=data.list;
+                    _this.missionList=data.list;
                 }
             });
         },
