@@ -98,7 +98,8 @@ var vBody = new Vue({
             currentPage: 1,
             totalPage: 1,
             pageSize: 10
-        }
+		},
+		projectName: sessionStorage.getItem('projectNameStorage')
 	},
 	created: function(){
 		var _this = this;

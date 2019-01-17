@@ -53,6 +53,7 @@ var app = new Vue({
         runStatus:'',
         testPlans:[],
         testPlanId:'',
+        projectName: sessionStorage.getItem('projectNameStorage'),
         page: {
             totalCount: 1,
             currentPage: 1,
@@ -60,6 +61,7 @@ var app = new Vue({
             pageSize:20
         },
         period_flag:'',  //创建日期使用的标志来确定是0-默认，1-今日，2-一周前，还是3-一月前
+        
     },
     ready: function() {
         var _this = this;

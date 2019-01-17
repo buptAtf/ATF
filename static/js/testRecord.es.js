@@ -37,6 +37,7 @@ var app = new Vue({
         casecode:'',
         testPlans:[],
         sceneId:'',
+        projectName: sessionStorage.getItem('projectNameStorage')
         
     },
     ready: function() {
