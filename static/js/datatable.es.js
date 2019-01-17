@@ -958,7 +958,7 @@ $(document).ready(function () {
 					function: '',		// 保存点击的函数集中的项
 					target: null,		// 保存点击编辑的target，据此可以获得parent tr
 					table: 1			// 保存当前操作的是前置操作还是后置操作
-				}
+				},				
 			},
 			created: function () { },
 			ready: function () {

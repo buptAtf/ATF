@@ -19,11 +19,16 @@ var app = new Vue({
         selectedId: '',
         selectedTestProjectCode: '',
         selectedTestProjectName: '',
-        selectedTaskDescription: ''
+        selectedTaskDescription: '',
+        projectName: ''
     },
     ready: function() {
         getTestProject(this.currentPage, this.pageSize, this.order, this.sort);
         changeListNum();
+        projectName = sessionStorage.getItem("projectNameStorage");
+        // if(projectName==null){
+        //     projectName = '';   
+        // }
 
         $('.3').addClass('open')
         $('.3 .arrow').addClass('open')
@@ -172,24 +177,29 @@ var app = new Vue({
             $('#updateForm textarea[name="descMedium"]').val(selectedInput.parent().next().next().next().html());
         },
         //进入
-        to: function(id,caseLibId) {
+        to: function(id,caseLibId,name) {
             var selectedInput;
             var caseLibId;
-            if(id!=null){
-                selectedInput=id;
-                caseLibId=caseLibId;
+            var projectNameStorage;
+            if(id){       //id不为空，则是点击项目编号进入(写id!=null,此处应写id，因为id应该是undefined)
+                selectedInput = id;
+                caseLibId = caseLibId;
+                projectNameStorage = name;
             }
-            else
-                selectedInput = $('input[name="chk_list"]:checked');
-            if (selectedInput.length === 0) {
+            else{   //id为空，则是选中radio后，点击“进入”，进入项目
+                selectedInput = $('input[name="chk_list"]:checked');    //找到被选中的哪个元素
+            }
+            if (selectedInput.length === 0) {   //什么都没选，所以长度为0，直接点进入，弹出信息提示框
                 $('#selectAlertModal').modal();
-            } else {
-                if(caseLibId==null)
-                caseLibId= selectedInput.parent().next().next().next().next().html();
-                //存储测试项目id到sessionstorage
-                sessionStorage.setItem("caselibId", caseLibId);
+            } else {                //选中radio之后，长度不为0，点击进入之后，进入项目
+                if(!caseLibId){     //如果caseLibId为空的话，就查找元素从页面中找到caseLibId的值
+                    caseLibId = selectedInput.parent().next().next().next().next().html();  
+                    projectNameStorage = selectedInput.parent().next().next().html();
+                }
+                sessionStorage.setItem("caselibId", caseLibId);     //存储测试项目id到sessionstorage
+                sessionStorage.setItem("projectNameStorage", "("+projectNameStorage+")" );    //把项目名称存入缓存中
                 location.href = "caseManagement.html";
-            }
+            }           
         },
         //时间格式化
         formatDate(date){

@@ -45,6 +45,7 @@ var app = new Vue({
         caselibid: sessionStorage.getItem('caselibId'), //案例库id
         userId:sessionStorage.getItem('userId'),
         failMSG:"操作失败啦",
+        projectName: sessionStorage.getItem('projectNameStorage')
     },
     ready: function() {
         this.getCase(this.currentPage, this.pageSize, this.order, this.sort);
@@ -65,6 +66,9 @@ var app = new Vue({
         $('.filterList').delegate('button.btn-danger','click',function(){
             $(event.target).closest('li').remove();
         });
+        
+
+
         //筛选案例select option
         let that=this;
         $('.filterList').delegate('select[name="propertyName"]', 'change', function() {
