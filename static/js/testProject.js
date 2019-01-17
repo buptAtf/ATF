@@ -20,12 +20,12 @@ var app = new Vue({
         selectedTestProjectCode: '',
         selectedTestProjectName: '',
         selectedTaskDescription: '',
-        projectName: ''
+        projectName: sessionStorage.getItem("projectNameStorage")
     },
     ready: function() {
         getTestProject(this.currentPage, this.pageSize, this.order, this.sort);
         changeListNum();
-        projectName = sessionStorage.getItem("projectNameStorage");
+        
         // if(projectName==null){
         //     projectName = '';   
         // }
