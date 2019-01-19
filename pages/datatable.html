@@ -210,7 +210,8 @@
               </tr>
             </thead>
             <tbody class="ui-sortable" id="sortable">
-              <tr v-for="(index, row) in beforeOperationRows" class="before-operation-row ui-sortable-handle" track-by="id" data-index={{index}}>
+              <tr v-for="(index, row) in beforeOperationRows" class="before-operation-row ui-sortable-handle" track-by="id"
+                data-index={{index}}>
                 <td class="move">
                   <span class="icon-move"></span>
                 </td>
@@ -236,7 +237,8 @@
                 <td class="functions" @mousedown.stop="1">
                   <select class="functions-select form-control" style="width: 90%;">
                     <template v-for="function in row.functions" @change="changeFunction($event.target, index, 1)">
-                      <option v-if="row.selectedFunc == function.name" :value="function.name" :data-parameters="function.parameterlist" selected>{{function.name}}</option>
+                      <option v-if="row.selectedFunc == function.name" :value="function.name" :data-parameters="function.parameterlist"
+                        selected>{{function.name}}</option>
                       <option v-else :value="function.name" :data-parameters="function.parameterlist">{{function.name}}</option>
                     </template>
                     <!-- <option v-for="function in row.functions" :value="function.name" :data-parameters="function.parameterlist">{{function.name}}</option> -->
@@ -264,7 +266,7 @@
                         <tr>
                           <td colspan="2">
                             <button @click="cancelEditParam($event, 1)">取消</button>
-                            <button  @click="saveParam($event, 1)">保存</button>
+                            <button @click="saveParam($event, 1)">保存</button>
                           </td>
                         </tr>
                       </tbody>
@@ -350,7 +352,8 @@
                 <td class="functions">
                   <select class="functions-select form-control" style="width: 90%;">
                     <template v-for="function in row.functions" @change="changeFunction($event.target, index, 2)">
-                      <option v-if="row.selectedFunc == function.name" :value="function.name" :data-parameters="function.parameterlist" selected>{{function.name}}</option>
+                      <option v-if="row.selectedFunc == function.name" :value="function.name" :data-parameters="function.parameterlist"
+                        selected>{{function.name}}</option>
                       <option v-else :value="function.name" :data-parameters="function.parameterlist">{{function.name}}</option>
                     </template>
                   </select>
@@ -496,45 +499,45 @@
           </div>
         </div>
         <div class="row" v-show="isShow">
-            <div class="col-lg-12">
-                <div id="collapse1" class="panel-collapse collpase">
-                    <div class="panel-body">
-                        <div class="filterButtons">
-                            <button class="btn btn-primary" @click="filterCase">查询&nbsp;&nbsp;</button>
-                            <button class="btn btn-primary btn-xs" @click="addFilter()" id="add_btn"><i class="icon-plus"></i></button>
-                        </div>
-                        <ul class="filterList">
-                            <li>
-                                <label>筛选项目</label>
-                                <select name="propertyName" class="selectpicker prop_select" data-live-search="true">
-                                    <option value="">请选择</option>
-                                    <option value="caseCompositeType">用例组成类型</option>
-                                    <option value="casecode">用例编号</option>
-                                    <option value="missionId">测试任务</option>
-                                    <option value="autId">被测系统</option>
-                                    <option value="testDesign">测试意图</option>
-                                    <option value="preRequisites">前置条件</option>
-                                    <option value="dataRequest">数据需求</option>
-                                    <option value="testStep">测试步骤</option>
-                                    <option value="expectResult">预期结果</option>
-                                    <option value="checkPoint">附加检查点</option>
-                                    <option value="caseProperty">用例性质</option>
-                                    <option value="caseType">测试用例类型</option>
-                                    <option value="priority">优先级</option>
-                                    <option value="author">作者</option>
-                                    <option value="reviewer">评审者</option>
-                                </select>
-                                <select name="compareType" class="selectpicker compare_select">
-                                </select>
-                                <label>值</label>
-                                <select name="propertyValue" class="selectpicker val_select">
-                                </select>
-                                <button class="btn btn-xs btn-danger" @click="removeFilter($index,$event)"><i class="glyphicon glyphicon-remove"></i></button>
-                            </li>
-                        </ul>
-                    </div>
+          <div class="col-lg-12">
+            <div id="collapse1" class="panel-collapse collpase">
+              <div class="panel-body">
+                <div class="filterButtons">
+                  <button class="btn btn-primary" @click="filterCase">查询&nbsp;&nbsp;</button>
+                  <button class="btn btn-primary btn-xs" @click="addFilter()" id="add_btn"><i class="icon-plus"></i></button>
                 </div>
+                <ul class="filterList">
+                  <li>
+                    <label>筛选项目</label>
+                    <select name="propertyName" class="selectpicker prop_select" data-live-search="true">
+                      <option value="">请选择</option>
+                      <option value="caseCompositeType">用例组成类型</option>
+                      <option value="casecode">用例编号</option>
+                      <option value="missionId">测试任务</option>
+                      <option value="autId">被测系统</option>
+                      <option value="testDesign">测试意图</option>
+                      <option value="preRequisites">前置条件</option>
+                      <option value="dataRequest">数据需求</option>
+                      <option value="testStep">测试步骤</option>
+                      <option value="expectResult">预期结果</option>
+                      <option value="checkPoint">附加检查点</option>
+                      <option value="caseProperty">用例性质</option>
+                      <option value="caseType">测试用例类型</option>
+                      <option value="priority">优先级</option>
+                      <option value="author">作者</option>
+                      <option value="reviewer">评审者</option>
+                    </select>
+                    <select name="compareType" class="selectpicker compare_select">
+                    </select>
+                    <label>值</label>
+                    <select name="propertyValue" class="selectpicker val_select">
+                    </select>
+                    <button class="btn btn-xs btn-danger" @click="removeFilter($index,$event)"><i class="glyphicon glyphicon-remove"></i></button>
+                  </li>
+                </ul>
+              </div>
             </div>
+          </div>
         </div>
       </div>
       <section class="content-wrapper">
@@ -581,15 +584,15 @@
           </div>
           <div class="col-g-12">
             <div class="top-bar">
-                <button class="btn btn-white" id="saveAll">
+              <button class="btn btn-white" id="saveAll">
                 <i class="icon-save"></i>
                 保存</button>
-                <button class="btn btn-white export-show" id="excel-export" style="display: none;">
-                  <i class="icon-save"></i>
-                  下载模板</button>
-                <button class="btn btn-white export-show" id="excel-import" style="display: none;">
-                  <i class="icon-save"></i>
-                  模板导入</button>
+              <button class="btn btn-white export-show" id="excel-export" style="display: none;">
+                <i class="icon-save"></i>
+                下载模板</button>
+              <button class="btn btn-white export-show" id="excel-import" style="display: none;">
+                <i class="icon-save"></i>
+                模板导入</button>
             </div>
           </div>
 
@@ -794,69 +797,104 @@
     <!-- importModal start-->
     <div class="modal fade" id="importModal" tabindex="-1" role="dialog" aria-labelledby="importModalLabel" aria-hidden="true">
       <div class="modal-dialog">
-          <div class="modal-content">
-              <div class="modal-header">
-                  <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                  <h4 class="modal-title">模板导入</h4>
-              </div>
-              <form role="form" id="importForm" method='post' :action="importUrl" enctype="multipart/form-data" >
-              <div class="modal-body">
-                  <div class="form-group hidden"> 
-                      <input type="text" class="text" name="caseLibId" v-bind:value="caselibid" >
-                      <input type="text" class="text" name="uploadUserId" v-bind:value="userId" >
-                  </div>
-                  <div class="form-group">        
-                      <div class="col-lg-6">
-                          <input type="text" class="form-control show" disabled>
-                      </div>
-                      <div class="col-lg-6">
-                          <span class="btn  btn-white fileinput-button"><span>选择文件</span>
-                          <input type="file" class="myFileUpload" name="file" id='theFile'>
-                      </div>
-                      </span>
-                  </div>
-                  <input type="submit" value="submit" class="hide">
-              </div>
-              <div class="modal-footer">
-                  <!-- <a class="  btn  btn-white" style="float:left" id="exampleDownload">模板下载</a>   -->
-                  <a class="  btn  btn-white"     id="submitFile"  @click="upload()">导入</a>  
-                  <button data-dismiss="modal" class="btn btn-default" type="button">取消</button>
-              </div>
-            </form>
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+            <h4 class="modal-title">模板导入</h4>
           </div>
+          <form role="form" id="importForm" method='post' :action="importUrl" enctype="multipart/form-data">
+            <div class="modal-body">
+              <div class="form-group hidden">
+                <input type="text" class="text" name="caseLibId" v-bind:value="caselibid">
+                <input type="text" class="text" name="uploadUserId" v-bind:value="userId">
+              </div>
+              <div class="form-group">
+                <div class="col-lg-6">
+                  <input type="text" class="form-control show" disabled>
+                </div>
+                <div class="col-lg-6">
+                  <span class="btn  btn-white fileinput-button"><span>选择文件</span>
+                    <input type="file" class="myFileUpload" name="file" id='theFile'>
+                </div>
+                </span>
+              </div>
+              <input type="submit" value="submit" class="hide">
+            </div>
+            <div class="modal-footer">
+              <!-- <a class="  btn  btn-white" style="float:left" id="exampleDownload">模板下载</a>   -->
+              <a class="  btn  btn-white" id="submitFile" @click="upload()">导入</a>
+              <button data-dismiss="modal" class="btn btn-default" type="button">取消</button>
+            </div>
+          </form>
+        </div>
       </div>
     </div>
     <!-- importModal end-->
-    <!-- APIEditModal start -->
-    <div class="modal fade" id="APIEditModal" tabindex="-1" role="dialog" aria-labelledby="APIEditModalLabel" aria-hidden="true">
+    <!-- APIFieldModal start -->
+    <div class="modal fade" id="APIFieldModal" tabindex="-1" role="dialog" aria-labelledby="APIFieldModalLabel"
+      aria-hidden="true">
       <div class="modal-dialog">
-          <div class="modal-content">
-              <div class="modal-header">
-                  <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                  <h4 class="modal-title">模板导入</h4>
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+            <h4 class="modal-title">模板导入</h4>
+          </div>
+          <div class="modal-body">
+            <div class="form-group" id="APIFieldParaListBody">
+              <div class="form-group">
+                <label class="col-lg-4">处理类型</label>
+                <label class="radio-inline col-lg-2" onclick="APIFieldOptionsClick(1)">
+                  <input type="radio" name="inlineRadioOptions" id="inlineRadio1" value="option1" checked> 验证
+                </label>
+                <label class="radio-inline" onclick="APIFieldOptionsClick(2)">
+                  <input type="radio" name="inlineRadioOptions" id="inlineRadio2" value="option2"> 提取
+                </label>
               </div>
-              <div class="modal-body" >
-                  <div class="form-group" id="APIEditParaListBody">
-                      <div class="form-group">
-                          <label class="col-lg-4">处理类型</label>
-                          <label class="radio-inline col-lg-2">
-                              <input type="radio" name="inlineRadioOptions" id="inlineRadio1" value="option1"> 验证
-                          </label>
-                          <label class="radio-inline">
-                              <input type="radio" name="inlineRadioOptions" id="inlineRadio2" value="option2"> 提取
-                          </label>
-                      </div>
-              
-                   
-                  <!-- <div class="form-group APIEditParaRow" v-for="singleData in APIEditModalData">
+              <!-- <div class="form-group APIFieldVerificationParaRow" v-for="singleData in APIFieldModalVerificationData">
+                  <div class="col-lg-5">
+                    <input class="form-control" type="text" name="APIFieldVerificationParaExp" placeholder="表达式" value="{{singleData.pathExpression}}">
+                  </div>
+                  <div class="col-lg-3">
+                    <select class="form-control" name="APIFieldVerificationParaSel">
+                      <option v-if = "singleData.compareChar === '=='" value="==" selected>等于</option>
+                      <option v-else value="==">等于</option>
+                      <option v-if = "singleData.compareChar === '!='" value="!=" selected>不等于</option>
+                      <option v-else value="!=">不等于</option>
+                      <option v-if = "singleData.compareChar === 'C'" value="C" selected>包含</option>
+                      <option v-else value="C">包含</option>
+                      <option v-if = "singleData.compareChar === '!C'" value="!C" selected>不包含</option>
+                      <option v-else value="!C">不包含</option>
+                    </select>
+                  </div>
+                  <div class="col-lg-3">
+                    <input class="form-control" type="text" name="APIFieldVerificationParaVal" placeholder="预期值" value="{{singleData.expectValue}}">
+                  </div>
+                </div> -->
+              <div class="form-group APIFieldVerificationParaRow">
+                <div class="col-lg-5">
+                  <input class="form-control" type="text" name="APIFieldVerificationParaExp" placeholder="表达式">
+                </div>
+                <div class="col-lg-3">
+                  <select class="form-control" name="APIFieldVerificationParaSel">
+                    <option value="==">等于</option>
+                    <option value="!=">不等于</option>
+                    <option value="C">包含</option>
+                    <option value="!C">不包含</option>
+                  </select>
+                </div>
+                <div class="col-lg-3">
+                  <input class="form-control" type="text" name="APIFieldVerificationParaVal" placeholder="预期值">
+                </div>
+              </div>
+              <!-- <div class="form-group APIFieldExtractionParaRow" v-for="singleData in APIFieldModalExtractionData">
                       <div class="col-lg-3">
-                          <input class="form-control" type="text" name="APIEditParaName" placeholder="字段" value="{{singleData.name}}">   
+                          <input class="form-control" type="text" name="APIFieldExtractionParaName" placeholder="字段" value="{{singleData.name}}">   
                       </div>
                       <div class="col-lg-4">
-                          <input class="form-control" type="text" name="APIEditParaVal" placeholder="表达式" value="{{singleData.val}}">
+                          <input class="form-control" type="text" name="APIFieldExtractionParaExp" placeholder="表达式" value="{{singleData.val}}">
                       </div>
                       <div class="col-lg-4">
-                          <input class="form-control" type="text" name="APIEditParaDec" placeholder="字段保存名称" value="{{singleData.desc}}">
+                          <input class="form-control" type="text" name="APIFieldExtractionParaName" placeholder="字段保存名称" value="{{singleData.desc}}">
                       </div>
                       <div class="col-lg-0">
                           <button class="btn" type="button" onclick="queryParaRowDelete(event)" style="color:red;background:transparent">
@@ -864,72 +902,62 @@
                           </button>
                       </div>
                   </div> -->
-                  <div class="form-group APIEditParaRow" >
-                      <div class="col-lg-3">
-                          <input class="form-control" type="text" name="APIEditParaName" placeholder="字段" >   
-                      </div>
-                      <div class="col-lg-4">
-                          <input class="form-control" type="text" name="APIEditParaVal" placeholder="表达式">
-                      </div>
-                      <div class="col-lg-4">
-                          <input class="form-control" type="text" name="APIEditParaDec" placeholder="字段保存名称" >
-                      </div>
-                  </div>                        
+
+              <div class="form-group APIFieldExtractionParaRow">
+                <div class="col-lg-6">
+                  <input class="form-control" type="text" name="APIFieldExtractionParaExp" placeholder="表达式">
                 </div>
-                <div class="form-group" style="display:none">
-                    <div class="col-lg-1"></div>
-                    <div class="col-lg-0">
-                        <button class="btn btn-info" type="button" @click="APIEditParaListSave">
-                            <span>保存</span>
-                        </button>
-                    </div>
+                <div class="col-lg-5">
+                  <input class="form-control" type="text" name="APIFieldExtractionParaName" placeholder="字段保存名称">
                 </div>
               </div>
-              <div class="modal-footer">
-                  <!-- <a class="  btn  btn-white" style="float:left" id="exampleDownload">模板下载</a>   -->
-                  <a class="  btn  btn-white"     id="submitFile"  @click="upload()">导入</a>  
-                  <button data-dismiss="modal" class="btn btn-default" type="button">取消</button>
-              </div>
+            </div>
           </div>
+          <div class="modal-footer">
+            <a class="btn btn-white" id="APIUpload" onclick="APIUpload()">导入</a>
+            <button data-dismiss="modal" class="btn btn-default" type="button">取消</button>
+          </div>
+        </div>
       </div>
     </div>
-    <!-- APIEditModal end -->
-      <!-- failModal2 start 与failmsg绑定提示 -->
+    <!-- APIFieldModal end -->
+    <!-- failModal2 start 与failmsg绑定提示 -->
     <div class="modal fade" id="failModal2" tabindex="-1" role="dialog" aria-labelledby="failModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                    <h4 class="modal-title">操作失败</h4>
-                </div>
-                <div class="modal-body">
-                    <h4>{{failMSG}}</h4>
-                </div>
-                <div class="modal-footer">
-                    <button data-dismiss="modal" class="btn btn-success" type="button">确定</button>
-                </div>
-            </div>
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+            <h4 class="modal-title">操作失败</h4>
+          </div>
+          <div class="modal-body">
+            <h4>{{failMSG}}</h4>
+          </div>
+          <div class="modal-footer">
+            <button data-dismiss="modal" class="btn btn-success" type="button">确定</button>
+          </div>
         </div>
+      </div>
     </div>
     <!-- failModal end -->
     <!-- successModal start -->
-    <div class="modal fade" id="successModal" tabindex="-1" role="dialog" aria-labelledby="successModalLabel" aria-hidden="true">
+    <div class="modal fade" id="successModal" tabindex="-1" role="dialog" aria-labelledby="successModalLabel"
+      aria-hidden="true">
       <div class="modal-dialog">
-          <div class="modal-content">
-              <div class="modal-header">
-                  <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                  <h4 class="modal-title">操作成功</h4>
-              </div>
-              <div class="modal-body">
-                  <h4>操作成功！</h4>
-              </div>
-              <div class="modal-footer">
-                  <button data-dismiss="modal" class="btn btn-success" type="button">确定</button>
-              </div>
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+            <h4 class="modal-title">操作成功</h4>
           </div>
+          <div class="modal-body">
+            <h4>操作成功！</h4>
+          </div>
+          <div class="modal-footer">
+            <button data-dismiss="modal" class="btn btn-success" type="button">确定</button>
+          </div>
+        </div>
       </div>
-  </div>
-  <!-- successModal end -->    
+    </div>
+    <!-- successModal end -->
   </div>
   <!-- <script type="text/x-template" id="view-script-template"> -->
 
