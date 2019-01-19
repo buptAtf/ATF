@@ -75,7 +75,7 @@ var vBody = new Vue({
 		},
 		// 批量执行相关
 		batchId:null,
-		exeStautShow: '<i class="icon-spinner"></i>正在执行',
+		exeStautShow: '<i class="icon-meh"></i>无计划',
 		exeStauts:true, //执行状态,用与判断该测试计划是否在执行中，确定是否调用执行接口
 		// save the string : 展开 and 收起
 		expandString: '展开',
@@ -602,16 +602,18 @@ var vBody = new Vue({
 				success: function(data) {
 					if(data.result.respCode=="0000"){
 						if(data.result.respSyncNo==-1){
-							_this.exeStautShow = '<i class="icon-ok"></i>执行完毕';
+							_this.setResultIcon(data.result.insStatuses);
+							_this.exeStautShow = '<i class="icon-ok"></i>已执行';
 							_this.exeStauts = true;
 						}
 						else{
-							_this.exeStautShow = '<i class="icon-spinner"></i>正在执行';
+							_this.setResultIcon(data.result.insStatuses);
+							_this.exeStautShow = '<i class="icon-spinner"></i>执行中';
 							_this.exeStauts = false;
 						}
 					}
 					else{
-						_this.exeStautShow = '<i class="icon-question"></i>未知状态';
+						_this.exeStautShow = '<i class="icon-question"></i>未知';
 						_this.exeStauts = false;
 						Vac.alert(data.result.respMsg);
 					}
@@ -633,8 +635,6 @@ var vBody = new Vue({
 				Vac.alert("请选择测试计划");
 				return;
 			}
-			_this.getBatchIdForTestPlan(data.testPlanId)
-			//查询批次的执行状态并且展示
 			Vac.ajax({
 				url: address3 + 'caseExecuteInstance/queryCaseExecuteInstance',
 				data: data,
@@ -714,6 +714,7 @@ var vBody = new Vue({
 					}
 				}
 			});
+			_this.getBatchIdForTestPlan(data.testPlanId); //查询批次的执行状态并且展示
 		},
 		compare: function(property){		//排序所需要的函数
 			return function(obj1,obj2){		//比较两个对象相应的元素，按照升序排序
