@@ -169,10 +169,10 @@ var app = new Vue({
             $('#updateForm textarea[name="descripition"]').val(selectedInput.parent().next().next().next().next().html());
             $('#updateForm input[name="modifierId"]').val(sessionStorage.getItem('userId'));
         },
-
+        downloadRunner: function(){
+            window.location.href = "http://10.101.167.184:8080/atf-data/atf-runner.zip";
+        },
     },
-
-
 });
 
 //获取系统
@@ -196,6 +196,6 @@ function getTestProject() {
 
 
 //全选反选
-$("#chk_all").click(function() {　　
+$("#chk_all").click(function() {
     $("input[name='chk_list']").prop("checked", $(this).prop("checked"));　
 });

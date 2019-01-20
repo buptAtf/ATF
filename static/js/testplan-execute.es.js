@@ -219,9 +219,9 @@ var vBody = new Vue({
 		},
 		stopExe: function(){
 			var _this=this
-			if(_this.exeStauts) {
-				Vac.alert('该测试计划尚未执行或执行完毕。');return;
-			}
+			// if(_this.exeStauts) {
+			// 	Vac.alert('该测试计划尚未执行或执行完毕。');return;
+			// }
 			$.ajax({
 				url: address3 + 'batchRunCtrlController/terminateBatch ',
 				type: 'post',
