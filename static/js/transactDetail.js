@@ -2106,7 +2106,8 @@ var app = new Vue({
             if (!trs.length) return;
             Vac.confirm('', '', '', '确认要删除选中项吗？').then(() => {
                 var arr = [];
-                for (var tr of trs) {
+                for (var i=0;i< trs.length;i++) {
+                    var tr = trs[i];
                     arr.push(+tr.getAttribute('data-index'));
                 }
                 _this.operationRows = _this.operationRows.filter((item, index) => {

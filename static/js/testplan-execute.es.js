@@ -65,20 +65,18 @@ var vBody = new Vue({
 		selectedScene: [],	// 3, 1, 2, [1,2], [3],[{"sceneId":1,"testcaseList":[1,2]}]
 		exeImgs: {
 			0: '/assets/images/waiting.png',
-			1: '/assets/images/success.png',
-			2: '/assets/images/error.png',
-			3: '/assets/images/warn.png',
-			4: '/assets/images/running.gif'
+			10: '/assets/images/waiting.png',
+			2: '/assets/images/success.png',
+			3: '/assets/images/error.png',
+			13: '/assets/images/running.png',
+			4: '/assets/images/success.png',
+			11: '/assets/images/warn.png',
+			12: '/assets/images/warn.png',
 		},
 		// 批量执行相关
-		hasStartExecute: false,
-		batchExecuteNo: null,
-		executeResult : 'fail',
-		queryResultFun: null,
-		queryInterval: 1000,
-		reQueryInterval: 2,
-		queryNums: 0,
-
+		batchId:null,
+		exeStautShow: '<i class="icon-spinner"></i>正在执行',
+		exeStauts:true, //执行状态,用与判断该测试计划是否在执行中，确定是否调用执行接口
 		// save the string : 展开 and 收起
 		expandString: '展开',
 		unexpandString: '收起',
@@ -219,23 +217,62 @@ var vBody = new Vue({
 		hideAlert: function(){
 			this.alertShow = false;
 		},
+		stopExe: function(){
+			var _this=this
+			if(_this.exeStauts) {
+				Vac.alert('该测试计划尚未执行或执行完毕。');return;
+			}
+			$.ajax({
+				url: address3 + 'batchRunCtrlController/terminateBatch ',
+				type: 'post',
+				contentType: 'application/json',
+				data: JSON.stringify({
+					"batchId": _this.batchId
+				}),
+				success: function(data) {
+					if (data.respCode=="0000") {
+						_this.runners=data.runners;
+						if(data.runners.length==0)
+							Vac.alert('查询不到执行机');
+						else
+							_this.runner=data.runners[0].identifiableName;
+					} else {
+						Vac.alert(data.respMsg);
+						}
+				},
+				error: function() {
+					Vac.alert('网络错误！请点击重新查询！');
+				}
+			});
+		},
 		executeAll: function(){
 			var _this = this;
-			if(!this.userId ) {
+			if(!_this.userId ) {
 				Vac.alert('请填写用户id');return;
 			}
-			if(!this.recordflag) {
+			if(!_this.recordflag) {
 				Vac.alert('请填写recordflag');return;
 			}
-			if (!this.exeScope) {
+			if (!_this.exeScope) {
 				Vac.alert('请填写执行范围');return;
 			}
-			if (!this.testPlanId) {
+			if (!_this.testPlanId) {
 				Vac.alert('请选择测试计划');return;
 			}
-			if(this.runner=="")
+			if(_this.runner=="")
 			{
 				Vac.alert('请选择执行机');return;
+			}
+			if(!_this.exeStauts ) {
+				Vac.alert('该测试计划正在执行中，若想再次执行，请终止当前执行');return;
+			}
+			var selectedExeInstanceId=[];
+			if(_this.exeScope==1){}
+			else{
+				for(var i = 0;i < _this.selectedSceneCases.length;i++){
+					let selectedSceneCase = _this.selectedSceneCases[i].split("-");
+					selectedExeInstanceId.push(selectedSceneCase[selectedSceneCase.length-1])
+				}
 			}
 			Vac.ajax({
 				url: address2 + 'executeController/t1',
@@ -246,6 +283,7 @@ var vBody = new Vue({
 					"recordflag": _this.recordFlag,
 					"exeScope": _this.exeScope, 
 					"selectState": _this.selectState,
+					"selectedExeInstanceId": selectedExeInstanceId,
 					"testPlanId": _this.testPlanId,
 					"identifiableRunnerName":_this.runner
 				}),
@@ -259,7 +297,8 @@ var vBody = new Vue({
 								"testPlanId": _this.testPlanId,
 							}),
 							success: function(data) {
-								_this.startQueryResult(data.batchId);
+								_this.batchId = data.batchId;
+								_this.startQueryResult();
 							},
 							error: function(){
 								Vac.alert('网络错误，执行失败！');
@@ -278,17 +317,14 @@ var vBody = new Vue({
 				}
 			})
 		},
-		startQueryResult: function(batchExecuteNo) {
+		startQueryResult: function() {
 			var _this = this;
-			_this.batchExecuteNo = batchExecuteNo;
-			_this.hasStartExecute = true;
-			//_this.queryResultFun = setTimeout(queryAction, _this.queryInterval);
 			$.ajax({
 				url: address3 + 'batchRunCtrlController/syncQueryIncInsStatus',
 				type: 'post',
 				contentType: 'application/json',
 				data: JSON.stringify({
-					"batchId": _this.batchExecuteNo,
+					"batchId": _this.batchId,
 					"reqSyncNo": null,
 					"sessionId":null, 
 				}),
@@ -300,36 +336,23 @@ var vBody = new Vue({
 						}
 						else{
 							_this.setResultIcon(data.result.insStatuses)
-							_this.syncQueryIncInsStatus(data)
+							syncQueryIncInsStatus(data.result)
 						}
 					}
 					else{
 						Vac.alert(data.result.respMsg);
 					}
-					// if (data.success) {
-						// _this.setResultIcon(data.obj);
-						// if (data.finished) {
-						// 	// 执行完毕
-						// 	_this.hasStartExecute = false;
-						// 	_this.batchExecuteNo = null;
-						// 	_this.queryResultFun = null;
-						// 	Vac.alert('执行完毕！');
-						// } else {
-						// 	// 未执行完毕
-						// 	_this.queryResultFun = setTimeout(queryAction, _this.queryInterval);
-						// }
-					// } else {
-					// 	Vac.alert('查询出错！请点击重新查询！');
-					// 	// me.queryResultFun = setTimeout(queryAction, me.reQueryInterval);
-					// }
 				},
 				error: function() {
 					Vac.alert('网络错误！请点击重新查询！');
-					// Vac.alert('查询执行结果失败，将在'+ me.reQueryInterval + '毫秒后继续查询');
-					// me.queryResultFun = setTimeout(queryAction, me.reQueryInterval);
 				}
 			});
 			function syncQueryIncInsStatus (values){
+				console.log("1")
+				console.log(values)
+				console.log(values.batchId)
+				console.log(values.respSyncNo)
+				console.log(values.sessionId)
 				$.ajax({
 					url: address3 + 'batchRunCtrlController/syncQueryIncInsStatus',
 					type: 'post',
@@ -346,7 +369,7 @@ var vBody = new Vue({
 						}
 						else{
 							_this.setResultIcon(data.result.insStatuses)
-							_this.syncQueryIncInsStatus(data.result)
+							syncQueryIncInsStatus(data.result)
 							console.log("continue this branch")
 						}
 					},
@@ -357,7 +380,7 @@ var vBody = new Vue({
 			}
 		},
 		reQuery: function() {
-			this.batchExecuteNo && this.startQueryResult(this.batchExecuteNo);
+			this.batchId && this.startQueryResult();
 		},
 		setResultIcon: function(data) {
 			if(!data) {
@@ -367,20 +390,21 @@ var vBody = new Vue({
 				return;
 			}
 			for (let d of data) {
-				if (d.sourcechannel === 'PE4') {	//直接选中执行的测试用例
-					if (d.flownodeid) {
-						document.querySelector(`#img-${d.flownodeid}`).src = this.exeImgs[d.resultstatus];
+				//  //注释掉直接选中的用例
+				// if (d.sourcechannel === 'PE4') {	//直接选中执行的测试用例
+				// 	if (d.flownodeid) {
+				// 		document.querySelector(`#img-${d.flownodeid}`).src = this.exeImgs[d.status];
+				// 	} else {
+				// 		document.querySelector(`#img-${d.caseid}`).src = this.exeImgs[d.status];
+				// 	}
+				// } else {
+					if(d.flowNodeId) {
+						document.querySelector(`#img-${d.sceneId}-${d.testcaseId}-${d.flownodeid}`).src = this.exeImgs[d.status];
 					} else {
-						document.querySelector(`#img-${d.caseid}`).src = this.exeImgs[d.resultstatus];
-					}
-				} else {
-					if(d.flownodeid) {
-						document.querySelector(`#img-${d.sceneId}-${d.caseid}-${d.flownodeid}`).src = this.exeImgs[d.resultstatus];
-					} else {
-						document.querySelector(`#img-${d.sceneId}-${d.caseid}`).src = this.exeImgs[d.resultstatus];
+						document.querySelector(`#img-${d.sceneId}-${d.testcaseId}`).src = this.exeImgs[d.status];
 					}
 					
-				}
+				//}
 			}
 		},
 		testPlanManager: function() {		
@@ -537,19 +561,80 @@ var vBody = new Vue({
 			}
 			return false
 		},
+		getBatchIdForTestPlan(testPlanId){
+			var _this = this;
+			Vac.ajax({
+				url: address3 + 'batchRunCtrlController/queryLatestBatchIdForTestPlan',
+				type: 'post',
+				contentType: 'application/json',
+				data: JSON.stringify({
+					"testPlanId": testPlanId,
+				}),
+				success: function(data){
+					if(data.respCode=="0000"){
+						_this.batchId=data.batchId
+						_this.getSinglebranchStatus();
+					}
+					else if(data.respCode=="10012000"){
+						_this.exeStautShow = '<i class="icon-circle-blank"></i>尚未执行';
+						_this.exeStauts = true;
+						Vac.alert(data.respMsg);
+					}
+					else Vac.alert("查询branchId出错啦");
+				},
+				error: function() {
+					Vac.alert('网络错误');
+				}
+			});
 
+		},
+		getSinglebranchStatus(){ //查询单个批次结果 并展示执行状态
+			var _this = this;
+			$.ajax({
+				url: address3 + 'batchRunCtrlController/syncQueryIncInsStatus',
+				type: 'post',
+				contentType: 'application/json',
+				data: JSON.stringify({
+					"batchId": _this.batchId,
+					"reqSyncNo": null,
+					"sessionId":null, 
+				}),
+				success: function(data) {
+					if(data.result.respCode=="0000"){
+						if(data.result.respSyncNo==-1){
+							_this.exeStautShow = '<i class="icon-ok"></i>执行完毕';
+							_this.exeStauts = true;
+						}
+						else{
+							_this.exeStautShow = '<i class="icon-spinner"></i>正在执行';
+							_this.exeStauts = false;
+						}
+					}
+					else{
+						_this.exeStautShow = '<i class="icon-question"></i>未知状态';
+						_this.exeStauts = false;
+						Vac.alert(data.result.respMsg);
+					}
+				},
+				error: function() {
+					Vac.alert('网络错误！请点击重新查询！');
+				}
+			});
+		},
 		getCases() {
+			var _this =this;
 			var data = {
-				caselibId: this.caselibId,
-				testPlanId: this.testPlanId,
+				caselibId: _this.caselibId,
+				testPlanId: _this.testPlanId,
 				roundFlag: 2,
 				scopeFlag: 1
 			};
-			if(!this.testPlanId) {
+			if(!_this.testPlanId) {
 				Vac.alert("请选择测试计划");
 				return;
 			}
-			var _this = this;
+			_this.getBatchIdForTestPlan(data.testPlanId)
+			//查询批次的执行状态并且展示
 			Vac.ajax({
 				url: address3 + 'caseExecuteInstance/queryCaseExecuteInstance',
 				data: data,
