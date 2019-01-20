@@ -98,6 +98,28 @@ var app = new Vue({
                     console.info(data);
                     if (data.respCode==0000) {
                         $('#successModal').modal();
+                        //此处用于目标执行代码的自动添加
+                        // $.ajax({
+                        //     url:address3+'tool/updateToolInfo',
+                        //      type:'post',contentType: 'application/json',
+                        //     data: JSON.stringify({
+                        //         'id':app.execodeId,
+                        //         'toolname': 'groovy',
+                        //         'autId':this.autId,
+                        //         'maincodeBegin':maincodeBegin,
+                        //         'maincodeEnd':maincodeEnd
+                        //     }),
+                        //     success:function(data){
+                        //         if(data.respCode==0000){
+                        //             $('#successModal').modal();
+                        //         }else{
+                        //             $('#failModal').modal();
+                        //         }
+                        //     },
+                        //     error:function(){
+                        //         $('#failModal').modal();
+                        //     }
+                        // });
                         getAut(self.currentPage, self.pageSize, self.order, self.sort);
                     } else {
                         // alert(data.respMsg)
