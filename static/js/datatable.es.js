@@ -433,8 +433,7 @@ $(document).ready(function () {
 		                            url: address3+"userController/selectAllUsername",
 		                            type: 'post',
 		                            contentType: 'application/json',
-		                            data: JSON.stringify({
-		                                
+		                            data: JSON.stringify({		                                
 		                            }),
 		                            success:function(data){
 		                                if(data.respCode=='0000'){
@@ -2058,7 +2057,8 @@ $(document).ready(function () {
 					propertyName: 'testPoint'
 				},
 				testpointsMap: new Map(),
-				testpointLength: 0
+				testpointLength: 0,
+				projeceName: sessionStorage.getItem("projectNameStorage")
 			},
 			created: function () {
 
