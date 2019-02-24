@@ -262,10 +262,22 @@
                             <div class="row">
                                 <form class="form-horizontal col-sm-12">
                                     <div class="form-group">
+                                        <label class="col-sm-1 control-label">(选)执行状态</label>
+                                        <div class="col-sm-2">
+                                            <select class="form-control" v-model="executeStatus">
+                                                <option value="10">初始未执行</option>
+                                                <option value="12">已分配等待执行</option>
+                                                <option value="13">正在执行</option>
+                                                <option value="2">成功</option>
+                                                <option value="3">失败</option>
+                                                <option value="9">跳过执行</option>
+                                                <option value="4">部分成功</option>
+                                            </select>
+                                        </div> 
                                         <label class="col-sm-1 control-label">(选)场景列表</label>
                                         <div class="col-sm-2">
-                                            <select class="form-control" name="" v-model="sceneId">                                       
-                                                <option v-for="item in sceneList" :value="item.sceneId">{{item.sceneName}}</option><!--原来是 item.phasename -->
+                                            <select class="form-control" name="" v-model="sceneId">          <!--原来是 绑定js中的sceneId，返回字段的为id -->                             
+                                                <option v-for="item in sceneList" :value="item.id">{{item.nameMedium}}</option><!--原来是 item.sceneName -->
                                             </select>
                                         </div>
                                         <label class="col-sm-1 control-label">(选)用例编号</label>
