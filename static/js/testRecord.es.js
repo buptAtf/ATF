@@ -37,7 +37,9 @@ var app = new Vue({
         casecode:'',
         testPlans:[],
         sceneId:'',
-        projectName: sessionStorage.getItem('projectNameStorage')
+        projectName: sessionStorage.getItem('projectNameStorage'),
+        caseLibId: sessionStorage.getItem('caselibId'),
+        executeStatus: '' //用于查询执行状态
         
     },
     ready: function() {
@@ -195,6 +197,7 @@ var app = new Vue({
                     'sceneId': _this.sceneId,
                     'pageSize': _this.pageSize,     //整形
                     'currentPage': _this.currentPage,   //整形
+                    "executeStatus": _this.executeStatus,
                     // 'orderType': '',
                     // 'orderColumns': ''
                 }),
@@ -216,13 +219,14 @@ var app = new Vue({
                 url: address3 +'testRecordController/pagedBatchQueryTestRecordByTestPlan',
                 type: 'post',
                 contentType: 'application/json',
-                data:JSON.stringify({
+                data:JSON.stringify({                   
                     'executeRound': +_this.executeRound,
                     'testPlanId': +_this.testPlanId,
                     'casecode': +_this.casecode,
                     'sceneId': +_this.sceneId,
                     'pageSize': _this.pageSize,     //整形
                     'currentPage': _this.currentPage,   //整形
+                    "executeStatus": _this.executeStatus,
                 }),
                 success: function(data){
                     _this.recordList = data.list;
@@ -254,14 +258,21 @@ var app = new Vue({
         queryScene: function(){
             var _this = this;
             $.ajax({
-                url: address3 + 'sceneController/selectAllScene',
+                // url: address3 + 'sceneController/selectAllScene',
+                url: address3 + 'sceneController/pagedBatchQueryScene',
                 type: 'post',
                 contentType:'application/json',
                 data:JSON.stringify({
-                    "caseLibId": 50,
+                    
+                    "currentPage":1,
+                    "pageSize":"20",
+                    "orderType":"DESC",
+                    "orderColumns":"modified_time",
+                    "caseLibId": _this.caseLibId           
                 }),
                 success: function(data){
-                    _this.sceneList = data.scenequeryDtoList;
+                    // _this.sceneList = data.scenequeryDtoList;
+                    _this.sceneList = data.sceneEntityList;
                 }
             })
         }
