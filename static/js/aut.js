@@ -19,7 +19,8 @@ var app = new Vue({
         selectedAutCode: '',
         selectedAutName: '',
         selectedAbstractarchitecture_name: '',
-        selectedAut_desc: ''
+        selectedAut_desc: '',
+        failMsg:"操作失败"
     },
     ready: function() {
         getAut(this.currentPage, this.pageSize, this.order, this.sort);
@@ -79,7 +80,7 @@ var app = new Vue({
 
         //添加
         insert: function() {
-            var self=this;
+            var _this=this;
             var code=$('#insertForm input[name="code"]').val(),
                 nameMedium=$('#insertForm input[name="nameMedium"]').val(),
                 inheriteArcId=$('#insertForm select[name="inheriteArcId"]').val(),
@@ -97,30 +98,45 @@ var app = new Vue({
                 success: function(data) {
                     console.info(data);
                     if (data.respCode==0000) {
-                        $('#successModal').modal();
-                        //此处用于目标执行代码的自动添加
-                        // $.ajax({
-                        //     url:address3+'tool/updateToolInfo',
-                        //      type:'post',contentType: 'application/json',
-                        //     data: JSON.stringify({
-                        //         'id':app.execodeId,
-                        //         'toolname': 'groovy',
-                        //         'autId':this.autId,
-                        //         'maincodeBegin':maincodeBegin,
-                        //         'maincodeEnd':maincodeEnd
-                        //     }),
-                        //     success:function(data){
-                        //         if(data.respCode==0000){
-                        //             $('#successModal').modal();
-                        //         }else{
-                        //             $('#failModal').modal();
-                        //         }
-                        //     },
-                        //     error:function(){
-                        //         $('#failModal').modal();
-                        //     }
-                        // });
-                        getAut(self.currentPage, self.pageSize, self.order, self.sort);
+                        var newAutId = data.autId
+                        console.info(newAutId);
+                        $.ajax({
+                            url:address3+'tool/querySingleTool',
+                            type:'post',contentType: 'application/json',
+                            data: JSON.stringify({
+                                'id':newAutId
+                            }),
+                            success:function(data){
+                                console.log(data);
+                                if(data.respCode=="0000"){
+                                    var toolId=data.id;
+                                    $.ajax({
+                                        url:address3+'tool/updateToolInfo',
+                                         type:'post',contentType: 'application/json',
+                                        data: JSON.stringify({
+                                            'id':toolId,
+                                            'toolname': 'groovy',
+                                            'autId':newAutId,
+                                            'maincodeBegin':maincodeBegin,
+                                            'maincodeEnd':maincodeEnd
+                                        }),
+                                        success:function(data){
+                                            if(data.respCode==0000){
+                                                $('#successModal').modal();
+                                            }else{
+                                                _this.failMsg = "添加成功，但是执行代码初始化失败，请在被测系统自行配置"
+                                                $('#failModal2').modal();
+                                            }
+                                        },
+                                        error:function(){
+                                            _this.failMsg = "添加成功，但是执行代码初始化失败，请在被测系统自行配置"
+                                            $('#failModal2').modal();
+                                        }
+                                    });
+                                }
+                            }
+                        });
+                        getAut(_this.currentPage, _this.pageSize, _this.order, _this.sort);
                     } else {
                         // alert(data.respMsg)
                         alert(data.respMsg)
@@ -144,7 +160,7 @@ var app = new Vue({
         },
         //删除测试系统
         del: function() {
-            var self=this;
+            var _this=this;
             this.getIds();
             console.log(app.ids)
             $.ajax({
@@ -157,7 +173,7 @@ var app = new Vue({
                     console.info(data);
                     if (data.success) {
                         $('#successModal').modal();
-                        getAut(self.currentPage, self.pageSize, self.order, self.sort);
+                        getAut(_this.currentPage, _this.pageSize, _this.order, _this.sort);
                     } else {
                         // alert(data.respMsg)
                         alert(data.respMsg)
@@ -181,7 +197,7 @@ var app = new Vue({
         },
         //修改测试系统
         update: function() {
-            var self=this;
+            var _this=this;
             var id=$('#updateForm input[name="id"]').val(),
                 code=$('#updateForm input[name="code"]').val(),
                 nameMedium=$('#updateForm input[name="nameMedium"]').val(),
@@ -201,7 +217,7 @@ var app = new Vue({
                 success: function(data) {
                    if (data.respCode==0000) {
                         $('#successModal').modal();
-                        getAut(self.currentPage, self.pageSize, self.order, self.sort);
+                        getAut(_this.currentPage, _this.pageSize, _this.order, _this.sort);
                     } else {
                         alert(data.respMsg)
                     }

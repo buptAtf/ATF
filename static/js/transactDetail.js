@@ -14,6 +14,8 @@ var app = new Vue({
             eleName: '',
             UILinked: '',
             eleParent: '',
+            checkUinodes:[],//基础脚本界面 用于生成选中元素的顺序
+            checkFlag: [],//基础脚本界面 标志 用与判断是否按照选中顺序排序  
             eleLinked: '',
             failMSG: '操作失败啦。糟糕的是没有返回信息，难道是ajax请求失败了',
             mainPropTr: '<tr><td><input type="checkbox" name="mainProp"/></td><td contenteditable="true"></td><td contenteditable="true"></td></tr>',
@@ -86,7 +88,28 @@ var app = new Vue({
             },
             zTreeSettings2: {
                 uiAndElement: {
-                    callback: {},
+                    callback: {
+                        onCheck: function (event, treeId, treeNode, clickFlag) {
+                            var _this = app; 
+                            console.log(treeNode );
+                            console.log(treeId );
+                            if(!treeNode.parentTId){
+                                if(!_this.checkFlag){
+                                    _this.checkFlag.push(treeNode.id);
+                                }
+                                else{
+                                    let index = _this.checkFlag.indexOf(treeNode.id)
+                                    if(index == -1){
+                                        _this.checkFlag.push(treeNode.id);
+                                    }
+                                    else{
+                                        _this.checkFlag.splice(index, 1); 
+                                    }
+                                }
+                            }
+                            _this.checkUinodes.push(treeNode)
+                        },
+                    },
                     data: {
                         key: {
                             children: 'children',
@@ -102,7 +125,8 @@ var app = new Vue({
                     }
                 },
                 functions: {
-                    callback: {},
+                    callback: {
+                    },
                     data: {
                         key: {
                             name: "name",
@@ -2529,8 +2553,13 @@ var app = new Vue({
             _this.scriptIsChanged = true
             var uiTree = $.fn.zTree.getZTreeObj("ui-element-ul2");
             var functionTree = $.fn.zTree.getZTreeObj("functions-ul2");
-            var uiNodes = uiTree ? uiTree.getCheckedNodes(true) : [];
-
+            var uiNodes ;
+            if(_this.checkFlag){//如果checkFlag不为空 则奇数次点击UI 则说明不按点击顺序 使用默认顺序
+                uiNodes = _this.checkUinodes;
+            }
+            else{
+                uiNodes = uiTree ? uiTree.getCheckedNodes(true) : [];
+            }
             var functionNodes = functionTree ? functionTree.getCheckedNodes(true) : []
             for (var node of uiNodes) {
                 if (node.isParent) {
@@ -2544,20 +2573,34 @@ var app = new Vue({
                     classType: node.classType
                 }
                 newRow.functions = []
+                _this.operationRows.push(newRow);
                 ajax2({
                     url: address3 + 'aut/selectMethod',
                     data: JSON.stringify({ id: _this.autId, classname: newRow.operation.classType }),
                     contentType: 'application/json',
                     type: 'post',
                     dataType: 'json',
-                    success: function (data, statusText) {
+                    success: function (data) {
                         if (data.respCode === '0000' && data.omMethodRespDTOList) {
                             var { functions, parameterlist } = _this.setFunctionAndParameter(data.omMethodRespDTOList);
-                            newRow.functions = functions;
-                            newRow.selectedFunc = functions.length ? functions[0].name : '';
-                            newRow.parameters = parameterlist;
-                            _this.operationRows.push(newRow);
+                            function getNewRow(newR, objIndex, objs){
+                                return newR.operation.element == newRow.operation.element;
+                            }
+                            _this.operationRows[_this.operationRows.findIndex(getNewRow)].functions = functions;
+                            _this.operationRows[_this.operationRows.findIndex(getNewRow)].selectedFunc = functions.length ? functions[0].name : '';
+                            _this.operationRows[_this.operationRows.findIndex(getNewRow)].parameters = parameterlist;
+                            // newRow.functions = functions;
+                            // newRow.selectedFunc = functions.length ? functions[0].name : '';
+                            // newRow.parameters = parameterlist;
+                            // _this.operationRows.find(function (x) {
+                            //     return x.element == newRow.element
+                            // })
+                            // _this.operationRows.push(newRow);
+
                         } else {
+                            _this.operationRows.splice(_this.operationRows.findIndex(function (x) {
+                                return x.element == newRow.element
+                            }),1)
                             Vac.alert('查询方法出错！');
                         }
                     }
