@@ -231,11 +231,12 @@ var vBody = new Vue({
 				}),
 				success: function(data) {
 					if (data.respCode=="0000") {
-						_this.runners=data.runners;
-						if(data.runners.length==0)
-							Vac.alert('查询不到执行机');
-						else
-							_this.runner=data.runners[0].identifiableName;
+						Vac.alert(data.respMsg);
+						// _this.runners=data.runners;
+						// if(data.runners.length==0)
+						// 	Vac.alert('查询不到执行机');
+						// else
+						// 	_this.runner=data.runners[0].identifiableName;
 					} else {
 						Vac.alert(data.respMsg);
 						}
