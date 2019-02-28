@@ -184,7 +184,7 @@ var app = new Vue({
                 this.queryByBatchs();
             }
         },
-        queryByRounds: function(){
+        queryByRounds: function(orderType='asc',orderColumns='casecode'){
             var _this = this;
             $.ajax({
                 url: address3 + 'testRecordController/pagedBatchQueryTestRecordByTestRound',
@@ -192,14 +192,14 @@ var app = new Vue({
                 contentType: 'application/json',
                 data: JSON.stringify({
                     'testRound': _this.testround,
-                    'recorderStatus':+_this.recorderstate,  //在字符串类型前加+，将类型转换为整形"123"+5                    
+                    'recorderStatus':+_this.recorderstate,  //在字符串类型前加+，将类型转换为整形"123"+5
                     'casecode': _this.casecode,
                     'sceneId': _this.sceneId,
                     'pageSize': _this.pageSize,     //整形
                     'currentPage': _this.currentPage,   //整形
                     "executeStatus": _this.executeStatus,
-                    // 'orderType': '',
-                    // 'orderColumns': ''
+                    'orderType': orderType,
+                    'orderColumns': orderColumns
                 }),
                 success: function(data){
                     if(data.respMsg=='查询成功'){
@@ -213,20 +213,22 @@ var app = new Vue({
                 },
             });            
         },
-        queryByBatchs: function(){          //通过查询批次的方式进行查询，输入执行轮次和测试计划，进行查询
+        queryByBatchs: function(orderType='asc',orderColumns='casecode'){          //通过查询批次的方式进行查询，输入执行轮次和测试计划，进行查询
             var _this = this;
             $.ajax({
                 url: address3 +'testRecordController/pagedBatchQueryTestRecordByTestPlan',
                 type: 'post',
                 contentType: 'application/json',
-                data:JSON.stringify({                   
+                data:JSON.stringify({
                     'executeRound': +_this.executeRound,
                     'testPlanId': +_this.testPlanId,
                     'casecode': +_this.casecode,
                     'sceneId': +_this.sceneId,
                     'pageSize': _this.pageSize,     //整形
                     'currentPage': _this.currentPage,   //整形
-                    "executeStatus": _this.executeStatus,
+                    'executeStatus': _this.executeStatus,
+                    'orderType': orderType,
+                    'orderColumns': orderColumns
                 }),
                 success: function(data){
                     _this.recordList = data.list;
@@ -262,8 +264,7 @@ var app = new Vue({
                 url: address3 + 'sceneController/pagedBatchQueryScene',
                 type: 'post',
                 contentType:'application/json',
-                data:JSON.stringify({
-                    
+                data:JSON.stringify({                    
                     "currentPage":1,
                     "pageSize":"20",
                     "orderType":"DESC",
@@ -276,6 +277,7 @@ var app = new Vue({
                 }
             })
         }
+
     }
 });
 
@@ -327,7 +329,7 @@ function getRecord(page=1, listnum=10, order='id', sort='asc') {
 //         }
 //     });
 // }
-//获取测试轮次----刘瑞卿修改
+
 function getTestRound(resolve){
     $.ajax({
         url: address3+'testroundController/selectAllTestround',
@@ -407,4 +409,44 @@ function queryRecord() {
             // app.pageSize = app.listnum;
         }
     });
+}
+
+//对执行记录查询中的按列排序
+function myResort(target){  
+    var orderColumns = target.getAttribute("data-order");   //获得需要被排序的列名
+    var old_order = target.getAttribute("date-sort");   //获得原先的顺序，是升序还是降序
+    var span = target.getElementsByTagName("span")[0];  //得到显示图标的DOM元素
+    var mode = app.querymode;                           //判断当前查询模式是按批次查询还是按轮次查询
+    var isFromRecordSheet = sessionStorage.getItem("isFromRecordSheet");    //是否从记录单跳转来的标志位
+
+    switch(old_order){  //检测原先的顺序
+        case "desc":    //如果原先是倒序
+            target.setAttribute("date-sort","asc");         //改变标签为顺序
+            span.setAttribute("class","icon-sort-down");    //修改图标
+            if(isFromRecordSheet){                          //如果是从记录单跳转而来，不是查询得到的，调用的函数不同
+                getRecord(app.currentPage,app.pageSize,"orderColumns","asc");
+            } else{
+                if(mode==="rounds"){                        //如果查询方式是按轮次查询
+                    app.queryByRounds("asc",orderColumns);  
+                } else if(mode==="batchs"){                 //如果调用方式是按批次查询
+                    app.queryByBatchs("asc",orderColumns);
+                }
+            }
+            break;
+        case "asc":     //如果原先是顺序
+            target.setAttribute("date-sort","desc");        //修改标签为倒序
+            span.setAttribute("class","icon-sort-up");      //修改图标显示
+            if(isFromRecordSheet){
+                getRecord(app.currentPage,app.pageSize,orderColumns,"desc");
+            } else{
+                if(mode==="rounds"){
+                    app.queryByRounds("desc",orderColumns);
+                } else if(mode==="batchs"){
+                    app.queryByBatchs("desc",orderColumns);
+                }
+            }
+            break;
+        default:
+            break;
+    }
 }

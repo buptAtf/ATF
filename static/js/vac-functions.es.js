@@ -45,7 +45,7 @@ function resort(target){
         }
     }
     if(target.getAttribute("data-sort") === "desc"){
-         console.log(target.getAttribute("data-sort"));
+        console.log(target.getAttribute("data-sort"));
         sendData.sort = "asc";
         target.getElementsByTagName("span")[0].setAttribute("class","icon-sort-up")
         target.setAttribute("data-sort", "asc");

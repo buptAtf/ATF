@@ -178,6 +178,7 @@ var app = new Vue({
             sessionStorage.setItem("batchId", id);
             sessionStorage.setItem("batchShow", true);
             sessionStorage.setItem("testPlanId", testPlanId);
+            sessionStorage.setItem("isFromRecordSheet",true);     //判断是不是从批量执行页面跳转过去
             location.href = "testRecord.html";
         },
         //传递当前页选中的场景id到场景管理页面
