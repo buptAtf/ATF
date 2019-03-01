@@ -53,12 +53,12 @@ var app = new Vue({
         });
         var p = Promise.all([p1, p2]);
         p.then(() => {
-            getRecord(ts.currentPage, ts.pageSize, 'id', 'asc');
+            getRecord(ts.currentPage, ts.pageSize, 'casecode', 'asc');
         });
         // getTestPhase();
         // getTestRound();
         getScene();
-        getRecord(ts.currentPage, ts.pageSize, 'id', 'asc');
+        getRecord(ts.currentPage, ts.pageSize, 'casecode', 'asc');
         // setTimeout(getRecord(), 500);
         changeListNum();
         this.queryTestPlan();
@@ -177,7 +177,8 @@ var app = new Vue({
             $('#updateForm input[name="abstractarchitecture_name"]').val(selectedInput.parent().next().next().next().html());
             $('#updateForm textarea[name="aut_desc"]').val(selectedInput.parent().next().next().next().next().html());
         },
-        getRecordByClick: function(mode){      
+        getRecordByClick: function(mode){
+            sessionStorage.setItem("isFromRecordSheet",false);  //点击查询后，就把从记录单转过来的标志位删掉
             if(mode=='rounds'){
                 this.queryByRounds();
             } else if(mode=='batchs'){
@@ -423,20 +424,23 @@ function myResort(target){
         case "desc":    //如果原先是倒序
             target.setAttribute("date-sort","asc");         //改变标签为顺序
             span.setAttribute("class","icon-sort-down");    //修改图标
-            if(isFromRecordSheet){                          //如果是从记录单跳转而来，不是查询得到的，调用的函数不同
-                getRecord(app.currentPage,app.pageSize,"orderColumns","asc");
+            if(isFromRecordSheet=="true"){                          //如果是从记录单跳转而来，不是查询得到的，调用的函数不同
+                getRecord(app.currentPage,app.pageSize,orderColumns,"asc");
+                console.log("我执行的是查记录单缓存的排序");
             } else{
                 if(mode==="rounds"){                        //如果查询方式是按轮次查询
                     app.queryByRounds("asc",orderColumns);  
+                    console.log("我执行的是查轮次的排序");
                 } else if(mode==="batchs"){                 //如果调用方式是按批次查询
                     app.queryByBatchs("asc",orderColumns);
+                    console.log("我执行的是查批次的排序");
                 }
             }
             break;
         case "asc":     //如果原先是顺序
             target.setAttribute("date-sort","desc");        //修改标签为倒序
             span.setAttribute("class","icon-sort-up");      //修改图标显示
-            if(isFromRecordSheet){
+            if(isFromRecordSheet=="true"){
                 getRecord(app.currentPage,app.pageSize,orderColumns,"desc");
             } else{
                 if(mode==="rounds"){
