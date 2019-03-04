@@ -2563,6 +2563,7 @@ var app = new Vue({
                 uiNodes = uiTree ? uiTree.getCheckedNodes(true) : [];
             }
             var functionNodes = functionTree ? functionTree.getCheckedNodes(true) : []
+            var l=_this.operationRows.length;
             for (var node of uiNodes) {
                 if (node.isParent) {
                     continue;
@@ -2585,8 +2586,11 @@ var app = new Vue({
                     success: function (data) {
                         if (data.respCode === '0000' && data.omMethodRespDTOList) {
                             var { functions, parameterlist } = _this.setFunctionAndParameter(data.omMethodRespDTOList);
+                            console.log(l)
+                            console.log(_this.operationRows)
+                            
                             function getNewRow(newR, objIndex, objs){
-                                return newR.operation.element == newRow.operation.element;
+                                return newR.operation.element == newRow.operation.element&&objIndex>l-1;
                             }
                             _this.operationRows[_this.operationRows.findIndex(getNewRow)].functions = functions;
                             _this.operationRows[_this.operationRows.findIndex(getNewRow)].selectedFunc = functions.length ? functions[0].name : '';
