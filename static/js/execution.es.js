@@ -318,6 +318,7 @@ var app = new Vue({
         creatTimeInit: function(){      //初始化查询所需要的如期段
             var _this = this;
             var today = new Date();                             //得到今天的日期值
+            var yestday = new Date(today - 24*3600*1000);       //得到昨天的日期值
             var lastweek = new Date(today - 7*24*3600*1000);    //得到上周的日期值
             var lastmonth = new Date();
             var retDate=[];                                 //存储返回的日期值，0-开始日期，1-结束日期
@@ -327,7 +328,7 @@ var app = new Vue({
                 retDate[0] = '1990-1-1';
                 retDate[1] = ''+ today.getFullYear()+'-'+(today.getMonth()+1)+'-'+(today.getDate());
             } else if(_this.period_flag==="1"){ //一天内
-                retDate[0] = ''+ today.getFullYear()+'-'+(today.getMonth()+1)+'-'+(today.getDate()-1);
+                retDate[0] = ''+ yestday.getFullYear()+'-'+(yestday.getMonth()+1)+'-'+yestday.getDate();
                 retDate[1] = ''+ today.getFullYear()+'-'+(today.getMonth()+1)+'-'+(today.getDate());
                 _this.creatTimeStart = retDate[0];
                 _this.creatTimeEnd =retDate[1];
