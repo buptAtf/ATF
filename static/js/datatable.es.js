@@ -3,48 +3,49 @@
 var tooltipwindow;
 var vac_conditionList = null;
 var autId = null;
-function viewScriptHandler (event,caseCompositeType) {
+function viewScriptHandler (event,caseCompositeType) {//查看脚本按钮的函数
 	var testcaseId = event.target.getAttribute('data-id');
 	// var data = { testcaseId
 	// };
 	// window.open('case-operation.html?activeName=view-script&testcaseId='+testcaseId);
 	// view.viewScriptTestcaseId  = testcaseId;
-	view.getData(testcaseId,caseCompositeType);
+	view.getData(testcaseId,caseCompositeType);//查看脚本
 	event.stopPropagation();
 }
-var view = new Vue({
+var view = new Vue({//与查看脚本的模态框相绑定
 	el: '#script-modal',
 	data: {
 		viewScriptTestcaseId: '326',
 		tableData: []
 	},
 	methods: {
-		getData: function(testcaseId,caseCompositeType) { 
+		getData: function(testcaseId,caseCompositeType) {//查看脚本
 			var _this = this;
 			//var data = {"testcaseId":testcaseId,"caseCompositeType":1};
 			$('#view-script').modal('show');
-      $.ajax({
-        url: address3 + 'dataCenter/getTestcaseScript',
-        data: JSON.stringify({
-			"testcaseId":testcaseId,
-			"caseCompositeType":caseCompositeType
-		}),
-        type: 'post',
-		contentType:"application/json",
-        success: function (data) {
-          if (!data) {
-            Vac.alert(data.msg || '查询失败');
-            return;
-          }	
-			_this.tableData = data.scriptList;
-        },
-        error: function(XMLHttpRequest, textStatus, errorThrown) {
-          Vac.alert(`查询出错！\n 错误信息：${textStatus}`);
-        }
-      });
+			$.ajax({
+				url: address3 + 'dataCenter/getTestcaseScript',
+				data: JSON.stringify({
+					"testcaseId":testcaseId,
+					"caseCompositeType":caseCompositeType
+				}),
+				type: 'post',
+				contentType:"application/json",
+				success: function (data) {
+				if (!data) {
+					Vac.alert(data.msg || '查询失败');
+					return;
+				}	
+					_this.tableData = data.scriptList;
+				},
+				error: function(XMLHttpRequest, textStatus, errorThrown) {
+				Vac.alert(`查询出错！\n 错误信息：${textStatus}`);
+				}
+			});
 		}
 	}
 });
+// 查看脚本结束
 
 $(document).ready(function () {
 	$('.3').addClass('open');
@@ -856,6 +857,8 @@ $(document).ready(function () {
 								treeData.push(item);
 							});
 							zTreeObj = $.fn.zTree.init($("#tree-wrapper"), setting, treeData);
+							filterVue.isShow=!filterVue.isShow;
+							filterVue.iconflag=!filterVue.iconflag;
 						},
 
 	                });
