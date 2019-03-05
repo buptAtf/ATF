@@ -2554,7 +2554,7 @@ var app = new Vue({
             var uiTree = $.fn.zTree.getZTreeObj("ui-element-ul2");
             var functionTree = $.fn.zTree.getZTreeObj("functions-ul2");
             var uiNodes ;
-            if(!_this.checkFlag){//如果checkFlag不为空 则奇数次点击UI 则说明不按点击顺序 使用默认顺序
+            if(_this.checkFlag.length == 0){//如果checkFlag不为空 则奇数次点击UI 则说明不按点击顺序 使用默认顺序
                 uiNodes = _this.checkUinodes;
                 _this.checkFlag=[];
                 _this.checkUinodes=[];
@@ -2563,6 +2563,7 @@ var app = new Vue({
                 uiNodes = uiTree ? uiTree.getCheckedNodes(true) : [];
             }
             var functionNodes = functionTree ? functionTree.getCheckedNodes(true) : []
+            var l=_this.operationRows.length;
             for (var node of uiNodes) {
                 if (node.isParent) {
                     continue;
@@ -2585,8 +2586,11 @@ var app = new Vue({
                     success: function (data) {
                         if (data.respCode === '0000' && data.omMethodRespDTOList) {
                             var { functions, parameterlist } = _this.setFunctionAndParameter(data.omMethodRespDTOList);
+                            console.log(l)
+                            console.log(_this.operationRows)
+                            
                             function getNewRow(newR, objIndex, objs){
-                                return newR.operation.element == newRow.operation.element;
+                                return newR.operation.element == newRow.operation.element&&objIndex>l-1;
                             }
                             _this.operationRows[_this.operationRows.findIndex(getNewRow)].functions = functions;
                             _this.operationRows[_this.operationRows.findIndex(getNewRow)].selectedFunc = functions.length ? functions[0].name : '';
