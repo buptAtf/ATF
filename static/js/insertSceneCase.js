@@ -28,7 +28,7 @@ var app = new Vue({
         totalPage: 1, //总页数
         listnum: 10, //页面大小
         order: 'id',
-        sort: 'desc',
+        sort: 'asc',
         isPageNumberError: false,
         checkboxModel: [],
         checked: "",
