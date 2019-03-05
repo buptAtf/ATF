@@ -1281,7 +1281,6 @@ function erji() {
 
 //三级 模板脚本
 function sanji() {
-
     var val = $('select[name="autid"]').parent().parent().next().find('select[name="transid"]').val();
 
     $.ajax({
@@ -1297,9 +1296,30 @@ function sanji() {
                 str += " <option value='" + lie[i].id + "'>" + lie[i].name + "</option> ";
             }
             $('select[name="autid"]').parent().parent().next().find('select[name="scriptmodeflag"]').html(str);
-
-
         }
-
     });
+}
+
+function myResort(target){  
+    
+    var orderColumns = target.getAttribute("data-order");   //获得需要被排序的列名
+    var old_order = target.getAttribute("data-sort");   //获得原先的顺序，是升序还是降序
+    var span = target.getElementsByTagName("span")[0];  //得到显示图标的DOM元素
+    var downSorter = (firstEl , secondEl) => ( secondEl[orderColumns]- firstEl[orderColumns]);
+    var upSorter = (firstEl , secondEl) => ( firstEl[orderColumns] - secondEl[orderColumns]);
+
+    switch(old_order){
+        case "desc":
+            target.setAttribute("data-sort","asc");
+            span.setAttribute("class","icon-sort-down");
+            app.caseList.sort(downSorter);
+            break;
+        case "asc":
+            target.setAttribute("data-sort","desc");
+            span.setAttribute("class","icon-sort-up");
+            app.caseList.sort(upSorter);
+            break;
+        default:
+            break;
+    }
 }

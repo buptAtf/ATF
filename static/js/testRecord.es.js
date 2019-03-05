@@ -416,7 +416,7 @@ function queryRecord() {
 function myResort(target){  
     
     var orderColumns = target.getAttribute("data-order");   //获得需要被排序的列名
-    var old_order = target.getAttribute("date-sort");   //获得原先的顺序，是升序还是降序
+    var old_order = target.getAttribute("data-sort");   //获得原先的顺序，是升序还是降序
     var span = target.getElementsByTagName("span")[0];  //得到显示图标的DOM元素
     var downSorter = (firstEl , secondEl) => ( secondEl[orderColumns]- firstEl[orderColumns]);
     var upSorter = (firstEl , secondEl) => ( firstEl[orderColumns] - secondEl[orderColumns]);
