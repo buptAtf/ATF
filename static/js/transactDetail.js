@@ -2554,7 +2554,7 @@ var app = new Vue({
             var uiTree = $.fn.zTree.getZTreeObj("ui-element-ul2");
             var functionTree = $.fn.zTree.getZTreeObj("functions-ul2");
             var uiNodes ;
-            if(!_this.checkFlag){//如果checkFlag不为空 则奇数次点击UI 则说明不按点击顺序 使用默认顺序
+            if(_this.checkFlag.length == 0){//如果checkFlag不为空 则奇数次点击UI 则说明不按点击顺序 使用默认顺序
                 uiNodes = _this.checkUinodes;
                 _this.checkFlag=[];
                 _this.checkUinodes=[];
