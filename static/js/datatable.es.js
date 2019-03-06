@@ -57,7 +57,6 @@ $(document).ready(function () {
 	// document.querySelector('#submenu').children[1].style.height = submenuHeight / 2 + 'px';
 	var transid = '',
 		autId = ''
-		// scriptId = '';
 	tooltipwindow = new Vue({
 		el: '#tooltipwindow',
 		data: {
@@ -866,7 +865,7 @@ $(document).ready(function () {
 			}
 		});
 
-		var editDataVue = new Vue({
+		var editDataVue = new Vue({//UI脚本右击编辑数据的模态框
 			el: '#editData',
 			data: {
 				dataType: 4,
@@ -1421,7 +1420,7 @@ $(document).ready(function () {
 			},
 		});
 
-		var modalVue = new Vue({
+		var modalVue = new Vue({//操作项前编辑符号，修改当前元素
 			el: '#ui-ele-modal',
 			data: {},
 			methods: {
@@ -1494,34 +1493,22 @@ $(document).ready(function () {
 				},
 				setFunctionAndParameter: function (data) {
 					// set functino for ui and element 
-					var operationRows = editDataVue.operationRows;
 					var _this = this;
 					var functions = [];
 					var  parameterlist = [];
 					try {
-					  if (data.ommethod) {
-						for (let m of data.ommethod) {
-						  var o = {};
-						  o.name = m.name;
-						  o.parameterlist = m.arguments;
-						  functions.push(o);
+						for (let m of data) {
+							let o = {};
+							o.name = m.name;
+							o.parameterlist = m.arguments || "[]";
+							functions.push(o);
 						}
-					  }
-					  if (data.arcmethod) {
-						for (let m of data.acrmethod) {
-						  var o = {};
-						  o.name = m.methodname;
-						  o.parameterlist = m.arguments;
-						  functions.push(o);
+						if (functions.length) {
+							let paras = JSON.parse(`${functions[0].parameterlist}`);
+							for (let para of paras) {
+								parameterlist.push({ Name: para.name, Value: "" });
+							}
 						}
-					  }
-					 
-					  if (functions.length) {
-						let paras = JSON.parse(`${functions[0].parameterlist}`);
-						for (let para of paras) {
-							parameterlist.push({ Name: para.name, Value: "" });
-						}
-					  }
 					  return { functions, parameterlist };
 					} catch (e) {
 					  console.error(e);
@@ -1529,7 +1516,7 @@ $(document).ready(function () {
 				}
 			}
 		})
-		var modalVue2 = new Vue({
+		var modalVue2 = new Vue({//添加多项，跳出的模态框
 			el: '#ui-ele-modal2',
 			data: {},
 			methods: {
@@ -1559,9 +1546,11 @@ $(document).ready(function () {
 							success: function (data, statusText) {
 								if (data.respCode === '0000' && data.omMethodRespDTOList) {
 									var { functions, parameterlist } = modalVue.setFunctionAndParameter(data.omMethodRespDTOList);
+									console.log(functions)
 									newRow.functions = functions;
 									newRow.selectedFunc = functions.length ? functions[0].name : '';
 									newRow.parameters = parameterlist;
+									console.log()
 									operationRows.push(newRow);
 								} else {
 									Vac.alert(data.respMsg);
@@ -1600,7 +1589,7 @@ $(document).ready(function () {
 				}
 			}
 		})
-		var insertDivVue = new Vue({
+		var insertDivVue = new Vue({//编辑数据项 表达式 插入数据 模态框
 			el: '#insertDiv',
 			data: {
 				isShow: false,
@@ -1665,7 +1654,7 @@ $(document).ready(function () {
 				},
 			}
 		});
-		var importModal = new Vue({
+		var importModal = new Vue({ //模板导入
 			el: '#importModal',
 			data: {
 				failMSG:"",
@@ -2201,7 +2190,7 @@ $(document).ready(function () {
 			}
 		});
 
-		// handsontable init
+		// handsontable init 创建handsontable
 		var tableContainer = document.getElementById("handsontable");
 		var handsontable = null;
 		var dataSource = null;
@@ -2249,7 +2238,7 @@ $(document).ready(function () {
 					},
 					hidden: function () {
 						// [startRow, startCol, endRow, endCol]
-						var selection = handsontable.getSelected();
+						var selection = handsontable.getSelected();//Returns indexes of the selected cells as an array of arrays [[startRow, startCol, endRow, endCol],...].
 						if (selection && selection[1] >= 7 && selection[0] == selection[2] && selection[1] == selection[3]) {
 							return false;
 						}
@@ -2263,6 +2252,7 @@ $(document).ready(function () {
 					hidden: function () {
 						// [startRow, startCol, endRow, endCol]
 						var selection = handsontable.getSelected();
+						console.log(selection)
 						if (selection && selection[1] >= 7 && selection[0] == selection[2] && selection[1] == selection[3]) {
 							return false;
 						}
@@ -2280,7 +2270,20 @@ $(document).ready(function () {
 				// 	callback: replaceCallback,
 				// 	disabled: function(){return false;},
 				// 	hidden: function(){return false;}
-				// },
+				// },				
+				"modify": {
+					name: '修改',
+					callback: modifyCallback,
+					disabled: function () { return false },
+					hidden: function () {
+						// [startRow, startCol, endRow, endCol]
+						var selection = handsontable.getSelected();
+						if (selection && selection[1] < 7 && selection[0] == selection[2] && selection[1] == selection[3]) {
+							return false;
+						}
+						return true;
+					}
+				},
 				"make_read_only": {
 					name: '编辑数据',
 					callback: editCellData,
@@ -2897,6 +2900,11 @@ $(document).ready(function () {
 		function replaceCallback(key, selection) {
 			searchBoxVue.show(true);
 		}
+		// //跳转修改函数
+		function modifyCallback(key, selection) {
+			$('#detailModal').modal('show')
+		}
+		
 		// //搜索功能函数 end
 		//编辑单元格数据
 		function editCellData(key, selection) {

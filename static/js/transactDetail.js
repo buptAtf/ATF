@@ -91,8 +91,6 @@ var app = new Vue({
                     callback: {
                         onCheck: function (event, treeId, treeNode, clickFlag) {
                             var _this = app; 
-                            console.log(treeNode );
-                            console.log(treeId );
                             if(!treeNode.parentTId){
                                 if(!_this.checkFlag){
                                     _this.checkFlag.push(treeNode.id);
@@ -188,13 +186,10 @@ var app = new Vue({
                     beforeDrag: _this.zTreeBeforeDrag,
                     //点击时的回调函数
                     onClick: function (event, treeId, treeNode, clickFlag) {
-                        console.log(treeNode)
                         var transid = !_this.componentMode ? _this.transactId : _this.transid;
                         if (treeNode.level == 0) { //选择的是UI
                             $(':input', '#UIForm').val('');
                             _this.getObjTree();
-                            console.log(treeNode.name);
-                            console.log(_this.replacemess(treeNode.name));
                             var namestr = _this.replacemess(treeNode.name);
                             _this.UIName = namestr;
                             _this.UITitle = namestr;
@@ -251,7 +246,6 @@ var app = new Vue({
                                     "elementId": _this.elementId
                                 }),
                                 success: function (data) {
-                                    console.log(data);
                                     var classtype = data.element.classType;
                                     $('#classtypeSelect').val(classtype);
                                     var relateParentObjectId = data.element.relateParentIdentifyObjectId;
@@ -377,7 +371,6 @@ var app = new Vue({
                     // 禁止拖拽
                     beforeDrag: _this.zTreeBeforeDrag,
                     onClick: function (event, treeId, treeNode, clickFlag) {
-                        // console.log(treeNode)
                         _this.UILinked = treeNode.objectName;
                     },
 
@@ -415,7 +408,6 @@ var app = new Vue({
                     // 禁止拖拽
                     beforeDrag: _this.zTreeBeforeDrag,
                     onClick: function (event, treeId, treeNode, clickFlag) {
-                        console.log(treeNode)
                         $('#obj').css('display', 'block');
                         $('#objblank').css('display', 'none');
                         $('objclasstypeSelect').val('');
@@ -432,7 +424,6 @@ var app = new Vue({
                                 'objectId': _this.objId
                             }),
                             success: function (data) {
-                                // console.log(data);
                                 $('#objclasstypeSelect').val('');
                                 var classtype = data.object.classType;
                                 $('#objclasstypeSelect').val(classtype);
@@ -614,8 +605,6 @@ var app = new Vue({
                             $('#transactSelect').html(str);
                             _this.transactId = sessionStorage.getItem("transactId");
                             $("#transactSelect").val(_this.transactId);
-                            console.log($('#autSelect').find("option:selected").attr('value') + "111111111111");
-                            console.log($('#transactSelect').val() + "222222222222222");
 
                             // 获取ui和element
                             $.ajax({
@@ -624,7 +613,6 @@ var app = new Vue({
                                 contentType: 'application/json',
                                 data: JSON.stringify({ "transactId": _this.transactId }),
                                 success: function (data) {
-                                    console.log(data)
                                     if (data !== null) {
                                         var nodes = [];
                                         var uis = data.uis;
@@ -644,10 +632,8 @@ var app = new Vue({
                                             }
                                             nodes.push(uiNode);
                                         }
-                                        // console.log(nodes)
                                         $.fn.zTree.init($("#elementtree"), _this.setting1, nodes);
                                         _this.elementRepositoryId = data.elementRepositoryId;
-                                        console.log(_this.elementRepositoryId, data.elementRepositoryId);
                                         fuzzySearch('elementtree', '#keyword', null, true);
                                     }
                                 }
@@ -689,7 +675,6 @@ var app = new Vue({
         //详情tab页的刷新
         detailTabFresh: function () {
             var id = $('#transactSelect').val() != null ? $('#transactSelect').val() : sessionStorage.getItem("transactId");
-            console.log(id + "====" + $('#transactSelect').val());
             $.ajax({
                 async: false,
                 url: address3 + 'transactController/querySingleTransact',
@@ -721,7 +706,6 @@ var app = new Vue({
                 data: JSON.stringify({ 'id': _this.autId }),
                 type: "POST",
                 success: function (data) {
-                    // console.log(data)
                     if (data.respCode == "0000") {
                         if (data.arcClassRespDTOList == null)
                         _this.classtypeList = data.omClassRespDTOList;
@@ -932,7 +916,6 @@ var app = new Vue({
                 object.parentObjectId = parentid;
                 objects.push(object);
             }
-            console.log(objects);
             $.ajax({
                 url: address2 + '/objectRepository/batchAddOrModifyObject',
                 type: 'post',
@@ -1220,10 +1203,8 @@ var app = new Vue({
                     }
                 ];
                 element.mainProperties = mainProperties;
-                console.log(element);
                 elements.push(element);
             });
-            console.log(elements);
             var treeObj = $.fn.zTree.getZTreeObj("elementtree"),
                 nodes = treeObj.getSelectedNodes(),
                 selectedUIName = nodes[0].name,
@@ -1269,7 +1250,6 @@ var app = new Vue({
                     'objectId': id
                 }),
                 success: function (data) {
-                    console.log(data);
                     $('#objclasstypeSelect').val(data.object.classType);
                     //主属性
                     var mainList = data.object.mainProperties;
@@ -1365,12 +1345,10 @@ var app = new Vue({
             curTbody.children().filter('.text-center').remove();
             var elepropTr = _this.elepropTr,
                 classtype = _this.classtypeList;
-            console.log(elepropTr);
             for (var i = 0; i < classtype.length; i++) {
                 elepropTr = elepropTr + "<option value=\"" + classtype[i].name + "\">" + classtype[i].name + "</option>";
             }
             elepropTr = elepropTr + '</select></td><td contenteditable="true"> </td><td contenteditable="true"> </td></tr>';
-            console.log(elepropTr);
             curTbody.append(elepropTr);
 
         },
@@ -1574,7 +1552,6 @@ var app = new Vue({
                     }
                 }),
                 success: function (data) {
-                    // console.log(data);
                     if (data.respCode == 0000) {
                         $('#successModalEle').modal();
                         _this.getElementTree(selectedUIName);
@@ -1672,9 +1649,7 @@ var app = new Vue({
                         _this.elementRepositoryId = data.elementRepositoryId;
                         if (uiName != null) {
                             var zTree = $.fn.zTree.getZTreeObj("elementtree");
-                            console.log(zTree);
                             var pNode = zTree.getNodeByParam('name', uiName, null);
-                            console.log(pNode);
                             zTree.expandNode(pNode, true, true, true, false);
                         }
                     }
@@ -1710,7 +1685,6 @@ var app = new Vue({
                 success: function (data) {
                     if (data !== null) {
                         var objects = data.objects;
-                        console.log(objects);
                         $.fn.zTree.init($("#objectTree"), _this.setting3, objects);
                         _this.repositoryId = data.repositoryId;
                         $.fn.zTree.init($("#UILinkedTree"), _this.setting2, objects);
@@ -2154,7 +2128,6 @@ var app = new Vue({
             _this.scriptIsChanged = true
         },
         moveDown: function (event) {
-            console.log(JSON.parse(`[{"Name":"输入值1","Type":"","Desc":"","ParameterizeColumn":"{element}"},{"Name":"输入值2","Type":"","Desc":"","ParameterizeColumn":"{element}"}]`))
             var _this = this;
             var operationRows = this.operationRows;
             var trs = $(event.target).closest('.operation-wrapper').find(`input[type='checkbox']:checked`).closest('tr')
@@ -2175,7 +2148,6 @@ var app = new Vue({
                         var _this = this;
                         var target = ui.item[0].rowIndex - 1;
                         var start = ui.item[0].getAttribute('data-index');
-                        // console.log(`target: ${target} -- start: ${start}--end: ${end}`)
                         if (target < 0) {
                             _this.operationRows.unshift(_this.operationRows.splice(start, 1)[0])
                         } else {
@@ -2201,7 +2173,6 @@ var app = new Vue({
             for (let param of parameters) {
                 newRow.parameters.push({ Name: param.name, Value: '' })
             }
-            // console.log(this.operationRows)
         },
         // 遍历表格，保存脚本内容
         generateScriptString: function (arr) {
@@ -2534,7 +2505,6 @@ var app = new Vue({
                     o.parameterlist = m.arguments || "[]";
                     functions.push(o);
                 }
-                console.log(data);
                 if (functions.length) {
                     let paras = JSON.parse(`${functions[0].parameterlist}`);
                     for (let para of paras) {
@@ -2586,9 +2556,6 @@ var app = new Vue({
                     success: function (data) {
                         if (data.respCode === '0000' && data.omMethodRespDTOList) {
                             var { functions, parameterlist } = _this.setFunctionAndParameter(data.omMethodRespDTOList);
-                            console.log(l)
-                            console.log(_this.operationRows)
-                            
                             function getNewRow(newR, objIndex, objs){
                                 return newR.operation.element == newRow.operation.element&&objIndex>l-1;
                             }
