@@ -414,43 +414,64 @@ function queryRecord() {
 
 //对执行记录查询中的按列排序
 function myResort(target){  
+    
     var orderColumns = target.getAttribute("data-order");   //获得需要被排序的列名
-    var old_order = target.getAttribute("date-sort");   //获得原先的顺序，是升序还是降序
+    var old_order = target.getAttribute("data-sort");   //获得原先的顺序，是升序还是降序
     var span = target.getElementsByTagName("span")[0];  //得到显示图标的DOM元素
-    var mode = app.querymode;                           //判断当前查询模式是按批次查询还是按轮次查询
-    var isFromRecordSheet = sessionStorage.getItem("isFromRecordSheet");    //是否从记录单跳转来的标志位
+    var downSorter = (firstEl , secondEl) => ( secondEl[orderColumns]- firstEl[orderColumns]);
+    var upSorter = (firstEl , secondEl) => ( firstEl[orderColumns] - secondEl[orderColumns]);
 
-    switch(old_order){  //检测原先的顺序
-        case "desc":    //如果原先是倒序
-            target.setAttribute("date-sort","asc");         //改变标签为顺序
-            span.setAttribute("class","icon-sort-down");    //修改图标
-            if(isFromRecordSheet=="true"){                          //如果是从记录单跳转而来，不是查询得到的，调用的函数不同
-                getRecord(app.currentPage,app.pageSize,orderColumns,"asc");
-                console.log("我执行的是查记录单缓存的排序");
-            } else{
-                if(mode==="rounds"){                        //如果查询方式是按轮次查询
-                    app.queryByRounds("asc",orderColumns);  
-                    console.log("我执行的是查轮次的排序");
-                } else if(mode==="batchs"){                 //如果调用方式是按批次查询
-                    app.queryByBatchs("asc",orderColumns);
-                    console.log("我执行的是查批次的排序");
-                }
-            }
+    switch(old_order){
+        case "desc":
+            target.setAttribute("date-sort","asc");
+            span.setAttribute("class","icon-sort-down");
+            app.recordList.sort(upSorter);
             break;
-        case "asc":     //如果原先是顺序
-            target.setAttribute("date-sort","desc");        //修改标签为倒序
-            span.setAttribute("class","icon-sort-up");      //修改图标显示
-            if(isFromRecordSheet=="true"){
-                getRecord(app.currentPage,app.pageSize,orderColumns,"desc");
-            } else{
-                if(mode==="rounds"){
-                    app.queryByRounds("desc",orderColumns);
-                } else if(mode==="batchs"){
-                    app.queryByBatchs("desc",orderColumns);
-                }
-            }
+        case "asc":
+            target.setAttribute("date-sort","desc");
+            span.setAttribute("class","icon-sort-up");
+            app.recordList.sort(downSorter);
             break;
         default:
             break;
     }
+    // var orderColumns = target.getAttribute("data-order");   //获得需要被排序的列名
+    // var old_order = target.getAttribute("date-sort");   //获得原先的顺序，是升序还是降序
+    // var span = target.getElementsByTagName("span")[0];  //得到显示图标的DOM元素
+    // var mode = app.querymode;                           //判断当前查询模式是按批次查询还是按轮次查询
+    // var isFromRecordSheet = sessionStorage.getItem("isFromRecordSheet");    //是否从记录单跳转来的标志位
+
+    // switch(old_order){  //检测原先的顺序
+    //     case "desc":    //如果原先是倒序
+    //         target.setAttribute("date-sort","asc");         //改变标签为顺序
+    //         span.setAttribute("class","icon-sort-down");    //修改图标
+    //         if(isFromRecordSheet=="true"){                          //如果是从记录单跳转而来，不是查询得到的，调用的函数不同
+    //             getRecord(app.currentPage,app.pageSize,orderColumns,"asc");
+    //             console.log("我执行的是查记录单缓存的排序");
+    //         } else{
+    //             if(mode==="rounds"){                        //如果查询方式是按轮次查询
+    //                 app.queryByRounds("asc",orderColumns);  
+    //                 console.log("我执行的是查轮次的排序");
+    //             } else if(mode==="batchs"){                 //如果调用方式是按批次查询
+    //                 app.queryByBatchs("asc",orderColumns);
+    //                 console.log("我执行的是查批次的排序");
+    //             }
+    //         }
+    //         break;
+    //     case "asc":     //如果原先是顺序
+    //         target.setAttribute("date-sort","desc");        //修改标签为倒序
+    //         span.setAttribute("class","icon-sort-up");      //修改图标显示
+    //         if(isFromRecordSheet=="true"){
+    //             getRecord(app.currentPage,app.pageSize,orderColumns,"desc");
+    //         } else{
+    //             if(mode==="rounds"){
+    //                 app.queryByRounds("desc",orderColumns);
+    //             } else if(mode==="batchs"){
+    //                 app.queryByBatchs("desc",orderColumns);
+    //             }
+    //         }
+    //         break;
+    //     default:
+    //         break;
+    // }
 }
