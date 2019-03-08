@@ -2372,7 +2372,6 @@ $(document).ready(function () {
 					dataKey.push(value[1]);
 				});
 			}
-
 			return dataKey;
 		};
 		var scriptId = "";
@@ -2382,6 +2381,7 @@ $(document).ready(function () {
 				autId = treeNode.getParentNode().getParentNode().id;
 				transid = treeNode.getParentNode().id;
 				scriptId = treeNode.id;
+				
 				console.log(scriptId);
 				var data = {
 					conditionList: vac_conditionList,
@@ -2441,17 +2441,17 @@ $(document).ready(function () {
 							// handsontable 配置与生成
 							if (handsontable === null) {
 								handsontable = new Handsontable(tableContainer, {
-									data: dataSource,
+									data: dataSource,		//表格数据，一般是二维数组
 									hiddenColumns: {
 										columns: [2, 3],
 										indicators: false
 									},
 									// 配置列表头
 									columns: totalColumnsOptions,
-									colHeaders: colHeadersRenderer,
+									colHeaders: colHeadersRenderer,	//显示列头
 									// colWidths: [50, 90, 90, 90, 90, 90, 90],
 									// stretchH: 'all',
-									rowHeaders: true,
+									rowHeaders: true,	//显示行头
 									cells: function (row, col, prop) {
 										var cellProperties = {};
 										return cellProperties;
@@ -2480,10 +2480,18 @@ $(document).ready(function () {
 												} else {
 													tds[value.col].style.backgroundColor = "#0f0";
 												}
-
 											})
 										}
 										document.querySelectorAll(".handsontable table th")[0].style.display = "none";
+										/*---------2018.3.7完成表头颜色改变的需求----------*/
+										var table = document.getElementById('handsontable');	//找到表格
+										var heads = table.childNodes[2].children[0].children[0].children[0].children[0].children[1].children[0];		//找到表头的节点
+										for(var i=1;i<12;i++){	//一共有11个选项，第一个不能用，从1到12
+											var tableHead = heads.children[i];		//html的结构，在<th>下面还有一层<class>
+											var tableDiv = tableHead.children[0];	//读取到那个class
+											tableDiv.style.background = '#F0F000'	//给背景填色
+										}
+										/*---------2018.3.8-----------*/
 									},
 									afterChange: function (changes, source) {
 										if (changes) {
