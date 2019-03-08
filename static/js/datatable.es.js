@@ -2486,11 +2486,12 @@ $(document).ready(function () {
 										/*---------2018.3.7完成表头颜色改变的需求----------*/
 										var table = document.getElementById('handsontable');	//找到表格
 										var heads = table.childNodes[2].children[0].children[0].children[0].children[0].children[1].children[0];		//找到表头的节点
-										for(var i=1;i<12;i++){	//一共有11个选项，第一个不能用，从1到12
+										for(var i=1;heads.children[i]!=undefined;i++){	//一共有11个选项，第一个不能用，从1到12
 											var tableHead = heads.children[i];		//html的结构，在<th>下面还有一层<class>
 											var tableDiv = tableHead.children[0];	//读取到那个class
 											tableDiv.style.background = '#F0F000'	//给背景填色
 										}
+					
 										/*---------2018.3.8-----------*/
 									},
 									afterChange: function (changes, source) {
