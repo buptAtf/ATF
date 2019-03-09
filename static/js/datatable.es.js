@@ -2370,7 +2370,6 @@ $(document).ready(function () {
 					dataKey.push(value[1]);
 				});
 			}
-
 			return dataKey;
 		};
 		var scriptId = "";
@@ -2380,6 +2379,7 @@ $(document).ready(function () {
 				autId = treeNode.getParentNode().getParentNode().id;
 				transid = treeNode.getParentNode().id;
 				scriptId = treeNode.id;
+				
 				console.log(scriptId);
 				var data = {
 					conditionList: vac_conditionList,
@@ -2442,17 +2442,27 @@ $(document).ready(function () {
 							// handsontable 配置与生成
 							if (handsontable === null) {
 								handsontable = new Handsontable(tableContainer, {
+<<<<<<< HEAD
 									data: dataSource,
 									hiddenColumns: {/*
+=======
+									data: dataSource,		//表格数据，一般是二维数组
+									hiddenColumns: {
+>>>>>>> origin/postDev
 										columns: [2, 3],
 										indicators: false*/
 									},
 									// 配置列表头
 									columns: totalColumnsOptions,
+<<<<<<< HEAD
 									colHeaders: colHeadersRenderer,
 									//colWidths: [50, 90, 0, 90, 90, 90, 90],
+=======
+									colHeaders: colHeadersRenderer,	//显示列头
+									// colWidths: [50, 90, 90, 90, 90, 90, 90],
+>>>>>>> origin/postDev
 									// stretchH: 'all',
-									rowHeaders: true,
+									rowHeaders: true,	//显示行头
 									cells: function (row, col, prop) {
 										var cellProperties = {};
 										return cellProperties;
@@ -2481,10 +2491,19 @@ $(document).ready(function () {
 												} else {
 													tds[value.col].style.backgroundColor = "#0f0";
 												}
-
 											})
 										}
 										document.querySelectorAll(".handsontable table th")[0].style.display = "none";
+										/*---------2018.3.7完成表头颜色改变的需求----------*/
+										var table = document.getElementById('handsontable');	//找到表格
+										var heads = table.childNodes[2].children[0].children[0].children[0].children[0].children[1].children[0];		//找到表头的节点
+										for(var i=1;heads.children[i]!=undefined;i++){	//一共有11个选项，第一个不能用，从1到12
+											var tableHead = heads.children[i];		//html的结构，在<th>下面还有一层<class>
+											var tableDiv = tableHead.children[0];	//读取到那个class
+											tableDiv.style.background = '#F0F000'	//给背景填色
+										}
+					
+										/*---------2018.3.8-----------*/
 									},
 									afterOnCellMouseDown: function (event,coords, TD){
 										if (event.target.nodeName == 'INPUT' && event.target.className == 'header-checker') {
@@ -3029,12 +3048,16 @@ $(document).ready(function () {
 // APIFieldModal Function Start
 
 function APIFieldModalInit(){
+	$('.APIFieldVerificationParaRow').remove();
+	$('.APIFieldExtractionParaRow').remove();
+	APIFieldVerificationParaAdd();
+	APIFieldExtractionParaAdd();
 	$('input[name="APIFieldVerificationParaExp"]').last().change(APIFieldVerificationParaAdd);
 	$('input[name="APIFieldExtractionParaExp"]').last().change(APIFieldExtractionParaAdd);
-	$(".APIFieldExtractionParaRow").hide();
-	$('#APIFieldModal').modal('show');
 	APIFieldModalLoadVerificationData();
 	APIFieldModalLoadExtractionData();
+	$(".APIFieldExtractionParaRow").hide();
+	$('#APIFieldModal').modal('show');
 }
 
 function APIFieldModalLoadVerificationData(){
@@ -3052,8 +3075,34 @@ function APIFieldModalLoadVerificationData(){
             return;
           }	
 			// _this.tableData = data.scriptList;
+			// data = [
+			// 	{
+			// 		"compareChar": "==",
+			// 		"expectValue": "2",
+			// 		"pathExpression": "\\$..totalCount"
+			// 	},
+			// 	{
+			// 		"compareChar": "!=",
+			// 		"expectValue": "3",
+			// 		"pathExpression": "\\$..totalCount"
+			// 	},
+			// 	{
+			// 		"compareChar": "==",
+			// 		"expectValue": "2",
+			// 		"pathExpression": "\\$..totalCount"
+			// 	}
+			// ];
 		  	console.log("Verification Data:");
 			console.log(data);
+
+			for(let i=0; i<data.length; i++){
+				APIFieldVerificationParaAdd();
+				$('.APIFieldVerificationParaRow [name=APIFieldVerificationParaExp]')[i].value = data[i].pathExpression;
+				$('.APIFieldVerificationParaRow [name=APIFieldVerificationParaSel]')[i].value = data[i].compareChar;
+				$('.APIFieldVerificationParaRow [name=APIFieldVerificationParaVal]')[i].value = data[i].expectValue;
+			}
+
+
         },
         error: function(XMLHttpRequest, textStatus, errorThrown) {
           Vac.alert(`查询出错！\n 错误信息：${textStatus}`);
@@ -3076,8 +3125,30 @@ function APIFieldModalLoadExtractionData(){
             return;
           }	
 			// _this.tableData = data.scriptList;
+
+			// data = [
+			// 	{
+			// 		"pathExpression": "\\$..totalCount",
+			// 		"name":"总个数"
+			// 	},
+			// 	{
+			// 		"pathExpression": "\\$..totalCount",
+			// 		"name":"总个数"
+			// 	},
+			// 	{
+			// 		"pathExpression": "\\$..totalCount",
+			// 		"name":"总个数"
+			// 	}
+			// ];
 		  	console.log("Extraction Data:");
 			console.log(data);
+
+			for(let i=0; i<data.length; i++){
+				APIFieldExtractionParaAdd();
+				$('.APIFieldExtractionParaRow [name=APIFieldExtractionParaExp]')[i].value = data[i].pathExpression;
+				$('.APIFieldExtractionParaRow [name=APIFieldExtractionParaName]')[i].value = data[i].name;
+			}
+			$(".APIFieldExtractionParaRow").hide();
         },
         error: function(XMLHttpRequest, textStatus, errorThrown) {
           Vac.alert(`查询出错！\n 错误信息：${textStatus}`);
@@ -3159,13 +3230,33 @@ function APIUpload() {
 				APIFieldVerificationParaVal=$(this).find("input[name=APIFieldVerificationParaVal]").val();
 			if(APIFieldVerificationParaExp!=""){
 				let singleData={};
-				singleData.val=APIFieldVerificationParaExp;
-				singleData.sel=APIFieldVerificationParaSel;
-				singleData.desc=APIFieldVerificationParaVal;
+				singleData.pathExpression=APIFieldVerificationParaExp;
+				singleData.compareChar=APIFieldVerificationParaSel;
+				singleData.expectValue=APIFieldVerificationParaVal;
 				APIFieldVerificationData.push(singleData);
 			}
 		});
 		console.log(APIFieldVerificationData);
+		$.ajax({
+			url: address3 + 'scripttemplateController/interfaceCheckSave',
+			data: JSON.stringify({
+				"testCaseId":sessionStorage.getItem('testCaseId'),
+				"caseCompositeType":sessionStorage.getItem('caseCompositeType'),
+				"interfaceCheckEntities":APIFieldVerificationData
+			}),
+			type: 'post',
+			contentType:"application/json",
+			success: function (data) {
+			  if (!data) {
+				Vac.alert(data.msg || '查询失败');
+				return;
+			  }	
+			  
+			},
+			error: function(XMLHttpRequest, textStatus, errorThrown) {
+			  Vac.alert(`查询出错！\n 错误信息：${textStatus}`);
+			}
+		});
 	}
 	else if($("input[name=inlineRadioOptions]")[1].checked){
 		console.log("提取");
@@ -3175,12 +3266,32 @@ function APIUpload() {
 				APIFieldExtractionParaName=$(this).find("input[name=APIFieldExtractionParaName]").val();
 			if(APIFieldExtractionParaExp!=""){
 				let singleData={};
-				singleData.val=APIFieldExtractionParaExp;
-				singleData.desc=APIFieldExtractionParaName;
+				singleData.pathExpression=APIFieldExtractionParaExp;
+				singleData.name=APIFieldExtractionParaName;
 				APIFieldExtractionData.push(singleData);
 			}
 		});
 		console.log(APIFieldExtractionData);
+		$.ajax({
+			url: address3 + 'scripttemplateController/interfaceExtractSave',
+			data: JSON.stringify({
+				"testCaseId":sessionStorage.getItem('testCaseId'),
+				"caseCompositeType":sessionStorage.getItem('caseCompositeType'),
+				"interfaceExtractEntities":APIFieldExtractionData
+			}),
+			type: 'post',
+			contentType:"application/json",
+			success: function (data) {
+			  if (!data) {
+				Vac.alert(data.msg || '查询失败');
+				return;
+			  }	
+			
+			},
+			error: function(XMLHttpRequest, textStatus, errorThrown) {
+			  Vac.alert(`查询出错！\n 错误信息：${textStatus}`);
+			}
+		});
 	}
 }
 

@@ -415,8 +415,8 @@ function queryRecord() {
 //对执行记录查询中的按列排序
 function myResort(target){  
     
-    var orderColumns = target.getAttribute("data-order");   //获得需要被排序的列名
-    var old_order = target.getAttribute("data-sort");   //获得原先的顺序，是升序还是降序
+    var orderColumns = target.getAttribute("date-order");   //获得需要被排序的列名
+    var old_order = target.getAttribute("date-sort");   //获得原先的顺序，是升序还是降序
     var span = target.getElementsByTagName("span")[0];  //得到显示图标的DOM元素
     var downSorter = (firstEl , secondEl) => ( secondEl[orderColumns]- firstEl[orderColumns]);
     var upSorter = (firstEl , secondEl) => ( firstEl[orderColumns] - secondEl[orderColumns]);
@@ -425,12 +425,12 @@ function myResort(target){
         case "desc":
             target.setAttribute("date-sort","asc");
             span.setAttribute("class","icon-sort-down");
-            app.recordList.sort(upSorter);
+            app.recordList.sort(downSorter);
             break;
         case "asc":
             target.setAttribute("date-sort","desc");
             span.setAttribute("class","icon-sort-up");
-            app.recordList.sort(downSorter);
+            app.recordList.sort(upSorter);
             break;
         default:
             break;
