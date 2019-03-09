@@ -1420,7 +1420,38 @@ $(document).ready(function () {
 				}
 			},
 		});
-
+		var detailModal = new Vue({//操作项前编辑符号，修改当前元素
+			el: '#detailModal',
+			data: {},
+			methods: {
+				update(){
+					$.ajax({
+						url: address3+ 'testcase/modifySingleTestCaseInfo',
+						type: 'post',
+						contentType: 'application/json',
+						data: JSON.stringify({
+								id: $('#detailForm input[name="id"]').val(),
+								testpoint:$('#detailForm input[name="testpoint"]').val(),
+								testdesign:$('#detailForm textarea[name="testDesign"]').val(),
+								teststep:$('#detailForm textarea[name="testStep"]').val(),
+								expectresult:$('#detailForm textarea[name="expectResult"]').val(),
+								checkpoint:$('#detailForm textarea[name="checkPoint"]').val()
+						}),
+						success: function(data){
+							if(data.respCode=="0000"){
+								$('#successModal').modal();
+							}
+							else{
+								$('#failModal2').modal();
+							}
+						},
+						error: function(){
+							$('#failModal').modal();
+						}
+					})
+				},
+			}
+		})
 		var modalVue = new Vue({//操作项前编辑符号，修改当前元素
 			el: '#ui-ele-modal',
 			data: {},
@@ -1798,7 +1829,7 @@ $(document).ready(function () {
 												var hiddenColumnsPlugin = handsontable.getPlugin('hiddenColumns');
 												hiddenColumnsPlugin.hideColumn([2,3,4]);
 												handsontable.render();
-												// handsontable.updateSettings(contextMenuObj);
+												handsontable.updateSettings(contextMenuObj);
 												$('#no-data-tip').css({display: 'none'});
 											}
 											else {
@@ -1807,8 +1838,6 @@ $(document).ready(function () {
 													columns: totalColumnsOptions,
 													colHeaders: colHeadersRenderer
 												});
-												var hiddenColumnsPlugin = handsontable.getPlugin('hiddenColumns');
-												hiddenColumnsPlugin.hideColumn([2,3,4]);
 												handsontable.render();
 												$('#no-data-tip').css({display: 'none'});
 											}
@@ -1823,7 +1852,7 @@ $(document).ready(function () {
 								});
 
 							} else {
-								_this.failMSG=data.respMsg;
+								importModal.failMSG=data.respMsg;
 								$('#failModal2').modal('show');
 							}
 						}, error: function(data) { 
@@ -2306,18 +2335,27 @@ $(document).ready(function () {
 				}
 			}
 		};
-		$("#hidenItem").change(function(e)
+		$("#hiddenItem").change(function(e)
 		{
-			var nodeNo =$('#hidenItem').val();; // 获取选中下拉框的值-数组的形式 ["1", "2", "3", "4", "5"]
-			console.log(handsontable)
+			var nodeNo =$('#hiddenItem').val();; // 获取选中下拉框的值-数组的形式 ["1", "2", "3", "4", "5"]
+			if(!nodeNo){nodeNo=[]}
+			else{
+				for(let i =0;i<nodeNo.length;i++){
+					nodeNo[i] = nodeNo[i]-0;
+				}
+			}
+			console.log(nodeNo)
 			handsontable.updateSettings({
-				
 				hiddenColumns: {
 					columns: nodeNo,
 					indicators: true
 				},
 			});
+			//var hiddenColumnsPlugin =  handsontable.getPlugin('hiddenColumns');
+			//console.log(handsontable.getSettings())
+			//hiddenColumnsPlugin.hideColumn([3,4]);
 			handsontable.render(); 
+			//console.log(handsontable.getSettings())
 		});
 		/// 2017-08-25 删除行号这一列
 		const columnsHeaders = [
@@ -2327,7 +2365,6 @@ $(document).ready(function () {
 			{
 				data: "testcaseId",
 				renderer: function (instance, td, row, col, prop, value, cellProperties) {
-					console.log(cellProperties)
 					td.style.textAlign = 'center';
 					td.innerHTML = '<button onclick="viewScriptHandler(event,'+ value.split(",",)[1] +')" style="padding: 3px 5px;" class="btn btn-xs btn-primary" data-id="'+ value.split(",",)[0] +'">查看脚本</button>';
 					return td;
@@ -2457,9 +2494,9 @@ $(document).ready(function () {
 							if (handsontable === null) {
 								handsontable = new Handsontable(tableContainer, {
 									data: dataSource,
-									hiddenColumns: {/*
-										columns: [2, 3],
-										indicators: false*/
+									hiddenColumns: {
+										columns: [],
+										indicators: true
 									},
 									// 配置列表头
 									columns: totalColumnsOptions,
@@ -2575,11 +2612,11 @@ $(document).ready(function () {
 									},
 								});
 								// console.log(handsontable)
-								// var hiddenColumnsPlugin = handsontable.getPlugin('hiddenColumns');
-								// console.log(handsontable.getSettings())
-								// hiddenColumnsPlugin.hideColumn( 2, 3);
-								// handsontable.render();
-								//handsontable.updateSettings(contextMenuObj);
+								var hiddenColumnsPlugin = handsontable.getPlugin('hiddenColumns');
+								console.log(handsontable.getSettings())
+								hiddenColumnsPlugin.hideColumn(2, 3);
+								handsontable.render();
+								handsontable.updateSettings(contextMenuObj);
 								$('#no-data-tip').css({display: 'none'});
 								console.log(handsontable.getSettings())
 							}
@@ -2973,7 +3010,7 @@ $(document).ready(function () {
 		// //跳转修改函数
 		function modifyCallback(key, selection) {//key是 modify selection是选中的格子 {start: {row: 0, col: 5}, end: {row: 0, col: 5}}
 			$('#detailModal').modal('show')
-			var id = handsontable.getCell(selection.start.row, 0, false).firstChild.getAttribute('data-id');
+			var id = handsontable.getCell(selection[0].start.row, 0, false).firstChild.getAttribute('data-id');
 			$('#detailForm input[name="id"]').val(id);
 			$.ajax({
 				url: address3+'testcase/getSingleTestCaseInfo',
@@ -3011,7 +3048,6 @@ $(document).ready(function () {
 				}
 			});
 		}
-		
 		// //搜索功能函数 end
 		//编辑单元格数据
 		function editCellData(key, selection) {

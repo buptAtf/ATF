@@ -597,7 +597,7 @@
                   模板导入</button>
                 </div>
                 <div class="col-lg-2 export-show"  style="display: none;">
-                    <select class=" col-lg-12 selectpicker prop_select form-control widthcontrol"  id="hidenItem" multiple data-live-search="true">
+                    <select class=" col-lg-12 selectpicker prop_select form-control widthcontrol" title="选择隐藏列" placeholder="选择隐藏列" id="hiddenItem" multiple data-live-search="true">
                         　　<option value="2">测试点</option>
                         　　<option value="3">测试意图</option>
                         　　<option value="4">测试步骤</option>
@@ -879,7 +879,6 @@
                   <!-- modal-body end -->
               <div class="modal-footer">
                   <a class="btn btn-default" data-dismiss="modal">取消</a>
-                  <a class="btn btn-success" @click="edit">修改</a>
                   <a data-dismiss="modal" class="btn btn-info" v-on:click="update">保存</a>
               </div>
               </div>
