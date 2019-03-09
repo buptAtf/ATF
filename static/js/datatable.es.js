@@ -1728,7 +1728,7 @@ $(document).ready(function () {
 													data: dataSource,
 													hiddenColumns: {
 														columns: [2, 3],
-														indicators: false
+														indicators: true
 													},
 													// 配置列表头
 													columns: totalColumnsOptions,
@@ -1794,6 +1794,9 @@ $(document).ready(function () {
 														}
 													},
 												});
+												var hiddenColumnsPlugin = handsontable.getPlugin('hiddenColumns');
+												hiddenColumnsPlugin.hideColumn([2,3,4]);
+												handsontable.render();
 												// handsontable.updateSettings(contextMenuObj);
 												$('#no-data-tip').css({display: 'none'});
 											}
@@ -1803,6 +1806,8 @@ $(document).ready(function () {
 													columns: totalColumnsOptions,
 													colHeaders: colHeadersRenderer
 												});
+												var hiddenColumnsPlugin = handsontable.getPlugin('hiddenColumns');
+												hiddenColumnsPlugin.hideColumn([2,3,4]);
 												handsontable.render();
 												$('#no-data-tip').css({display: 'none'});
 											}
@@ -2223,7 +2228,7 @@ $(document).ready(function () {
 					disabled: function () { return false; },
 					hidden: function () {
 						// [startRow, startCol, endRow, endCol]
-						var selection = handsontable.getSelected();
+						var selection = handsontable.getSelected()[0];
 						if (selection && selection[1] >= 7 && selection[0] == selection[2] && selection[1] == selection[3]) {
 							return false;
 						}
@@ -2238,7 +2243,7 @@ $(document).ready(function () {
 					},
 					hidden: function () {
 						// [startRow, startCol, endRow, endCol]
-						var selection = handsontable.getSelected();//Returns indexes of the selected cells as an array of arrays [[startRow, startCol, endRow, endCol],...].
+						var selection = handsontable.getSelected()[0];//Returns indexes of the selected cells as an array of arrays [[startRow, startCol, endRow, endCol],...].
 						if (selection && selection[1] >= 7 && selection[0] == selection[2] && selection[1] == selection[3]) {
 							return false;
 						}
@@ -2251,9 +2256,10 @@ $(document).ready(function () {
 					disabled: function () { return false; },
 					hidden: function () {
 						// [startRow, startCol, endRow, endCol]
-						var selection = handsontable.getSelected();
+						var selection = handsontable.getSelected()[0];
 						console.log(selection)
 						if (selection && selection[1] >= 7 && selection[0] == selection[2] && selection[1] == selection[3]) {
+							console.log(false)
 							return false;
 						}
 						return true;
@@ -2277,7 +2283,7 @@ $(document).ready(function () {
 					disabled: function () { return false },
 					hidden: function () {
 						// [startRow, startCol, endRow, endCol]
-						var selection = handsontable.getSelected();
+						var selection = handsontable.getSelected()[0];
 						if (selection && selection[1] < 7 && selection[0] == selection[2] && selection[1] == selection[3]) {
 							return false;
 						}
@@ -2290,7 +2296,7 @@ $(document).ready(function () {
 					disabled: function () { },
 					hidden: function () {
 						// [startRow, startCol, endRow, endCol]
-						var selection = handsontable.getSelected();
+						var selection = handsontable.getSelected()[0];
 						if (selection && selection[1] >= 7 && selection[0] == selection[2] && selection[1] == selection[3]) {
 							return false;
 						}
@@ -2301,7 +2307,6 @@ $(document).ready(function () {
 		};
 		/// 2017-08-25 删除行号这一列
 		const columnsHeaders = [
-			// "<input type='checkbox' class='header-checker' " + (selectAllFlag ? "checked='checked'" : "") + ">",  // "行号",
 			"查看脚本","案例编号", "测试点", "测试意图", "测试步骤", "预期结果", "检查点"
 		];
 		const columnsOptions = [
@@ -2315,14 +2320,7 @@ $(document).ready(function () {
 				},
 				readOnly: true
 			},
-			// {	data:"",
-			// 	renderer: function(instance, td, row, col, prop, value, cellProperties){
-			// 		td.innerHTML = parseInt(row) + 1;
-			// 			return td;
-			// 	},
-			// 	readOnly: true
-			// },
-			{ data: "casecode", readOnly: true },
+			{ data: "casecode", readOnly: true ,},
 			{ data: "testpoint", readOnly: true },
 			{ data: "testdesign", readOnly: true },
 			{ data: 'teststep', readOnly: true },
@@ -2432,24 +2430,27 @@ $(document).ready(function () {
 							}
 							// console.log(destrutData);
 							dataSource = destrutData;
-							// console.log(dataSource)
+							console.log("data:dataSource")
+							console.log(dataSource)
 							rowSelectFlags.length = dataSource.length;
 							getTotalColHeaders(data.tableHead);
-							// console.log(totalColumnsHeaders);
+							console.log("colHeaders:totalColumnsHeaders");
+							console.log(totalColumnsHeaders);
 							var totalColumnsOptions = getColumnsOptions(data.tableHead);
-							// console.log(totalColumnsOptions);
+							console.log("columns:totalColumnsOptions");
+							console.log(totalColumnsOptions);
 							// handsontable 配置与生成
 							if (handsontable === null) {
 								handsontable = new Handsontable(tableContainer, {
 									data: dataSource,
-									hiddenColumns: {
+									hiddenColumns: {/*
 										columns: [2, 3],
-										indicators: false
+										indicators: false*/
 									},
 									// 配置列表头
 									columns: totalColumnsOptions,
 									colHeaders: colHeadersRenderer,
-									// colWidths: [50, 90, 90, 90, 90, 90, 90],
+									//colWidths: [50, 90, 0, 90, 90, 90, 90],
 									// stretchH: 'all',
 									rowHeaders: true,
 									cells: function (row, col, prop) {
@@ -2485,6 +2486,46 @@ $(document).ready(function () {
 										}
 										document.querySelectorAll(".handsontable table th")[0].style.display = "none";
 									},
+									afterOnCellMouseDown: function (event,coords, TD){
+										if (event.target.nodeName == 'INPUT' && event.target.className == 'header-checker') {
+											selectAllFlag = !event.target.checked;
+											for (var i = 0; i < rowSelectFlags.length; i++) {
+												rowSelectFlags[i] = selectAllFlag;
+											}
+											var inputs = document.querySelectorAll('#handsontable tbody tr td:first-child input');
+											var trs = document.querySelectorAll('#handsontable tbody tr');
+											if (selectAllFlag) {
+												for (var tr of trs) {
+													tr.className = 'selected';
+												}
+												for (var input of inputs) {
+													input.checked = true;
+												}
+											} else {
+												for (var tr of trs) {
+													tr.className = '';
+												}
+												for (var input of inputs) {
+													input.checked = false;
+												}
+											}
+											// handsontable.render();
+											event.stopPropagation();
+										} else if (event.target.nodeName == 'INPUT' && event.target.className == 'checker') {
+											var row = event.target.getAttribute('data-index');
+											rowSelectFlags[row] = !event.target.checked;
+											var inputs = document.querySelectorAll('#handsontable tbody tr td:first-child input');
+											var trs = document.querySelectorAll('#handsontable tbody tr');
+											if (rowSelectFlags[row]) {
+												trs[row].className = 'selected';
+											} else {
+												trs[row].className = '';
+											}
+							
+										} else {
+							
+										}
+									},
 									afterChange: function (changes, source) {
 										if (changes) {
 											// console.log(changes)
@@ -2510,8 +2551,13 @@ $(document).ready(function () {
 										}
 									},
 								});
+								// var hiddenColumnsPlugin = handsontable.getPlugin('hiddenColumns');
+								// console.log(handsontable.getSettings())
+								// hiddenColumnsPlugin.hideColumn( 2, 3);
+								// handsontable.render();
 								// handsontable.updateSettings(contextMenuObj);
 								$('#no-data-tip').css({display: 'none'});
+								console.log(handsontable.getSettings())
 							}
 							else {
 								handsontable.updateSettings({
@@ -2532,8 +2578,8 @@ $(document).ready(function () {
 					}
 				}); //aj
 			}
-		}
-		Handsontable.Dom.addEvent(tableContainer, 'mousedown', function (event) {
+		}/*
+		Handsontable.Dom.addEventListener(tableContainer, 'mousedown', function (event) {
 			if (event.target.nodeName == 'INPUT' && event.target.className == 'header-checker') {
 				selectAllFlag = !event.target.checked;
 				for (var i = 0; i < rowSelectFlags.length; i++) {
@@ -2572,7 +2618,7 @@ $(document).ready(function () {
 			} else {
 
 			}
-		});
+		});*/
 		var searchBoxVue = new Vue({
 			el: '#searchBox',
 			data: {
@@ -2901,8 +2947,45 @@ $(document).ready(function () {
 			searchBoxVue.show(true);
 		}
 		// //跳转修改函数
-		function modifyCallback(key, selection) {
+		function modifyCallback(key, selection) {//key是 modify selection是选中的格子 {start: {row: 0, col: 5}, end: {row: 0, col: 5}}
 			$('#detailModal').modal('show')
+			var id = handsontable.getCell(selection.start.row, 0, false).firstChild.getAttribute('data-id');
+			$('#detailForm input[name="id"]').val(id);
+			$.ajax({
+				url: address3+'testcase/getSingleTestCaseInfo',
+				type: 'post',
+				contentType: 'application/json',
+				data: JSON.stringify({
+					"id": id
+				}),
+				success: function(res){
+					var caseData=res.testcaseViewRespDTO;
+					console.log("ooppppp"+caseData.transName);
+					$('#detailForm input[name="casecode"]').val(caseData.casecode);
+					$('#detailForm input[name="missionId"]').val(caseData.missionName);
+					$('#detailForm input[name="autid"]').val(caseData.autName);
+					$('#casetransid').val(caseData.transName);
+					$('#detailForm input[name="versioncode"]').val(caseData.version);
+					$('#detailForm input[name="scriptmodeflag"]').val(caseData.scriptTemplateName);
+					$('#detailForm input[name="testpoint"]').val(caseData.testPoint);
+					$('#detailForm textarea[name="testDesign"]').val(caseData.testDesign);
+					$('#detailForm textarea[name="preRequisites"]').val(caseData.preRequisites);
+					$('#detailForm textarea[name="dataRequest"]').val(caseData.dataRequest);
+					$('#detailForm textarea[name="testStep"]').val(caseData.testStep);
+					$('#detailForm textarea[name="expectResult"]').val(caseData.expectResult);
+					$('#detailForm textarea[name="checkPoint"]').val(caseData.checkPoint);
+					$('#detailForm select[name="caseProperty"]').val(caseData.caseProperty);
+					$('#detailForm select[name="caseType"]').val(caseData.caseType);
+					$('#detailForm select[name="priority"]').val(caseData.priority);
+					$('#detailForm input[name="author"]').val(caseData.authorName);
+					$('#detailForm input[name="reviewer"]').val(caseData.reviewerName);
+					$('#detailForm input[name="executor"]').val(caseData.executorName);
+					$('#detailForm select[name="executemethod"]').val(caseData.executeMethod);
+					$('#detailForm select[name="scriptmode"]').val(caseData.scriptMode);
+					$('#detailForm select[name="usestatus"]').val(caseData.useStatus);
+					$('#detailForm textarea[name="note"]').val(caseData.note);
+				}
+			});
 		}
 		
 		// //搜索功能函数 end
