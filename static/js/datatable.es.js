@@ -55,6 +55,7 @@ $(document).ready(function () {
 	// var submenuHeight = document.querySelector('#submenu').offsetHeight;
 	// document.querySelector('#submenu').children[0].style.height = submenuHeight / 2 + 'px';
 	// document.querySelector('#submenu').children[1].style.height = submenuHeight / 2 + 'px';
+
 	var transid = '',
 		autId = ''
 	tooltipwindow = new Vue({
@@ -2305,6 +2306,19 @@ $(document).ready(function () {
 				}
 			}
 		};
+		$("#hidenItem").change(function(e)
+		{
+			var nodeNo =$('#hidenItem').val();; // 获取选中下拉框的值-数组的形式 ["1", "2", "3", "4", "5"]
+			console.log(handsontable)
+			handsontable.updateSettings({
+				
+				hiddenColumns: {
+					columns: nodeNo,
+					indicators: true
+				},
+			});
+			handsontable.render(); 
+		});
 		/// 2017-08-25 删除行号这一列
 		const columnsHeaders = [
 			"查看脚本","案例编号", "测试点", "测试意图", "测试步骤", "预期结果", "检查点"
@@ -2442,25 +2456,15 @@ $(document).ready(function () {
 							// handsontable 配置与生成
 							if (handsontable === null) {
 								handsontable = new Handsontable(tableContainer, {
-<<<<<<< HEAD
 									data: dataSource,
 									hiddenColumns: {/*
-=======
-									data: dataSource,		//表格数据，一般是二维数组
-									hiddenColumns: {
->>>>>>> origin/postDev
 										columns: [2, 3],
 										indicators: false*/
 									},
 									// 配置列表头
 									columns: totalColumnsOptions,
-<<<<<<< HEAD
 									colHeaders: colHeadersRenderer,
 									//colWidths: [50, 90, 0, 90, 90, 90, 90],
-=======
-									colHeaders: colHeadersRenderer,	//显示列头
-									// colWidths: [50, 90, 90, 90, 90, 90, 90],
->>>>>>> origin/postDev
 									// stretchH: 'all',
 									rowHeaders: true,	//显示行头
 									cells: function (row, col, prop) {
@@ -2570,11 +2574,12 @@ $(document).ready(function () {
 										}
 									},
 								});
+								// console.log(handsontable)
 								// var hiddenColumnsPlugin = handsontable.getPlugin('hiddenColumns');
 								// console.log(handsontable.getSettings())
 								// hiddenColumnsPlugin.hideColumn( 2, 3);
 								// handsontable.render();
-								// handsontable.updateSettings(contextMenuObj);
+								//handsontable.updateSettings(contextMenuObj);
 								$('#no-data-tip').css({display: 'none'});
 								console.log(handsontable.getSettings())
 							}
@@ -3010,10 +3015,11 @@ $(document).ready(function () {
 		// //搜索功能函数 end
 		//编辑单元格数据
 		function editCellData(key, selection) {
-			var header = handsontable.getColHeader(selection.start.col);
-			var testcaseId = dataSource[selection.start.row].testcaseId;
+			console.log(selection)
+			var header = handsontable.getColHeader(selection[0].start.col);
+			var testcaseId = dataSource[selection[0].start.row].testcaseId;
 			if (scriptId!=-1){
-				editDataVue.show(selection);
+				editDataVue.show(selection[0]);
 			}
 			else{
 				// APIFieldModalInit();
