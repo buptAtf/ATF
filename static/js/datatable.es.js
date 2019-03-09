@@ -2955,12 +2955,16 @@ $(document).ready(function () {
 // APIFieldModal Function Start
 
 function APIFieldModalInit(){
+	$('.APIFieldVerificationParaRow').remove();
+	$('.APIFieldExtractionParaRow').remove();
+	APIFieldVerificationParaAdd();
+	APIFieldExtractionParaAdd();
 	$('input[name="APIFieldVerificationParaExp"]').last().change(APIFieldVerificationParaAdd);
 	$('input[name="APIFieldExtractionParaExp"]').last().change(APIFieldExtractionParaAdd);
-	$(".APIFieldExtractionParaRow").hide();
-	$('#APIFieldModal').modal('show');
 	APIFieldModalLoadVerificationData();
 	APIFieldModalLoadExtractionData();
+	$(".APIFieldExtractionParaRow").hide();
+	$('#APIFieldModal').modal('show');
 }
 
 function APIFieldModalLoadVerificationData(){
@@ -2978,8 +2982,34 @@ function APIFieldModalLoadVerificationData(){
             return;
           }	
 			// _this.tableData = data.scriptList;
+			// data = [
+			// 	{
+			// 		"compareChar": "==",
+			// 		"expectValue": "2",
+			// 		"pathExpression": "\\$..totalCount"
+			// 	},
+			// 	{
+			// 		"compareChar": "!=",
+			// 		"expectValue": "3",
+			// 		"pathExpression": "\\$..totalCount"
+			// 	},
+			// 	{
+			// 		"compareChar": "==",
+			// 		"expectValue": "2",
+			// 		"pathExpression": "\\$..totalCount"
+			// 	}
+			// ];
 		  	console.log("Verification Data:");
 			console.log(data);
+
+			for(let i=0; i<data.length; i++){
+				APIFieldVerificationParaAdd();
+				$('.APIFieldVerificationParaRow [name=APIFieldVerificationParaExp]')[i].value = data[i].pathExpression;
+				$('.APIFieldVerificationParaRow [name=APIFieldVerificationParaSel]')[i].value = data[i].compareChar;
+				$('.APIFieldVerificationParaRow [name=APIFieldVerificationParaVal]')[i].value = data[i].expectValue;
+			}
+
+
         },
         error: function(XMLHttpRequest, textStatus, errorThrown) {
           Vac.alert(`查询出错！\n 错误信息：${textStatus}`);
@@ -3002,8 +3032,30 @@ function APIFieldModalLoadExtractionData(){
             return;
           }	
 			// _this.tableData = data.scriptList;
+
+			// data = [
+			// 	{
+			// 		"pathExpression": "\\$..totalCount",
+			// 		"name":"总个数"
+			// 	},
+			// 	{
+			// 		"pathExpression": "\\$..totalCount",
+			// 		"name":"总个数"
+			// 	},
+			// 	{
+			// 		"pathExpression": "\\$..totalCount",
+			// 		"name":"总个数"
+			// 	}
+			// ];
 		  	console.log("Extraction Data:");
 			console.log(data);
+
+			for(let i=0; i<data.length; i++){
+				APIFieldExtractionParaAdd();
+				$('.APIFieldExtractionParaRow [name=APIFieldExtractionParaExp]')[i].value = data[i].pathExpression;
+				$('.APIFieldExtractionParaRow [name=APIFieldExtractionParaName]')[i].value = data[i].name;
+			}
+			$(".APIFieldExtractionParaRow").hide();
         },
         error: function(XMLHttpRequest, textStatus, errorThrown) {
           Vac.alert(`查询出错！\n 错误信息：${textStatus}`);
@@ -3085,13 +3137,33 @@ function APIUpload() {
 				APIFieldVerificationParaVal=$(this).find("input[name=APIFieldVerificationParaVal]").val();
 			if(APIFieldVerificationParaExp!=""){
 				let singleData={};
-				singleData.val=APIFieldVerificationParaExp;
-				singleData.sel=APIFieldVerificationParaSel;
-				singleData.desc=APIFieldVerificationParaVal;
+				singleData.pathExpression=APIFieldVerificationParaExp;
+				singleData.compareChar=APIFieldVerificationParaSel;
+				singleData.expectValue=APIFieldVerificationParaVal;
 				APIFieldVerificationData.push(singleData);
 			}
 		});
 		console.log(APIFieldVerificationData);
+		$.ajax({
+			url: address3 + 'scripttemplateController/interfaceCheckSave',
+			data: JSON.stringify({
+				"testCaseId":sessionStorage.getItem('testCaseId'),
+				"caseCompositeType":sessionStorage.getItem('caseCompositeType'),
+				"interfaceCheckEntities":APIFieldVerificationData
+			}),
+			type: 'post',
+			contentType:"application/json",
+			success: function (data) {
+			  if (!data) {
+				Vac.alert(data.msg || '查询失败');
+				return;
+			  }	
+			  
+			},
+			error: function(XMLHttpRequest, textStatus, errorThrown) {
+			  Vac.alert(`查询出错！\n 错误信息：${textStatus}`);
+			}
+		});
 	}
 	else if($("input[name=inlineRadioOptions]")[1].checked){
 		console.log("提取");
@@ -3101,12 +3173,32 @@ function APIUpload() {
 				APIFieldExtractionParaName=$(this).find("input[name=APIFieldExtractionParaName]").val();
 			if(APIFieldExtractionParaExp!=""){
 				let singleData={};
-				singleData.val=APIFieldExtractionParaExp;
-				singleData.desc=APIFieldExtractionParaName;
+				singleData.pathExpression=APIFieldExtractionParaExp;
+				singleData.name=APIFieldExtractionParaName;
 				APIFieldExtractionData.push(singleData);
 			}
 		});
 		console.log(APIFieldExtractionData);
+		$.ajax({
+			url: address3 + 'scripttemplateController/interfaceExtractSave',
+			data: JSON.stringify({
+				"testCaseId":sessionStorage.getItem('testCaseId'),
+				"caseCompositeType":sessionStorage.getItem('caseCompositeType'),
+				"interfaceExtractEntities":APIFieldExtractionData
+			}),
+			type: 'post',
+			contentType:"application/json",
+			success: function (data) {
+			  if (!data) {
+				Vac.alert(data.msg || '查询失败');
+				return;
+			  }	
+			
+			},
+			error: function(XMLHttpRequest, textStatus, errorThrown) {
+			  Vac.alert(`查询出错！\n 错误信息：${textStatus}`);
+			}
+		});
 	}
 }
 
