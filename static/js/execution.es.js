@@ -181,6 +181,12 @@ var app = new Vue({
             sessionStorage.setItem("isFromRecordSheet",true);     //判断是不是从批量执行页面跳转过去
             location.href = "testRecord.html";
         },
+        getCount: function (success,failed,notRun) {
+            sessionStorage.setItem("success", success);
+            sessionStorage.setItem("failed", failed);
+            sessionStorage.setItem("notRun", notRun);
+            location.href = "pieChart.html";
+        },
         //传递当前页选中的场景id到场景管理页面
         toSceneManagement: function(e) {
             var sceneid = $(e.target).parent().prev().prev().prev().children().attr('id'),
