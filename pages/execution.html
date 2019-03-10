@@ -8,6 +8,7 @@
     <link rel="stylesheet" type="text/css" href="../static/css/scene.css">
     <!-- <link rel="stylesheet" type="text/css" href="../static/css/base/bootstrap.min.css"> -->
     <link rel="stylesheet" type="text/css" href="../static/css/bootstrap-datetimepicker.min.css">
+    <script src="http://d3js.org/d3.v3.min.js"></script>
     <title>批量执行管理</title>
 </head>
 
@@ -145,6 +146,7 @@
                                             <th class="hidden-phone text-center" data-order="transId">成功用例数</th>
                                             <th class="hidden-phone text-center" data-order="transId">失败用例数</th>
                                             <th class="hidden-phone text-center" data-order="transId">跳过用例数</th>
+                                            <th class="hidden-phone text-center" data-order="transId">用例饼状图</th>
                                             <!-- <th class="hidden-phone text-center" data-order="transId">执行单详细度</th> -->
                                             <th class="hidden-phone text-center" data-order="transId">执行状态</th>
                                             <th class="hidden-phone text-center" data-order="transId">执行结果</th>
@@ -175,9 +177,12 @@
                                             <!-- <td class="center " width="">{{ scene.sceneId }}</td> -->
                                             <!-- <td class="center " width="">{{ runScopeFlag[scene.runScopeFlag] }}</td> -->
                                             <td class="center " width="">{{ scene.totalInsCount }}</td>
-                                            <td class="center " width="">{{ scene.successInsCount }}</td>
-                                            <td class="center " width="">{{ scene.failedInsCount }}</td>
-                                            <td class="center " width="">{{ scene.notRunInsCount }}</td>
+                                            <td class="center " width="" >{{ scene.successInsCount }}</td>
+                                            <td class="center " width="" >{{ scene.failedInsCount }}</td>
+                                            <td class="center " width="" >{{ scene.notRunInsCount }}</td>
+                                            <td class="center " width="">
+                                                <button class="btn btn-xs btn-success" data-toggle="modal" @click="getCount(scene.successInsCount,scene.failedInsCount,scene.notRunInsCount)">饼状图</button>
+                                            </td>
                                             <td class="center " width="">{{ scene.executingStatus }}</td>
                                             <td class="center " width="" v-if="scene.executedResult==null">执行中</td>
                                             <td class="center " width="" v-else>{{ scene.executedResult }}</td>
@@ -309,6 +314,7 @@
                         </div>
                     </div>
                     <!-- updateModal end -->
+                    
             </section>
             <link rel="import" href="./common/copy-right.html?__inline">
         </section>
