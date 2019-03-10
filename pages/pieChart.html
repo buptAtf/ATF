@@ -1,0 +1,145 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>饼状图</title>
+    <script type="text/javascript" src="../lib/jquery-1.8.3.min.js"></script>
+    <style>
+      *{
+      	padding: 0;
+      	margin:0;
+      }
+      .box{
+      	position:relative;
+      }
+      table{
+      	width:300px;
+      	height: 240px;
+      	border:2px solid lightblue;
+      	position:absolute;
+        left: 450px;
+        top:80px;
+      	border-collapse: collapse;
+      }
+      td{
+      	width:150px;
+      	height:80px;
+      	border:2px solid lightblue;
+      }
+      .color0{
+      	width:90px;
+      	height:50px;
+      	position:absolute;
+      	left:30px;
+      	top:15px;
+      	background-color:#1f77b4;
+      }
+      .color1{
+      	width:90px;
+      	height:50px;
+      	position:absolute;
+      	left:30px;
+      	top:95px;
+      	background-color:#ff7f0e;
+      }
+      .color2{
+      	width:90px;
+      	height:50px;
+      	position:absolute;
+      	left:30px;
+      	top:175px;
+      	background-color:#2ca02c;
+      }
+      .font{
+      	line-height: 80px;
+      	text-align:center;
+      	font-weight:1.5px;
+      }
+
+    </style>
+</head>
+
+<style>
+
+
+</style>
+<body>
+<script src="http://d3js.org/d3.v3.min.js"></script>
+<script>
+
+    var width = 400;
+    var height = 400;
+    var successCount=parseInt(sessionStorage.getItem("success"));
+    var failedCount=parseInt(sessionStorage.getItem("failed"));
+    var notRunCount=parseInt(sessionStorage.getItem("notRun"));
+ 
+    var dataset = [ successCount,  failedCount, notRunCount];
+    
+    
+    var svg = d3.select("body")
+            .append("svg")
+            .attr("width", width)
+            .attr("height", height);
+
+    var pie = d3.layout.pie();
+
+    var piedata = pie(dataset);
+
+    var outerRadius = 150;  //外半径
+    var innerRadius = 0;    //内半径，为0则中间没有空白
+
+    var arc = d3.svg.arc()  //弧生成器
+            .innerRadius(innerRadius)   //设置内半径
+            .outerRadius(outerRadius);  //设置外半径
+
+    var color = d3.scale.category10();
+
+    var arcs = svg.selectAll("g")
+            .data(piedata)
+            .enter()
+            .append("g")
+            .attr("transform","translate("+ (width/2) +","+ (width/2) +")");
+
+    arcs.append("path")
+            .attr("fill",function(d,i){
+                return color(i);
+            })
+            .attr("d",function(d){
+                return arc(d);
+            });
+
+    arcs.append("text")
+            .attr("transform",function(d){
+                return "translate(" + arc.centroid(d) + ")";
+            })
+            .attr("text-anchor","middle")
+            .text(function(d){
+                if(d.data>0){
+                	 return d.data;
+                }     
+            });  
+            console.log(color(0));
+            console.log(color(1));
+            console.log(color(2));      
+
+</script>
+
+<div class="box">
+<table>
+   <tr>
+      <td ><div class="color0"></div></td>
+      <td class="font">success count</td>
+   </tr>
+   <tr>
+      <td ><div class="color1"></div></td>
+      <td class="font">failed count</td>
+   </tr>
+   <tr>
+      <td ><div class="color2"></div></td>
+      <td class="font">not run count</td>
+   </tr>
+</table>
+</div>
+</body>
+</html>
+	
