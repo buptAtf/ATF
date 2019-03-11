@@ -55,6 +55,7 @@ $(document).ready(function () {
 	// var submenuHeight = document.querySelector('#submenu').offsetHeight;
 	// document.querySelector('#submenu').children[0].style.height = submenuHeight / 2 + 'px';
 	// document.querySelector('#submenu').children[1].style.height = submenuHeight / 2 + 'px';
+
 	var transid = '',
 		autId = ''
 	tooltipwindow = new Vue({
@@ -1728,7 +1729,7 @@ $(document).ready(function () {
 													data: dataSource,
 													hiddenColumns: {
 														columns: [2, 3],
-														indicators: false
+														indicators: true
 													},
 													// 配置列表头
 													columns: totalColumnsOptions,
@@ -1794,6 +1795,9 @@ $(document).ready(function () {
 														}
 													},
 												});
+												var hiddenColumnsPlugin = handsontable.getPlugin('hiddenColumns');
+												hiddenColumnsPlugin.hideColumn([2,3,4]);
+												handsontable.render();
 												// handsontable.updateSettings(contextMenuObj);
 												$('#no-data-tip').css({display: 'none'});
 											}
@@ -1803,6 +1807,8 @@ $(document).ready(function () {
 													columns: totalColumnsOptions,
 													colHeaders: colHeadersRenderer
 												});
+												var hiddenColumnsPlugin = handsontable.getPlugin('hiddenColumns');
+												hiddenColumnsPlugin.hideColumn([2,3,4]);
 												handsontable.render();
 												$('#no-data-tip').css({display: 'none'});
 											}
@@ -2223,7 +2229,7 @@ $(document).ready(function () {
 					disabled: function () { return false; },
 					hidden: function () {
 						// [startRow, startCol, endRow, endCol]
-						var selection = handsontable.getSelected();
+						var selection = handsontable.getSelected()[0];
 						if (selection && selection[1] >= 7 && selection[0] == selection[2] && selection[1] == selection[3]) {
 							return false;
 						}
@@ -2238,7 +2244,7 @@ $(document).ready(function () {
 					},
 					hidden: function () {
 						// [startRow, startCol, endRow, endCol]
-						var selection = handsontable.getSelected();//Returns indexes of the selected cells as an array of arrays [[startRow, startCol, endRow, endCol],...].
+						var selection = handsontable.getSelected()[0];//Returns indexes of the selected cells as an array of arrays [[startRow, startCol, endRow, endCol],...].
 						if (selection && selection[1] >= 7 && selection[0] == selection[2] && selection[1] == selection[3]) {
 							return false;
 						}
@@ -2251,9 +2257,10 @@ $(document).ready(function () {
 					disabled: function () { return false; },
 					hidden: function () {
 						// [startRow, startCol, endRow, endCol]
-						var selection = handsontable.getSelected();
+						var selection = handsontable.getSelected()[0];
 						console.log(selection)
 						if (selection && selection[1] >= 7 && selection[0] == selection[2] && selection[1] == selection[3]) {
+							console.log(false)
 							return false;
 						}
 						return true;
@@ -2277,7 +2284,7 @@ $(document).ready(function () {
 					disabled: function () { return false },
 					hidden: function () {
 						// [startRow, startCol, endRow, endCol]
-						var selection = handsontable.getSelected();
+						var selection = handsontable.getSelected()[0];
 						if (selection && selection[1] < 7 && selection[0] == selection[2] && selection[1] == selection[3]) {
 							return false;
 						}
@@ -2290,7 +2297,7 @@ $(document).ready(function () {
 					disabled: function () { },
 					hidden: function () {
 						// [startRow, startCol, endRow, endCol]
-						var selection = handsontable.getSelected();
+						var selection = handsontable.getSelected()[0];
 						if (selection && selection[1] >= 7 && selection[0] == selection[2] && selection[1] == selection[3]) {
 							return false;
 						}
@@ -2299,9 +2306,21 @@ $(document).ready(function () {
 				}
 			}
 		};
+		$("#hidenItem").change(function(e)
+		{
+			var nodeNo =$('#hidenItem').val();; // 获取选中下拉框的值-数组的形式 ["1", "2", "3", "4", "5"]
+			console.log(handsontable)
+			handsontable.updateSettings({
+				
+				hiddenColumns: {
+					columns: nodeNo,
+					indicators: true
+				},
+			});
+			handsontable.render(); 
+		});
 		/// 2017-08-25 删除行号这一列
 		const columnsHeaders = [
-			// "<input type='checkbox' class='header-checker' " + (selectAllFlag ? "checked='checked'" : "") + ">",  // "行号",
 			"查看脚本","案例编号", "测试点", "测试意图", "测试步骤", "预期结果", "检查点"
 		];
 		const columnsOptions = [
@@ -2315,14 +2334,7 @@ $(document).ready(function () {
 				},
 				readOnly: true
 			},
-			// {	data:"",
-			// 	renderer: function(instance, td, row, col, prop, value, cellProperties){
-			// 		td.innerHTML = parseInt(row) + 1;
-			// 			return td;
-			// 	},
-			// 	readOnly: true
-			// },
-			{ data: "casecode", readOnly: true },
+			{ data: "casecode", readOnly: true ,},
 			{ data: "testpoint", readOnly: true },
 			{ data: "testdesign", readOnly: true },
 			{ data: 'teststep', readOnly: true },
@@ -2432,24 +2444,27 @@ $(document).ready(function () {
 							}
 							// console.log(destrutData);
 							dataSource = destrutData;
-							// console.log(dataSource)
+							console.log("data:dataSource")
+							console.log(dataSource)
 							rowSelectFlags.length = dataSource.length;
 							getTotalColHeaders(data.tableHead);
-							// console.log(totalColumnsHeaders);
+							console.log("colHeaders:totalColumnsHeaders");
+							console.log(totalColumnsHeaders);
 							var totalColumnsOptions = getColumnsOptions(data.tableHead);
-							// console.log(totalColumnsOptions);
+							console.log("columns:totalColumnsOptions");
+							console.log(totalColumnsOptions);
 							// handsontable 配置与生成
 							if (handsontable === null) {
 								handsontable = new Handsontable(tableContainer, {
-									data: dataSource,		//表格数据，一般是二维数组
-									hiddenColumns: {
+									data: dataSource,
+									hiddenColumns: {/*
 										columns: [2, 3],
-										indicators: false
+										indicators: false*/
 									},
 									// 配置列表头
 									columns: totalColumnsOptions,
-									colHeaders: colHeadersRenderer,	//显示列头
-									// colWidths: [50, 90, 90, 90, 90, 90, 90],
+									colHeaders: colHeadersRenderer,
+									//colWidths: [50, 90, 0, 90, 90, 90, 90],
 									// stretchH: 'all',
 									rowHeaders: true,	//显示行头
 									cells: function (row, col, prop) {
@@ -2494,6 +2509,46 @@ $(document).ready(function () {
 					
 										/*---------2018.3.8-----------*/
 									},
+									afterOnCellMouseDown: function (event,coords, TD){
+										if (event.target.nodeName == 'INPUT' && event.target.className == 'header-checker') {
+											selectAllFlag = !event.target.checked;
+											for (var i = 0; i < rowSelectFlags.length; i++) {
+												rowSelectFlags[i] = selectAllFlag;
+											}
+											var inputs = document.querySelectorAll('#handsontable tbody tr td:first-child input');
+											var trs = document.querySelectorAll('#handsontable tbody tr');
+											if (selectAllFlag) {
+												for (var tr of trs) {
+													tr.className = 'selected';
+												}
+												for (var input of inputs) {
+													input.checked = true;
+												}
+											} else {
+												for (var tr of trs) {
+													tr.className = '';
+												}
+												for (var input of inputs) {
+													input.checked = false;
+												}
+											}
+											// handsontable.render();
+											event.stopPropagation();
+										} else if (event.target.nodeName == 'INPUT' && event.target.className == 'checker') {
+											var row = event.target.getAttribute('data-index');
+											rowSelectFlags[row] = !event.target.checked;
+											var inputs = document.querySelectorAll('#handsontable tbody tr td:first-child input');
+											var trs = document.querySelectorAll('#handsontable tbody tr');
+											if (rowSelectFlags[row]) {
+												trs[row].className = 'selected';
+											} else {
+												trs[row].className = '';
+											}
+							
+										} else {
+							
+										}
+									},
 									afterChange: function (changes, source) {
 										if (changes) {
 											// console.log(changes)
@@ -2519,8 +2574,14 @@ $(document).ready(function () {
 										}
 									},
 								});
-								// handsontable.updateSettings(contextMenuObj);
+								// console.log(handsontable)
+								// var hiddenColumnsPlugin = handsontable.getPlugin('hiddenColumns');
+								// console.log(handsontable.getSettings())
+								// hiddenColumnsPlugin.hideColumn( 2, 3);
+								// handsontable.render();
+								//handsontable.updateSettings(contextMenuObj);
 								$('#no-data-tip').css({display: 'none'});
+								console.log(handsontable.getSettings())
 							}
 							else {
 								handsontable.updateSettings({
@@ -2541,8 +2602,8 @@ $(document).ready(function () {
 					}
 				}); //aj
 			}
-		}
-		Handsontable.Dom.addEvent(tableContainer, 'mousedown', function (event) {
+		}/*
+		Handsontable.Dom.addEventListener(tableContainer, 'mousedown', function (event) {
 			if (event.target.nodeName == 'INPUT' && event.target.className == 'header-checker') {
 				selectAllFlag = !event.target.checked;
 				for (var i = 0; i < rowSelectFlags.length; i++) {
@@ -2581,7 +2642,7 @@ $(document).ready(function () {
 			} else {
 
 			}
-		});
+		});*/
 		var searchBoxVue = new Vue({
 			el: '#searchBox',
 			data: {
@@ -2910,17 +2971,55 @@ $(document).ready(function () {
 			searchBoxVue.show(true);
 		}
 		// //跳转修改函数
-		function modifyCallback(key, selection) {
+		function modifyCallback(key, selection) {//key是 modify selection是选中的格子 {start: {row: 0, col: 5}, end: {row: 0, col: 5}}
 			$('#detailModal').modal('show')
+			var id = handsontable.getCell(selection.start.row, 0, false).firstChild.getAttribute('data-id');
+			$('#detailForm input[name="id"]').val(id);
+			$.ajax({
+				url: address3+'testcase/getSingleTestCaseInfo',
+				type: 'post',
+				contentType: 'application/json',
+				data: JSON.stringify({
+					"id": id
+				}),
+				success: function(res){
+					var caseData=res.testcaseViewRespDTO;
+					console.log("ooppppp"+caseData.transName);
+					$('#detailForm input[name="casecode"]').val(caseData.casecode);
+					$('#detailForm input[name="missionId"]').val(caseData.missionName);
+					$('#detailForm input[name="autid"]').val(caseData.autName);
+					$('#casetransid').val(caseData.transName);
+					$('#detailForm input[name="versioncode"]').val(caseData.version);
+					$('#detailForm input[name="scriptmodeflag"]').val(caseData.scriptTemplateName);
+					$('#detailForm input[name="testpoint"]').val(caseData.testPoint);
+					$('#detailForm textarea[name="testDesign"]').val(caseData.testDesign);
+					$('#detailForm textarea[name="preRequisites"]').val(caseData.preRequisites);
+					$('#detailForm textarea[name="dataRequest"]').val(caseData.dataRequest);
+					$('#detailForm textarea[name="testStep"]').val(caseData.testStep);
+					$('#detailForm textarea[name="expectResult"]').val(caseData.expectResult);
+					$('#detailForm textarea[name="checkPoint"]').val(caseData.checkPoint);
+					$('#detailForm select[name="caseProperty"]').val(caseData.caseProperty);
+					$('#detailForm select[name="caseType"]').val(caseData.caseType);
+					$('#detailForm select[name="priority"]').val(caseData.priority);
+					$('#detailForm input[name="author"]').val(caseData.authorName);
+					$('#detailForm input[name="reviewer"]').val(caseData.reviewerName);
+					$('#detailForm input[name="executor"]').val(caseData.executorName);
+					$('#detailForm select[name="executemethod"]').val(caseData.executeMethod);
+					$('#detailForm select[name="scriptmode"]').val(caseData.scriptMode);
+					$('#detailForm select[name="usestatus"]').val(caseData.useStatus);
+					$('#detailForm textarea[name="note"]').val(caseData.note);
+				}
+			});
 		}
 		
 		// //搜索功能函数 end
 		//编辑单元格数据
 		function editCellData(key, selection) {
-			var header = handsontable.getColHeader(selection.start.col);
-			var testcaseId = dataSource[selection.start.row].testcaseId;
+			console.log(selection)
+			var header = handsontable.getColHeader(selection[0].start.col);
+			var testcaseId = dataSource[selection[0].start.row].testcaseId;
 			if (scriptId!=-1){
-				editDataVue.show(selection);
+				editDataVue.show(selection[0]);
 			}
 			else{
 				// APIFieldModalInit();
@@ -2955,12 +3054,16 @@ $(document).ready(function () {
 // APIFieldModal Function Start
 
 function APIFieldModalInit(){
+	$('.APIFieldVerificationParaRow').remove();
+	$('.APIFieldExtractionParaRow').remove();
+	APIFieldVerificationParaAdd();
+	APIFieldExtractionParaAdd();
 	$('input[name="APIFieldVerificationParaExp"]').last().change(APIFieldVerificationParaAdd);
 	$('input[name="APIFieldExtractionParaExp"]').last().change(APIFieldExtractionParaAdd);
-	$(".APIFieldExtractionParaRow").hide();
-	$('#APIFieldModal').modal('show');
 	APIFieldModalLoadVerificationData();
 	APIFieldModalLoadExtractionData();
+	$(".APIFieldExtractionParaRow").hide();
+	$('#APIFieldModal').modal('show');
 }
 
 function APIFieldModalLoadVerificationData(){
@@ -2978,8 +3081,34 @@ function APIFieldModalLoadVerificationData(){
             return;
           }	
 			// _this.tableData = data.scriptList;
+			// data = [
+			// 	{
+			// 		"compareChar": "==",
+			// 		"expectValue": "2",
+			// 		"pathExpression": "\\$..totalCount"
+			// 	},
+			// 	{
+			// 		"compareChar": "!=",
+			// 		"expectValue": "3",
+			// 		"pathExpression": "\\$..totalCount"
+			// 	},
+			// 	{
+			// 		"compareChar": "==",
+			// 		"expectValue": "2",
+			// 		"pathExpression": "\\$..totalCount"
+			// 	}
+			// ];
 		  	console.log("Verification Data:");
 			console.log(data);
+
+			for(let i=0; i<data.length; i++){
+				APIFieldVerificationParaAdd();
+				$('.APIFieldVerificationParaRow [name=APIFieldVerificationParaExp]')[i].value = data[i].pathExpression;
+				$('.APIFieldVerificationParaRow [name=APIFieldVerificationParaSel]')[i].value = data[i].compareChar;
+				$('.APIFieldVerificationParaRow [name=APIFieldVerificationParaVal]')[i].value = data[i].expectValue;
+			}
+
+
         },
         error: function(XMLHttpRequest, textStatus, errorThrown) {
           Vac.alert(`查询出错！\n 错误信息：${textStatus}`);
@@ -3002,8 +3131,30 @@ function APIFieldModalLoadExtractionData(){
             return;
           }	
 			// _this.tableData = data.scriptList;
+
+			// data = [
+			// 	{
+			// 		"pathExpression": "\\$..totalCount",
+			// 		"name":"总个数"
+			// 	},
+			// 	{
+			// 		"pathExpression": "\\$..totalCount",
+			// 		"name":"总个数"
+			// 	},
+			// 	{
+			// 		"pathExpression": "\\$..totalCount",
+			// 		"name":"总个数"
+			// 	}
+			// ];
 		  	console.log("Extraction Data:");
 			console.log(data);
+
+			for(let i=0; i<data.length; i++){
+				APIFieldExtractionParaAdd();
+				$('.APIFieldExtractionParaRow [name=APIFieldExtractionParaExp]')[i].value = data[i].pathExpression;
+				$('.APIFieldExtractionParaRow [name=APIFieldExtractionParaName]')[i].value = data[i].name;
+			}
+			$(".APIFieldExtractionParaRow").hide();
         },
         error: function(XMLHttpRequest, textStatus, errorThrown) {
           Vac.alert(`查询出错！\n 错误信息：${textStatus}`);
@@ -3085,13 +3236,33 @@ function APIUpload() {
 				APIFieldVerificationParaVal=$(this).find("input[name=APIFieldVerificationParaVal]").val();
 			if(APIFieldVerificationParaExp!=""){
 				let singleData={};
-				singleData.val=APIFieldVerificationParaExp;
-				singleData.sel=APIFieldVerificationParaSel;
-				singleData.desc=APIFieldVerificationParaVal;
+				singleData.pathExpression=APIFieldVerificationParaExp;
+				singleData.compareChar=APIFieldVerificationParaSel;
+				singleData.expectValue=APIFieldVerificationParaVal;
 				APIFieldVerificationData.push(singleData);
 			}
 		});
 		console.log(APIFieldVerificationData);
+		$.ajax({
+			url: address3 + 'scripttemplateController/interfaceCheckSave',
+			data: JSON.stringify({
+				"testCaseId":sessionStorage.getItem('testCaseId'),
+				"caseCompositeType":sessionStorage.getItem('caseCompositeType'),
+				"interfaceCheckEntities":APIFieldVerificationData
+			}),
+			type: 'post',
+			contentType:"application/json",
+			success: function (data) {
+			  if (!data) {
+				Vac.alert(data.msg || '查询失败');
+				return;
+			  }	
+			  
+			},
+			error: function(XMLHttpRequest, textStatus, errorThrown) {
+			  Vac.alert(`查询出错！\n 错误信息：${textStatus}`);
+			}
+		});
 	}
 	else if($("input[name=inlineRadioOptions]")[1].checked){
 		console.log("提取");
@@ -3101,12 +3272,32 @@ function APIUpload() {
 				APIFieldExtractionParaName=$(this).find("input[name=APIFieldExtractionParaName]").val();
 			if(APIFieldExtractionParaExp!=""){
 				let singleData={};
-				singleData.val=APIFieldExtractionParaExp;
-				singleData.desc=APIFieldExtractionParaName;
+				singleData.pathExpression=APIFieldExtractionParaExp;
+				singleData.name=APIFieldExtractionParaName;
 				APIFieldExtractionData.push(singleData);
 			}
 		});
 		console.log(APIFieldExtractionData);
+		$.ajax({
+			url: address3 + 'scripttemplateController/interfaceExtractSave',
+			data: JSON.stringify({
+				"testCaseId":sessionStorage.getItem('testCaseId'),
+				"caseCompositeType":sessionStorage.getItem('caseCompositeType'),
+				"interfaceExtractEntities":APIFieldExtractionData
+			}),
+			type: 'post',
+			contentType:"application/json",
+			success: function (data) {
+			  if (!data) {
+				Vac.alert(data.msg || '查询失败');
+				return;
+			  }	
+			
+			},
+			error: function(XMLHttpRequest, textStatus, errorThrown) {
+			  Vac.alert(`查询出错！\n 错误信息：${textStatus}`);
+			}
+		});
 	}
 }
 
