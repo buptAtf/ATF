@@ -1988,6 +1988,9 @@ var app = new Vue({
         },
         showScripttemplateTable: function (args) {
             var _this = this;
+            if(args.aut_id==null){
+                return
+            }
             Vac.ajax({
                 url: address3 + 'scripttemplateController/showScripttemplateTable',
                 data: args,
@@ -2531,6 +2534,7 @@ var app = new Vue({
             }
             else{
                 uiNodes = uiTree ? uiTree.getCheckedNodes(true) : [];
+                _this.checkFlag=[];
             }
             var functionNodes = functionTree ? functionTree.getCheckedNodes(true) : []
             var l=_this.operationRows.length;

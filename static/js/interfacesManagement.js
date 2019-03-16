@@ -112,7 +112,7 @@ var template_int = `
                 <div class="form-group">
                     <label class="col-xs-1 control-label">接口路径</label>
                     <div class="input-group col-xs-8">
-                        <span class="input-group-addon" id="basic-addon3">https://example.com/users/</span>
+                        <span class="input-group-addon" id="basic-addon3"></span>
                         <input type="text" class="form-control" id="intUrlPathInput" aria-describedby="basic-addon3">
                     </div>
                 </div>   

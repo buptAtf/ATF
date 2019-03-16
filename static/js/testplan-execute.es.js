@@ -65,11 +65,12 @@ var vBody = new Vue({
 		selectedScene: [],	// 3, 1, 2, [1,2], [3],[{"sceneId":1,"testcaseList":[1,2]}]
 		exeImgs: {
 			0: '/assets/images/waiting.png',
-			10: '/assets/images/waiting.png',
+			10: '/assets/images/init.png',
 			2: '/assets/images/success.png',
 			3: '/assets/images/error.png',
-			13: '/assets/images/running.png',
+			13: '/assets/images/running.gif',
 			4: '/assets/images/success.png',
+			5: '/assets/images/jump.png',
 			11: '/assets/images/warn.png',
 			12: '/assets/images/warn.png',
 		},
@@ -232,6 +233,8 @@ var vBody = new Vue({
 				success: function(data) {
 					if (data.respCode=="0000") {
 						Vac.alert(data.respMsg);
+						_this.startQueryResult();
+						_this.exeStautShow = '<i class="icon-ok"></i>已执行';
 						// _this.runners=data.runners;
 						// if(data.runners.length==0)
 						// 	Vac.alert('查询不到执行机');
@@ -349,11 +352,6 @@ var vBody = new Vue({
 				}
 			});
 			function syncQueryIncInsStatus (values){
-				console.log("1")
-				console.log(values)
-				console.log(values.batchId)
-				console.log(values.respSyncNo)
-				console.log(values.sessionId)
 				$.ajax({
 					url: address3 + 'batchRunCtrlController/syncQueryIncInsStatus',
 					type: 'post',
@@ -400,9 +398,13 @@ var vBody = new Vue({
 				// 	}
 				// } else {
 					if(d.flowNodeId) {
-						document.querySelector(`#img-${d.sceneId}-${d.testcaseId}-${d.flownodeid}`).src = this.exeImgs[d.status];
+						if(document.querySelector(`#img-${d.sceneId}-${d.testcaseId}-${d.flowNodeId}`)!=null){
+							document.querySelector(`#img-${d.sceneId}-${d.testcaseId}-${d.flowNodeId}`).src = this.exeImgs[d.status];
+						}
 					} else {
-						document.querySelector(`#img-${d.sceneId}-${d.testcaseId}`).src = this.exeImgs[d.status];
+						if(document.querySelector(`#img-${d.sceneId}-${d.testcaseId}`)!=null){
+							document.querySelector(`#img-${d.sceneId}-${d.testcaseId}`).src = this.exeImgs[d.status];
+						}
 					}
 					
 				//}

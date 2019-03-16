@@ -89,7 +89,7 @@ $(document).ready(function () {
 		        $('.filterList').delegate('button.btn-danger','click',function(){
 		            $(event.target).closest('li').remove();
 		        });
-		        // 筛选案例select option
+		        // 筛选用例select option
 		        // let that=this;
 				$('.filterList').delegate('select[name="propertyName"]', 'change', function() {
 		            let selectedProp=$(event.target).val();
@@ -768,7 +768,7 @@ $(document).ready(function () {
 		                $('.selectpicker').selectpicker('refresh')
 		            });
 		        },
-		        //筛选案例
+		        //筛选用例
 			    filterCase(){
 			    	let executorId=sessionStorage.getItem('userId');
 	                let data=[{propertyName: "executor", compareType: "=", propertyValueList: [executorId]},
@@ -1826,10 +1826,6 @@ $(document).ready(function () {
 														}
 													},
 												});
-												var hiddenColumnsPlugin = handsontable.getPlugin('hiddenColumns');
-												hiddenColumnsPlugin.hideColumn([2,3,4]);
-												handsontable.render();
-												handsontable.updateSettings(contextMenuObj);
 												$('#no-data-tip').css({display: 'none'});
 											}
 											else {
@@ -1863,7 +1859,58 @@ $(document).ready(function () {
 				},
 			}
 		});
-
+		var searchtModal = new Vue({ //模板导入
+			el: '#searchtModal',
+			data: {
+				failMSG:"",
+				searchlogic:"all",
+				searchtext:"",
+			},
+			methods: {
+				//上传
+				dataSearch:function() {
+					var _this=this;
+					var patt1=new RegExp(_this.searchtext);
+					var searchDataSource=[];
+					switch(_this.searchlogic)
+					{
+					case "==":
+						for(let i =0;i<dataSource.length;i++){
+							if(dataSource[i].testpoint == _this.searchtext){
+								searchDataSource.push(dataSource[i])
+							}
+						}
+						break;
+					case "!=":
+						for(let i =0;i<dataSource.length;i++){
+							if(dataSource[i].testpoint != _this.searchtext){
+								searchDataSource.push(dataSource[i])
+							}
+						}
+						break;
+					case "C":
+						for(let i =0;i<dataSource.length;i++){
+							if(patt1.test(dataSource[i].testpoint)){
+								searchDataSource.push(dataSource[i])
+							}
+						}
+						break;
+					case "!C":
+						for(let i =0;i<dataSource.length;i++){
+							if(!patt1.test(dataSource[i].testpoint)){
+								searchDataSource.push(dataSource[i])
+							}
+						}
+						break;
+					default:searchDataSource = dataSource;
+					}
+					handsontable.updateSettings({
+						data: searchDataSource,
+					});
+					handsontable.render(); 
+				}
+			}
+		});
 		// var APIFieldModal = new Vue({
 		// 	el: 'APIFieldModal',
 		// 	data: {
@@ -2344,7 +2391,6 @@ $(document).ready(function () {
 					nodeNo[i] = nodeNo[i]-0;
 				}
 			}
-			console.log(nodeNo)
 			handsontable.updateSettings({
 				hiddenColumns: {
 					columns: nodeNo,
@@ -2359,7 +2405,7 @@ $(document).ready(function () {
 		});
 		/// 2017-08-25 删除行号这一列
 		const columnsHeaders = [
-			"查看脚本","案例编号", "测试点", "测试意图", "测试步骤", "预期结果", "检查点"
+			"查看脚本","用例编号", "测试点", "测试意图", "测试步骤", "预期结果", "检查点"
 		];
 		const columnsOptions = [
 			{
@@ -2824,6 +2870,10 @@ $(document).ready(function () {
 		document.getElementById('excel-import').onclick = function () {
 			$('#importModal').modal('show');
 		};
+		//用力筛选按钮
+		document.getElementById('data-search').onclick = function () {
+			$('#searchtModal').modal('show');
+		};		
 		// 查看脚本
 		//双击单元格，跳出编辑数据框
 		document.querySelectorAll('.dbclick').onDblClick = function () {

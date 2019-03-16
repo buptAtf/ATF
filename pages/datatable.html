@@ -7,7 +7,7 @@
   <link rel="stylesheet" type="text/css" href="../static/css/handsontable.full.css">
   <link rel="stylesheet" type="text/css" href="../static/css/base.scss">
   <!-- <link rel="stylesheet" type="text/css" href="../static/css/base/bootstrap.min.css"> -->
-  <link rel="stylesheet" type="text/css" href="../static/css/pagination.css">
+  <link rel="stylesheet" type="text/css" href="..//static/css/pagination.css">
   <link rel="stylesheet" type="text/css" href="../static/css/metroStyle.css">
   <link rel="stylesheet" type="text/css" href="../static/css/datatable.scss">
   <link rel="stylesheet" type="text/css" href="../static/css/index.css">
@@ -605,6 +605,11 @@
                         　　<option value="6">检查点</option>
                     </select>
                 </div>
+                <div class="col-lg-2 export-show"  style="display: none;">
+                  <button class="btn btn-white export-show"  id="data-search"  style="display: none;">
+                    <i class="icon-search"></i>
+                    用例筛选</button>
+                </div>
             </div>
           </div>
 
@@ -1036,6 +1041,45 @@
       </div>
     </div>
     <!-- importModal end-->
+    
+    <!-- searchtModal start-->
+    <div class="modal fade" id="searchtModal" tabindex="-1" role="dialog" aria-labelledby="searchtModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+            <h4 class="modal-title">用例筛选</h4>
+          </div>
+            <div class="modal-body">
+              <div class="form-group">
+                <div class="col-lg-2">
+                  <lable >
+                    用例编号
+                  </lable >
+                </div>
+                <div class="col-lg-3">
+                  <select class="form-control" v-model:value="searchlogic" >
+                    <option value="all">全部展示</option>
+                    <option value="==">等于</option>
+                    <option value="!=">不等于</option>
+                    <option value="C">包含</option>
+                    <option value="!C">不包含</option>
+                  </select>
+                </div>
+                <div class="col-lg-6">
+                  <input type="text"  v-model:value="searchtext" class="form-control ">
+                </div>
+                </span>
+              </div>
+            </div>
+            <div class="modal-footer">
+              <a class="  btn  btn-white" id="submitFile" @click="dataSearch()">筛选</a>
+              <button data-dismiss="modal" class="btn btn-default" type="button">取消</button>
+            </div>
+        </div>
+      </div>
+    </div>
+    <!-- searchtModal end-->
     <!-- APIFieldModal start -->
     <div class="modal fade" id="APIFieldModal" tabindex="-1" role="dialog" aria-labelledby="APIFieldModalLabel"
       aria-hidden="true">
