@@ -211,14 +211,14 @@
                                 </div>
                             </div>
                             <!-- 表格 -->
-                            <div class="table-responsive">
+                            <div class="table-responsive" style="height: 360px;">
                                 <table class="table table-striped table-bordered border-top text-center" id="sample_1">
                                     <thead>
                                         <tr>
                                             <th style="width:8px;">
                                                 <input type="checkbox" v-model="checked" v-on:click="" name="chk_all" id="chk_all" />
                                             </th>
-                                            <th></th>
+                                            <!-- <th></th> -->
                                             <th class="hidden-phone text-center" data-order="casecode" data-sort="desc" onclick="myResort(this)">案例编号 <span class="icon-sort-up" aria-hidden="true"></span></th>
                                             <th class="text-center" data-order="autId" data-sort="desc" onclick="resort(this)">被测系统 <span class="icon-sort-up" aria-hidden="true"></span></th>
                                             <th class="hidden-phone text-center" data-order="transId" data-sort="desc" onclick="resort(this)">功能点 <span class="icon-sort-up" aria-hidden="true"></span></th>
@@ -232,8 +232,8 @@
                                             <th class="hidden-phone text-center" data-order="submissionId" data-sort="desc" onclick="resort(this)">测试任务 <span class="icon-sort-up" aria-hidden="true"></span></th>
                                             <th class="hidden-phone text-center" data-order="priority" data-sort="desc" onclick="resort(this)">优先级 <span class="icon-sort-up" aria-hidden="true"></span></th>
                                             <th class="hidden-phone text-center" data-order="caseType" data-sort="desc" onclick="resort(this)">用例类型 <span class="icon-sort-up" aria-hidden="true"></span></th>
-                                             <th class="hidden-phone text-center" data-order="caseProperty" data-sort="desc" onclick="resort(this)">用例性质 <span class="icon-sort-up" aria-hidden="true"></span></th>
-                                             <th class="hidden-phone text-center" data-order="testpoint" data-sort="desc" onclick="resort(this)">测试点 <span class="icon-sort-up" aria-hidden="true"></span></th>
+                                            <th class="hidden-phone text-center" data-order="caseProperty" data-sort="desc" onclick="resort(this)">用例性质 <span class="icon-sort-up" aria-hidden="true"></span></th>
+                                            <th class="hidden-phone text-center" data-order="testpoint" data-sort="desc" onclick="resort(this)">测试点 <span class="icon-sort-up" aria-hidden="true"></span></th>
                                         </tr>
                                     </thead>
                                     <tbody id="caseTable">
@@ -241,7 +241,7 @@
                                             <td >
                                                 <input type="checkbox" v-model="" name="chk_list" id="{{case.id}}" />
                                             </td>
-                                            <td><span class="icon-angle-right" v-show="case.caseCompositeType=='2'" @click="getSubCase($event)"></span></td>
+                                            <!-- <td><span class="icon-angle-right" v-show="case.caseCompositeType=='2'" @click="getSubCase($event)"></span></td> -->
                                             <td class="center"><a @click="showDetail($event)" class="detail-link">{{ case.casecode }}</a></td>
                                             <td>{{ case.autName }}</td>
                                             <td class="hidden-phone">{{ case.transName }}</td>

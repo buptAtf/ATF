@@ -847,7 +847,9 @@ $(document).ready(function () {
 											scriptName: ssubData.name
 										} = value2);
 										subData.children.push(ssubData);
+							
 									}));
+									
 									item.children.push(subData);
 								});
 								({
@@ -3108,7 +3110,6 @@ $(document).ready(function () {
 				editDataVue.show(selection[0]);
 			}
 			else{
-				// APIFieldModalInit();
 				APIFieldModalInit();
 			}
 		}
@@ -3148,6 +3149,7 @@ function APIFieldModalInit(){
 	$('input[name="APIFieldExtractionParaExp"]').last().change(APIFieldExtractionParaAdd);
 	APIFieldModalLoadVerificationData();
 	APIFieldModalLoadExtractionData();
+	$("#inlineRadio1").prop('checked','checked');
 	$(".APIFieldExtractionParaRow").hide();
 	$('#APIFieldModal').modal('show');
 }
@@ -3342,6 +3344,10 @@ function APIUpload() {
 			  if (!data) {
 				Vac.alert(data.msg || '查询失败');
 				return;
+			  }
+			  if (data.respCode=='0000'){
+				  $('#APIFieldModal').modal('hide');
+				  Vac.alert(data.respMsg);
 			  }	
 			  
 			},
@@ -3378,7 +3384,10 @@ function APIUpload() {
 				Vac.alert(data.msg || '查询失败');
 				return;
 			  }	
-			
+			  if (data.respCode=='0000'){
+				$('#APIFieldModal').modal('hide');
+				Vac.alert(data.respMsg);
+			}	
 			},
 			error: function(XMLHttpRequest, textStatus, errorThrown) {
 			  Vac.alert(`查询出错！\n 错误信息：${textStatus}`);
