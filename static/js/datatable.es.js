@@ -847,7 +847,9 @@ $(document).ready(function () {
 											scriptName: ssubData.name
 										} = value2);
 										subData.children.push(ssubData);
+							
 									}));
+									
 									item.children.push(subData);
 								});
 								({
