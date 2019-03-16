@@ -1632,16 +1632,43 @@ $(document).ready(function () {
 				trData: ['参数1', '参数2', '参数3', '参数4'],
 				dataPoolType: null,
 				dataWritable: "",
-				functionName: ""
+				functionName: "",
+				paramList: [],
+				functionList:[]
 			},
-			created: function () {
-
+			watch:{
+				functionName: function(value,oldvalue){		//监听functionName的变化，select框一变化就改变参数列表
+					var _this = this;
+					// console.log("我在监听这个functionName"+value+oldvalue);
+					_this.functionList.forEach(function(currFun){
+						if(currFun.name===value){
+							_this.paramList = currFun.paramList;	//遍历函数列表，找到函数名称相同的，将参数列表赋值
+						}
+					});
+					if(_this.paramList.length===0){
+						var nothing = {};
+						nothing.paramName = "无";
+						nothing.paramType = "";
+						nothing.required = false;
+						_this.paramList.push(nothing);
+					}
+					// console.log(_this.paramList);
+				}			
+			},
+			ready: function(){
+				//在这里请求函数名称、参数等...
+				var _this = this;
+				_this.insertFunction();
+			},
+			created: function () {	
+				
 			},
 			methods: {
 				show: function (type, title) {
 					this.isShow = true;
 					this.insertTitle = title;
 					this.type = type;
+					
 				},
 				hide: function () {
 					this.isShow = false;
@@ -1685,6 +1712,33 @@ $(document).ready(function () {
 					else if (ctrl.selectionStart || ctrl.selectionStart == '0')
 						CaretPos = ctrl.selectionStart;
 					return (CaretPos);
+				},
+				insertFunction: function(){
+					var _this = this;
+					var autId = sessionStorage.getItem("autId");
+
+					$.ajax({
+						url: address3 + '/dataCenter/getUtilFuncList',
+						type: 'post',
+						contentType: 'application/json',
+						data: JSON.stringify({
+							autId: autId,
+						}),
+						success: function(data){
+							console.log(data);
+							data.functionList.forEach(function(funList){
+								var currFun = {};
+								currFun.name = funList.name;
+								currFun.desc = funList.desc;
+								currFun.paramList = funList.paramList;
+								_this.functionList.push(currFun);
+							});		
+						}
+						
+					});
+					// console.log(_this.functionList[0]);
+					// _this.functionName = _this.functionList[0].name;
+					console.log("我！可以！出来！");
 				},
 			}
 		});
@@ -2478,6 +2532,7 @@ $(document).ready(function () {
 				autId = treeNode.getParentNode().getParentNode().id;
 				transid = treeNode.getParentNode().id;
 				scriptId = treeNode.id;
+				sessionStorage.setItem("autId",autId);	//将autId放到session里面，下面插入函数的时候调用接口需要参数autId
 				
 				console.log(scriptId);
 				var data = {
