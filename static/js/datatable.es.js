@@ -81,10 +81,12 @@ $(document).ready(function () {
 		var filterVue=new Vue({
 			el: "#filter-container",
 			data: {
-				isShow: false,
+				isShow: true,
 				iconflag: true,
+
 			},
 			ready: function(){
+				var _this = this;
 				// 删除筛选条件
 		        $('.filterList').delegate('button.btn-danger','click',function(){
 		            $(event.target).closest('li').remove();
@@ -728,7 +730,9 @@ $(document).ready(function () {
 		                    }
 		                });
 		            }
-		        });
+				});
+				_this.filterCase();
+
 			},
 			methods: {
 				 // 添加筛选
@@ -2392,7 +2396,7 @@ $(document).ready(function () {
 					hidden: function () {
 						// [startRow, startCol, endRow, endCol]
 						var selection = handsontable.getSelected()[0];
-						console.log(selection)
+						
 						if (selection && selection[1] >= 7 && selection[0] == selection[2] && selection[1] == selection[3]) {
 							console.log(false)
 							return false;
@@ -2437,7 +2441,33 @@ $(document).ready(function () {
 						}
 						return true;
 					}
+				},
+				"data_backup": {
+					name: "数据备份",
+					callback: null,
+					disabled: function () { },
+					hidden: function(){
+						var selection = handsontable.getSelected()[0];
+						console.log("selection:"+selection);
+						if(selection && selection[1]==0 && selection[3]>0){    //如果是全选
+							return false;
+						}
+						return true;
+					}
+				},
+				"数据恢复": {
+					name: "数据恢复",
+					callback: null,
+					disabled: function () { },
+					hidden: function() {
+						var selection = handsontable.getSelected()[0];
+						if(selection && selection[1]==0 && selection[3]>0){    //如果是全选
+							return false;
+						}
+						return true;
+					}
 				}
+				
 			}
 		};
 		$("#hiddenItem").change(function(e)
