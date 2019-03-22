@@ -1023,7 +1023,9 @@ $(document).ready(function () {
 					this.afterOperationRows = [];
 					if (cellData.includes('@before')) {
 						var beforeStr = cellData.slice(cellData.indexOf('@before\n') + 7, cellData.indexOf('@value'));
+						console.log("beforeSte:"+beforeStr);
 						var beforeArr = beforeStr.split(';\n');
+						console.log("beforeArr:"+beforeArr);
 						this.parseScript(beforeArr, this.beforeOperationRows, 1)
 					}
 					if (cellData.includes('@after')) {
@@ -1113,7 +1115,7 @@ $(document).ready(function () {
 								operation.element = '';
 								var index = strArray[i].indexOf('(');
 								var functions = [{name: strArray[i].slice(0, index), parameterlist: ''}];
-								var paraStr = strArray[i].slice(index + 1, -2);
+								var paraStr = strArray[i].slice(index + 1, -1);
 								var parameters = [];
 								var paraArr = paraStr.split(',');
 								for (let j = 0; j < paraArr.length; j++) {
@@ -1795,17 +1797,17 @@ $(document).ready(function () {
 														testDesign: data.testdesign,
 														caseCode: data.casecode
 													} = value);
-													console.log(value);
+													// console.log(value);
 													dataKey.forEach((key) => {
-														console.log("12Key:" + key+"data_"+key+"qweqwe"+value["data_"+key]);
+														// console.log("12Key:" + key+"data_"+key+"qweqwe"+value["data_"+key]);
 														data[key] = value["data_"+key];
 													});
 													destrutData.push(data);
 												});
 											}
-											console.log(destrutData);
+											console.log("destrutData:\n"+destrutData);
 											dataSource = destrutData;
-											console.log(dataSource)
+											// console.log(dataSource)
 											rowSelectFlags.length = dataSource.length;
 											getTotalColHeaders(data.tableHead);
 											// console.log(totalColumnsHeaders);
@@ -2582,17 +2584,17 @@ $(document).ready(function () {
 									destrutData.push(data);
 								});
 							}
-							// console.log(destrutData);
+							// console.log("destrutData:\n"+destrutData);
 							dataSource = destrutData;
-							console.log("data:dataSource")
-							console.log(dataSource)
+							// console.log("data:dataSource")
+							// console.log(dataSource)
 							rowSelectFlags.length = dataSource.length;
 							getTotalColHeaders(data.tableHead);
-							console.log("colHeaders:totalColumnsHeaders");
-							console.log(totalColumnsHeaders);
+							// console.log("colHeaders:totalColumnsHeaders");
+							// console.log(totalColumnsHeaders);
 							var totalColumnsOptions = getColumnsOptions(data.tableHead);
-							console.log("columns:totalColumnsOptions");
-							console.log(totalColumnsOptions);
+							// console.log("columns:totalColumnsOptions");
+							// console.log(totalColumnsOptions);
 							// handsontable 配置与生成
 							if (handsontable === null) {
 								handsontable = new Handsontable(tableContainer, {
