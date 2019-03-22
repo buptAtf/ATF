@@ -504,9 +504,9 @@
               <div class="filter-show">
                 <h4 class="panel-title">
                   <a class="btn btn-white" v-on:click="isShow=!isShow, iconflag=!iconflag">
-                    <span v-if="iconflag">显示筛选</span>
+                    <span v-if="!iconflag">显示筛选</span>
                     <span v-else>收起筛选</span>
-                    <i :class="{'icon-angle-down':iconflag, 'icon-angle-up':!iconflag}"></i>
+                    <i :class="{'icon-angle-down':!iconflag, 'icon-angle-up':iconflag}"></i>
                   </a>
                 </h4>
               </div>

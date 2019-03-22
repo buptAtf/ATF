@@ -81,10 +81,12 @@ $(document).ready(function () {
 		var filterVue=new Vue({
 			el: "#filter-container",
 			data: {
-				isShow: false,
+				isShow: true,
 				iconflag: true,
+
 			},
 			ready: function(){
+				var _this = this;
 				// 删除筛选条件
 		        $('.filterList').delegate('button.btn-danger','click',function(){
 		            $(event.target).closest('li').remove();
@@ -728,7 +730,9 @@ $(document).ready(function () {
 		                    }
 		                });
 		            }
-		        });
+				});
+				_this.filterCase();
+				
 			},
 			methods: {
 				 // 添加筛选
