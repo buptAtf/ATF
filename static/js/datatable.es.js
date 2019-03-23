@@ -2444,7 +2444,7 @@ $(document).ready(function () {
 				},
 				"data_backup": {
 					name: "数据备份",
-					callback: null,
+					callback: backupCallback,
 					disabled: function () { },
 					hidden: function(){
 						var selection = handsontable.getSelected()[0];
@@ -2455,9 +2455,9 @@ $(document).ready(function () {
 						return true;
 					}
 				},
-				"数据恢复": {
+				"数据恢复": { 
 					name: "数据恢复",
-					callback: null,
+					callback: restoreCallback,
 					disabled: function () { },
 					hidden: function() {
 						var selection = handsontable.getSelected()[0];
@@ -3202,6 +3202,19 @@ $(document).ready(function () {
 		}
 		// 编辑单元格数据
 		// 设置单元格数据，保证设置的数据不超过最大行，最大列
+
+		//数据备份的回调函数
+		function backupCallback(key,selection){
+			console.log(selection);
+			console.log("key:"+key,"selection:"+selection);
+
+
+		}
+
+		//数据恢复的回调函数
+		function restoreCallback(key, selection){
+
+		}
 
 		// parameter: [[row,col,value],[row,col,value]]
 		function setCellsData(arrayData) {
