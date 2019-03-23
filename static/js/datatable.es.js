@@ -3224,7 +3224,7 @@ $(document).ready(function () {
 				data: JSON.stringify({
 					'testcaseId': testcaseId,
 					'caseCompositeType': caseCompositeType,
-					'datalist':datalist
+					'backupDataList':datalist
 				}),
 				success: function(data){
 					console.log(data);
