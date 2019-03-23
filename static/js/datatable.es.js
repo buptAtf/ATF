@@ -2455,7 +2455,7 @@ $(document).ready(function () {
 						return true;
 					}
 				},
-				"数据恢复": { 
+				"数据恢复": {
 					name: "数据恢复",
 					callback: restoreCallback,
 					disabled: function () { },
@@ -3205,10 +3205,32 @@ $(document).ready(function () {
 
 		//数据备份的回调函数
 		function backupCallback(key,selection){
-			console.log(selection);
-			console.log("key:"+key,"selection:"+selection);
-
-
+			var testcaseId = sessionStorage.getItem('testCaseId');
+			var caseCompositeType = sessionStorage.getItem('caseCompositeType');
+			var datalist = [];
+			var selectionlength = handsontable.getSelected()[0][3];		//得到选中的所有长度
+			for(var i=0; i<selectionlength; i++){
+				if(handsontable.getCellMeta(0, i).__proto__.readOnly===false){	//将可以编辑的单元格选出来
+					var tempdata = {};
+					tempdata.tbHead = handsontable.getCellMeta(0, i).prop;//__proto__;
+					tempdata.value = handsontable.getDataAtCell(0, i);
+					datalist.push(tempdata);
+				}
+			}
+			$.ajax({
+				url: address3 + 'dataCenter/dataBackup',
+				type: 'post',
+				contentType: 'application/json',
+				data: JSON.stringify({
+					'testcaseId': testcaseId,
+					'caseCompositeType': caseCompositeType,
+					'datalist':datalist
+				}),
+				success: function(data){
+					console.log(data);
+				}
+			});
+			console.log(datalist);
 		}
 
 		//数据恢复的回调函数
