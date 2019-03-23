@@ -81,10 +81,12 @@ $(document).ready(function () {
 		var filterVue=new Vue({
 			el: "#filter-container",
 			data: {
-				isShow: false,
+				isShow: true,
 				iconflag: true,
+
 			},
 			ready: function(){
+				var _this = this;
 				// 删除筛选条件
 		        $('.filterList').delegate('button.btn-danger','click',function(){
 		            $(event.target).closest('li').remove();
@@ -728,7 +730,9 @@ $(document).ready(function () {
 		                    }
 		                });
 		            }
-		        });
+				});
+				_this.filterCase();
+
 			},
 			methods: {
 				 // 添加筛选
@@ -1023,7 +1027,9 @@ $(document).ready(function () {
 					this.afterOperationRows = [];
 					if (cellData.includes('@before')) {
 						var beforeStr = cellData.slice(cellData.indexOf('@before\n') + 7, cellData.indexOf('@value'));
+						console.log("beforeSte:"+beforeStr);
 						var beforeArr = beforeStr.split(';\n');
+						console.log("beforeArr:"+beforeArr);
 						this.parseScript(beforeArr, this.beforeOperationRows, 1)
 					}
 					if (cellData.includes('@after')) {
@@ -1113,7 +1119,7 @@ $(document).ready(function () {
 								operation.element = '';
 								var index = strArray[i].indexOf('(');
 								var functions = [{name: strArray[i].slice(0, index), parameterlist: ''}];
-								var paraStr = strArray[i].slice(index + 1, -2);
+								var paraStr = strArray[i].slice(index + 1, -1);
 								var parameters = [];
 								var paraArr = paraStr.split(',');
 								for (let j = 0; j < paraArr.length; j++) {
@@ -1632,16 +1638,43 @@ $(document).ready(function () {
 				trData: ['参数1', '参数2', '参数3', '参数4'],
 				dataPoolType: null,
 				dataWritable: "",
-				functionName: ""
+				functionName: "",
+				paramList: [],
+				functionList:[]
 			},
-			created: function () {
-
+			watch:{
+				functionName: function(value,oldvalue){		//监听functionName的变化，select框一变化就改变参数列表
+					var _this = this;
+					// console.log("我在监听这个functionName"+value+oldvalue);
+					_this.functionList.forEach(function(currFun){
+						if(currFun.name===value){
+							_this.paramList = currFun.paramList;	//遍历函数列表，找到函数名称相同的，将参数列表赋值
+						}
+					});
+					if(_this.paramList.length===0){
+						var nothing = {};
+						nothing.paramName = "无";
+						nothing.paramType = "";
+						nothing.required = false;
+						_this.paramList.push(nothing);
+					}
+					// console.log(_this.paramList);
+				}			
+			},
+			ready: function(){
+				//在这里请求函数名称、参数等...
+				var _this = this;
+				_this.insertFunction();
+			},
+			created: function () {	
+				
 			},
 			methods: {
 				show: function (type, title) {
 					this.isShow = true;
 					this.insertTitle = title;
 					this.type = type;
+					
 				},
 				hide: function () {
 					this.isShow = false;
@@ -1685,6 +1718,33 @@ $(document).ready(function () {
 					else if (ctrl.selectionStart || ctrl.selectionStart == '0')
 						CaretPos = ctrl.selectionStart;
 					return (CaretPos);
+				},
+				insertFunction: function(){
+					var _this = this;
+					var autId = sessionStorage.getItem("autId");
+
+					$.ajax({
+						url: address3 + '/dataCenter/getUtilFuncList',
+						type: 'post',
+						contentType: 'application/json',
+						data: JSON.stringify({
+							autId: autId,
+						}),
+						success: function(data){
+							console.log(data);
+							data.functionList.forEach(function(funList){
+								var currFun = {};
+								currFun.name = funList.name;
+								currFun.desc = funList.desc;
+								currFun.paramList = funList.paramList;
+								_this.functionList.push(currFun);
+							});		
+						}
+						
+					});
+					// console.log(_this.functionList[0]);
+					// _this.functionName = _this.functionList[0].name;
+					console.log("我！可以！出来！");
 				},
 			}
 		});
@@ -1741,17 +1801,17 @@ $(document).ready(function () {
 														testDesign: data.testdesign,
 														caseCode: data.casecode
 													} = value);
-													console.log(value);
+													// console.log(value);
 													dataKey.forEach((key) => {
-														console.log("12Key:" + key+"data_"+key+"qweqwe"+value["data_"+key]);
+														// console.log("12Key:" + key+"data_"+key+"qweqwe"+value["data_"+key]);
 														data[key] = value["data_"+key];
 													});
 													destrutData.push(data);
 												});
 											}
-											console.log(destrutData);
+											console.log("destrutData:\n"+destrutData);
 											dataSource = destrutData;
-											console.log(dataSource)
+											// console.log(dataSource)
 											rowSelectFlags.length = dataSource.length;
 											getTotalColHeaders(data.tableHead);
 											// console.log(totalColumnsHeaders);
@@ -2336,7 +2396,7 @@ $(document).ready(function () {
 					hidden: function () {
 						// [startRow, startCol, endRow, endCol]
 						var selection = handsontable.getSelected()[0];
-						console.log(selection)
+						
 						if (selection && selection[1] >= 7 && selection[0] == selection[2] && selection[1] == selection[3]) {
 							console.log(false)
 							return false;
@@ -2381,7 +2441,33 @@ $(document).ready(function () {
 						}
 						return true;
 					}
+				},
+				"data_backup": {
+					name: "数据备份",
+					callback: backupCallback,
+					disabled: function () { },
+					hidden: function(){
+						var selection = handsontable.getSelected()[0];
+						console.log("selection:"+selection);
+						if(selection && selection[1]==0 && selection[3]>0){    //如果是全选
+							return false;
+						}
+						return true;
+					}
+				},
+				"数据恢复": {
+					name: "数据恢复",
+					callback: restoreCallback,
+					disabled: function () { },
+					hidden: function() {
+						var selection = handsontable.getSelected()[0];
+						if(selection && selection[1]==0 && selection[3]>0){    //如果是全选
+							return false;
+						}
+						return true;
+					}
 				}
+				
 			}
 		};
 		$("#hiddenItem").change(function(e)
@@ -2478,6 +2564,7 @@ $(document).ready(function () {
 				autId = treeNode.getParentNode().getParentNode().id;
 				transid = treeNode.getParentNode().id;
 				scriptId = treeNode.id;
+				sessionStorage.setItem("autId",autId);	//将autId放到session里面，下面插入函数的时候调用接口需要参数autId
 				
 				console.log(scriptId);
 				var data = {
@@ -2527,17 +2614,17 @@ $(document).ready(function () {
 									destrutData.push(data);
 								});
 							}
-							// console.log(destrutData);
+							// console.log("destrutData:\n"+destrutData);
 							dataSource = destrutData;
-							console.log("data:dataSource")
-							console.log(dataSource)
+							// console.log("data:dataSource")
+							// console.log(dataSource)
 							rowSelectFlags.length = dataSource.length;
 							getTotalColHeaders(data.tableHead);
-							console.log("colHeaders:totalColumnsHeaders");
-							console.log(totalColumnsHeaders);
+							// console.log("colHeaders:totalColumnsHeaders");
+							// console.log(totalColumnsHeaders);
 							var totalColumnsOptions = getColumnsOptions(data.tableHead);
-							console.log("columns:totalColumnsOptions");
-							console.log(totalColumnsOptions);
+							// console.log("columns:totalColumnsOptions");
+							// console.log(totalColumnsOptions);
 							// handsontable 配置与生成
 							if (handsontable === null) {
 								handsontable = new Handsontable(tableContainer, {
@@ -3115,6 +3202,41 @@ $(document).ready(function () {
 		}
 		// 编辑单元格数据
 		// 设置单元格数据，保证设置的数据不超过最大行，最大列
+
+		//数据备份的回调函数
+		function backupCallback(key,selection){
+			var testcaseId = sessionStorage.getItem('testCaseId');
+			var caseCompositeType = sessionStorage.getItem('caseCompositeType');
+			var datalist = [];
+			var selectionlength = handsontable.getSelected()[0][3];		//得到选中的所有长度
+			for(var i=0; i<selectionlength; i++){
+				if(handsontable.getCellMeta(0, i).__proto__.readOnly===false){	//将可以编辑的单元格选出来
+					var tempdata = {};
+					tempdata.tbHead = handsontable.getCellMeta(0, i).prop;//__proto__;
+					tempdata.value = handsontable.getDataAtCell(0, i);
+					datalist.push(tempdata);
+				}
+			}
+			$.ajax({
+				url: address3 + 'dataCenter/dataBackup',
+				type: 'post',
+				contentType: 'application/json',
+				data: JSON.stringify({
+					'testcaseId': testcaseId,
+					'caseCompositeType': caseCompositeType,
+					'datalist':datalist
+				}),
+				success: function(data){
+					console.log(data);
+				}
+			});
+			console.log(datalist);
+		}
+
+		//数据恢复的回调函数
+		function restoreCallback(key, selection){
+
+		}
 
 		// parameter: [[row,col,value],[row,col,value]]
 		function setCellsData(arrayData) {

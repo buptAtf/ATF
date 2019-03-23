@@ -427,10 +427,8 @@
           <option v-bind:value="5">全局数据</option>
           <option v-bind:value="6">环境数据</option>
         </select>
-        <select v-show="type==2" class="right-div" id="select-function-name" v-model="functionName">
-          <option>functionA</option>
-          <option>functionB</option>
-          <option>functionC</option>
+        <select v-show="type==2" class="right-div" id="select-function-name"  v-model="functionName">
+          <option v-for="currFunction in functionList"> {{ currFunction.name }}</option>
         </select>
       </div>
       <div class="selectDiv" v-show="(dataPoolType==4 || dataPoolType==5 ) && type==1">
@@ -458,11 +456,12 @@
                 </tr>
               </thead>
               <tbody id="insert-div-tbody">
-                <tr v-for="(row,index) in trData">
+                <tr v-for="item in paramList">
                   <td class="td-param-name">
-                    {{row}}
+                    {{ item.paramName }}
                   </td>
                   <td contenteditable="true" class="td-param-value">
+                    
                   </td>
                 </tr>
               </tbody>
@@ -505,9 +504,9 @@
               <div class="filter-show">
                 <h4 class="panel-title">
                   <a class="btn btn-white" v-on:click="isShow=!isShow, iconflag=!iconflag">
-                    <span v-if="iconflag">显示筛选</span>
+                    <span v-if="!iconflag">显示筛选</span>
                     <span v-else>收起筛选</span>
-                    <i :class="{'icon-angle-down':iconflag, 'icon-angle-up':!iconflag}"></i>
+                    <i :class="{'icon-angle-down':!iconflag, 'icon-angle-up':iconflag}"></i>
                   </a>
                 </h4>
               </div>
