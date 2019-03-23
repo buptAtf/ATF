@@ -4,6 +4,8 @@ var app = new Vue({
         archiName: '抽象架构',
         className: '控件类型',
         classId: '',
+        event:{},
+        i:0,
         methodId: '',
         methodName: '方法',
         classPropTr: '<tr><td><input type="radio" name="class"/></td><td ></td><td ></td></tr>',
@@ -12,7 +14,7 @@ var app = new Vue({
         runtimeArgsParaTr: '<tr><td><input type="checkbox" name="runtimeArgs_list"/></td><td contenteditable="true"></td><td contenteditable="true"></td></tr>',        
         selfRecParaTr: '<tr><td><input type="checkbox" name="selfRec_list"/></td><td contenteditable="true"></td><td contenteditable="true"></td></tr>',        
         assistRecParaTr: '<tr><td><input type="checkbox" name="assistRec_list"/></td><td contenteditable="true"></td><td contenteditable="true"></td></tr>',                
-        methodParaTr: '<tr><td><input type="checkbox" name="chk_list"/></td><td contenteditable="true"></td><td contenteditable="true"></td><td contenteditable="true"></td><td contenteditable="true"></td></tr>',
+        methodParaTr: '<tr name="maydelete"><td><input type="checkbox" name="chk_list"/></td><td contenteditable="true"></td><td contenteditable="true"></td><td contenteditable="true"></td><td contenteditable="true"></td></tr>',
         archiList:[],
         classList: [],
         methodList:[],
@@ -295,7 +297,7 @@ var app = new Vue({
             }
         },
         // 查询当前控件类型下的方法
-        getMethod() {
+        getMethod(a) {
             var classId = $('input[name="class"]:checked').parent().parent().attr('id');
             // console.log(classId)
             var that=this;
@@ -339,6 +341,9 @@ var app = new Vue({
 
                 }
             });
+            if(a&&a==1){
+                that.methodClick(that.event.that.i)
+            }
         },
         //添加方法
         addMethod: function() {
@@ -679,10 +684,11 @@ var app = new Vue({
                 success: function(data) {
                     if (data.respCode==0000) {
                         $('#successModal').modal();
+                        $("tr[name='maydelete']").remove();
                         // $('#methodProp input[name="method"]:checked').parent().next().text(overrideFlag);
                         // $('#methodProp input[name="method"]:checked').parent().next().next().text(methodname);
                         // $('#methodProp input[name="method"]:checked').parent().next().next().next().text(methoddescription);
-                        that.getMethod();
+                        that.getMethod(1);
                     } else {
                         $('#failModal').modal();
                     }
@@ -1094,6 +1100,9 @@ function classClick(event, i) {
 }
 // 勾选方法
 function methodClick(event,i) {
+    var _this=this;
+    _this.event=event;
+    _this.i=i;
     if ($(event.target).attr('checked')) {
         $('#classSection').css('display', 'none');
         $('#methodSection').css('display', 'block');
