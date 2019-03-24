@@ -3207,30 +3207,41 @@ $(document).ready(function () {
 		function backupCallback(key,selection){
 			var testcaseId = sessionStorage.getItem('testCaseId');
 			var caseCompositeType = sessionStorage.getItem('caseCompositeType');
-			var datalist = [];
+			var dataList = [];
+			var backupDataList = [];
+			var tempbackupDataList = {};
 			var selectionlength = handsontable.getSelected()[0][3];		//得到选中的所有长度
 			for(var i=0; i<selectionlength; i++){
 				if(handsontable.getCellMeta(0, i).__proto__.readOnly===false){	//将可以编辑的单元格选出来
 					var tempdata = {};
 					tempdata.tbHead = handsontable.getCellMeta(0, i).prop;//__proto__;
 					tempdata.value = handsontable.getDataAtCell(0, i);
-					datalist.push(tempdata);
+					dataList.push(tempdata);
 				}
 			}
+			//无奈给的接口结构有点复杂，数组中装对象和数组
+			tempbackupDataList.testcaseId = testcaseId;
+			tempbackupDataList.caseCompositeType = caseCompositeType;
+			tempbackupDataList.dataList = dataList;
+			backupDataList.push(tempbackupDataList);
+
 			$.ajax({
 				url: address3 + 'dataCenter/dataBackup',
 				type: 'post',
 				contentType: 'application/json',
 				data: JSON.stringify({
-					'testcaseId': testcaseId,
-					'caseCompositeType': caseCompositeType,
-					'backupDataList':datalist
+					'backupDataList': backupDataList
 				}),
 				success: function(data){
-					console.log(data);
+					if(data.respCode==="0000"){
+						Vac.alert(data.respMsg);
+					} else{
+						Vac.alert("备份失败");
+					}
+
 				}
 			});
-			console.log(datalist);
+			
 		}
 
 		//数据恢复的回调函数
