@@ -333,18 +333,18 @@ var vBody = new Vue({
 					"sessionId":null, 
 				}),
 				success: function(data) {
-					if(data.result.respCode=="0000"){
-						if(data.result.respSyncNo==-1){
-							_this.setResultIcon(data.result.insStatuses)
+					if(data.respCode=="0000"){
+						if(data.respSyncNo==-1){
+							_this.setResultIcon(data.insStatuses)
 							console.log("finish this branch")
 						}
 						else{
-							_this.setResultIcon(data.result.insStatuses)
-							syncQueryIncInsStatus(data.result)
+							_this.setResultIcon(data.insStatuses)
+							syncQueryIncInsStatus(data)
 						}
 					}
 					else{
-						Vac.alert(data.result.respMsg);
+						Vac.alert(data.respMsg);
 					}
 				},
 				error: function() {
@@ -362,13 +362,16 @@ var vBody = new Vue({
 						"sessionId":values.sessionId, 
 					}),
 					success: function(data) {
-						if(data.result.respSyncNo==-1){
-							_this.setResultIcon(data.result.insStatuses)
+						if(data.respSyncNo==-1){
+							_this.setResultIcon(data.insStatuses)
 							console.log("finish this branch")
 						}
+						else if(data.respSyncNo==-2){
+							syncQueryIncInsStatus(values)
+						}
 						else{
-							_this.setResultIcon(data.result.insStatuses)
-							syncQueryIncInsStatus(data.result)
+							_this.setResultIcon(data.insStatuses)
+							syncQueryIncInsStatus(data)
 							console.log("continue this branch")
 						}
 					},
@@ -379,7 +382,25 @@ var vBody = new Vue({
 			}
 		},
 		reQuery: function() {
-			this.batchId && this.startQueryResult();
+			var _this=this;
+			Vac.ajax({
+				url: address2 + 'batchRunCtrlController/queryLatestBatchIdForTestPlan',
+				type: 'post',
+				contentType: 'application/json',
+				data: JSON.stringify({
+					"testPlanId": _this.testPlanId,
+				}),
+				success: function(data) {
+					_this.batchId = data.batchId;
+					_this.startQueryResult();
+				},
+				error: function(){
+					Vac.alert('网络错误，执行失败！');
+					_this.setResultIcon();
+				}
+			})
+			if(_this.batchId)
+				_this.startQueryResult();
 		},
 		setResultIcon: function(data) {
 			if(!data) {
@@ -610,14 +631,14 @@ var vBody = new Vue({
 					"sessionId":null, 
 				}),
 				success: function(data) {
-					if(data.result.respCode=="0000"){
-						if(data.result.respSyncNo==-1){
-							_this.setResultIcon(data.result.insStatuses);
+					if(data.respCode=="0000"){
+						if(data.respSyncNo==-1){
+							_this.setResultIcon(data.insStatuses);
 							_this.exeStautShow = '<i class="icon-ok"></i>已执行';
 							_this.exeStauts = true;
 						}
 						else{
-							_this.setResultIcon(data.result.insStatuses);
+							_this.setResultIcon(data.insStatuses);
 							_this.exeStautShow = '<i class="icon-spinner"></i>执行中';
 							_this.exeStauts = false;
 						}
@@ -625,7 +646,7 @@ var vBody = new Vue({
 					else{
 						_this.exeStautShow = '<i class="icon-question"></i>未知';
 						_this.exeStauts = false;
-						Vac.alert(data.result.respMsg);
+						Vac.alert(data.respMsg);
 					}
 				},
 				error: function() {

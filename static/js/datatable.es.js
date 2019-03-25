@@ -2444,7 +2444,7 @@ $(document).ready(function () {
 				},
 				"data_backup": {
 					name: "数据备份",
-					callback: null,
+					callback: backupCallback,
 					disabled: function () { },
 					hidden: function(){
 						var selection = handsontable.getSelected()[0];
@@ -2457,7 +2457,7 @@ $(document).ready(function () {
 				},
 				"数据恢复": {
 					name: "数据恢复",
-					callback: null,
+					callback: restoreCallback,
 					disabled: function () { },
 					hidden: function() {
 						var selection = handsontable.getSelected()[0];
@@ -3202,6 +3202,52 @@ $(document).ready(function () {
 		}
 		// 编辑单元格数据
 		// 设置单元格数据，保证设置的数据不超过最大行，最大列
+
+		//数据备份的回调函数
+		function backupCallback(key,selection){
+			var testcaseId = sessionStorage.getItem('testCaseId');
+			var caseCompositeType = sessionStorage.getItem('caseCompositeType');
+			var dataList = [];
+			var backupDataList = [];
+			var tempbackupDataList = {};
+			var selectionlength = handsontable.getSelected()[0][3];		//得到选中的所有长度
+			for(var i=0; i<selectionlength; i++){
+				if(handsontable.getCellMeta(0, i).__proto__.readOnly===false){	//将可以编辑的单元格选出来
+					var tempdata = {};
+					tempdata.tbHead = handsontable.getCellMeta(0, i).prop;//__proto__;
+					tempdata.value = handsontable.getDataAtCell(0, i);
+					dataList.push(tempdata);
+				}
+			}
+			//无奈给的接口结构有点复杂，数组中装对象和数组
+			tempbackupDataList.testcaseId = testcaseId;
+			tempbackupDataList.caseCompositeType = caseCompositeType;
+			tempbackupDataList.dataList = dataList;
+			backupDataList.push(tempbackupDataList);
+
+			$.ajax({
+				url: address3 + 'dataCenter/dataBackup',
+				type: 'post',
+				contentType: 'application/json',
+				data: JSON.stringify({
+					'backupDataList': backupDataList
+				}),
+				success: function(data){
+					if(data.respCode==="0000"){
+						Vac.alert(data.respMsg);
+					} else{
+						Vac.alert("备份失败");
+					}
+
+				}
+			});
+			
+		}
+
+		//数据恢复的回调函数
+		function restoreCallback(key, selection){
+
+		}
 
 		// parameter: [[row,col,value],[row,col,value]]
 		function setCellsData(arrayData) {
