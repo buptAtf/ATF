@@ -459,7 +459,14 @@ var vBody = new Vue({
 				}),
 				success: function(data){
 					if(data.respCode == '0000'){
-						_this.allscenes = data.sceneEntityList;
+						_this.allscenes = [];
+						if(data.sceneEntityList.length){
+							for(let i=0;i<data.sceneEntityList.length;i++){
+								if(data.sceneEntityList[i].deleteFlag!=2){
+									_this.allscenes.push(data.sceneEntityList[i]);
+								}
+							}
+						}
 						$('#add-modal').modal('show');
 					}
 				}
