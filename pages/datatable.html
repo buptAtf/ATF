@@ -502,11 +502,15 @@
           <div class="row">
             <div class="col-lg-2">
               <div class="filter-show">
-                <h4 class="panel-title">
+                <h4 class="panel-title" style="width: 900px">
                   <a class="btn btn-white" v-on:click="isShow=!isShow, iconflag=!iconflag">
                     <span v-if="!iconflag">显示筛选</span>
                     <span v-else>收起筛选</span>
                     <i :class="{'icon-angle-down':!iconflag, 'icon-angle-up':iconflag}"></i>
+                  </a>
+                  <a class="btn btn-white" style="float: right;" v-on:click="sinFlag=!sinFlag">
+                    <span v-if="sinFlag">切换流程用例显示</span>
+                    <span v-else>切换单用例展示</span>
                   </a>
                 </h4>
               </div>

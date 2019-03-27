@@ -7,6 +7,7 @@ var minShowPage = 1;  //  当前显示的最小的页码
 var maxShowPage = 7;   //显示的最大的页码
 var totalPage = 0;
 var lis = new Array();
+var searchflag = false;     //是否按下搜索的标志
 
 var sendData = {
     order:"id",
@@ -374,21 +375,27 @@ function sendQuery(sendPage,func){
     var page = parseInt(sendPage);
     var rows = showRows;
     var data = getSendData(page, rows);
-    Vac.ajax({
-        url: address3 + "userController/pagedBatchQueryUser",
-        data: data,
-        success: function(data){
-            if (data.respCode === '0000') {
-                dataSet = data.list;
-                totalRows = data.totalCount;
-                createTable(dataSet);
-                func(totalRows, page);
-            } else {
-                Vac.alert('查询失败');
+    if(searchflag){
+        func(totalRows, page);
+        search();
+    } else{
+        Vac.ajax({
+            url: address3 + "userController/pagedBatchQueryUser",
+            data: data,
+            success: function(data){
+                if (data.respCode === '0000') {
+                    dataSet = data.list;
+                    totalRows = data.totalCount;
+                    createTable(dataSet);
+                    func(totalRows, page);
+                } else {
+                    Vac.alert('查询失败');
+                }
+                
             }
-            
-        }
-    });
+        });
+    }
+
 }
 //获取发送数据
 function getSendData(page, rows, key, value){
@@ -433,6 +440,7 @@ function paginationControl(totalPage, currentPage){
 function createTable(dataArray){
     var tbody = $("#example tbody");
     tbody.empty();
+    
     dataArray.forEach(function(value){
         var tr = $('<tr></tr>');
         var tdId =  $(`<td class="td-id"></td>`).text(value.id);
@@ -513,6 +521,7 @@ function showViewModal(target){
 
 // 点击搜索按钮
 function search(){
+    searchflag = true;  //按下了搜索按钮
     var key = $("#search-type").val();      //select value
     var searchkey = $("#searchKey").val();  //input value
     for(var data in sendData){
@@ -520,7 +529,7 @@ function search(){
     }
     sendData["sort"] = "asc";
     sendData["order"] = "id";
-    var page = 1; // 页码
+    var page = currentPage; // 页码
     var rows = showRows;  //每页的大小
     var data =getSendData(page,rows);
     if(key == "role") data["roleCn"] = searchkey;//角色搜索
@@ -534,7 +543,7 @@ function search(){
                 dataSet = data.list;
                 totalRows = data.totalCount;
                 createTable(dataSet);
-                updatePagination(data.totalCount,1);
+                updatePagination(data.totalCount,currentPage);
                 // func(totalRows, page);
             } else {
                 Vac.alert('搜索结果不存在');
