@@ -278,6 +278,7 @@ var vBody = new Vue({
 					selectedExeInstanceId.push(selectedSceneCase[selectedSceneCase.length-1])
 				}
 			}
+			_this.exeStautShow = '<i class="icon-spinner"></i>执行中';
 			Vac.ajax({
 				url: address2 + 'executeController/t1',
 				type: 'post',
