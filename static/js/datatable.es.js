@@ -83,6 +83,7 @@ $(document).ready(function () {
 			data: {
 				isShow: true,
 				iconflag: true,
+				sinFlag: true
 
 			},
 			ready: function(){

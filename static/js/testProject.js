@@ -7,20 +7,23 @@ var app = new Vue({
         pageSize: 10, //页面大小
         currentPage: 1, //当前页
         totalPage: 1, //总页数
-        listnum: 10, //页面大小
+        listnum: 5, //页面大小
         order: 'id',
         sort: 'asc',
         isPageNumberError: false,
         checkboxModel: [],
         checked: "",
-        queryTestProject: '',
+        queryContent: '',
         ids: '',
         //当前选中行
         selectedId: '',
         selectedTestProjectCode: '',
         selectedTestProjectName: '',
         selectedTaskDescription: '',
-        projectName: sessionStorage.getItem("projectNameStorage")
+        projectName: sessionStorage.getItem("projectNameStorage"),
+       
+        
+        
     },
     ready: function() {
         getTestProject(this.currentPage, this.pageSize, this.order, this.sort);
@@ -221,28 +224,34 @@ var app = new Vue({
 
 });
 
+var searchFlag = false;   //是否点击搜索的标志
+
 //获取系统
 function getTestProject(page, listnum, order, sort) {
-
-    //获取list通用方法，只需要传入多个所需参数
-    $.ajax({
-        url: address3 + 'testProjectController/pagedBatchQueryTestProject',
-        type: 'post',
-        contentType: 'application/json',
-        data: JSON.stringify({
-            'currentPage': page,
-            'pageSize': listnum,
-            'orderColumns': "modified_time",
-            "orderType":"DESC",
-        }),
-        success: function(data) {
-            // console.info(data);
-            app.testProjectList = data.list;
-            app.tt = data.totalCount;
-            app.totalPage = Math.ceil(app.tt / listnum);
-            app.pageSize = listnum;
-        }
-    });
+    if(searchFlag){
+        queryTestProject();
+    } else{
+        //获取list通用方法，只需要传入多个所需参数
+        $.ajax({
+            url: address3 + 'testProjectController/pagedBatchQueryTestProject',
+            type: 'post',
+            contentType: 'application/json',
+            data: JSON.stringify({
+                'currentPage': page,
+                'pageSize': listnum,
+                'orderColumns': "modified_time",
+                "orderType":"DESC",
+            }),
+            success: function(data) {
+                // console.info(data);
+                app.testProjectList = data.list;
+                app.tt = data.totalCount;
+                app.totalPage = Math.ceil(app.tt / listnum);
+                app.pageSize = listnum;
+            }
+        });
+    }
+    
 
 }
 
@@ -285,23 +294,26 @@ function resort(target) {
 
 //根据编号搜索系统
 function queryTestProject() {
+ 
+    searchFlag = true;          //如果是点击了搜索按钮，则下次查询的时候保持搜索的条件进行查询
+    if(arguments[0]==='1'){     //在页面中点击搜索按钮，传入参数'1'
+        app.currentPage = 1;    //将当前页面设置为1
+    }
     $.ajax({
         url: address3 + 'testProjectController/pagedBatchQueryTestProject',
         type: 'POST',
         contentType: 'application/json',
         data: JSON.stringify({
-            'currentPage': 1,
-            'pageSize': 10,
+            'currentPage': app.currentPage, 
+            'pageSize': app.pageSize,
             'orderColumns': 'id',
             'orderType': 'asc',
-            'codeLong': app.queryTestProject
+            'codeLong': app.queryContent
         }),
         success: function(data) {
             app.testProjectList = data.list;
-            // console.log(app.testProjectList);
             app.tt = data.totalCount;
             app.totalPage = Math.ceil(app.tt / app.listnum);
-            // app.pageSize = app.listnum;
         }
     });
 }
