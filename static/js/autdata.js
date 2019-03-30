@@ -33,17 +33,19 @@ var app = new Vue({
         },
         getautdata() {
             $.ajax({
-                url: address + 'dataPoolController/selectByCondition',
-                type: 'post',
-                data: {
-                    'poolname': '被测系统数据池',
-                    'poolobjid': this.autId,
-                    'dataname': '',
-                },
+                url: address3 + 'dataPool/querySingleDataPool',
+                type: 'post',contentType: 'application/json',
+                data: JSON.stringify({
+                    'poolName': '被测系统数据池',
+                    'poolObjId': this.autId,
+                    'dataName': '',
+                }),
                 success: function(data) {
-                    console.log(data.obj);
-                    app.autdataList = data.obj;
-                    app.autdataListLength = data.obj.length;
+                    if (data.respCode == 0000) {
+                        console.log(data.obj);
+                        app.autdataList = data.obj;
+                        app.autdataListLength = data.obj.length;
+                    }
                 }
             });
         },
@@ -82,12 +84,17 @@ var app = new Vue({
         insert: function() {
             $('#insertForm input[name="autid"]').val($('#autSelect').val()),
                 $.ajax({
-                    url: address + 'dataPoolController/insert',
-                    type: 'post',
-                    data: $("#insertForm").serializeArray(),
+                    url: address3 + 'dataPool/addSingleDataPool',
+                    type: 'post',contentType: 'application/json',
+                    data: JSON.stringify({
+                        'poolName': '被测系统数据池',
+                        'poolObjId': this.autId,
+                        'dataName': $("#dataname").val(),
+                        'dataValue':$("#datavalue").val(),
+                        'dataDesc':$("#datadesc").val(),
+                    }),
                     success: function(data) {
-                        console.info(data);
-                        if (data.success) {
+                        if (data.respCode == 0000) {
                             $('#successModal').modal();
                             getautdata();
                         } else {
@@ -111,11 +118,11 @@ var app = new Vue({
         },
         del: function() {
             $.ajax({
-                url: address + 'dataPoolController/delete',
-                type: 'post',
-                data: {
+                url: address3 + 'dataPool/deleteSingleDataPool',
+                type: 'post',contentType: 'application/json',
+                data: JSON.stringify({
                     'id': app.ids
-                },
+                }),
                 success: function(data) {
                     console.info(data);
                     if (data.success) {
@@ -143,9 +150,16 @@ var app = new Vue({
         },
         update: function() {
                 $.ajax({
-                    url: address + 'dataPoolController/update',
-                    type: 'post',
-                    data: $("#updateForm").serializeArray(),
+                    url: address3 + 'dataPool/modifySingleDataPool',
+                    type: 'post',contentType: 'application/json',
+                    data: JSON.stringify({
+                        'id':app.ids,
+                        'poolName': '被测系统数据池',
+                        'poolObjId': $("#upid").val(),
+                        'dataName': $("#dataupname").val(),
+                        'dataValue':$("#dataupvalue").val(),
+                        'dataDesc':$("#dataupdesc").val(),
+                    }),
                     success: function(data) {
                         console.info(data);
                         if (data.success) {
@@ -188,16 +202,23 @@ function getAutId() {
 
 function getautdata() {
     $.ajax({
-        url: address + 'dataPoolController/selectByCondition',
-        type: 'post',
-        data: {
-            'poolname': '被测系统数据池',
-            'poolobjid': app.autId,
-            'dataname': '',
-        },
+        url: address3 + 'dataPool/pagedBatchQueryDataPool',
+        type: 'post',contentType: 'application/json',
+        data: JSON.stringify({
+            'poolName': '被测系统数据池',
+            'poolObjId': app.autId,
+            'pageSize': 10,
+            'currentPage': 1,
+            'orderType': '',
+            'orderColumns':'',
+            'dataName': $("#dataname").val(),
+            'dataValue':$("#datavalue").val(),
+            'dataDesc':$("#datadesc").val(),
+        }),
         success: function(data) {
-            console.log(data.obj);
-            app.autdataList = data.obj;
+            console.log(data.list);
+            app.autdataList = data.list;
+            app.totalCount=data.totalCount;
         }
     });
 }

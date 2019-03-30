@@ -1088,7 +1088,7 @@ var app = new Vue({
                     success: function(data) {                        
                         $('#importModal').modal('hide');
                         if (data.respCode==0000) {
-                            $('#successModal').modal('show');
+                            $('#successModal1').modal('show');
                         } else {
                             _this.failMSG=data.respMsg;
                             $('#failModal2').modal('show');

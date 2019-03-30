@@ -63,19 +63,19 @@
                                                 <div class="form-group">
                                                     <label class="col-lg-3 control-label">名称</label>
                                                     <div class="col-lg-5">
-                                                        <input type="text" class="form-control" name="dataname">
+                                                        <input type="text" class="form-control" id="dataname" name="dataname">
                                                     </div>
                                                 </div>
                                                 <div class="form-group">
                                                     <label class="col-lg-3 control-label">值</label>
                                                     <div class="col-lg-5">
-                                                        <input type="text" class="form-control" name="datavalue">
+                                                        <input type="text" class="form-control" name="datavalue" id="datavalue">
                                                     </div>
                                                 </div>
                                                 <div class="form-group">
                                                     <label class="col-lg-3 control-label">描述</label>
                                                     <div class="col-lg-5">
-                                                        <textarea class="form-control" rows="3" name="datadesc"></textarea>
+                                                        <textarea class="form-control" rows="3" name="datadesc" id="datadesc"></textarea>
                                                     </div>
                                                 </div>
                                             </form>
@@ -138,25 +138,25 @@
                                                 <div class="form-group hidden">
                                                     <label class="col-lg-3 control-label">数据id</label>
                                                     <div class="col-lg-5">
-                                                        <input type="text" class="form-control" name="id">
+                                                        <input type="text" class="form-control" name="id" id="upid">
                                                     </div>
                                                 </div>
                                                 <div class="form-group">
                                                     <label class="col-lg-3 control-label">名称</label>
                                                     <div class="col-lg-5">
-                                                        <input type="text" class="form-control" name="dataname">
+                                                        <input type="text" class="form-control" name="dataname" id="dataupname">
                                                     </div>
                                                 </div>
                                                 <div class="form-group">
                                                     <label class="col-lg-3 control-label">值</label>
                                                     <div class="col-lg-5">
-                                                        <input type="text" class="form-control" name="datavalue">
+                                                        <input type="text" class="form-control" name="datavalue" id="dataupvalue">
                                                     </div>
                                                 </div>
                                                 <div class="form-group">
                                                     <label class="col-lg-3 control-label">描述</label>
                                                     <div class="col-lg-5">
-                                                        <textarea class="form-control" rows="3" name="datadesc"></textarea>
+                                                        <textarea class="form-control" rows="3" name="datadesc" id="dataupdesc"></textarea>
                                                     </div>
                                                 </div>
                                             </form>
@@ -256,10 +256,10 @@
                                         <td>
                                             <input type="radio" v-model="" name="chk_list" id="{{item.id}}" />
                                         </td>
-                                        <td class="center hidden-phone">{{ item.dataname }}</td>
-                                        <td>{{ item.datavalue }}</td>
+                                        <td class="center hidden-phone">{{ item.dataName }}</td>
+                                        <td>{{ item.dataValue }}</td>
                                         <!-- <td class="hidden-phone">{{ transact.transacttype }}</td> -->
-                                        <td class="hidden-phone">{{ item.datadesc}}</td>
+                                        <td class="hidden-phone">{{ item.dataDesc}}</td>
                                     </tr>
                                     <tr v-show="autdataListLength==0"><td colspan="4">暂无数据</td></tr>
                                 </tbody>
