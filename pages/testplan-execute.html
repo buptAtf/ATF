@@ -182,9 +182,9 @@
               </header>
               <div id="sortable_sceneslist">
                 <div class="scene-list-wrapper  -wrapper" style="padding:0px 20px 10px 20px" v-for="scene in testSceneList">
-                  <i class="icon-move handle2" style="color: #5a3c3c;"></i>&nbsp;&nbsp;   <!-- 刘瑞卿新加，给场景前添加移动符号-->
+                  <i class="icon-move handle2" style="color: #5a3c3c;"></i>&nbsp;&nbsp;   
                   <div class="checkbox-wrapper" style="display: inline-block;vertical-align: top;padding: 2px 5px; position: relative; top: 5px;" @mousedown.stop="1">
-                    <input type="checkbox" :value="scene.sceneId" class="checkscene" v-bind:name="scene.id"  v-model="selectedScenes">   <!-- 刘瑞卿新加-->
+                    <input type="checkbox" :value="scene.sceneId" class="checkscene" v-bind:name="scene.id"  v-model="selectedScenes"> <!-- lrqlrq-->
                   </div>
                   <span class="scene-list-title list-title" style="top: 8px;">{{scene.sceneName}}</span>
                   <button class="hide-case-list btn btn-xs btn-info" @click="hideCaseList($event)" @mousedown.stop="1"><span>收起</span>&nbsp;&nbsp;<i class="icon-caret-down"></i></button>
@@ -209,7 +209,7 @@
                               <div class="case-header">
                                 <img :src="exeImgs[0]" :id="'img' + '-' + scene.sceneId+'-'+case_wrapper.caseId">
                                 <p :title="case_wrapper.casecode">{{case_wrapper.caseCode}}</p>
-                                <input type="checkbox" :value="'sort'+'-'+scene.sceneId+'-'+case_wrapper.caseId" class="check-case check-case-inscene" v-model="selectedSceneCases" @change="checkFlowNode($event)">
+                                <input type="checkbox" :value="'sort'+'-'+scene.sceneId+'-'+case_wrapper.caseId" class="check-case check-case-inscene" v-model="selectedSceneCases" @change="checkFlowNode($event)"> <!--lrlrq -->
                               </div>
                               <div class="case-main">
                                 <a class="view-case" @click.stop="viewCase(scene.sceneId, case_wrapper.caseId, 'PE6')">查看</a>

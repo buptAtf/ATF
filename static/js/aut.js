@@ -20,7 +20,7 @@ var app = new Vue({
         selectedAutName: '',
         selectedAbstractarchitecture_name: '',
         selectedAut_desc: '',
-        failMsg:"操作失败"
+        failMsg:"操作失败",
     },
     ready: function() {
         getAut(this.currentPage, this.pageSize, this.order, this.sort);
@@ -332,29 +332,38 @@ var app = new Vue({
 
 });
 
+var queryFlag = false;  //是否按下搜索按钮的标志
+
+
 //获取系统
 function getAut(page, listnum, order, sort) {
 
+    if(queryFlag){
+        queryAut();
+    }
+    else{
+        $.ajax({
+            url: address3+'aut/pagedBatchQueryAut',
+            type: 'post',
+            contentType: 'application/json',
+            data: JSON.stringify({
+                'currentPage': page,
+                'pageSize': listnum,
+                'orderColumns': "modified_time",
+                "orderType":"DESC",
+            }),
+            success: function(data) {
+                // console.info(data);
+                // var data = JSON.parse(data);
+                app.autList = data.autRespDTOList;
+                app.tt = data.totalCount;
+                app.totalPage = data.totalPage;
+                app.pageSize = listnum;
+            }
+        });
+    }
     //获取list通用方法，只需要传入多个所需参数
-    $.ajax({
-        url: address3+'aut/pagedBatchQueryAut',
-        type: 'post',
-        contentType: 'application/json',
-        data: JSON.stringify({
-            'currentPage': page,
-            'pageSize': listnum,
-            'orderColumns': "modified_time",
-            "orderType":"DESC",
-        }),
-        success: function(data) {
-            // console.info(data);
-            // var data = JSON.parse(data);
-            app.autList = data.autRespDTOList;
-            app.tt = data.totalCount;
-            app.totalPage = data.totalPage;
-            app.pageSize = listnum;
-        }
-    });
+
 
 }
 
@@ -398,6 +407,10 @@ function resort(target) {
 
 //搜索系统
 function queryAut() {
+    if(arguments[0]=='query'){  //如果按下搜索按钮
+        queryFlag = true;       //搜索标志位置位true
+        app.currentPage = 1;    //当前页设置为首页    
+    }
     $.ajax({
         url: address3+'aut/pagedBatchQueryAut',
         type: 'POST',
