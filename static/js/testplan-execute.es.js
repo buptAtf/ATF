@@ -273,16 +273,13 @@ var vBody = new Vue({
 			var selectedExeInstances=[];
 			if(_this.exeScope==1){}
 			else{
-				
 				for(var i=0; i<_this.selectedSceneCases.length; i++){
 					let temp = {};
 					let selectedSceneCase = _this.selectedSceneCases[i].split("-");
 					temp.caseId = selectedSceneCase[selectedSceneCase.length-1];
 					temp.sceneId = selectedSceneCase[1];
 					selectedExeInstances.push(temp);
-					console.log(temp);
 				}
-				console.log(selectedExeInstances);
 			}
 			_this.exeStautShow = '<i class="icon-spinner"></i>执行中';
 			Vac.ajax({
