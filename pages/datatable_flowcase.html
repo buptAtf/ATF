@@ -17,13 +17,79 @@
   <script type="text/javascript" src="../lib/vue.js"></script>
   <script type="text/javascript" src="../lib/handsontable.full.js"></script>
   <title>测试资源管理-流程用例</title>
-
+  <style>
+    .insert-btn {
+      margin-left: 20px;
+    }
+    .btn-default {
+      color: #333;
+      background-color: #fff;
+      border-color: #ccc;
+    }
+    .btn-default:hover,
+    .btn-default:focus,
+    .btn-default:active,
+    .btn-default.active,
+    .open .dropdown-toggle.btn-default {
+      color: #333;
+      background-color: #ebebeb;
+      border-color: #adadad;
+    }
+  </style>
 </head>
 
-<body>
-  <link rel="import" href="./common/header-guide.html?__inline">
-  <link rel="import" href="./common/aside-guide.html?__inline">
+<body id="v-body">
+  <div class="content">
+    <link rel="import" href="./common/header-guide.html?__inline">
+    <link rel="import" href="./common/aside-guide.html?__inline">
+    <section id="main-content">
+      <section class="wrapper" style="margin-top:0px">
+        <div class="row">
+          <div class="col-lg-12">
+            <ul class="breadcrumb">
+              <li><a href="#"><i class="icon-home"></i> 项目测试</a></li>
+              <li class="active"><a href="#">测试资源管理-流程用例</a></li>
+            </ul>
+          </div>
+        </div>
+        <div class="row" style="margin-left: 20px;">
+          <a class="btn btn-white">
+              <span onclick="location.href='datatable.html'"> 切换单用例展示</span>
+          </a>
+        </div>
 
+        <div class="row" style="margin-top:20px;">
+            <div class="col-lg-3">
+              <section class="panel panel-default">
+                <div class="panel-heading text-center" >流程用例</div>
+                <ul class="list-group" >
+                  <li class="list-group-item text-center" v-for="item in flowcaselist">{{ item }}</li>
+                </ul>
+              </section>
+            </div>
+            <div class="col-lg-9">
+              <section class="panel panel-default">
+                <div class="panel-heading">数据</div>
+                <table class="table">
+                  <th>查看脚本</th>
+                  <th>用例编号</th> 
+                  <th>测试点</th>
+                  <th>测试意图</th>
+                  <th>测试步骤</th>
+                  <th>预期结果</th>
+                  <th>检查点</th>
+                </table>
+
+                </section>
+            </div>
+        </div>
+      </section>
+
+
+    <link rel="import" href="./common/copy-right.html?__inline">
+    </section>
+
+  </div>
 
   <link rel="import" href="./common/header.html?__inline">
   <link rel="import" href="./noLoginAlert.html?__inline">
@@ -38,7 +104,7 @@
   <script src="../static/js/config.js"></script>
   <script src="../static/js/vac-functions.es.js"></script>
   <!-- <script type="text/javascript" src="../static/js/case-operation/view-script.js"></script> -->
-  <!-- <script src="../static/js/datatable.es.js"></script> -->
+  <script src="../static/js/datatable_flowcase.js"></script>
   <script src="../../lib/common-scripts.js"></script>
   <script type="text/javascript" src="../lib/bootstrap-select.min.js"></script>
   <!-- 使用其表格拖拽功能 -->
