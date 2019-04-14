@@ -12,6 +12,70 @@ function viewScriptHandler (event,caseCompositeType) {//查看脚本按钮的函
 	view.getData(testcaseId,caseCompositeType);//查看脚本
 	event.stopPropagation();
 }
+
+var bootstraptable = new Vue({//与 bootstraptable 绑定
+	el: '#boorstraptable',
+	data: {
+	  columns: [
+		  {
+			  title: 'ItemLALALA',
+			  field: 'id',
+			  sortable: true
+		  },
+		  {
+			  field: 'name',
+			  title: 'Item Name',
+			  sortable: true
+		  }, {
+			  field: 'price',
+			  title: 'Item Price',
+			  sortable: true
+		  }
+	  ],
+	  data: [
+		  {
+			  "id": 0,
+			  "name": "Item 0",
+			  "price": "$0"
+		  }
+	  ],
+	  options: {
+		  editable:true,
+		  sortName: 'id', 
+		  sortOrder: 'esc',
+		  sortStable: true,
+		  locale: 'zh-CN',
+		  pagination: true,
+		  showPaginationSwitch: true,
+		  search: true,
+		  showToggle: true,
+		  showRefresh: true,
+		  showColumns: true,
+	  }
+	},
+	methods: {
+	  addBook () {//change the Array by pop and push
+		var _this=this;
+		_this.columns.push({field: 'price',title: 'Item Price2'})
+	  },
+	  addBook2: function () {//change the Array by index,it cant rander modify;but if array change by other way it will render
+		var _this=this;
+		var length = Math.ceil(Math.random()*10);
+		_this.books[2]={id: length, name: '西游记'+length, author: '吴承恩'+length, price: 20+length};
+	  },
+	  changeBook: function () {//change the Array by =，it can work,perfect 
+		var _this=this;
+		var length = Math.ceil(Math.random()*10);
+		_this.books=[
+			{id: 23, name: '阿亮你看我', author: '余小C', price: 30},
+			{id: 32, name: '凯哥我点了', author: 'D主', price: 24},]
+	  },
+	  seeBook: function () {//see the Array
+	  var _this=this;
+		console.log(_this.books)
+	  },
+  }
+});
 var view = new Vue({//与查看脚本的模态框相绑定
 	el: '#script-modal',
 	data: {
@@ -1974,201 +2038,6 @@ $(document).ready(function () {
 				}
 			}
 		});
-		// var APIFieldModal = new Vue({
-		// 	el: 'APIFieldModal',
-		// 	data: {
-		// 		APIFieldModalVerificationData:[{
-		// 			"expectValue": "2",
-		// 			"compareChar": "==",
-		// 			"pathExpression": "\\$..totalCount"
-		// 		},
-		// 		{
-		// 			"expectValue": "3",
-		// 			"compareChar": "!=",
-		// 			"pathExpression": "\\$..totalCount"
-		// 		}
-		// 		],
-
-		// 	},
-		// 	created: function () {
-	
-		// 	},
-		// 	ready: function () {
-
-		// 	},
-		// 	method: {
-		// 		APIFieldModalInit:function(){
-		// 			$('input[name="APIFieldVerificationParaExp"]').last().change(APIFieldVerificationParaAdd);
-		// 			$('input[name="APIFieldExtractionParaExp"]').last().change(APIFieldExtractionParaAdd);
-		// 			$(".APIFieldExtractionParaRow").hide();
-		// 			$('#APIFieldModal').modal('show');
-		// 			APIFieldModalLoadVerificationData();
-		// 			APIFieldModalLoadExtractionData();
-		// 		},
-		// 		APIFieldModalLoadVerificationData:function(){
-		// 			$.ajax({
-		// 				url: address3 + 'scripttemplateController/getInterfaceCheckValues',
-		// 				data: JSON.stringify({
-		// 					"testCaseId":sessionStorage.getItem('testCaseId'),
-		// 					"caseCompositeType":sessionStorage.getItem('caseCompositeType')
-		// 				}),
-		// 				type: 'post',
-		// 				contentType:"application/json",
-		// 				success: function (data) {
-		// 				  if (!data) {
-		// 					Vac.alert(data.msg || '查询失败');
-		// 					return;
-		// 				  }	
-		// 					// _this.tableData = data.scriptList;
-		// 					  console.log("Verification Data:");
-		// 					console.log(data);
-		// 				},
-		// 				error: function(XMLHttpRequest, textStatus, errorThrown) {
-		// 				  Vac.alert(`查询出错！\n 错误信息：${textStatus}`);
-		// 				}
-		// 			});
-		// 		},
-				
-		// 		APIFieldModalLoadExtractionData:function(){
-		// 			$.ajax({
-		// 				url: address3 + 'scripttemplateController/getInterfaceExtractValues',
-		// 				data: JSON.stringify({
-		// 					"testCaseId":sessionStorage.getItem('testCaseId'),
-		// 					"caseCompositeType":sessionStorage.getItem('caseCompositeType')
-		// 				}),
-		// 				type: 'post',
-		// 				contentType:"application/json",
-		// 				success: function (data) {
-		// 				  if (!data) {
-		// 					Vac.alert(data.msg || '查询失败');
-		// 					return;
-		// 				  }	
-		// 					// _this.tableData = data.scriptList;
-		// 					  console.log("Extraction Data:");
-		// 					console.log(data);
-		// 				},
-		// 				error: function(XMLHttpRequest, textStatus, errorThrown) {
-		// 				  Vac.alert(`查询出错！\n 错误信息：${textStatus}`);
-		// 				}
-		// 			});
-		// 		},
-				
-		// 		APIFieldVerificationParaAdd:function() {
-		// 			$('input[name="APIFieldVerificationParaExp"]').last().unbind('change',APIFieldVerificationParaAdd);    
-					
-		// 			var deleteButtonTr = `
-		// 							<div class="col-lg-0">
-		// 								<button class="btn" type="button" onclick="APIFieldParaRowDelete(event)" style="color:red;background:transparent">
-		// 									<i class="icon-remove"></i>
-		// 								</button>
-		// 							</div>`;
-		// 			$('.APIFieldVerificationParaRow').last().append(deleteButtonTr);
-				
-		// 			var APIFieldVerificationParaTr = `
-		// 							<div class="form-group APIFieldVerificationParaRow">
-		// 								<div class="col-lg-5">
-		// 									<input class="form-control" type="text" name="APIFieldVerificationParaExp" placeholder="表达式">
-		// 								</div>
-		// 								<div class="col-lg-3">
-		// 									<select class="form-control" name="APIFieldVerificationParaSel">
-		// 										<option value="==">等于</option>
-		// 										<option value="!=">不等于</option>
-		// 										<option value="C">包含</option>
-		// 										<option value="!C">不包含</option>
-		// 									</select>
-		// 								</div>
-		// 								<div class="col-lg-3">
-		// 									<input class="form-control" type="text" name="APIFieldVerificationParaVal" placeholder="预期值">
-		// 								</div>
-		// 							</div>`;
-		// 			$('#APIFieldParaListBody').append(APIFieldVerificationParaTr);
-				
-		// 			$('input[name="APIFieldVerificationParaExp"]').last().change(APIFieldVerificationParaAdd);    
-		// 		},
-				
-		// 		APIFieldExtractionParaAdd:function() {
-		// 			$('input[name="APIFieldExtractionParaExp"]').last().unbind('change',APIFieldExtractionParaAdd);    
-					
-		// 			var deleteButtonTr = `
-		// 							<div class="col-lg-0">
-		// 								<button class="btn" type="button" onclick="APIFieldParaRowDelete(event)" style="color:red;background:transparent">
-		// 									<i class="icon-remove"></i>
-		// 								</button>
-		// 							</div>`;
-		// 			$('.APIFieldExtractionParaRow').last().append(deleteButtonTr);
-				
-		// 			var APIFieldExtractionParaTr = `
-		// 						<div class="form-group APIFieldExtractionParaRow" >
-		// 							<div class="col-lg-6">
-		// 								<input class="form-control" type="text" name="APIFieldExtractionParaExp" placeholder="表达式">
-		// 							</div>
-		// 							<div class="col-lg-5">
-		// 								<input class="form-control" type="text" name="APIFieldExtractionParaName" placeholder="字段保存名称">
-		// 							</div>
-		// 						</div>`;
-		// 			$('#APIFieldParaListBody').append(APIFieldExtractionParaTr);
-				
-		// 			$('input[name="APIFieldExtractionParaExp"]').last().change(APIFieldExtractionParaAdd);    
-		// 		},
-				
-		// 		APIFieldParaRowDelete:function(e) {
-		// 			var tmp = $(e.target).parent().parent().find('button').parent().parent();
-		// 			tmp.remove();
-		// 		},
-				
-		// 		APIUpload:function() {
-				
-		// 			if($("input[name=inlineRadioOptions]")[0].checked){
-		// 				console.log("验证");
-		// 				var APIFieldVerificationData=[];
-		// 				$('#APIFieldParaListBody').find('.APIFieldVerificationParaRow').each(function() {
-		// 					var APIFieldVerificationParaExp=$(this).find("input[name=APIFieldVerificationParaExp]").val(),
-		// 						APIFieldVerificationParaSel=$(this).find("select").val(),
-		// 						APIFieldVerificationParaVal=$(this).find("input[name=APIFieldVerificationParaVal]").val();
-		// 					if(APIFieldVerificationParaExp!=""){
-		// 						let singleData={};
-		// 						singleData.val=APIFieldVerificationParaExp;
-		// 						singleData.sel=APIFieldVerificationParaSel;
-		// 						singleData.desc=APIFieldVerificationParaVal;
-		// 						APIFieldVerificationData.push(singleData);
-		// 					}
-		// 				});
-		// 				console.log(APIFieldVerificationData);
-		// 			}
-		// 			else if($("input[name=inlineRadioOptions]")[1].checked){
-		// 				console.log("提取");
-		// 				var APIFieldExtractionData=[];
-		// 				$('#APIFieldParaListBody').find('.APIFieldExtractionParaRow').each(function() {
-		// 					var APIFieldExtractionParaExp=$(this).find("input[name=APIFieldExtractionParaExp]").val(),
-		// 						APIFieldExtractionParaName=$(this).find("input[name=APIFieldExtractionParaName]").val();
-		// 					if(APIFieldExtractionParaExp!=""){
-		// 						let singleData={};
-		// 						singleData.val=APIFieldExtractionParaExp;
-		// 						singleData.desc=APIFieldExtractionParaName;
-		// 						APIFieldExtractionData.push(singleData);
-		// 					}
-		// 				});
-		// 				console.log(APIFieldExtractionData);
-		// 			}
-		// 		},
-				
-		// 		APIFieldOptionsClick:function(type) {
-				
-		// 			if(type==1){
-		// 				$(".APIFieldVerificationParaRow").show();
-		// 				$(".APIFieldExtractionParaRow").hide();
-		// 			}
-		// 			else if(type==2){
-		// 				$(".APIFieldVerificationParaRow").hide();
-		// 				$(".APIFieldExtractionParaRow").show();
-		// 			}
-				
-		// 		}
-		// 	}
-
-		// });
-
-
 		var setting = {
 			callback: {
 				onDblClick: zTreeOnDblClick
