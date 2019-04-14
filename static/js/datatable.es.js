@@ -146,9 +146,7 @@ $(document).ready(function () {
 			el: "#filter-container",
 			data: {
 				isShow: true,
-				iconflag: true,
-				sinFlag: true
-
+				iconflag: true
 			},
 			ready: function(){
 				var _this = this;

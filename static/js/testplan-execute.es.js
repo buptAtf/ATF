@@ -270,12 +270,15 @@ var vBody = new Vue({
 			if(!_this.exeStauts ) {
 				Vac.alert('该测试计划正在执行中，若想再次执行，请终止当前执行');return;
 			}
-			var selectedExeInstanceId=[];
+			var selectedExeInstances=[];
 			if(_this.exeScope==1){}
 			else{
-				for(var i = 0;i < _this.selectedSceneCases.length;i++){
+				for(var i=0; i<_this.selectedSceneCases.length; i++){
+					let temp = {};
 					let selectedSceneCase = _this.selectedSceneCases[i].split("-");
-					selectedExeInstanceId.push(selectedSceneCase[selectedSceneCase.length-1])
+					temp.caseId = selectedSceneCase[selectedSceneCase.length-1];
+					temp.sceneId = selectedSceneCase[1];
+					selectedExeInstances.push(temp);
 				}
 			}
 			_this.exeStautShow = '<i class="icon-spinner"></i>执行中';
@@ -288,7 +291,7 @@ var vBody = new Vue({
 					"recordflag": _this.recordFlag,
 					"exeScope": _this.exeScope, 
 					"selectState": _this.selectState,
-					"selectedExeInstanceId": selectedExeInstanceId,
+					"selectedExeInstances": selectedExeInstances,
 					"testPlanId": _this.testPlanId,
 					"identifiableRunnerName":_this.runner
 				}),

@@ -259,7 +259,7 @@
                                                 <input type="text" class="form-control" placeholder="请输入系统编号" name="" v-model="queryAutCode">
                                             </div>
                                             <div class="col-lg-1">
-                                                <a class="btn btn-white" onclick="queryAut()">搜索</a>
+                                                <a class="btn btn-white" onclick="queryAut('query')">搜索</a>
                                             </div>
                                             <!-- <label class="col-lg-2 col-lg-offset-2 control-label">展示条目</label>
                                             <div class="col-lg-2">
@@ -310,8 +310,8 @@
                                     <div class="pagination-wrap" v-if="totalPage!=0">
                                         <div class="num">
                                                 <select size="1" name="sample_1_length" aria-controls="sample_1" class="form-control" v-model="pageSize" id="mySelect">
-                                                    <option value="5" selected>5条/页</option>
-                                                    <option value="10">10条/页</option>
+                                                    <option value="5">5条/页</option>
+                                                    <option value="10" selected>10条/页</option>
                                                     <option value="20">20条/页</option>
                                                     <option value="50">50条/页</option>
                                                 </select> 
