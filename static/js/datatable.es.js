@@ -12,7 +12,7 @@ function viewScriptHandler (event,caseCompositeType) {//查看脚本按钮的函
 	view.getData(testcaseId,caseCompositeType);//查看脚本
 	event.stopPropagation();
 }
-
+/*
 var bootstraptable = new Vue({//与 bootstraptable 绑定
 	el: '#boorstraptable',
 	data: {
@@ -75,7 +75,7 @@ var bootstraptable = new Vue({//与 bootstraptable 绑定
 		console.log(_this.books)
 	  },
   }
-});
+});*/
 var view = new Vue({//与查看脚本的模态框相绑定
 	el: '#script-modal',
 	data: {
