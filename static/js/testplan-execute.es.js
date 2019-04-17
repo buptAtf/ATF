@@ -98,9 +98,16 @@ var vBody = new Vue({
             totalCount: 1,
             currentPage: 1,
             totalPage: 1,
-            pageSize: 10
+            pageSize:5
 		},
-		projectName: sessionStorage.getItem('projectNameStorage')
+		scenePage: {
+			currentPage: 1,
+			pageSize: 5,
+			order: "",
+			sort: "",
+			totalPage: 1,
+			totalCount: 1
+		}
 	},
 	created: function(){
 		var _this = this;
@@ -161,7 +168,7 @@ var vBody = new Vue({
         this.addRowData = {...initialAddRowData};
         this.getTestPlans();
         this.getTestPhases();
-        this.getTestRound();
+		this.getTestRound();
 		$('.3').addClass('open')
 		$('.3 .arrow').addClass('open')
 		$('.3-ul').css({display: 'block'})
@@ -188,6 +195,13 @@ var vBody = new Vue({
 			}
 			this.setBackground()
 		},
+		"scenePage.pageSize": function(newVal, oldVal) {
+			console.log(newVal, oldVal);
+			if (newVal!=oldVal){
+				this.scenePage.pageSize = newVal;
+				this.getScene(this.scenePage.currentPage, this.scenePage.pageSize, this.scenePage.order, this.scenePage.sort);
+			}
+		}
 	},
 	methods: {
 		queryRunners: function(){
@@ -450,33 +464,44 @@ var vBody = new Vue({
 		},
 		addScene: function() {
 			var _this = this;
+
+			this.getScene(this.scenePage.currentPage, this.scenePage.pageSize, this.scenePage.order, this.scenePage.sort);
+
+		},
+		getScene: function(currentPage, pageSize, order, sort) {
+			var _this = this;
 			Vac.ajax({
-				url: address3 + 'sceneController/pagedBatchQueryScene',
-				type: 'POST',
-				contentType: 'application/json',
-				data: JSON.stringify({
-					'currentPage': 1,
-					'pageSize':"100",
-					'orderColumns': "modified_time",
-					'orderType': "desc",
-					'caseLibId':_this.caselibId
-				}),
+				url: address3 + '/sceneController/pagedBatchQueryScene',
+				data: {"pageSize":pageSize,"currentPage":currentPage,"orderType":order,"orderColumns":sort},
 				success: function(data){
 					if(data.respCode == '0000'){
-						_this.allscenes = [];
-						if(data.sceneEntityList.length){
-							for(let i=0;i<data.sceneEntityList.length;i++){
-								if(data.sceneEntityList[i].deleteFlag!=2){
-									_this.allscenes.push(data.sceneEntityList[i]);
-								}
-							}
-						}
+						_this.allscenes = data.sceneEntityList;
+						_this.scenePage.currentPage = data.currentPage;
+						_this.scenePage.totalCount = data.totalCount;
+						_this.scenePage.totalPage = data.totalPage;
 						$('#add-modal').modal('show');
+					}
+					else{
+						Vac.alert('场景获取失败!');
 					}
 				}
 			});
-			$('#add-modal').modal("show");
 		},
+		turnToScenePage(pageNum) {
+            var ts = this;
+            pageNum = parseInt(pageNum);
+
+            //页数不合法则退出
+            if (!pageNum || pageNum > ts.scenePage.totalPage || pageNum < 1) {
+                alert('页码输入有误！');
+                return false;
+			} 
+			//更新页面
+			else {
+				this.scenePage.currentPage = pageNum;
+				this.getScene(ts.scenePage.currentPage, ts.scenePage.pageSize, ts.scenePage.order, ts.scenePage.sort);
+            }
+      },
 		removeSceneAndCase: function() {
 			var _this = this;
 			if (!this.selectedScenes.length) {
