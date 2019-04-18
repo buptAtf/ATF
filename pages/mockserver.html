@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html>
+<head>
+    
+    <link rel="import" href="./common/header.html?__inline">
+    <link rel="stylesheet" type="text/css" href="../static/css/index.css">
+    <link rel="stylesheet" type="text/css" href="..//static/css/pagination.css">
+    <title>Mockserver</title>
+</head>
+<body id="v-mockserver">
+    <div class="content">
+        <link rel="import" href="./common/header-guide.html?__inline">
+        <link rel="import" href="./common/aside-guide.html?__inline">
+
+        <section id="main-content">
+            <section class="wrapper">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <ul class="breadcrumb">
+                            <li><a href="#"><i class="icon-home"></i> 测试基础设施</a></li>
+                            <li class="active"><a href="#"> Mock API</a></li>
+                        </ul>
+                    </div> 
+                </div>
+                <div class="row">
+                    <div class="col-lg-3">
+                        <section class="panel panel-info" style="height:835px; overflow:auto">
+                            <header class="panel-heading">
+                                期望列表
+                                <div style="float:right">
+                                    添加
+                                    <a class="btn btn-white btn-sm" data-toggle="modal" href=""><i class="icon-plus"></i></a>
+                                </div>
+                            </header>
+                            <ul class="list-group">
+                                <li class="list-group-item">aa</li>
+                                <li class="list-group-item">bb</li>
+                                <li class="list-group-item">cc</li>
+                            </ul>
+                        </section>
+                    </div>
+                    <div class="col-lg-9">
+                        <ul class="nav nav-tabs">
+                            <li class="active">
+                                <a href="#preview" data-toggle="tab">预览</a>
+                            </li>
+                            <li>
+                                <a href="#edit" data-toggle="tab">编辑</a> 
+                            </li>
+                            <li>
+                                <a href="#run" data-toggle="tab">运行</a> 
+                            </li>
+                        </ul>
+                        <div class="tab-content">
+                            <div id="preview" class="tab-pane fade in active">
+                                <section class="panel" style="height:800px; overflow:auto">
+                                    <h3 style="padding-left:20px"><span class="label label-info">基本信息</span></h3>
+                                    <div class="col-lg-12" style="padding-top:30px">
+                                        <div class="col-lg-6" >
+                                            <h4><span class="label label-default">接口名称:</span> {{ interface }}</h4>
+                                        </div>
+                                        <div class="col-lg-4" >
+                                            <h4><span class="label label-default">创建人:</span> {{ creater }}</h4>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-12" style="padding-top:60px">
+                                        <div class="col-lg-6" >
+                                            <h4><span class="label label-default">接口路径:</span>
+                                                <span class="label label-success">get</span>
+                                                {{ path }}
+                                            </h4>
+                                        </div>
+                                        <div class="col-lg-4" >
+                                            <h4><span class="label label-default">更新时间:</span> {{ updateTime }}</h4>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-12" style="padding-top:60px">
+                                        <div class="col-lg-12">
+                                            <h4><span class="label label-default">Mock地址:</span> {{ mockpath}}{{path}} </h4>          
+                                        </div>
+                                    </div>
+
+                                    <div style="padding-top:60px">
+                                        <h3 style="padding-left:20px"><span class="label label-info">返回数据</span></h3>
+                                    </div>
+                                    <div class="well" style="margin-left: 20px;">
+                                        返回的数据就是刘福林
+                                    </div>
+                                    
+
+
+
+                                </section>
+                                
+                            </div>
+                            <div id="edit" class="tab-pane fade">
+                                <p>a a</p>
+                            </div>
+                            <div id="run" class="tab-pane fade">
+                                <p>q q</p>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+        
+
+  
+
+            </section>
+            <link rel="import" href="./common/copy-right.html?__inline">
+        </section>
+    </div>
+</body>
+</html>
+
+<link rel="import" href="./common/footer.html?__inline">
+<script src="../lib/vue-resource.min.js"></script>
+<script type="text/javascript" src="../static/js/mockserver.js"></script>
+<script type="text/javascript" src="../lib/jquery.validate.js"></script>

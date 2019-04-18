@@ -82,7 +82,9 @@
                         </label>
                         <div class="col-lg-9">
                           <select class="execute-range form-control" v-model="runner">
+                            <option value="auto" selected> 自动</option>
                             <option  v-for="runner in runners" :value="runner.identifiableName" >{{runner.runnerName}}</option>
+                            
                             <!-- <option value="2">已选择</option> -->
                           </select>
                         </div>
