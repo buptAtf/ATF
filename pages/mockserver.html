@@ -6,6 +6,15 @@
     <link rel="stylesheet" type="text/css" href="../static/css/index.css">
     <link rel="stylesheet" type="text/css" href="..//static/css/pagination.css">
     <title>Mockserver</title>
+
+    <style>
+        pre {outline: 1px solid #ccc; padding: 5px; margin: 5px; }
+        .string { color: green; }
+        .number { color: darkorange; }
+        .boolean { color: blue; }
+        .null { color: magenta; }
+        .key { color: red; }
+    </style>
 </head>
 <body id="v-mockserver">
     <div class="content">
@@ -29,15 +38,45 @@
                                 期望列表
                                 <div style="float:right">
                                     添加
-                                    <a class="btn btn-white btn-sm" data-toggle="modal" href=""><i class="icon-plus"></i></a>
+                                    <a class="btn btn-white btn-sm" data-toggle="modal" data-target="#myModal"><i class="icon-plus"></i></a>
                                 </div>
                             </header>
-                            <ul class="list-group">
-                                <li class="list-group-item">aa</li>
-                                <li class="list-group-item">bb</li>
-                                <li class="list-group-item">cc</li>
+                            <ul class="list-group" >
+                                <li class="list-group-item" v-for="item in allExpecation">{{ item.id }}</li>
+                              
                             </ul>
                         </section>
+                        <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <!-- <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                                            &times;
+                                        </button> -->
+                                        <h4 class="modal-title" id="myModalLabel">
+                                            添加新期望
+                                        </h4>
+                                    </div>
+                                    <div class="modal-body">
+                                        
+                                        <div class="nopadding">
+                                            <label class="col-lg-3 "><i>创建者:</i></label>
+                                            <div class="col-lg-9">
+                                                <input type="text" class="form-control">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-default" data-dismiss="modal">关闭
+                                        </button>
+                                        <button type="button" class="btn btn-primary">
+                                            提交
+                                        </button>
+                                    </div>
+                                </div><!-- /.modal-content -->
+                            </div><!-- /.modal -->
+                        </div>
+
                     </div>
                     <div class="col-lg-9">
                         <ul class="nav nav-tabs">
@@ -57,7 +96,7 @@
                                     <h3 style="padding-left:20px"><span class="label label-info">基本信息</span></h3>
                                     <div class="col-lg-12" style="padding-top:30px">
                                         <div class="col-lg-6" >
-                                            <h4><span class="label label-default">接口名称:</span> {{ interface }}</h4>
+                                            <h4><span class="label label-default">接口名称:</span> 测试接口{{ }}</h4>
                                         </div>
                                         <div class="col-lg-4" >
                                             <h4><span class="label label-default">创建人:</span> {{ creater }}</h4>
@@ -66,8 +105,8 @@
                                     <div class="col-lg-12" style="padding-top:60px">
                                         <div class="col-lg-6" >
                                             <h4><span class="label label-default">接口路径:</span>
-                                                <span class="label label-success">get</span>
-                                                {{ path }}
+                                                <span class="label label-success">{{ curExpecation.httpRequest.method }}</span>
+                                                {{ curExpecation.httpRequest.path }}
                                             </h4>
                                         </div>
                                         <div class="col-lg-4" >
@@ -76,15 +115,15 @@
                                     </div>
                                     <div class="col-lg-12" style="padding-top:60px">
                                         <div class="col-lg-12">
-                                            <h4><span class="label label-default">Mock地址:</span> {{ mockpath}}{{path}} </h4>          
+                                            <h4><span class="label label-default">Mock地址:</span> http://10.101.167.184:8080/atfcloud2.0a{{ curExpecation.httpRequest.path }} </h4>          
                                         </div>
                                     </div>
 
                                     <div style="padding-top:60px">
                                         <h3 style="padding-left:20px"><span class="label label-info">返回数据</span></h3>
                                     </div>
-                                    <div class="well" style="margin-left: 20px;">
-                                        返回的数据就是刘福林
+                                    <div id="curresult" class="well" style="margin-left: 20px;">
+                                        {{ curExpecationRet }}
                                     </div>
                                     
 

@@ -3,19 +3,9 @@
 
 <head>
   <meta charset="utf-8">
-
-  <link rel="stylesheet" type="text/css" href="../static/css/handsontable.full.css">
-  <link rel="stylesheet" type="text/css" href="../static/css/base.scss">
-  <!-- <link rel="stylesheet" type="text/css" href="../static/css/base/bootstrap.min.css"> -->
-  <link rel="stylesheet" type="text/css" href="..//static/css/pagination.css">
-  <link rel="stylesheet" type="text/css" href="../static/css/metroStyle.css">
-  <link rel="stylesheet" type="text/css" href="../static/css/datatable.scss">
+  <link rel="import" href="./common/header.html?__inline">
   <link rel="stylesheet" type="text/css" href="../static/css/index.css">
-  <link rel="stylesheet" href="../static/css/bootstrap-select.min.css">
-  <script src="../lib/jquery.js"></script>
-  <script src="../lib/bootstrap.min.js"></script>
-  <script type="text/javascript" src="../lib/vue.js"></script>
-  <script type="text/javascript" src="../lib/handsontable.full.js"></script>
+  <link rel="stylesheet" type="text/css" href="..//static/css/pagination.css">
   <title>测试资源管理-流程用例</title>
   <style>
     .insert-btn {
@@ -63,7 +53,7 @@
               <section class="panel panel-default">
                 <div class="panel-heading text-center" >流程用例</div>
                 <ul class="list-group" >
-                  <li class="list-group-item text-center" v-for="item in flowcaselist">{{ item }}</li>
+                  <li class="list-group-item text-center" v-for="item in flowcaselists">{{ item.casecode }}</li>
                 </ul>
               </section>
             </div>
@@ -155,15 +145,10 @@
 
   
   <link rel="import" href="./common/footer.html?__inline">
-  <script src="../static/js/config.js"></script>
-  <script src="../static/js/vac-functions.es.js"></script>
-  <!-- <script type="text/javascript" src="../static/js/case-operation/view-script.js"></script> -->
+  <script src="../lib/vue-resource.min.js"></script>
   <script src="../static/js/datatable_flowcase.js"></script>
-  <script src="../../lib/common-scripts.js"></script>
-  <script type="text/javascript" src="../lib/bootstrap-select.min.js"></script>
-  <!-- 使用其表格拖拽功能 -->
-  <script type="text/javascript" src="../lib/jquery-ui.js"></script>
-  <!-- <script type="text/javascript" src="../lib/jquery.ztree.all.min.js"></script> -->
+  <script type="text/javascript" src="../lib/jquery.validate.js"></script>
+
 </body>
 
 
