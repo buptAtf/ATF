@@ -282,6 +282,7 @@
                                         <th style="width:8px;">
                                             <!-- <input type="checkbox" v-model="checked" v-on:click="" name="chk_all" id="chk_all" /> -->
                                         </th>
+                                        <th class="hidden-phone text-center">序号</th>
                                         <th class="hidden-phone text-center" data-order="id" data-sort="asc" onclick="myResort(this)">测试系统编号 <span class="icon-sort-up" aria-hidden="true"></span></th>
                                         <th class="text-center">测试系统名称</th>
                                         <th class="hidden-phone text-center">开发架构</th>
@@ -295,10 +296,11 @@
                                         <td width="5%">
                                             <input type="radio" v-model="" name="chk_list" id="{{aut.id}}" />
                                         </td>
+                                        <td width="5%">{{$index+1}}</td>
                                         <td class="center hidden-phone" width="10%"><a @click="linkToTransact(aut.id,aut.nameMedium)" class="detail-link">{{ aut.code }}</a></td>
                                         <td width="15%">{{ aut.nameMedium }}</td>
                                         <td width="15%" data-id="{{aut.inheriteArcId}}">{{ aut.inheriteArcName }}</td>
-                                        <td class="hidden-phone" width="25%">{{ aut.descShort }}</td>
+                                        <td class="hidden-phone" width="">{{ aut.descShort }}</td>
                                         <td width="15%">{{ formatDate(aut.createTime) }}</td>
                                         <td width="15%">{{ formatDate(aut.modifiedTime) }}</td>
                                     </tr>
