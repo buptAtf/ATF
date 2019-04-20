@@ -52,9 +52,10 @@
             <div class="col-lg-3">
               <section class="panel panel-default">
                 <div class="panel-heading text-center" >流程用例</div>
-                <ul class="list-group" >
-                  <li class="list-group-item text-center" v-for="item in flowcaselists">{{ item.casecode }}</li>
-                </ul>
+                <div class="list-group" >
+                  <a class="list-group-item text-center active" v-for="(index,item) in flowcaselists" v-if="index==0">{{ item.casecode }}</a>
+                  <a class="list-group-item text-center" v-for="(index,item) in flowcaselists" v-if="index!=0">{{ item.casecode }}</a>
+                </div>
               </section>
             </div>
             <div class="col-lg-8">

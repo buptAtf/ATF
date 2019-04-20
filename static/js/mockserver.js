@@ -1,7 +1,6 @@
 var app = new Vue({
     el: "#v-mockserver",
     data: {
-        
         creater: "刘福林",
         updateTime: "2019-4-18 20:49:00",
         allExpecation: [],
@@ -29,21 +28,24 @@ var app = new Vue({
                 success:function(data){
                     _this.curExpecation = data[0];
                     data.forEach(element => {
-                        let tempItem = {};    
+                        let tempItem = {};
                         tempItem.id = element.httpRequest.id;
                         // tempitem.body = element.httpRequest.body;
                         _this.allExpecation.push(tempItem);
                         
                     });
-                    
-                    _this.curExpecationRet = _this.curExpecation.httpResponse;                    
+
+                    _this.curExpecationRet = _this.curExpecation.httpResponse;
                     _this.curExpecationRet = JSON.stringify(_this.curExpecationRet, null, 2);
                     console.log(_this.curExpecationRet);
                     // _this.curExpecationRet = syntaxHighlight(_this.curExpecationRet);
-                    // console.log(_this.curExpecationRet);
                 }
 
             })
+        },
+        queryExpecation: function(curId){
+            
+            console.log(curId);
         }
 
     }

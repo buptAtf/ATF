@@ -41,10 +41,11 @@
                                     <a class="btn btn-white btn-sm" data-toggle="modal" data-target="#myModal"><i class="icon-plus"></i></a>
                                 </div>
                             </header>
-                            <ul class="list-group" >
-                                <li class="list-group-item" v-for="item in allExpecation">{{ item.id }}</li>
+                            <div class="list-group" >
+                                <a v-for="(index,item) in allExpecation" @click=queryExpecation(item.id) class="list-group-item active" v-if="index==0">{{ item.id }}</a>
+                                <a v-for="(index,item) in allExpecation" @click=queryExpecation(item.id) class="list-group-item" v-if="index!=0">{{ item.id }}</a>
                               
-                            </ul>
+                            </div>
                         </section>
                         <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
                             <div class="modal-dialog">
