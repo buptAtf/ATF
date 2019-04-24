@@ -470,9 +470,16 @@ var vBody = new Vue({
 		},
 		getScene: function(currentPage, pageSize, order, sort) {
 			var _this = this;
+			console.log(_this.caselibId);
 			Vac.ajax({
-				url: address3 + '/sceneController/pagedBatchQueryScene',
-				data: {"pageSize":pageSize,"currentPage":currentPage,"orderType":order,"orderColumns":sort},
+				url: address3 + 'sceneController/pagedBatchQueryScene',
+				data: JSON.stringify({
+					'currentPage': currentPage,
+					'pageSize': pageSize,
+					"orderType":order,
+					"orderColumns":sort,
+					"caseLibId": _this.caselibId
+				}),
 				success: function(data){
 					if(data.respCode == '0000'){
 						_this.allscenes = data.sceneEntityList;
