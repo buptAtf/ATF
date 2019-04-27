@@ -821,7 +821,7 @@ $(document).ready(function () {
 								<option value="author">作者</option>
 								<option value="reviewer">评审者</option>
 								<option value="scriptModeFlag">所属模板</option>
-							</select>                
+							</select>
 							<select name="compareType" class="selectpicker compare_select">
 								<option value="">请选择</option>
 							</select> 

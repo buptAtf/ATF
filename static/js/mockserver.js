@@ -4,6 +4,7 @@ var app = new Vue({
         allExpecation: [],
         curExpecation: {},
         curExpecationRet: {},
+        selectedExpId: "",
     },
     ready: function(){
 
@@ -40,6 +41,7 @@ var app = new Vue({
                 }),
                 success:function(data){
                     _this.curExpecation = data[0];      //当前期望设置为第一条
+                    _this.selectedExpId = _this.curExpecation.id;   //默认选中第一条期望
                     _this.allExpecation = data;
                     data.forEach(element => {           //遍历所有数据，将所有对象放进期望列表数组中
                         // let tempItem = {};
@@ -51,13 +53,14 @@ var app = new Vue({
 
                     _this.curExpecationRet = _this.curExpecation.httpResponse;//当前期望的期望返回的数据
                     _this.curExpecationRet = JSON.stringify(_this.curExpecationRet, null, 2);   //将返回的数据解析为JSON数据
-                    console.log(_this.curExpecationRet);
+                    // console.log(_this.curExpecationRet);
                 }
 
             })
         },
         queryExpecation: function(currentId){   //根据id查询当前期望
             var _this = this;
+            _this.selectedExpId = currentId;
             $.ajax({
                 url: address3 + "mockServer/getExpectation",
                 type: "post",
@@ -66,7 +69,7 @@ var app = new Vue({
                     "id": currentId
                 }),
                 success:function(data){
-                    console.log(data);
+                    // console.log(data);
                     _this.curExpecation = data;
                 }
             }) 
