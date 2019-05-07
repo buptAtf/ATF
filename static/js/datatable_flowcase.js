@@ -58,14 +58,17 @@ var flowcaseTemplate =
 var app = new Vue({
     el: "#v-body",
     data: {
-        flowcaselists: ['流程1','流程2','流程3'],
+        flowcaseList: [],      //流程用例列表信息
         caseLibId: sessionStorage.getItem("caselibId"),
         executorId: sessionStorage.getItem("userId"),
-        currentCase: {},
-        selectedCaseId: "",
-        autList: {},
-        editFlag: true,
-        nodeInfoList: {},
+        currentCase: {},        //当前展示的用例
+        selectedCaseId: "",     //被选中的用例的id
+        autList: {},            //被测系统列表
+        autId: "",
+        editFlag: true,         //是否只读的标志，来进行是否编辑
+        nodeInfoList: {},       //当前用例的所有节点信息
+        scriptList: {},         //查看脚本的脚本列表
+        
 
     },
     ready: function(){
@@ -112,8 +115,8 @@ var app = new Vue({
                     "caseLibId": _this.caseLibId,
                 }),
                 success: function(data){
-                    _this.flowcaselists = data.flowTestcaseInfos;
-                    _this.selectedCaseId = _this.flowcaselists[0].id;
+                    _this.flowcaseList = data.flowTestcaseInfos;
+                    _this.selectedCaseId = _this.flowcaseList[0].id;
                     console.log(data);   
                     _this.queryThisCase(_this.selectedCaseId);
                 }
@@ -154,13 +157,35 @@ var app = new Vue({
         queryTransactsByAutId: function(){
             var _this = this;
             $.ajax({
-                url: address3 + "aut/queryListAut",
+                url: address3 + "transactController/queryTransactsByAutId",
                 type: "post",
-                async: false,
                 contentType: "application/json",
+                data: JSON.stringify({ 'id': _this.autId }),
                 success: function(data){
-                    _this.autList = data.autRespDTOList;
+                    console.log(data);
                     
+                }
+            })
+        },
+        viewScript: function(id){
+            var _this = this;
+            console.log(id);
+            $.ajax({
+                url: address3 + "dataCenter/getTestcaseScript",
+                type: "post",
+                contentType: "application/json",
+                data: JSON.stringify({
+                    testcaseId: id + "",
+                    caseCompositeType: 3,
+                }),
+                success: function(data){
+                    if(data.respCode==="0000"){
+                        _this.scriptList = data.scriptList;
+                        console.log(data);
+                    }
+
+                    
+
                 }
             })
         },
@@ -170,7 +195,7 @@ var app = new Vue({
     components:{
         "flowcase":{
             template: flowcaseTemplate,
-            props: ["nodeinfo", "aut", "editFlag"],
+            props: ["nodeinfo"],
 
         }
     }
