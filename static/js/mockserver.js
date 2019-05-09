@@ -5,6 +5,9 @@ var app = new Vue({
         curExpecation: {},
         curExpecationRet: {},
         selectedExpId: "",
+        requestParams: [{reqkey:"",reqvalue:""}],
+        responseParams: [{respkey:"",respvalue:""}],
+
     },
     ready: function(){
 
@@ -33,8 +36,8 @@ var app = new Vue({
         getAllExpectation: function(){      //得到所有的期望列表
             var _this = this;
             $.ajax({
-                url: address3 + "mockServer/getExpectation",
-                type: "post",
+                url: address3 + "/mockServer/getAllExpectation",
+                type: "get",
                 contentType: "application/json",
                 data: JSON.stringify({
 
@@ -62,12 +65,12 @@ var app = new Vue({
             var _this = this;
             _this.selectedExpId = currentId;
             $.ajax({
-                url: address3 + "mockServer/getExpectation",
+                url: address3 + "/mockServer/getExpectationById",
                 type: "post",
-                contentType: "application/json",
-                data: JSON.stringify({
+                contentType: "application/x-www-form-urlencoded",
+                data: {
                     "id": currentId
-                }),
+                },
                 success:function(data){
                     // console.log(data);
                     _this.curExpecation = data;
@@ -75,6 +78,23 @@ var app = new Vue({
             }) 
             console.log(currentId);
         },
+        addRequestList: function(){
+            this.requestParams.push({reqkey:"",reqvalue:""});
+
+        },
+        delRequestList: function(index){
+            if(this.requestParams.length !== 1){
+                this.requestParams.splice(index,1);
+            }
+        },
+        addResponseList: function(){
+            this.responseParams.push({respkey:"",respvalue:""});
+        },
+        delResponseList: function(index){
+            if(this.responseParams.length !== 1){
+                this.responseParams.splice(index,1);
+            }
+        }
 
 
     }

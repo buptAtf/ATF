@@ -86,27 +86,41 @@
                                                             </div>
                                                         </div>
                                                     </div>
-                                                   
-                                                    <!-- <div class="from-group col-lg-12" style="margin-top:70px">
-                                                        <div class="from-group col-lg-2" style="margin-top:5px">
-                                                            添加Header:
+
+                                                    <!-- <div class="from-group">
+                                                        <div class="col-lg-5 nopadding">
+                                                            <label class="col-lg-4 control-label ">保护<font color="#FF0000">*</font></label>
+                                                            <div class="col-lg-8">
+                                                                <select class="form-control">
+                                                                    <option value="true">true</option>
+                                                                    <option value="false">false</option>
+                                                                </select>
+                                                            </div>
                                                         </div>
-                                                        <div class="from-group col-lg-3">
-                                                            <input type="text" class="form-control" placeholder="参数名称">
-                                                        </div>
-                                                        <div class="from-group col-lg-5">
-                                                            <input type="text" class="form-control" placeholder="参数值" >
+                                                        <div class="col-lg-5 nopadding">
+                                                            <label class="col-lg-4 control-label ">保持存活<font color="#FF0000">*</font></label>
+                                                            <div class="col-lg-8">
+                                                                <select class="form-control">
+                                                                    <option value="true">true</option>
+                                                                    <option value="false">false</option>
+                                                                </select>
+                                                            </div>
                                                         </div>
                                                     </div> -->
-                                                    <div class="from-group col-lg-12" style="margin-top:70px">
+
+                                                    <div class="from-group col-lg-12" style="margin-top:55px" v-for="(index,item) in requestParams">
                                                         <div class="from-group col-lg-2" style="margin-top:5px">
                                                             请求参数:
                                                         </div>
                                                         <div class="from-group col-lg-3">
-                                                            <input type="text" class="form-control" placeholder="参数名称">
+                                                            <input type="text" class="form-control" v-model="requestParams[index].reqkey" placeholder="参数名称">
                                                         </div>
                                                         <div class="from-group col-lg-5">
-                                                            <input type="text" class="form-control" placeholder="参数值" >
+                                                            <input type="text" class="form-control" v-model="requestParams[index].reqvalue" placeholder="参数值" >
+                                                        </div>
+                                                        <div class="from-group col-lg-2">
+                                                            <a class="btn btn-white btn-sm" @click="addRequestList"><i class="icon-plus"></i></a>
+                                                            <a class="btn btn-white btn-sm" @click="delRequestList(index)"><i class="icon-remove"></i></a>
                                                         </div>
                                                     </div>
 
@@ -128,17 +142,22 @@
                                                         </div>
                                                     </div>
 
-                                                    <div class="from-group col-lg-12" style="margin-top:70px">
+                                                    <div class="from-group col-lg-12" style="margin-top:55px" v-for="(index,item) in responseParams">
                                                         <div class="from-group col-lg-2" style="margin-top:5px">
                                                             返回参数:
                                                         </div>
                                                         <div class="from-group col-lg-3">
-                                                            <input type="text" class="form-control" placeholder="参数名称">
+                                                            <input type="text" class="form-control" v-model="responseParams[index].reqkey" placeholder="参数名称">
                                                         </div>
                                                         <div class="from-group col-lg-5">
-                                                            <input type="text" class="form-control" placeholder="参数值" >
+                                                            <input type="text" class="form-control" v-model="responseParams[index].reqvalue" placeholder="参数值" >
+                                                        </div>
+                                                        <div class="from-group col-lg-2">
+                                                            <a class="btn btn-white btn-sm" @click="addResponseList"><i class="icon-plus"></i></a>
+                                                            <a class="btn btn-white btn-sm" @click="delResponseList(index)"><i class="icon-remove"></i></a>
                                                         </div>
                                                     </div>
+
 
                                                 </form>
                                                 
