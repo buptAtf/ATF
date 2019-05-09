@@ -9,11 +9,9 @@
 
     <style>
         pre {outline: 1px solid #ccc; padding: 5px; margin: 5px; }
-        .string { color: green; }
-        .number { color: darkorange; }
-        .boolean { color: blue; }
-        .null { color: magenta; }
-        .key { color: red; }
+        .hrLine{
+            vertical-align:middle; display:inline-block;
+        }
     </style>
 </head>
 <body id="v-mockserver">
@@ -35,37 +33,137 @@
                     <div class="col-lg-3">
                         <section class="panel panel-info" style="height:835px; overflow:auto">
                             <header class="panel-heading">
-                                期望列表
+                                映射规则列表
                                 <div style="float:right">
                                     添加
-                                    <a class="btn btn-white btn-sm" data-toggle="modal" data-target="#myModal"><i class="icon-plus"></i></a>
+                                    <a class="btn btn-white btn-sm" data-toggle="modal" data-target="#addModal"><i class="icon-plus"></i></a>
                                 </div>
                             </header>
                             <div class="list-group" >
-                                <a v-for="(index,item) in allExpecation" @click=queryExpecation(item.id) class="list-group-item active" v-if="index==0">{{ item.id }}</a>
-                                <a v-for="(index,item) in allExpecation" @click=queryExpecation(item.id) class="list-group-item" v-if="index!=0">{{ item.id }}</a>
-                              
+                                <a :class="selectedExpId==item.id?'list-group-item active':'list-group-item'" v-for="item in allExpecation" @click=queryExpecation(item.id) >{{ item.expectationName }}</a>
+                            
                             </div>
                         </section>
-                        <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                        <div class="modal fade" id="addModal" tabindex="-1" role="dialog" aria-labelledby="addModalLabel" aria-hidden="true">
                             <div class="modal-dialog">
-                                <div class="modal-content">
+                                <div class="modal-content" style="width: 860px;">
                                     <div class="modal-header">
-                                        <!-- <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
-                                            &times;
-                                        </button> -->
-                                        <h4 class="modal-title" id="myModalLabel">
-                                            添加新期望
-                                        </h4>
+                                        <h4 class="modal-title">添加新规则</h4>
                                     </div>
-                                    <div class="modal-body">
-                                        
-                                        <div class="nopadding">
-                                            <label class="col-lg-3 "><i>创建者:</i></label>
-                                            <div class="col-lg-9">
-                                                <input type="text" class="form-control">
+                                    <div class="modal-body" style="width: 860px;">
+                                        <section class="panel nopadding">
+                                            <div class="panel-body">
+                                                <form class="form-horizontal" role="form" id="insertSingleForm">
+                                                    <div class="from-group">
+                                                        <label class="col-lg-2 control-label">创建人:</label>
+                                                        <div class="col-lg-3">
+                                                            <input type="text" class="form-control" name="creater">
+                                                        </div>
+                                                        <label class="col-lg-2 control-label">规则名称:</label>
+                                                        <div class="col-lg-3">
+                                                            <input type="text" class="form-control" name="creater">
+                                                        </div>
+                                                    </div>
+                                                    
+                                                    <div style=" width:100%; text-align:left; margin-left:15px; margin-right:15px;">
+                                                        <hr class="hrLine" style="width:40%;"/>  后缀有*为必填项目  <hr class="hrLine" style="width:43%;"/>
+                                                    </div> 
+                                                    <h4>规则的请求</h4>
+                                                    <div class="from-group">
+                                                        <div class="col-lg-5 nopadding">
+                                                            <label class="col-lg-4 control-label ">方法<font color="#FF0000">*</font></label>
+                                                            <div class="col-lg-8">
+                                                                <select class="form-control">
+                                                                    <option value="post">post</option>
+                                                                    <option value="get">get</option>
+                                                                </select>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-lg-5 nopadding">
+                                                            <label class="col-lg-4 control-label ">路径<font color="#FF0000">*</font></label>
+                                                            <div class="col-lg-8">
+                                                                <input type="text" class="form-control" name="path">
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    <!-- <div class="from-group">
+                                                        <div class="col-lg-5 nopadding">
+                                                            <label class="col-lg-4 control-label ">保护<font color="#FF0000">*</font></label>
+                                                            <div class="col-lg-8">
+                                                                <select class="form-control">
+                                                                    <option value="true">true</option>
+                                                                    <option value="false">false</option>
+                                                                </select>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-lg-5 nopadding">
+                                                            <label class="col-lg-4 control-label ">保持存活<font color="#FF0000">*</font></label>
+                                                            <div class="col-lg-8">
+                                                                <select class="form-control">
+                                                                    <option value="true">true</option>
+                                                                    <option value="false">false</option>
+                                                                </select>
+                                                            </div>
+                                                        </div>
+                                                    </div> -->
+
+                                                    <div class="from-group col-lg-12" style="margin-top:55px" v-for="(index,item) in requestParams">
+                                                        <div class="from-group col-lg-2" style="margin-top:5px">
+                                                            请求参数:
+                                                        </div>
+                                                        <div class="from-group col-lg-3">
+                                                            <input type="text" class="form-control" v-model="requestParams[index].reqkey" placeholder="参数名称">
+                                                        </div>
+                                                        <div class="from-group col-lg-5">
+                                                            <input type="text" class="form-control" v-model="requestParams[index].reqvalue" placeholder="参数值" >
+                                                        </div>
+                                                        <div class="from-group col-lg-2">
+                                                            <a class="btn btn-white btn-sm" @click="addRequestList"><i class="icon-plus"></i></a>
+                                                            <a class="btn btn-white btn-sm" @click="delRequestList(index)"><i class="icon-remove"></i></a>
+                                                        </div>
+                                                    </div>
+
+                                                    <h4 style="margin-top:50px">规则的返回</h4>
+                                                    <div class="from-group">
+                                                        <div class="col-lg-5 nopadding">
+                                                            <label class="col-lg-4 control-label ">状态码<font color="#FF0000">*</font></label>
+                                                            <div class="col-lg-8">
+                                                                <input type="text" class="form-control" name="respcode">
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="from-group">
+                                                        <div class="col-lg-5 nopadding">
+                                                            <label class="col-lg-4 control-label ">延迟时间<font color="#FF0000">*</font></label>
+                                                            <div class="col-lg-8">
+                                                                <input type="text" class="form-control" name="delaytime">
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="from-group col-lg-12" style="margin-top:55px" v-for="(index,item) in responseParams">
+                                                        <div class="from-group col-lg-2" style="margin-top:5px">
+                                                            返回参数:
+                                                        </div>
+                                                        <div class="from-group col-lg-3">
+                                                            <input type="text" class="form-control" v-model="responseParams[index].reqkey" placeholder="参数名称">
+                                                        </div>
+                                                        <div class="from-group col-lg-5">
+                                                            <input type="text" class="form-control" v-model="responseParams[index].reqvalue" placeholder="参数值" >
+                                                        </div>
+                                                        <div class="from-group col-lg-2">
+                                                            <a class="btn btn-white btn-sm" @click="addResponseList"><i class="icon-plus"></i></a>
+                                                            <a class="btn btn-white btn-sm" @click="delResponseList(index)"><i class="icon-remove"></i></a>
+                                                        </div>
+                                                    </div>
+
+
+                                                </form>
+                                                
                                             </div>
-                                        </div>
+                                        </section>
+                                    
                                     </div>
                                     <div class="modal-footer">
                                         <button type="button" class="btn btn-default" data-dismiss="modal">关闭
@@ -97,10 +195,10 @@
                                     <h3 style="padding-left:20px"><span class="label label-info">基本信息</span></h3>
                                     <div class="col-lg-12" style="padding-top:30px">
                                         <div class="col-lg-6" >
-                                            <h4><span class="label label-default">接口名称:</span> 测试接口{{ }}</h4>
+                                            <h4><span class="label label-default">接口名称:</span> {{curExpecation.expectationName }}</h4>
                                         </div>
                                         <div class="col-lg-4" >
-                                            <h4><span class="label label-default">创建人:</span> {{ creater }}</h4>
+                                            <h4><span class="label label-default">创建人:</span> {{ curExpecation.creator }}</h4>
                                         </div>
                                     </div>
                                     <div class="col-lg-12" style="padding-top:60px">
@@ -111,7 +209,7 @@
                                             </h4>
                                         </div>
                                         <div class="col-lg-4" >
-                                            <h4><span class="label label-default">更新时间:</span> {{ updateTime }}</h4>
+                                            <h4><span class="label label-default">更新时间:</span> {{ formatDate(curExpecation.modifiedTime) }}</h4>
                                         </div>
                                     </div>
                                     <div class="col-lg-12" style="padding-top:60px">
@@ -123,9 +221,8 @@
                                     <div style="padding-top:60px">
                                         <h3 style="padding-left:20px"><span class="label label-info">返回数据</span></h3>
                                     </div>
-                                    <div id="curresult" class="well" style="margin-left: 20px;">
-                                        {{ curExpecationRet }}
-                                    </div>
+                                    <pre class="well" style="margin-left: 20px;">{{ curExpecationRet }}
+                                    </pre>
                                     
 
 
