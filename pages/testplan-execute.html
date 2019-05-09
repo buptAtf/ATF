@@ -9,9 +9,11 @@
     <link rel="stylesheet" type="text/css" href="../static/css/metroStyle.css">
     <link rel="stylesheet" type="text/css" href="../static/css/base.scss">
     <link rel="stylesheet" type="text/css" href="../static/css/scene-setting.scss">
+    <link rel="stylesheet" type="text/css" href="../static/css/bootstrap-select.min.css">
     <script src="../lib/jquery.js"></script>
     <script src="../lib/jquery-ui.js"></script>
     <script src="../lib/bootstrap3.37.min.js"></script>
+    <script src="../lib/bootstrap-select.min.js"></script>
     <script type="text/javascript" src="../lib/vue.js"></script>
     <title>测试计划及执行</title>
     <style>
@@ -52,13 +54,13 @@
                     <div class="form-group ">
                       <div class="form-group col-lg-6">
                         <label class="option-name control-label col-lg-3">测试计划及状态</label>
-                        <div class="col-lg-4">
+                        <div class="col-lg-3">
                           <select class="testphase form-control" v-model="testPlanId">
                             <option v-for="(index,item) in testPlans" v-bind:value="item.id">{{item.nameMedium}}</option>
                           </select>
                         </div>
                         <label class="option-name control-label col-lg-2" v-html="exeStautShow"></label>
-                        <div class=" col-lg-3 " >
+                        <div class=" col-lg-4 " >
                             <a class="btn btn-white rigth" @click="testPlanManager()"> 测试计划管理</a>
                           </div>
                       </div>
@@ -77,17 +79,18 @@
                 <form class="form-horizontal col-lg-12">
                     <div class="form-group">
                       <div class="form-group col-lg-6">
-                        <label class="option-name col-lg-3 control-label">
-                          执行机选择
-                        </label>
-                        <div class="col-lg-9">
-                          <select class="execute-range form-control" v-model="runner">
-                            <option value="auto" selected> 自动</option>
-                            <option  v-for="runner in runners" :value="runner.identifiableName" >{{runner.runnerName}}</option>
-                            
-                            <!-- <option value="2">已选择</option> -->
+                        <label class="option-name control-label col-lg-3">执行机分配模式</label>
+                        <div class="col-lg-3">
+                          <select class="testphase form-control" v-model="runnerExecuteType">
+                              <option value="appointed" selected>指定执行机</option>
+                              <option value="auto" > 自动分配</option>
                           </select>
                         </div>
+                        <label class="option-name control-label col-lg-2">执行机选择</label>
+                        <div class=" col-lg-4 " >
+                            <select class="selectpicker execute-range form-control" id="runnerselected" v-model="runnerselected"  multiple>
+                              </select>
+                          </div>
                       </div>
         
                       <div class="form-group col-lg-6">
