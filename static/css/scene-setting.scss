@@ -335,14 +335,15 @@ $okGreen: #66F60C;
 							position: relative;
 							top: 5px;
 							cursor: pointer;
-							width:auto;
+							width:300px;
 						}
 					}
 					.case-footer {
+						padding-left: 20px;
 						font-size: 16px;
 						line-height: $caseHeaderheight;
 						height: $caseHeaderheight;
-						
+						width:auto;
 					}
 				}
 
@@ -623,4 +624,11 @@ $okGreen: #66F60C;
 }
 .hide {
 	display: block;
+}
+.runnerclass p{
+	margin: 0%;
+	width:100%;
+	height:100%;
+	vertical-align: middle;
+	padding-top: 6px
 }

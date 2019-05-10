@@ -147,6 +147,7 @@
                               <a class="view-case" @click.stop="viewCase(case_wrapper.caseId, 'PE4')">查看</a>
                             </div>
                             <footer class="case-footer">
+                              
                             </footer>
                           </div>
                         </div>
@@ -171,6 +172,7 @@
                               <a class="view-case" @click.stop="viewCase(case_wrapper.caseId, 'PE4')">查看</a>
                             </div>
                             <footer class="case-footer">
+                                2
                             </footer>
                           </div>
                         </div>
@@ -219,8 +221,9 @@
                               <div class="case-main">
                                 <a class="view-case" @click.stop="viewCase(scene.sceneId, case_wrapper.caseId, 'PE6')">查看</a>
                               </div>
-                              <footer class="case-footer">
-                              </footer>
+                            </div>
+                            <div class="runnerclass" :id="'runner' + '-' + scene.sceneId+'-'+case_wrapper.caseId">
+                                <p>分配到执行机atf_runner_mac1 </p>
                             </div>
                           </div>
                           </template>
@@ -242,8 +245,11 @@
                               <div class="case-main">
                                 <a class="view-case" @click.stop="viewCase(scene.sceneId, case_wrapper.caseId, 'PE6')">查看</a>
                               </div>
-                              <footer class="case-footer">
+                              <footer class="case-footer" >
                               </footer>
+                            </div>
+                            <div class="runnerclass" :id="'runner' + '-' + scene.sceneId+'-'+case_wrapper.caseId">
+                                <p>分配到执行机atf_runner_mac1 </p>
                             </div>
                           </div>
                           </template>

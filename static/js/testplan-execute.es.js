@@ -446,6 +446,14 @@ var vBody = new Vue({
 							document.querySelector(`#img-${d.sceneId}-${d.testcaseId}`).src = this.exeImgs[d.status];
 						}
 					}
+					let selectNode = '#runner-'+d.sceneId+'-'+d.testcaseId;
+					if($(selectNode)!=null){
+						if(d.runnerName!="null/null"){
+							let runner=d.runnerName.replace(/-/g, "_")
+							let runnerpors = runner.split('/')
+							console.log($(selectNode).children().text("分配执行机为："+runnerpors[0]))
+						}
+					}
 					
 				//}
 			}
