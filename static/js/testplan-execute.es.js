@@ -16,7 +16,8 @@ var vBody = new Vue({
 	data: {
 		// tooltipMessage:'',
 		runners:[],
-		runner:"",
+		runnerselected:[],
+		runnerExecuteType:"",
 		caselibIds: [],			
 		caselibId: 3,			// caselibId 
 		executionround: '1',		// 执行轮次 
@@ -201,7 +202,7 @@ var vBody = new Vue({
 				this.scenePage.pageSize = newVal;
 				this.getScene(this.scenePage.currentPage, this.scenePage.pageSize, this.scenePage.order, this.scenePage.sort);
 			}
-		}
+		},
 	},
 	methods: {
 		queryRunners: function(){
@@ -216,10 +217,14 @@ var vBody = new Vue({
 				success: function(data) {
 					if (data.respCode=="0000") {
 						_this.runners=data.runners;
+						for(let item of _this.runners){
+							$('#runnerselected').append(`<option value="${item.identifiableName}">${item.runnerName}</option>`);
+						}
+						$('#runnerselected').selectpicker('refresh');
 						if(data.runners.length==0)
 							Vac.alert('查询不到执行机');
-						else
-							_this.runner=data.runners[0].identifiableName;
+						// else
+							// _this.runner=data.runners[0].identifiableName;
 					} else {
 						Vac.alert(data.respMsg);
 						}
@@ -249,11 +254,6 @@ var vBody = new Vue({
 						Vac.alert(data.respMsg);
 						_this.startQueryResult();
 						_this.exeStautShow = '<i class="icon-ok"></i>已执行';
-						// _this.runners=data.runners;
-						// if(data.runners.length==0)
-						// 	Vac.alert('查询不到执行机');
-						// else
-						// 	_this.runner=data.runners[0].identifiableName;
 					} else {
 						Vac.alert(data.respMsg);
 						}
@@ -277,7 +277,7 @@ var vBody = new Vue({
 			if (!_this.testPlanId) {
 				Vac.alert('请选择测试计划');return;
 			}
-			if(_this.runner=="")
+			if( _this.runnerExecuteType=="appointed" && _this.runnerselected=="")
 			{
 				Vac.alert('请选择执行机');return;
 			}
@@ -307,7 +307,8 @@ var vBody = new Vue({
 					"selectState": _this.selectState,
 					"selectedExeInstances": selectedExeInstances,
 					"testPlanId": _this.testPlanId,
-					"identifiableRunnerName":_this.runner
+					"identifiableRunnerName":_this.runnerExecuteType,
+					"appointedRunners" : _this.runnerselected
 				}),
 				success: function(data) {
 					if (data.respCode === '0000') {
@@ -443,6 +444,14 @@ var vBody = new Vue({
 					} else {
 						if(document.querySelector(`#img-${d.sceneId}-${d.testcaseId}`)!=null){
 							document.querySelector(`#img-${d.sceneId}-${d.testcaseId}`).src = this.exeImgs[d.status];
+						}
+					}
+					let selectNode = '#runner-'+d.sceneId+'-'+d.testcaseId;
+					if($(selectNode)!=null){
+						if(d.runnerName!="null/null"){
+							let runner=d.runnerName.replace(/-/g, "_")
+							let runnerpors = runner.split('/')
+							console.log($(selectNode).children().text("分配执行机为："+runnerpors[0]))
 						}
 					}
 					
