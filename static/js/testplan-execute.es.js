@@ -425,8 +425,15 @@ var vBody = new Vue({
 					"latestLineNum":50
 				}),
 				success: function(data) {
-					$("#logarea").val(data.logSeg);
-					syncQueryIncLog(data);
+					if(data.respCode=="0000"){
+						let textarea = $("#logarea")
+						textarea.val(data.logSeg);
+						textarea.scrollTop(999999999999999999999999);	
+						syncQueryIncLog(data)
+					}
+					else{
+						Vac.alert(data.respMsg);
+					}
 				},
 				error: function() {
 					Vac.alert('网络错误！请点击重新查询！');
@@ -439,15 +446,16 @@ var vBody = new Vue({
 					contentType: 'application/json',
 					data: JSON.stringify({
 						"logType": 2, 
-						"reqSyncNo": values.reqSyncNo,
+						"reqSyncNo": values.respSyncNo,
 						"sessionId":values.sessionId, 
 						"testPlanId":values.testPlanId,
 						"latestLineNum":50
 					}),
-					success: function(data) {
-						$("#logarea").val($("#logarea").val()+data.logSeg);
-						
+					success: function(data) {		
 						if(data.respCode=="0000"){
+							let textarea = $("#logarea")
+							textarea.val(textarea.val()+data.logSeg);
+							textarea.scrollTop(999999999999999999999999);	
 							syncQueryIncLog(data)
 						}
 						else{
