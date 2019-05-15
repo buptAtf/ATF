@@ -68,15 +68,34 @@ var app = new Vue({
         editFlag: true,         //是否只读的标志，来进行是否编辑
         nodeInfoList: {},       //当前用例的所有节点信息
         scriptList: {},         //查看脚本的脚本列表
+        flagShow: false,
         
 
     },
     ready: function(){
         var _this = this;
         
-        _this.getAllFlowcaseList();
-        _this.queryAllAut();
+        var p1 = new Promise((resolve,reject) =>{
+            _this.queryAllAut();
+            resolve("查询系统OK");
+        }).then((v)=>{
+            console.log(v);
+        });
 
+        var p2 = new Promise((resolve, reject) =>{
+            _this.getAllFlowcaseList();
+            resolve("查询流程用例完成");
+        }).then((v) =>{
+            console.log(v);
+        });
+
+        p = Promise.all([p1, p2]);
+        p.then( () =>{
+            _this.flagShow = true;
+            console.log(_this.flagShow);
+        })
+        
+    
         // var p1 = new Promise((resolve, reject) => {
         //     _this.getAllFlowcaseList();
         //     console.log("id是:" + _this.selectedCaseId);
@@ -148,6 +167,7 @@ var app = new Vue({
                 url: address3 + "aut/queryListAut",
                 type: "post",
                 contentType: "application/json",
+                async: true,
                 success: function(data){
                     _this.autList = data.autRespDTOList;
                     
