@@ -23,6 +23,53 @@
       .rigth{
         float: right;
       } 
+      #log {
+        position:absolute;
+        right : 0%;
+        height: 50%; 
+        width: 50%;
+        z-index:9999;
+      }
+      #loghidden{
+        position:absolute;
+        right : 0%;
+        height: auto; 
+        width: auto;
+        z-index:9999;
+      }
+      #hidden{
+        float: left;
+        height: auto; 
+        width: auto;
+        color:black;
+      }
+      #logcontent{
+        border:1px solid #000;
+        float: left;
+        height: 100%; 
+        width: 95%;
+      }
+      #logtext{
+        float: left !important;
+        height: 100%;
+        width: 100%;
+        overflow: hidden;
+        z-index: 3;
+      }
+      #logarea{
+        resize:none;
+        color: white;
+        background: #000;
+        float: left !important;
+        height: 100%;
+        width: 100%;
+        overflow: auto;
+        z-index: 3;
+      }
+      #area{
+        height: 90%;
+        width: 100%;
+      }
     </style>
   </head>
   <body  id ="v-body">
@@ -60,12 +107,12 @@
                           </select>
                         </div>
                         <label class="option-name control-label col-lg-2" v-html="exeStautShow"></label>
-                        <div class=" col-lg-4 " >
+                        <div class=" col-lg-4" >
                             <a class="btn btn-white rigth" @click="testPlanManager()"> 测试计划管理</a>
                           </div>
                       </div>
                       <div class="form-group col-lg-6">
-                        <label class="option-name col-lg-3 control-label">
+                        <label class="option-name col-lg-3  ncontrol-label">
                           执行轮次
                         </label>
                         <div class="col-lg-9">
@@ -117,6 +164,27 @@
               <button class="btn btn-white" @click="reQuery();"><i class="icon-refresh"></i> 重新查询执行结果</button>
             </div>
             <div id="">
+
+              <div v-show="logShow" id = "log" >
+                <div id = "hidden">
+                  <button class="btn btn-white" @click="logShow=!logShow"> <i class="icon-double-angle-right"></i> </button>
+                </div>
+                <div id = "logcontent">
+                  <div class=" panel-info" id= "logtext">
+                    <div class="panel-heading">
+                      <h3 class="panel-title">运行日志</h3>
+                    </div>
+                    <div id = "area">
+                        <textarea id ="logarea" readonly></textarea>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div v-else id = "loghidden" >
+                  <div id = "hidden">
+                    <button class="btn btn-white" @click="logShow=!logShow"> <i class="icon-double-angle-left"> <font color='black'>展开日志</font></i> </button>
+                  </div>
+                </div>
               <div class="main-content2">
                 <div class="case-list-wrapper list-wrapper" v-if="testCaseList.length" style="padding:10px 20px 10px 20px">
                   <!-- <span class="case-list-title list-title">用例列表</span> -->
@@ -223,7 +291,7 @@
                               </div>
                             </div>
                             <div class="runnerclass" :id="'runner' + '-' + scene.sceneId+'-'+case_wrapper.caseId">
-                                <p>分配到执行机atf_runner_mac1 </p>
+                                <p></p>
                             </div>
                           </div>
                           </template>
@@ -249,7 +317,7 @@
                               </footer>
                             </div>
                             <div class="runnerclass" :id="'runner' + '-' + scene.sceneId+'-'+case_wrapper.caseId">
-                                <p>分配到执行机atf_runner_mac1 </p>
+                                <p></p>
                             </div>
                           </div>
                           </template>
@@ -530,7 +598,7 @@
                                 </select>
                             </div>
                         </div>
-                        <!-- <div class="form-group" v-show="1 === editType">
+                        <div class="form-group" v-show="1 === editType">
                             <label class="col-sm-2 control-label">测试轮次</label>
                             <div class="col-sm-10">
                                 <select name="testRoundId" v-model="addRowData.testRoundId" style="width:80%;height: 34px;" filterable placeholder="请选择">
@@ -543,7 +611,7 @@
                                 </select>
                                 <button type="button" class="btn btn-primary btn-sm" data-toggle='modal' style="margin-left: 20px;" data-target="#addTestRoundId">新增</button>
                             </div>
-                        </div> -->
+                        </div>
                     </form>
                 </div>
                 <div class="modal-footer">

@@ -108,7 +108,9 @@ var vBody = new Vue({
 			sort: "",
 			totalPage: 1,
 			totalCount: 1
-		}
+		},
+		logShow:false,
+		//
 	},
 	created: function(){
 		var _this = this;
@@ -295,6 +297,7 @@ var vBody = new Vue({
 					selectedExeInstances.push(temp);
 				}
 			}
+			_this.logShow = true;
 			_this.exeStautShow = '<i class="icon-spinner"></i>执行中';
 			Vac.ajax({
 				url: address2 + 'executeController/t1',
@@ -312,7 +315,8 @@ var vBody = new Vue({
 				}),
 				success: function(data) {
 					if (data.respCode === '0000') {
-						Vac.ajax({
+						_this.startQueryLog();//查询日志
+						Vac.ajax({//因为查询执行信息需要最近执行的批量号因此需要查询批次
 							url: address2 + 'batchRunCtrlController/queryLatestBatchIdForTestPlan',
 							type: 'post',
 							contentType: 'application/json',
@@ -392,6 +396,62 @@ var vBody = new Vue({
 							_this.setResultIcon(data.insStatuses)
 							syncQueryIncInsStatus(data)
 							console.log("continue this branch")
+						}
+					},
+					error: function() {
+						Vac.alert('网络错误！请点击重新查询！');
+					}
+				});
+			}
+		},
+		startQueryLog: function() {
+			var _this = this;
+			console.log(JSON.stringify({
+				"logType": 2, 
+				"reqSyncNo": null,
+				"sessionId":null, 
+				"testPlanId":_this.testPlanId,
+				"latestLineNum":50
+			}))
+			$.ajax({
+				url: address3 + 'executeController/syncQueryLog',
+				type: 'post',
+				contentType: 'application/json',
+				data: JSON.stringify({
+					"logType": 2, 
+					"reqSyncNo": null,
+					"sessionId":null, 
+					"testPlanId":_this.testPlanId,
+					"latestLineNum":50
+				}),
+				success: function(data) {
+					$("#logarea").val(data.logSeg);
+					syncQueryIncLog(data);
+				},
+				error: function() {
+					Vac.alert('网络错误！请点击重新查询！');
+				}
+			});
+			function syncQueryIncLog (values){
+				$.ajax({
+					url: address3 + 'executeController/syncQueryLog',
+					type: 'post',
+					contentType: 'application/json',
+					data: JSON.stringify({
+						"logType": 2, 
+						"reqSyncNo": values.reqSyncNo,
+						"sessionId":values.sessionId, 
+						"testPlanId":values.testPlanId,
+						"latestLineNum":50
+					}),
+					success: function(data) {
+						$("#logarea").val($("#logarea").val()+data.logSeg);
+						
+						if(data.respCode=="0000"){
+							syncQueryIncLog(data)
+						}
+						else{
+							Vac.alert(data.respMsg);
 						}
 					},
 					error: function() {
