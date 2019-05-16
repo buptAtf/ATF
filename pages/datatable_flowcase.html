@@ -5,6 +5,7 @@
   <meta charset="utf-8">
   <link rel="import" href="./common/header.html?__inline">
   <link rel="stylesheet" type="text/css" href="../static/css/handsontable.full.css">
+  <link rel="stylesheet" type="text/css" href="../static/css/jquery.dataTables.min.css">
   <link rel="stylesheet" type="text/css" href="../static/css/index.css">
   <link rel="stylesheet" type="text/css" href="..//static/css/pagination.css">
   <link rel="stylesheet" href="../static/css/bootstrap-select.min.css">
@@ -15,6 +16,7 @@
   <script type="text/javascript" src="../lib/bootstrap-select.min.js"></script> <!--有关下拉框搜索的js文件要放到前面，不然渲染不出来-->
   <script type="text/javascript" src="../lib/vue.js"></script>
   <script type="text/javascript" src="../lib/handsontable.full.js"></script>
+  <script type="text/javascript" src="../lib/jquery.dataTables.min.js"></script>
 
   <title>测试资源管理-流程用例</title>
   <style>
@@ -165,7 +167,7 @@
                       <h4><span class="btn label label-primary col-lg-3" data-toggle="modal" data-target="#viewScript" @click="viewScript(nodeinfo.id)">查看脚本</span></h4>
                     </div>
 
-                    <div id="handsontable">
+                    <div id="myTable">
                       
                     </div>
 
@@ -184,9 +186,7 @@
                       </table>
                     </div> -->
 
-                    <div id="handsontable">
-                      
-                    </div>
+                  
 
                   </section>
 

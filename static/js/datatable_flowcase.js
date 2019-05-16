@@ -78,6 +78,11 @@ var app = new Vue({
         _this.queryAllAut();
         _this.getAllFlowcaseList();
         
+        $(document).ready(function(){
+            $('#myTable').DataTable();
+        });
+
+        
         
 
         // var p1 = new Promise((resolve,reject) =>{
@@ -222,15 +227,15 @@ var app = new Vue({
         }
 
     },
-    mounted: function(){
+    // mounted: function(){
 
-        Vue.nextTick(function(){
-            console.log('mounted');  
-        })
-        // this.generateTable();
-        // console.log("表格出来了没有？")
+    //     Vue.nextTick(function(){
+    //         console.log('mounted');  
+    //     })
+    //     // this.generateTable();
+    //     // console.log("表格出来了没有？")
         
-    },
+    // },
  
 
 })

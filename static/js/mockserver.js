@@ -7,6 +7,10 @@ var app = new Vue({
         selectedExpId: "",      //选中的期望的id
         requestParams: [{reqkey:"",reqvalue:""}],       //规则的请求的参数
         responseParams: [{respkey:"",respvalue:""}],    //规则的返回参数
+        reqHeaders: [{reqkey:"",reqvalue:""}],    //请求头部的值
+        reqCookies: [{reqkey:"",reqvalue:""}],    //请求cookies
+        keepalive: "",      //请求报文中的长连接
+        security: "",       //请求报文中的http 还是https
         
         newCreator: "",            //创建人
         newExpectationName: "",    //期望名称
@@ -89,7 +93,6 @@ var app = new Vue({
         },
         addRequestList: function(){
             this.requestParams.push({reqkey:"",reqvalue:""});
-
         },
         delRequestList: function(index){
             if(this.requestParams.length !== 1){
@@ -104,6 +107,23 @@ var app = new Vue({
                 this.responseParams.splice(index,1);
             }
         },
+        addReqHeaders: function(){
+            this.reqHeaders.push({reqkey:"",reqvalue:""});
+        },
+        delReqHeaders: function(index){
+            if(this.reqHeaders.length !== 1){
+                this.reqHeaders.splice(index,1);
+            }
+        },
+        addReqCookies: function(){
+            this.reqCookies.push({reqkey:"",reqvalue:""});
+        },
+        delReqCookies: function(index){
+            if(this.reqCookies.length !== 1){
+                this.reqCookies.splice(index,1);
+            }
+        },
+
 
         addBaseInfo: function(){
             var _this = this;
