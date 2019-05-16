@@ -28,6 +28,7 @@ var app = new Vue({
         selectedTestProjectCode: '',
         selectedTestProjectName: '',
         selectedTaskDescription: '',
+        logShow : false,
         addData: {
             nameMedium: '',
             ip: '',
@@ -172,6 +173,65 @@ var app = new Vue({
         downloadRunner: function(){
             window.location.href = "http://10.101.167.184:8080/atf-data/atf-runner.zip";
         },
+        logshow(identifiableName){
+            var _this = this;
+            _this.logShow = true
+			$.ajax({
+				url: address3 + 'executeController/syncQueryLog',
+				type: 'post',
+				contentType: 'application/json',
+				data: JSON.stringify({
+                    "logType": 1, 
+                    "identifiableName":identifiableName,
+					"reqSyncNo": null,
+					"sessionId":null, 
+                    "latestLineNum":50,
+				}),
+				success: function(data) {
+					if(data.respCode=="0000"){
+						let textarea = $("#logarea")
+						textarea.val(data.logSeg);
+						textarea.scrollTop(99999999999);	
+						syncQueryIncLog(data)
+					}
+					else{
+						Vac.alert(data.respMsg);
+					}
+				},
+				error: function() {
+					Vac.alert('网络错误！请点击重新查询！');
+				}
+			});
+			function syncQueryIncLog (values){
+				$.ajax({
+					url: address3 + 'executeController/syncQueryLog',
+					type: 'post',
+					contentType: 'application/json',
+					data: JSON.stringify({
+                        "logType": 1, 
+                        "identifiableName":values.identifiableName,
+						"reqSyncNo": values.respSyncNo,
+						"sessionId":values.sessionId, 
+                        "latestLineNum":50,
+					}),
+					success: function(data) {
+						if(data.respCode=="0000"){
+							let textarea = $("#logarea")
+							if(data.logSeg!=null)
+								textarea.val(textarea.val()+data.logSeg);
+							textarea.scrollTop(99999999999);
+							syncQueryIncLog(data)
+						}
+						else{
+							Vac.alert(data.respMsg);
+						}
+					},
+					error: function() {
+						Vac.alert('网络错误！请点击重新查询！');
+					}
+				});
+			}
+        }
     },
 });
 
@@ -179,13 +239,15 @@ var app = new Vue({
 function getTestProject() {
     //获取list通用方法，只需要传入多个所需参数
     $.ajax({
-        url: address3 + 'autoTestRunner/queryAllAutoTestRunner',
-        type: 'GET',
+        url: address3 + 'executeController/queryRunners',
+        type: 'post',
         contentType: 'application/json',
-        data: {},
+        data: JSON.stringify({
+            "serviceName":"web.ui"
+        }),
         success: function(data) {
             if (data.respCode === '0000') {
-                app.testProjectList = data.autoTestRunnerList;
+                app.testProjectList = data.runners;
             } else {
                 app.testProjectList = [];
             }

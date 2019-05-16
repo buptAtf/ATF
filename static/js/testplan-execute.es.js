@@ -406,13 +406,6 @@ var vBody = new Vue({
 		},
 		startQueryLog: function() {
 			var _this = this;
-			console.log(JSON.stringify({
-				"logType": 2, 
-				"reqSyncNo": null,
-				"sessionId":null, 
-				"testPlanId":_this.testPlanId,
-				"latestLineNum":50
-			}))
 			$.ajax({
 				url: address3 + 'executeController/syncQueryLog',
 				type: 'post',
@@ -428,7 +421,7 @@ var vBody = new Vue({
 					if(data.respCode=="0000"){
 						let textarea = $("#logarea")
 						textarea.val(data.logSeg);
-						textarea.scrollTop(999999999999999999999999);	
+						textarea.scrollTop(99999999999);	
 						syncQueryIncLog(data)
 					}
 					else{
@@ -451,11 +444,12 @@ var vBody = new Vue({
 						"testPlanId":values.testPlanId,
 						"latestLineNum":50
 					}),
-					success: function(data) {		
+					success: function(data) {
 						if(data.respCode=="0000"){
 							let textarea = $("#logarea")
-							textarea.val(textarea.val()+data.logSeg);
-							textarea.scrollTop(999999999999999999999999);	
+							if(data.logSeg!=null)
+								textarea.val(textarea.val()+data.logSeg);
+							textarea.scrollTop(99999999999);
 							syncQueryIncLog(data)
 						}
 						else{
