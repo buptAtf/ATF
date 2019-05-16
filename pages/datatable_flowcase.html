@@ -4,6 +4,7 @@
 <head>
   <meta charset="utf-8">
   <link rel="import" href="./common/header.html?__inline">
+  <link rel="stylesheet" type="text/css" href="../static/css/handsontable.full.css">
   <link rel="stylesheet" type="text/css" href="../static/css/index.css">
   <link rel="stylesheet" type="text/css" href="..//static/css/pagination.css">
   <link rel="stylesheet" href="../static/css/bootstrap-select.min.css">
@@ -13,6 +14,7 @@
   <script src="../lib/bootstrap.min.js"></script>
   <script type="text/javascript" src="../lib/bootstrap-select.min.js"></script> <!--有关下拉框搜索的js文件要放到前面，不然渲染不出来-->
   <script type="text/javascript" src="../lib/vue.js"></script>
+  <script type="text/javascript" src="../lib/handsontable.full.js"></script>
 
   <title>测试资源管理-流程用例</title>
   <style>
@@ -74,7 +76,7 @@
                   </div>
                 </div>
                 
-                <div class="panel-body" v-if="flagShow">
+                <div class="panel-body">
                   <section>
                     <div class="row">
                         <h3><span class="label label-info" style="margin:20px">用例详情</span></h3>
@@ -128,9 +130,9 @@
                     <div class="col-lg-6 nopadding">
                       <h5><span class="col-lg-3 text-center">被测系统</span></h5>
                       <div class="col-lg-8">
-                        <select class="form-control selectpicker"  data-live-search="true"  readonly="{{ editFlag }}" v-bind="autId">
-                            <!-- <option value="" selected>{{ nodeinfo.autName }}</option> -->
-                            <option v-for="item in autList" :value="item.id" >{{ item.nameMedium }}</option>
+                        <select class="selectpicker form-control" v-model="autId" data-live-search="true"  readonly="{{ editFlag }}" >
+                          <option value="" selected>{{ nodeinfo.autName }}</option>
+                          <option v-for="item in autList" :value="item.id" >{{ item.nameMedium }}</option>
                         </select>
                       </div>
                     </div>
@@ -138,7 +140,7 @@
                     <div class="col-lg-6 nopadding">
                       <h5><span class="col-lg-3 text-center">功能点</span></h5>
                       <div class="col-lg-8">
-                        <select type="text" class="form-control" readonly="{{editFlag}}">
+                        <select class="form-control selectpicker" data-live-search="true" readonly="{{editFlag}}">
                             <option value="" selected>{{ nodeinfo.transName }}</option>
                         </select>
                       </div>
@@ -163,6 +165,10 @@
                       <h4><span class="btn label label-primary col-lg-3" data-toggle="modal" data-target="#viewScript" @click="viewScript(nodeinfo.id)">查看脚本</span></h4>
                     </div>
 
+                    <div id="handsontable">
+                      
+                    </div>
+
                     <!-- <div class="col-lg-6 nopadding">
                       <table   class="table table-striped table-bordered border-top text-center">
                         <thead>
@@ -178,7 +184,14 @@
                       </table>
                     </div> -->
 
+                    <div id="handsontable">
+                      
+                    </div>
+
                   </section>
+
+                  
+
 
                   <!-- view script start -->
                   <div class="modal fade" id="viewScript" tabindex="-1" role="dialog">

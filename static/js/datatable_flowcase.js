@@ -68,60 +68,45 @@ var app = new Vue({
         editFlag: true,         //是否只读的标志，来进行是否编辑
         nodeInfoList: {},       //当前用例的所有节点信息
         scriptList: {},         //查看脚本的脚本列表
-        flagShow: false,
+        
         
 
     },
     ready: function(){
         var _this = this;
         
-        var p1 = new Promise((resolve,reject) =>{
-            _this.queryAllAut();
-            resolve("查询系统OK");
-        }).then((v)=>{
-            console.log(v);
-        });
-
-        var p2 = new Promise((resolve, reject) =>{
-            _this.getAllFlowcaseList();
-            resolve("查询流程用例完成");
-        }).then((v) =>{
-            console.log(v);
-        });
-
-        p = Promise.all([p1, p2]);
-        p.then( () =>{
-            _this.flagShow = true;
-            console.log(_this.flagShow);
-        })
+        _this.queryAllAut();
+        _this.getAllFlowcaseList();
         
-    
-        // var p1 = new Promise((resolve, reject) => {
+        
+
+        // var p1 = new Promise((resolve,reject) =>{
+        //     _this.queryAllAut();
+        //     resolve("查询系统OK");
+        // }).then((v)=>{
+        //     console.log(v);
+        // });
+
+        // var p2 = new Promise((resolve, reject) =>{
         //     _this.getAllFlowcaseList();
-        //     console.log("id是:" + _this.selectedCaseId);
-        //     resolve();
+        //     resolve("查询流程用例完成");
+        // }).then((v) =>{
+        //     console.log(v);
         // });
-        // p1.then(()=>{
+
+        // p = Promise.all([p1, p2]);
+        // p.then( () =>{
+        //     _this.flagShow = true;
             
-        //     _this.queryThisCase(_this.selectedCaseId);
-        //     console.log("p1完成");
         // })
-
-
-        // var p2 = new Promise((resolve,reject) => {
-        //     _this.queryThisCase(_this.selectedCaseId);
-        //     resolve();
-        // });
-        // var p = Promise.all([p1,p2]);
-        // p.then(()=>{
-        //     console.log("同步成功");
-        // })
+        
 
         $('.3').addClass('open');
         $('.3 .arrow').addClass('open');
         $('.3-ul').css({display: 'block'});
         $('.3-3').css({color: '#ff6c60'});
     },
+
     methods:{
         getAllFlowcaseList: function(){
             var _this = this;
@@ -156,6 +141,10 @@ var app = new Vue({
                     if(data.respCode=="0000"){
                         _this.currentCase = data;
                         _this.nodeInfoList = data.nodeInfoList;
+
+                        Vue.nextTick(function () {
+                            $('.selectpicker').selectpicker('refresh');
+                          });
                         console.log(_this.nodeInfoList);
                     }
                 }
@@ -170,7 +159,7 @@ var app = new Vue({
                 async: true,
                 success: function(data){
                     _this.autList = data.autRespDTOList;
-                    
+                    _this.queryTransactsByAutId();
                 }
             })
         },
@@ -182,8 +171,8 @@ var app = new Vue({
                 contentType: "application/json",
                 data: JSON.stringify({ 'id': _this.autId }),
                 success: function(data){
-                    console.log(data);
                     
+                    console.log(data);
                 }
             })
         },
@@ -209,16 +198,40 @@ var app = new Vue({
                 }
             })
         },
+        generateTable: function(){
+            var tableContainer = document.getElementById("handsontable");
+            var handsontable = null;
+            var dataSource = [
+                ["", "Ford", "Tesla", "Toyota", "Honda"],
+                ["2017", 10, 11, 12, 13],
+                ["2018", 20, 11, 14, 13],
+                ["2019", 30, 15, 12, 13]
+            ];
 
+            if(handsontable===null){
+                handsontable = new Handsontable(tableContainer,{
+                    data: dataSource,
+                    
+                    rowHeaders: true,
+                    colHeaders: true,
+                    filters: true,
+                    dropdownMenu: true,
+                })
+
+            }
+        }
 
     },
-    components:{
-        "flowcase":{
-            template: flowcaseTemplate,
-            props: ["nodeinfo"],
+    mounted: function(){
 
-        }
-    }
+        Vue.nextTick(function(){
+            console.log('mounted');  
+        })
+        // this.generateTable();
+        // console.log("表格出来了没有？")
+        
+    },
+ 
 
 })
 
