@@ -74,7 +74,7 @@
                   </div>
                 </div>
                 
-                <div class="panel-body">
+                <div class="panel-body" v-if="flagShow">
                   <section>
                     <div class="row">
                         <h3><span class="label label-info" style="margin:20px">用例详情</span></h3>
@@ -121,13 +121,15 @@
                     </div> 
                   </section>
 
+
+
                   <section v-for="nodeinfo in nodeInfoList">
                     <h4 style="margin-left:30px; margin-top:150px"><span class="label label-info" >节点</span></h4>
                     <div class="col-lg-6 nopadding">
                       <h5><span class="col-lg-3 text-center">被测系统</span></h5>
                       <div class="col-lg-8">
-                        <select class="form-control selectpicker" title="{{ nodeinfo.autName }}" data-live-search="true"  readonly="{{ editFlag }}" v-bind="autId">
-                            <option value="" selected>{{ nodeinfo.autName }}</option>
+                        <select class="form-control selectpicker"  data-live-search="true"  readonly="{{ editFlag }}" v-bind="autId">
+                            <!-- <option value="" selected>{{ nodeinfo.autName }}</option> -->
                             <option v-for="item in autList" :value="item.id" >{{ item.nameMedium }}</option>
                         </select>
                       </div>

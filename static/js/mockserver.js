@@ -1,17 +1,26 @@
 var app = new Vue({
     el: "#v-mockserver",
     data: {
-        allExpecation: [],
-        curExpecation: {},
-        curExpecationRet: {},
-        selectedExpId: "",
-        requestParams: [{reqkey:"",reqvalue:""}],
-        responseParams: [{respkey:"",respvalue:""}],
+        allExpecation: [],      //所有的期望
+        curExpecation: {},      //当前的期望
+        curExpecationRet: {},   //当前期望的返回
+        selectedExpId: "",      //选中的期望的id
+        requestParams: [{reqkey:"",reqvalue:""}],       //规则的请求的参数
+        responseParams: [{respkey:"",respvalue:""}],    //规则的返回参数
+        
+        newCreator: "",            //创建人
+        newExpectationName: "",    //期望名称
+        newSelectedMethod: "POST", //选中的方法
+        newInterfacePath: "",      //接口路径
+        newAction: "response",             //动作
+        editFlag: "1",
+
 
     },
     ready: function(){
 
         this.getAllExpectation();
+
         $('.2').addClass('open');       //侧边展开，高亮显示当前页面Mock API
         $('.2 .arrow').addClass('open');
         $('.2-ul').css({display: 'block'});
@@ -94,6 +103,36 @@ var app = new Vue({
             if(this.responseParams.length !== 1){
                 this.responseParams.splice(index,1);
             }
+        },
+
+        addBaseInfo: function(){
+            var _this = this;
+            $.ajax({
+                url: address3 + "/mockServer/addBaseInfo",
+                type: "post",
+                contentType: "application/json",
+                data: JSON.stringify({
+                    "creator": _this.newCreator,
+                    "expectationName": _this.newExpectationName,
+                    "type": _this.newAction
+                }),
+                success: function(data){
+                    
+                    console.log(data);
+                    
+                },
+                
+            });
+            $("#mockedit").trigger("click");
+            console.log("我点击了")
+            // var mockedit = $("#mockedit");
+            // mockedit.trigger("click");
+            // console.log(mockedit);
+        },
+        changeEditFlag: function(flag){
+            var _this = this;
+            _this.editFlag = flag;
+
         }
 
 
