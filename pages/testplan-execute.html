@@ -24,6 +24,7 @@
         float: right;
       } 
       #log {
+        opacity:0.75;
         position:absolute;
         right : 0%;
         height: 50%; 
@@ -109,7 +110,7 @@
                         <label class="option-name control-label col-lg-2" v-html="exeStautShow"></label>
                         <div class=" col-lg-4" >
                             <a class="btn btn-white rigth" @click="testPlanManager()"> 测试计划管理</a>
-                          </div>
+                        </div>
                       </div>
                       <!-- <div class="form-group col-lg-6">
                         <label class="option-name col-lg-3 control-label">
@@ -164,7 +165,7 @@
               <button class="btn btn-white" @click="reQuery();"><i class="icon-refresh"></i> 重新查询执行结果</button>
             </div>
             <div id="">
-
+ 
               <div v-show="logShow" id = "log" >
                 <div id = "hidden">
                   <button class="btn btn-white" @click="logShow=!logShow"> <i class="icon-double-angle-right"></i> </button>
@@ -181,10 +182,10 @@
                 </div>
               </div>
               <div v-else id = "loghidden" >
-                  <div id = "hidden">
-                    <button class="btn btn-white" @click="logShow=!logShow"> <i class="icon-double-angle-left"> <font color='black'>展开日志</font></i> </button>
-                  </div>
+                <div id = "hidden">
+                  <button class="btn btn-white" @click="logShow=!logShow"> <i class="icon-double-angle-left"> <font color='black'>展开日志</font></i> </button>
                 </div>
+              </div>
               <div class="main-content2">
                 <div class="case-list-wrapper list-wrapper" v-if="testCaseList.length" style="padding:10px 20px 10px 20px">
                   <!-- <span class="case-list-title list-title">用例列表</span> -->

@@ -6,6 +6,59 @@
     <link rel="stylesheet" type="text/css" href="../static/css/index.css">
     <link rel="stylesheet" type="text/css" href="../static/css/pagination.css">
     <title>执行机管理</title>
+    <style>
+    
+    #log {
+        opacity:0.75;
+        position:absolute;
+        right : 0%;
+        top : 20%;
+        height: 50%; 
+        width: 50%;
+        z-index:9999;
+      }
+      #loghidden{
+        position:absolute;
+        right : 0%;
+        top : 20%;
+        height: auto; 
+        width: auto;
+        z-index:9999;
+      }
+      #hidden{
+        float: left;
+        height: auto; 
+        width: auto;
+        color:black;
+      }
+      #logcontent{
+        border:1px solid #000;
+        float: left;
+        height: 100%; 
+        width: 95%;
+      }
+      #logtext{
+        float: left !important;
+        height: 100%;
+        width: 100%;
+        overflow: hidden;
+        z-index: 3;
+      }
+      #logarea{
+        resize:none;
+        color: white;
+        background: #000;
+        float: left !important;
+        height: 100%;
+        width: 100%;
+        overflow: auto;
+        z-index: 3;
+      }
+      #area{
+        height: 90%;
+        width: 100%;
+      }
+    </style>
 </head>
 
 <body id="v-testProject" v-cloak>
@@ -29,6 +82,28 @@
                     </div>
                 </div>
                 <!-- breadcrumb end -->
+                <!--     logshow start    -->
+                <div v-show="logShow" id = "log" >
+                    <div id = "hidden">
+                        <button class="btn btn-white" @click="logShow=!logShow"> <i class="icon-double-angle-right"></i> </button>
+                    </div>
+                    <div id = "logcontent">
+                        <div class=" panel-info" id= "logtext">
+                        <div class="panel-heading">
+                            <h3 class="panel-title">运行日志</h3>
+                        </div>
+                        <div id = "area">
+                            <textarea id ="logarea" readonly></textarea>
+                        </div>
+                        </div>
+                    </div>
+                </div>
+                <div v-else id = "loghidden" >
+                    <div id = "hidden">
+                        <button class="btn btn-white" @click="logShow=!logShow"> <i class="icon-double-angle-left"> <font color='black'>展开日志</font></i> </button>
+                    </div>
+                </div>
+                <!--     logshow end    -->
                 <!--top-button start-->
                 <div class="row">
                     <div class="col-lg-12 top-btn">
@@ -233,31 +308,34 @@
                 <div class="row">
                     <div class="col-lg-12">
                         <section class="panel">
-                            <header class="panel-heading">
+                            <header class="panel-heading"> 
                                 执行机管理
                             </header>
                             <!-- 表格 -->
                             <table class="table table-striped table-bordered border-top text-center" id="">
                                 <thead>
                                     <tr>
-                                        <th width="5%" class="text-center">
-                                            <!-- <input type="checkbox" v-model="checked"  name="chk_all" id="chk_all" /> -->
-                                        </th>
+                                        <!-- <th width="5%" class="text-center">
+                                             <input type="checkbox" v-model="checked"  name="chk_all" id="chk_all" />
+                                        </th> -->
                                         <th class="text-center">名称</th>
                                         <th class="text-center">IP</th>
                                         <th class="text-center">端口号</th>
                                         <th class="hidden-phone text-center">描述</th>
+                                        <th class="hidden-phone text-center">日志查看</th>
                                     </tr>
                                 </thead>
                                 <tbody id="testProjectTable">
                                     <tr class="odd gradeX" v-for="project in testProjectList" id="{{project.id}}">
-                                        <td width="5%">
+                                        <!-- <td width="5%">
                                             <input type="radio" v-model="" name="chk_list" id="{{project.id}}" />
-                                        </td>
-                                        <td class="center " width="20%">{{ project.nameMedium }}</td>
-                                        <td width="20%">{{ project.ip }}</td>
-                                        <td width="20%">{{ project.portNo }}</td>
-                                        <td class="hidden-phone" width="40%">{{ project.descripition }}</td>
+                                        </td> -->
+                                        <td class="center " width="20%">{{ project.runnerName }}</td>
+                                        <td width="20%">{{ project.runnerIp }}</td>
+                                        <td width="20%">{{ project.runnerPort }}</td>
+                                        <td class="hidden-phone" width="20%">{{ project.identifiableName }}</td>
+                                        <td class="hidden-phone" width="20%"><a class="btn btn-primary btn-xs" @click="logshow(project.identifiableName)">日志查看</a></td>
+
                                     </tr>
                                 </tbody>
                             </table>
