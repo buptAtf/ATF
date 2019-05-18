@@ -276,7 +276,12 @@
                             <div id="edit" class="tab-pane fade">
                                 <section class="panel" style="height:800px; overflow:auto">
                                     <div>
-                                        <h3 style="padding-left:20px"><span class="label label-info">基本设置</span></h3>
+                                        
+                                        <div style="margin-left:1000px; margin-top: 20px;">
+                                            <a class="btn btn-white btn-sm" ><i class="icon-ok" ></i>提交修改</a>
+                                        </div>
+
+                                        <h3 style="padding-left:20px; "><span class="label label-info">基本设置</span></h3>
                                         <div class="well" style="margin-left:20px; margin-top:20px;">
                                             <div>
                                                 <div class="row" style="margin-left:20px; margin-top:20px;">
@@ -408,8 +413,8 @@
                                             </div>
                                         </div>
 
-                                        <h3 style="padding-left:20px"><span class="label label-info">返回数据设置</span></h3>
-                                        <div>
+                                        <div v-if="respforwardFlag=='response'"> 
+                                            <h3 style="padding-left:20px"><span class="label label-info">返回数据设置</span></h3>
                                             <div class="form-group col-lg-12" style="margin-top:20px; display:inline-block">
                                                 <row>
                                                     <div class="col-lg-5 nopadding" >
@@ -431,39 +436,104 @@
                                                     <button type="button" class="btn btn-primary" @click="changeRespEditFlag('1')">body</button>
                                                     <button type="button" class="btn btn-primary" @click="changeRespEditFlag('2')">headers</button>
                                                     <button type="button" class="btn btn-primary" @click="changeRespEditFlag('3')">cookies</button>
-                                                    <button type="button" class="btn btn-primary" @click="changeRespEditFlag('4')">高级</button>
+                                                    
                                                 </div>
-                                                <div class="well" style="margin-left:20px; margin-top:20px;" v-if="editRespFlag==='1'">
-                                                    <div class="col-lg-4">
-                                                        <label class="checkbox-inline">
-                                                            <input type="radio" name="optionsRadiosinline" value="json" checked>
-                                                            json
-                                                        </label>
-                                                        <label class="checkbox-inline">
-                                                            <input type="radio" name="optionsRadiosinline" value="raw">
-                                                            raw
-                                                        </label>
-                                                        <label class="checkbox-inline">
-                                                            <input type="radio" name="optionsRadiosinline" value="string">
-                                                            string
-                                                        </label>
+                                                <div class="well " style="margin-left:20px; margin-top:20px;" v-if="editRespFlag==='1'">
+                                                    <div class="col-lg-10">
+                                                        <div class="col-lg-5">
+                                                            <label class="checkbox-inline">
+                                                                <input type="radio" name="optionsRadiosinline" value="json" checked>
+                                                                json
+                                                            </label>
+                                                            <label class="checkbox-inline">
+                                                                <input type="radio" name="optionsRadiosinline" value="raw">
+                                                                raw
+                                                            </label>
+                                                            <label class="checkbox-inline">
+                                                                <input type="radio" name="optionsRadiosinline" value="string">
+                                                                string
+                                                            </label>
+                                                        </div>
+                                                        
+                                                        <div class="col-lg-2" style="text-align:center">
+                                                            报错信息:
+                                                        </div>
+                                                        
+                                                        <div class="col-lg-3">
+                                                            <input class="form-control" v-model="respReasonPhrase" placeholder="">
+                                                        </div>
                                                     </div>
-                                                    
-                                                    <div class="col-lg-3">
-                                                        报错信息:
-                                                    </div>
-                                                    
-                                                    <div class="col-lg-5">
-                                                        <input class="form-control" v-model="" placeholder="">
-                                                    </div>
-                                                    
-
-        
                                                     <textarea class="form-control" style="margin-top:20px; height:250px">asd</textarea>
+                                                </div>
+
+                                                <div class="well" style="margin-left:20px; margin-top:20px;" v-if="editRespFlag==='2'">
+                                                    <row class="col-lg-12" style="display:inline-block; margin-top:10px" v-for="(index,item) in respHeaders">
+                                                        <div class="form-group col-lg-2 text-right">
+                                                            返回头部:
+                                                        </div>
+                                                        <div class="form-group col-lg-4 ">
+                                                            <input type="text" class="form-control" v-model="respHeaders[index].respkey" placeholder="头部名称">
+                                                        </div>
+                                                        <div class="form-group col-lg-4">
+                                                            <input type="text" class="form-control" v-model="respHeaders[index].respvalue" placeholder="参数值" >
+                                                        </div>
+                                                        <div class="form-group col-lg-2">
+                                                            <a class="btn btn-white btn-sm" @click="addRespHeaders"><i class="icon-plus"></i></a>
+                                                            <a class="btn btn-white btn-sm" @click="delRespHeaders(index)"><i class="icon-remove"></i></a>
+                                                        </div>
+                                                    </row>
+                                                </div>
+
+                                                <div class="well" style="margin-left:20px; margin-top:20px;" v-if="editRespFlag==='3'">
+                                                    <row class="col-lg-12" style="display:inline-block; margin-top:10px" v-for="(index,item) in respCookies">
+                                                        <div class="form-group col-lg-2 text-right">
+                                                            cookie:
+                                                        </div>
+                                                        <div class="form-group col-lg-4 ">
+                                                            <input type="text" class="form-control" v-model="respCookies[index].respkey" placeholder="cookie头部">
+                                                        </div>
+                                                        <div class="form-group col-lg-4">
+                                                            <input type="text" class="form-control" v-model="respCookies[index].respvalue" placeholder="cookie值" >
+                                                        </div>
+                                                        <div class="form-group col-lg-2">
+                                                            <a class="btn btn-white btn-sm" @click="addRespCookies"><i class="icon-plus"></i></a>
+                                                            <a class="btn btn-white btn-sm" @click="delRespCookies(index)"><i class="icon-remove"></i></a>
+                                                        </div>
+                                                    </row>
+                                                </div>
+
+                                            </div>
+                                        </div>
+
+                                        <div v-if="respforwardFlag=='forward'"> 
+                                            <h3 style="padding-left:20px"><span class="label label-info">转发数据设置</span></h3>
+                                            <div class="well" style="margin-left:20px; margin-top:20px;">
+                                                <div class="col-lg-6 nopadding" >
+                                                    <div  style="display: inline-block;"> <h5>host:</h5></div>
+                                                    <div  style="display: inline-block;"> <input class="form-control" v-model=""></div>
+                                                </div>
+
+                                                <div class="col-lg-6 nopadding" >
+                                                    <div  style="display: inline-block;"> <h5>port:</h5></div>
+                                                    <div  style="display: inline-block;"> <input class="form-control" v-model=""></div>
+                                                </div>
+                                                
+                                                <div class="row" style=" margin-top:50px;">
+                                                    <div class="col-lg-6 " >
+                                                        <label class="col-lg-2 control-label ">协议:</label>
+                                                        <div class="col-lg-4">
+                                                            <select class="form-control" v-model="">
+                                                                <option value="" selected>请选择</option>
+                                                                <option value="HTTP">HTTP</option>
+                                                                <option value="HTTPS">HTTPS</option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
                                                 </div>
 
 
                                             </div>
+
                                         </div>
 
                                     </div>

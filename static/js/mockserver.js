@@ -8,7 +8,9 @@ var app = new Vue({
         requestParams: [{reqkey:"",reqvalue:""}],       //规则的请求的参数
         responseParams: [{respkey:"",respvalue:""}],    //规则的返回参数
         reqHeaders: [{reqkey:"",reqvalue:""}],    //请求头部的值
+        respHeaders: [{respkey:"",respvalue:""}], //返回头部的值
         reqCookies: [{reqkey:"",reqvalue:""}],    //请求cookies
+        respCookies: [{respkey:"",respvalue:""}], //返回cookise的值
         keepalive: "",      //请求报文中的长连接
         security: "",       //请求报文中的http 还是https
         
@@ -21,6 +23,9 @@ var app = new Vue({
         editRespFlag: "1",
         respCode: "",               //返回数据的状态码
         respDelayTime: "",          //延迟时间
+        respReasonPhrase: "",       //返回数据的错误语句
+        respforwardFlag: "response",    //返回的数据是response还是forward
+        
 
 
     },
@@ -90,6 +95,8 @@ var app = new Vue({
                 success:function(data){
                     // console.log(data);
                     _this.curExpecation = data;
+                    _this.respforwardFlag = data.type;
+                    
                 }
             }) 
             console.log(currentId);
@@ -126,6 +133,23 @@ var app = new Vue({
                 this.reqCookies.splice(index,1);
             }
         },
+        addRespHeaders: function(){
+            this.respHeaders.push({respkey:"",respvalue:""});
+        },
+        delRespHeaders: function(){
+            if(this.respHeaders.length !== 1){
+                this.respHeaders.splice(index,1);
+            }
+        },
+        addRespCookies: function(){
+            this.respCookies.push({respkey:"",respvalue:""});
+        },
+        delRespCookies: function(){
+            if(this.respCookies.length !== 1){
+                this.respCookies.splice(index,1);
+            }
+        },
+
 
 
         addBaseInfo: function(){
@@ -160,7 +184,7 @@ var app = new Vue({
         changeRespEditFlag: function(flag){
             var _this = this;
             _this.editRespFlag = flag;
-        }
+        },
 
 
     }
