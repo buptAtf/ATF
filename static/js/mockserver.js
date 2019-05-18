@@ -17,7 +17,10 @@ var app = new Vue({
         newSelectedMethod: "POST", //选中的方法
         newInterfacePath: "",      //接口路径
         newAction: "response",             //动作
-        editFlag: "1",
+        editReqFlag: "1",              //请求参数设置显示的标志位
+        editRespFlag: "1",
+        respCode: "",               //返回数据的状态码
+        respDelayTime: "",          //延迟时间
 
 
     },
@@ -149,10 +152,14 @@ var app = new Vue({
             // mockedit.trigger("click");
             // console.log(mockedit);
         },
-        changeEditFlag: function(flag){
+        changeReqEditFlag: function(flag){
             var _this = this;
-            _this.editFlag = flag;
+            _this.editReqFlag = flag;
 
+        },
+        changeRespEditFlag: function(flag){
+            var _this = this;
+            _this.editRespFlag = flag;
         }
 
 
