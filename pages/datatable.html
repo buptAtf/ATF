@@ -529,7 +529,7 @@ div.fixed-table-scroll-outer {
               保存
             </button> -->
           </div>
-        </div>
+        </div><br>
         <div class="before-operation operation">
           <table class="before-operation-table" border="1">
             <thead>
@@ -618,8 +618,7 @@ div.fixed-table-scroll-outer {
               </tr>
             </tbody>
           </table>
-        </div>
-        <div style="margin: 30px;"></div>
+        </div><br>
         <div class="sticky-top">
           <label>后置操作</label>
           <div>
@@ -644,7 +643,122 @@ div.fixed-table-scroll-outer {
               保存
             </button> -->
           </div>
-        </div>
+        </div><br>
+        <div class="after-operation operation">
+
+          <table class="after-operation-table" border="1">
+            <thead>
+              <tr>
+                <th class="move">排序</th>
+                <th class="check">选择
+                  <!--  <input type="checkbox" class="checkall"> -->
+                </th>
+                <th class="index">行号</th>
+                <th class="operations">操作项</th>
+                <th class="functions">方法</th>
+                <th class="parameters">参数</th>
+                <th class="add-row">
+                  <i class="icon-plus add-row" @click="addRow(2)" style="font-size: 18px"></i>
+                </th>
+              </tr>
+            </thead>
+            <tbody class="ui-sortable" id="sortable2">
+              <tr v-for="(index, row) in afterOperationRows" data-index={{index}} class="after-operation-row" track-by="id">
+                <td class="move">
+                  <span class="icon-move"></span>
+                </td>
+                <td class="check">
+                  <input type="checkbox" class="checkone">
+                </td>
+                <td class="index">{{index + 1}}</td>
+                <td class="operations">
+                  <template v-if="row.operation.ui != '' && row.operation.element != ''">
+                    <i class="icon-edit" @click="showUiAndElement($event, 2)" style="color: #ff6c60;"></i>
+                    <label>UI:</label>
+                    <span class="operation-ui">{{row.operation.ui}}</span>
+                    <label>元素:</label>
+                    <span class="operation-element" :data-classtype="row.operation.classType">{{row.operation.element}}</span>
+                  </template>
+                  <template v-else>
+                    <i class="icon-edit" @click="showUiAndElement($event, 2)" style="color: #ff6c60;"></i>
+                    <label>公共函数:</label>
+                    <span class="operation-ui" style="display: none;">{{row.operation.ui}}</span>
+                    <span class="operation-element" style="display: none;" :data-classtype="row.operation.classType">{{row.operation.element}}</span>
+                  </template>
+                </td>
+                <td class="functions">
+                  <select class="functions-select form-control" style="width: 90%;">
+                    <template v-for="function in row.functions" @change="changeFunction($event.target, index, 2)">
+                      <option v-if="row.selectedFunc == function.name" :value="function.name" :data-parameters="function.parameterlist"
+                        selected>{{function.name}}</option>
+                      <option v-else :value="function.name" :data-parameters="function.parameterlist">{{function.name}}</option>
+                    </template>
+                  </select>
+                </td>
+                <td class="parameters" contenteditable="false">
+                  <span class="icon-edit edit-param" style="color: #ff6c60" @click="editParameter($event, 2)"></span>
+                  <div>
+                    <div class="param-show">
+                      <span v-for="parameter in row.parameters">{{parameter.Name}}:
+                        <b class="param-value-show">{{parameter.Value}}</b>;&nbsp;&nbsp;</span>
+                      <span>参数1:<b> 1223 </b>;&nbsp;&nbsp;</span>
+                    </div>
+                    <table class="param-table table table-condensed table-bordered" style="display: none;">
+                      <thead>
+                        <tr>
+                          <td>名称</td>
+                          <td>参数值</td>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr v-for="parameter in row.parameters" class="param-row">
+                          <td class="param-name">{{parameter.Name}}</td>
+                          <td class="param-value" contenteditable="true">{{parameter.Value}}</td>
+                        </tr>
+                        <tr class="bottom-row">
+                          <td colspan="2">
+                            <button @click="cancelEditParam($event, 2)">取消</button>
+                            <button @click="saveParam($event, 2)">保存</button>
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </td>
+                <td class="delete-row">
+                  <i class="icon-plus add-row" style="font-size: 18px" @click="insertRow(index, 2)"></i>
+                  <i class="icon-minus delete-row" style="font-size: 18px" @click="deleteRow(index, 2)"></i>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div><br>
+        <div style="margin: 30px;"></div>
+        <div class="sticky-top">
+          <label>界面提取</label>
+          <div>
+            <button class="btn btn-white" @click="showUiAndElement2($event, 2)">
+              <i class=" icon-trash"></i>
+              添加多项
+            </button>
+            <button class="btn btn-white" @click="removeRow($event, 2)">
+              <i class=" icon-trash"></i>
+              删除
+            </button>
+            <button class="btn btn-white" @click="moveUp($event, 2)">
+              <i class="icon-double-angle-up"></i>
+              上移
+            </button>
+            <button class="btn btn-white" @click="moveDown($event, 2)">
+              <i class="icon-double-angle-down"></i>
+              下移
+            </button>
+            <!-- <button class="btn btn-white">
+              <i class="icon-save"></i>
+              保存
+            </button> -->
+          </div>
+        </div><br>
         <div class="after-operation operation">
 
           <table class="after-operation-table" border="1">
@@ -1297,46 +1411,51 @@ div.fixed-table-scroll-outer {
             <button class="close" type="button" data-dismiss="modal" aria-label="Close">
               <span aria-hidden="true">&times;</span>
             </button>
-            <h4 class="modal-title">选择操作项与方法</h4>
+            <h4 class="modal-title">查看脚本</h4>
           </div>
           <div class="modal-body">
             <div class="tab-content" id="script-modal" style="width: 750px;">
-              <table class="table table-bordered table-striped" v-if="tableData.length">
-                <thead>
-                  <tr>
-                    <th>#</th>
-                    <th>操作项</th>
-                    <th>方法</th>
-                    <th>参数</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr v-for="(index, row) in tableData">
-                    <td class="index">{{ +index + 1 }}</td>
-                    <td class="operations">
-                      <template v-if="row.ui != '' && row.element != ''">
-                        <label>UI:</label>
-                        <span class="operation-ui">{{row.ui}}</span>
-                        <label>元素:</label>
-                        <span class="operation-element" :data-classtype="row.classType">{{row.element}}</span>
-                      </template>
-                      <template v-else>
-                        <label>公共函数:</label>
-                        <span class="operation-ui" style="display: none;">{{row.ui}}</span>
-                        <span class="operation-element" style="display: none;" :data-classtype="row.classType">{{row.element}}</span>
-                      </template>
-                    </td>
-                    <td class="functions">{{ row.method }}</td>
-                    <td class="parameters">
-                      <div class="param-show">
-                        <span v-for="(index,parameter) in row.parameters" class="param-name-show">参数{{index+1}}:
-                          <b class="param-value-show">{{parameter}}</b>;&nbsp;&nbsp;</span>
-                      </div>
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
-              <div v-else style="text-align: center;margin: 20px auto;">暂无数据</div>
+              <div v-if="dataType ==1">
+                <table class="table table-bordered table-striped" v-if="tableData.length">
+                  <thead>
+                    <tr>
+                      <th>#</th>
+                      <th>操作项</th>
+                      <th>方法</th>
+                      <th>参数</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr v-for="(index, row) in tableData">
+                      <td class="index">{{ +index + 1 }}</td>
+                      <td class="operations">
+                        <template v-if="row.ui != '' && row.element != ''">
+                          <label>UI:</label>
+                          <span class="operation-ui">{{row.ui}}</span>
+                          <label>元素:</label>
+                          <span class="operation-element" :data-classtype="row.classType">{{row.element}}</span>
+                        </template>
+                        <template v-else>
+                          <label>公共函数:</label>
+                          <span class="operation-ui" style="display: none;">{{row.ui}}</span>
+                          <span class="operation-element" style="display: none;" :data-classtype="row.classType">{{row.element}}</span>
+                        </template>
+                      </td>
+                      <td class="functions">{{ row.method }}</td>
+                      <td class="parameters">
+                        <div class="param-show">
+                          <span v-for="(index,parameter) in row.parameters" class="param-name-show">参数{{index+1}}:
+                            <b class="param-value-show">{{parameter}}</b>;&nbsp;&nbsp;</span>
+                        </div>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+                <div v-else style="text-align: center;margin: 20px auto;">暂无数据</div>
+              </div>
+              <div v-else >
+                  <pre >{{bodyTemplate}}</pre>
+              </div>
             </div>
           </div>
           <div class="modal-footer">

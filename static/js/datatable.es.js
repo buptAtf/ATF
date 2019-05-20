@@ -80,7 +80,9 @@ var view = new Vue({//与查看脚本的模态框相绑定
 	el: '#script-modal',
 	data: {
 		viewScriptTestcaseId: '326',
-		tableData: []
+		dataType:1,
+		tableData: [],
+		bodyTemplate:"",
 	},
 	methods: {
 		getData: function(testcaseId,caseCompositeType) {//查看脚本
@@ -99,8 +101,14 @@ var view = new Vue({//与查看脚本的模态框相绑定
 				if (!data) {
 					Vac.alert(data.msg || '查询失败');
 					return;
-				}	
+				}
+				_this.dataType = caseCompositeType;
+				if(caseCompositeType == 1){
 					_this.tableData = data.scriptList;
+				}
+				if(caseCompositeType == 3){
+					_this.bodyTemplate = data.bodyTemplate
+				}
 				},
 				error: function(XMLHttpRequest, textStatus, errorThrown) {
 				Vac.alert(`查询出错！\n 错误信息：${textStatus}`);
