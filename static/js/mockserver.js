@@ -26,8 +26,6 @@ var app = new Vue({
         respReasonPhrase: "",       //返回数据的错误语句
         respforwardFlag: "response",    //返回的数据是response还是forward
         
-
-
     },
     ready: function(){
 
@@ -58,26 +56,24 @@ var app = new Vue({
             var _this = this;
             $.ajax({
                 url: address3 + "/mockServer/getAllExpectation",
-                type: "get",
+                type: "post",
                 contentType: "application/json",
                 data: JSON.stringify({
 
                 }),
                 success:function(data){
-                    _this.curExpecation = data[0];      //当前期望设置为第一条
+                    _this.curExpecation = data[0];                  //当前期望设置为第一条
                     _this.selectedExpId = _this.curExpecation.id;   //默认选中第一条期望
-                    _this.allExpecation = data;
-                    data.forEach(element => {           //遍历所有数据，将所有对象放进期望列表数组中
-                        // let tempItem = {};
-                        // tempItem.id = element.httpRequest.id;
-                        // tempitem.body = element.httpRequest.body;
-                        // _this.allExpecationRequest.push(tempItem);
-                        
-                    });
+                    _this.allExpecation = data;                     //得到所有的期望
+                    _this.queryExpecation(_this.selectedExpId);     //查询第一条期望的详细信息
 
-                    _this.curExpecationRet = _this.curExpecation.httpResponse;//当前期望的期望返回的数据
-                    _this.curExpecationRet = JSON.stringify(_this.curExpecationRet, null, 2);   //将返回的数据解析为JSON数据
-                    // console.log(_this.curExpecationRet);
+                    // data.forEach(element => {           //遍历所有数据，将所有对象放进期望列表数组中
+                    //     // let tempItem = {};
+                    //     // tempItem.id = element.httpRequest.id;
+                    //     // tempitem.body = element.httpRequest.body;
+                    //     // _this.allExpecationRequest.push(tempItem);
+                        
+                    // });
                 }
 
             })
@@ -93,13 +89,15 @@ var app = new Vue({
                     "id": currentId
                 },
                 success:function(data){
-                    // console.log(data);
-                    _this.curExpecation = data;
-                    _this.respforwardFlag = data.type;
                     
+                    _this.curExpecation = data;                  //得到当前的数据
+                    _this.respforwardFlag = data.type;           //判断当前的一条数据是response还是forward
+                    
+                    _this.curExpecationRet = data.httpResponse; //当前期望的期望返回的数据
+                    _this.curExpecationRet = JSON.stringify(_this.curExpecationRet, null, 2);   //将返回的数据解析为JSON数据
                 }
             }) 
-            console.log(currentId);
+            
         },
         addRequestList: function(){
             this.requestParams.push({reqkey:"",reqvalue:""});
@@ -150,8 +148,6 @@ var app = new Vue({
             }
         },
 
-
-
         addBaseInfo: function(){
             var _this = this;
             $.ajax({
@@ -165,6 +161,8 @@ var app = new Vue({
                 }),
                 success: function(data){
                     
+                    $("#addModal").modal("hide");   //模态框隐藏掉
+                    _this.getAllExpectation();      //重新获取一下所有期望
                     console.log(data);
                     
                 },
@@ -176,6 +174,26 @@ var app = new Vue({
             // mockedit.trigger("click");
             // console.log(mockedit);
         },
+        delCurExpectation: function(){
+            var _this = this;
+            $.ajax({
+                url: address3 + "/mockServer/deleteExpectation",
+                type: "post",
+                contentType: "application/x-www-form-urlencoded",
+                data: {
+                    "id": _this.selectedExpId
+                },
+                success: function(data){
+                    $("#delModal").modal("hide");   //模态框隐藏掉
+                    _this.getAllExpectation();
+
+                    console.log(data);
+
+                },
+            })
+
+        },
+
         changeReqEditFlag: function(flag){
             var _this = this;
             _this.editReqFlag = flag;
