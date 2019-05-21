@@ -40,7 +40,9 @@
                                 </div>
                             </header>
                             <div class="list-group" >
-                                <a :class="selectedExpId==item.id?'list-group-item active':'list-group-item'" v-for="item in allExpecation" @click=queryExpecation(item.id) >{{ item.expectationName }}</a>
+                                <a :class="selectedExpId==item.id?'list-group-item active':'list-group-item'" v-for="item in allExpecation" @click=queryExpecation(item.id) >{{ item.expectationName }}
+                                    <i class="glyphicon glyphicon-trash" style="float:right" data-toggle="modal" data-target="#delModal"></i>
+                                </a>
                             
                             </div>
                         </section>
@@ -217,6 +219,28 @@
                             </div>
                         </div>
 
+                        
+                        <div class="modal fade" id="delModal" tabindex="-1" role="dialog" aria-labelledby="delModalLabel" aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content" >
+                                    <div class="modal-header">
+                                        <h4 class="modal-title">删除当前期望</h4>
+                                    </div>
+                                    <div class="modal-body" >
+                                        <h4>确认删除期望?</h4>
+                                    </div>
+                                    <div class="modal-footer">
+                                            <button type="button" class="btn btn-default" data-dismiss="modal">关闭
+                                            </button>
+                                            <button type="button" class="btn btn-primary" @click="delCurExpectation()">
+                                                    
+                                                <a data-toggle="tab">确定</a>
+                                            </button>
+                                        </div>
+                                </div>
+                            </div>
+                        </div>
+
                     </div>
                     <div class="col-lg-9" >
                         <ul class="nav nav-tabs" id="nav">
@@ -277,7 +301,7 @@
                                 <section class="panel" style="height:800px; overflow:auto">
                                     <div>
                                         
-                                        <div style="margin-left:1000px; margin-top: 20px;">
+                                        <div style="margin-left:800px; margin-top: 20px;">
                                             <a class="btn btn-white btn-sm" ><i class="icon-ok" ></i>提交修改</a>
                                         </div>
 

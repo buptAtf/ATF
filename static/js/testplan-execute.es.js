@@ -25,6 +25,7 @@ var vBody = new Vue({
 		exeScope: null,			// 执行范围
 		selectState: '',		// 选择状态
 		userId:sessionStorage.getItem('userId'),
+		projectName: sessionStorage.getItem('projectNameStorage'),	//项目名称
 
 		// save the value obtained from back end and will set to the selects' options
 		testPlans: [], 
@@ -110,6 +111,7 @@ var vBody = new Vue({
 			totalCount: 1
 		},
 		logShow:false,
+		
 		//
 	},
 	created: function(){

@@ -1,59 +1,3 @@
-var flowcaseTemplate =
- `<section>
- <h4 style="margin-left:30px; margin-top:150px"><span class="label label-info" >节点</span></h4>
- <div class="col-lg-6 nopadding">
-   <h5><span class="col-lg-3 text-center">被测系统</span></h5>
-   <div class="col-lg-8">
-     <select type="text" class="form-control">
-         <option value="" selected>{{ nodeinfo.autName }}</option>
-         <option v-for="item in autList" value="item.id" >{{ item.nameMedium }}</option>
-     </select>
-   </div>
- </div>
-
- <div class="col-lg-6 nopadding">
-   <h5><span class="col-lg-3 text-center">功能点</span></h5>
-   <div class="col-lg-8">
-     <select type="text" class="form-control ">
-        <option value="" selected>{{ nodeinfo.transName }}</option>
-        
-     </select>
-   </div>
- </div>
-
- <div class="col-lg-6 nopadding">
-   <h5><span class="col-lg-3 text-center">动作标识</span></h5>
-   <div class="col-lg-8"> 
-       <input type="text" class="form-control" readonly="{{editFlag}}" v-model="nodeinfo.actioncode">
-   </div>
- </div>
-
- <div class="col-lg-6 nopadding">
-   <h5><span class="col-lg-3 text-center">步骤序号</span></h5>
-   <div class="col-lg-8">
-       <input type="text" class="form-control" readonly="{{editFlag}}" v-model="nodeinfo.steporder" >
-   </div>
- </div>
-
- <div class="col-lg-6 nopadding">
-   <h5><span class="col-lg-3 text-center">关联脚本</span></h5>
-   <h4><span class="label label-primary col-lg-3">查看脚本</span></h4>
- </div>
-
-</section>`;
-
-// Vue.component('flowcase', {
-//     data: function() {
-//         return {
-//             count: 9
-//         }
-//     },
-//     props: ['nodeinfo'],
-//     template: flowcaseTemplate,
-
-// })
-
-
 
 var app = new Vue({
     el: "#v-body",
@@ -68,8 +12,7 @@ var app = new Vue({
         editFlag: true,         //是否只读的标志，来进行是否编辑
         nodeInfoList: {},       //当前用例的所有节点信息
         scriptList: {},         //查看脚本的脚本列表
-        
-        
+        nodeData: {},
 
     },
     ready: function(){
@@ -77,12 +20,6 @@ var app = new Vue({
         
         _this.queryAllAut();
         _this.getAllFlowcaseList();
-        
-        $(document).ready(function(){
-            $('#myTable').DataTable();
-        });
-
-        
         
 
         // var p1 = new Promise((resolve,reject) =>{
@@ -147,10 +84,12 @@ var app = new Vue({
                         _this.currentCase = data;
                         _this.nodeInfoList = data.nodeInfoList;
 
+                        _this.nodeData = data.nodeInfoList[0].nodeData;
+
                         Vue.nextTick(function () {
                             $('.selectpicker').selectpicker('refresh');
                           });
-                        console.log(_this.nodeInfoList);
+                        
                     }
                 }
             });
@@ -195,54 +134,47 @@ var app = new Vue({
                 success: function(data){
                     if(data.respCode==="0000"){
                         _this.scriptList = data.scriptList;
-                        console.log(data);
+                        
                     }
-
-                    
 
                 }
             })
         },
-        generateTable: function(){
-            var tableContainer = document.getElementById("handsontable");
-            var handsontable = null;
-            var dataSource = [
-                ["", "Ford", "Tesla", "Toyota", "Honda"],
-                ["2017", 10, 11, 12, 13],
-                ["2018", 20, 11, 14, 13],
-                ["2019", 30, 15, 12, 13]
-            ];
+        saveFlowTestcaseInfo: function(){
+            var _this = this;
 
-            if(handsontable===null){
-                handsontable = new Handsontable(tableContainer,{
-                    data: dataSource,
-                    
-                    rowHeaders: true,
-                    colHeaders: true,
-                    filters: true,
-                    dropdownMenu: true,
-                })
-
+            delete _this.currentCase["respCode"];
+            delete _this.currentCase["respMsg"];
+            delete _this.currentCase["caseLibId"];
+            delete _this.currentCase["caseCompositeType"];
+            delete _this.currentCase["missionName"];
+            
+            for(let i=0; i<_this.nodeInfoList.length; i++){
+                delete _this.nodeInfoList[i]["caseId"];
+                delete _this.nodeInfoList[i]["caseCompositeType"];
+                delete _this.nodeInfoList[i]["autName"];
+                delete _this.nodeInfoList[i]["transName"];
+                delete _this.nodeInfoList[i]["scriptTemplateName"];
             }
-        }
+
+            $.ajax({
+                url: address3 + "/dataCenter/saveFlowTestcaseInfo",
+                type: "post",
+                contentType: "application/json",
+                data: JSON.stringify(
+                    _this.currentCase
+                ),
+                success: function(data){
+
+                    console.log(data);
+                },
+            })
+        },
+
 
     },
-    // mounted: function(){
-
-    //     Vue.nextTick(function(){
-    //         console.log('mounted');  
-    //     })
-    //     // this.generateTable();
-    //     // console.log("表格出来了没有？")
-        
-    // },
- 
 
 })
-
-var flowcaseFun = function(){
-
-};
 
 
 
