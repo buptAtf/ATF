@@ -74,28 +74,6 @@
         height: 90%;
         width: 100%;
       }
-.fade-transition {
-  transition: all .5s ease;
-}
-/* .expand-enter defines the starting state for entering */
-/* .expand-leave defines the ending state for leaving */
-.fade-enter, .fade-leave {
-  height: 0px;
-  width: 0px;
-  opacity: 0;
-}      
-.fade-enter-active,.fade-leave-active {
-  height: 100px;
-  width: 100px;
-  opacity: 0.3;
-
-}
-.fade-enter-to,.fade-leave-to {
-  height: 200px;
-  width: 200px;
-  opacity: 0.6;
-
-}
     </style>
   </head>
   <body  id ="v-body">
@@ -190,7 +168,7 @@
               <button class="btn btn-white" @click="reQuery();"><i class="icon-refresh"></i> 重新查询执行结果</button>
             </div>
             <div id="">
-                <div v-show="logShow"  transition="fade" id = "log" >
+                <div v-show="logShow"id = "log" >
                   <div id = "hidden">
                     <button id = "logShowBtn"  class="btn btn-white" @click="logShow=!logShow"> <i class="icon-double-angle-right"></i> </button>
                   </div>
