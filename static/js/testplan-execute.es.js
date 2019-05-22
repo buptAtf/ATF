@@ -257,7 +257,6 @@ var vBody = new Vue({
 					if (data.respCode=="0000") {
 						Vac.alert(data.respMsg);
 						_this.startQueryResult();
-						_this.exeStautShow = '<i class="icon-ok"></i>已执行';
 					} else {
 						Vac.alert(data.respMsg);
 						}
@@ -361,6 +360,7 @@ var vBody = new Vue({
 					if(data.respCode=="0000"){
 						if(data.respSyncNo==-1){
 							_this.setResultIcon(data.insStatuses)
+							_this.exeStautShow = '<i class="icon-ok"></i>已执行';
 							console.log("finish this branch")
 						}
 						else{
@@ -390,7 +390,8 @@ var vBody = new Vue({
 						if(data.respSyncNo==-1){
 							_this.setResultIcon(data.insStatuses)
 							console.log("finish this branch")
-						}
+							_this.exeStautShow = '<i class="icon-ok"></i>已执行';
+						} 
 						else if(data.respSyncNo==-2){
 							syncQueryIncInsStatus(values)
 						}

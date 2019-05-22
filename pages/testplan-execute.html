@@ -41,7 +41,7 @@
       #hidden{
         float: left;
         height: auto; 
-        width: auto;
+        width: 5%;
         color:black;
       }
       #logcontent{
@@ -49,6 +49,9 @@
         float: left;
         height: 100%; 
         width: 95%;
+      }
+      #logShowBtn{
+        float: right;
       }
       #logtext{
         float: left !important;
@@ -156,7 +159,7 @@
                 </form>
             </div>
             <div class="test-control container" style="margin: 15px 5px;">
-            <div style="font-size: 12px;color:#999;"></div>
+              <div style="font-size: 12px;color:#999;"></div>
               <button class="btn btn-white" @click="executeAll()"> <i class="icon-play"></i>  批量执行</button>
               <button class="btn btn-white" @click="stopExe()"> <i class="icon-stop"></i> 终止执行</button>
               <button class="btn btn-white" @click="getCases()"> <i class=" icon-eye-open"></i> 查询</button>
@@ -165,26 +168,25 @@
               <button class="btn btn-white" @click="reQuery();"><i class="icon-refresh"></i> 重新查询执行结果</button>
             </div>
             <div id="">
- 
-              <div v-show="logShow" id = "log" >
-                <div id = "hidden">
-                  <button class="btn btn-white" @click="logShow=!logShow"> <i class="icon-double-angle-right"></i> </button>
-                </div>
-                <div id = "logcontent">
-                  <div class=" panel-info" id= "logtext">
-                    <div class="panel-heading">
-                      <h3 class="panel-title">运行日志</h3>
-                    </div>
-                    <div id = "area">
-                        <textarea id ="logarea" readonly></textarea>
+                <div v-show="logShow"id = "log" >
+                  <div id = "hidden">
+                    <button id = "logShowBtn"  class="btn btn-white" @click="logShow=!logShow"> <i class="icon-double-angle-right"></i> </button>
+                  </div>
+                  <div id = "logcontent">
+                    <div class=" panel-info" id= "logtext">
+                      <div class="panel-heading">
+                        <h3 class="panel-title">运行日志</h3>
+                      </div>
+                      <div id = "area">
+                          <textarea id ="logarea" readonly></textarea>
+                      </div>
                     </div>
                   </div>
                 </div>
-              </div>
-              <div v-else id = "loghidden" >
-                <div id = "hidden">
-                  <button class="btn btn-white" @click="logShow=!logShow"> <i class="icon-double-angle-left"> <font color='black'>展开日志</font></i> </button>
-                </div>
+                <div v-else id = "loghidden" >
+                  <div id = "hidden">
+                    <button class="btn btn-white" @click="logShow=!logShow"> <i class="icon-double-angle-left"> <font color='black'>展开日志</font></i> </button>
+                  </div>
               </div>
               <div class="main-content2">
                 <div class="case-list-wrapper list-wrapper" v-if="testCaseList.length" style="padding:10px 20px 10px 20px">
@@ -213,7 +215,7 @@
                               <input type="checkbox" v-bind:value="case_wrapper.caseId" class="check-case single-case-incaselib" v-model="selectedCases" @change="checkChanged($event)">
                             </div>
                             <div class="case-main">
-                              <a class="view-case" @click.stop="viewCase(case_wrapper.caseId, 'PE4')">查看</a>
+                              <a class="view-case" @click.stop="viewCase(case_wrapper.caseId, 'PE4')"><span>查</span><span>看</span>></a>
                             </div>
                             <footer class="case-footer">
                               
@@ -238,7 +240,7 @@
                               class="check-case flow-node-incaselib" @change="checkChanged($event)" v-model="checkedFlowNodes">
                             </div>
                             <div class="case-main">
-                              <a class="view-case" @click.stop="viewCase(case_wrapper.caseId, 'PE4')">查看</a>
+                              <a class="view-case" @click.stop="viewCase(case_wrapper.caseId, 'PE4')"><span>查</span><span>看</span>></a>
                             </div>
                             <footer class="case-footer">
                                 2
@@ -288,7 +290,7 @@
                                 <input type="checkbox" :value="'sort'+'-'+scene.sceneId+'-'+case_wrapper.caseId" class="check-case check-case-inscene" v-model="selectedSceneCases" @change="checkFlowNode($event)"> <!--lrlrq -->
                               </div>
                               <div class="case-main">
-                                <a class="view-case" @click.stop="viewCase(scene.sceneId, case_wrapper.caseId, 'PE6')">查看</a>
+                                <a class="view-case" @click.stop="viewCase(scene.sceneId, case_wrapper.caseId, 'PE6')"><span>查</span><span>看</span>></a>
                               </div>
                             </div>
                             <div class="runnerclass" :id="'runner' + '-' + scene.sceneId+'-'+case_wrapper.caseId">
@@ -312,7 +314,7 @@
                                 class="check-case check-case-inscene" @change="checkFlowNode($event)" v-model="selectedSceneCases">
                               </div>
                               <div class="case-main">
-                                <a class="view-case" @click.stop="viewCase(scene.sceneId, case_wrapper.caseId, 'PE6')">查看</a>
+                                <a class="view-case" @click.stop="viewCase(scene.sceneId, case_wrapper.caseId, 'PE6')"><span>查</span><span>看</span></a>
                               </div>
                               <footer class="case-footer" >
                               </footer>
