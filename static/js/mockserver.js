@@ -4,6 +4,7 @@ var app = new Vue({
         allExpecation: [],      //所有的期望
         curExpecation: {},      //当前的期望
         curExpecationRet: {},   //当前期望的返回
+        editCurData: {id:"",expectationName:"",creator:"",httpRequest:"",httpResponse:"",httpForwardEntity:"",type:""},
         selectedExpId: "",      //选中的期望的id
         requestParams: [{reqkey:"",reqvalue:""}],       //规则的请求的参数
         responseParams: [{respkey:"",respvalue:""}],    //规则的返回参数
@@ -11,21 +12,13 @@ var app = new Vue({
         respHeaders: [{respkey:"",respvalue:""}], //返回头部的值
         reqCookies: [{reqkey:"",reqvalue:""}],    //请求cookies
         respCookies: [{respkey:"",respvalue:""}], //返回cookise的值
-        keepalive: "",      //请求报文中的长连接
-        security: "",       //请求报文中的http 还是https
-        
+        keepalive: "",      //请求报文中的长连接 
         newCreator: "",            //创建人
         newExpectationName: "",    //期望名称
-        newSelectedMethod: "POST", //选中的方法
-        newInterfacePath: "",      //接口路径
         newAction: "response",             //动作
         editReqFlag: "1",              //请求参数设置显示的标志位
         editRespFlag: "1",
-        respCode: "",               //返回数据的状态码
-        respDelayTime: "",          //延迟时间
-        respReasonPhrase: "",       //返回数据的错误语句
         respforwardFlag: "response",    //返回的数据是response还是forward
-        
     },
     ready: function(){
 
@@ -67,13 +60,6 @@ var app = new Vue({
                     _this.allExpecation = data;                     //得到所有的期望
                     _this.queryExpecation(_this.selectedExpId);     //查询第一条期望的详细信息
 
-                    // data.forEach(element => {           //遍历所有数据，将所有对象放进期望列表数组中
-                    //     // let tempItem = {};
-                    //     // tempItem.id = element.httpRequest.id;
-                    //     // tempitem.body = element.httpRequest.body;
-                    //     // _this.allExpecationRequest.push(tempItem);
-                        
-                    // });
                 }
 
             })
@@ -89,11 +75,21 @@ var app = new Vue({
                     "id": currentId
                 },
                 success:function(data){
-                    
-                    _this.curExpecation = data;                  //得到当前的数据
+                    _this.curExpecation = data;                  //得到当前的数据，用于展示
                     _this.respforwardFlag = data.type;           //判断当前的一条数据是response还是forward
                     
-                    _this.curExpecationRet = data.httpResponse; //当前期望的期望返回的数据
+                    _this.editCurData.id = data.id;
+                    _this.editCurData.expectationName = data.expectationName;
+                    _this.editCurData.creator = data.creator;
+                    _this.editCurData.httpRequest = data.httpRequest;
+                    _this.editCurData.httpResponse = data.httpResponse;
+                    _this.editCurData.httpForwardEntity = data.httpForwardEntity;
+                    _this.editCurData.type = data.type;
+                    if(_this.respforwardFlag==='response'){
+                        _this.curExpecationRet = data.httpResponse; //当前期望的期望返回的数据
+                    } else if(_this.respforwardFlag==='forward'){
+                        _this.curExpecationRet = data.httpForwardEntity; //当前期望的期望返回的数据
+                    }
                     _this.curExpecationRet = JSON.stringify(_this.curExpecationRet, null, 2);   //将返回的数据解析为JSON数据
                 }
             }) 
@@ -147,8 +143,7 @@ var app = new Vue({
                 this.respCookies.splice(index,1);
             }
         },
-
-        addBaseInfo: function(){
+        addBaseInfo: function(){    //添加基础信息
             var _this = this;
             $.ajax({
                 url: address3 + "/mockServer/addBaseInfo",
@@ -160,21 +155,18 @@ var app = new Vue({
                     "type": _this.newAction
                 }),
                 success: function(data){
-                    
-                    $("#addModal").modal("hide");   //模态框隐藏掉
-                    _this.getAllExpectation();      //重新获取一下所有期望
-                    console.log(data);
-                    
+                    if(data.respCode==='0000') {
+                        _this.getAllExpectation();      //重新获取一下所有期望
+                        $("#successModal").modal();   //显示操作成功的模态框
+                        $("#mockedit").trigger("click");
+                    } else {
+                        $("#failModal").modal();
+                    }
+
                 },
-                
             });
-            $("#mockedit").trigger("click");
-            console.log("我点击了")
-            // var mockedit = $("#mockedit");
-            // mockedit.trigger("click");
-            // console.log(mockedit);
         },
-        delCurExpectation: function(){
+        delCurExpectation: function(){  //删除当前期望
             var _this = this;
             $.ajax({
                 url: address3 + "/mockServer/deleteExpectation",
@@ -184,26 +176,31 @@ var app = new Vue({
                     "id": _this.selectedExpId
                 },
                 success: function(data){
-                    $("#delModal").modal("hide");   //模态框隐藏掉
-                    _this.getAllExpectation();
-
+                    if(data.respCode==='0000') {
+                        _this.getAllExpectation();
+                        $("#successModal").modal();   //显示操作成功的模态框
+                    } else {
+                        $("#failModal").modal();
+                    }
+                    
                     console.log(data);
-
                 },
             })
 
         },
-
-        changeReqEditFlag: function(flag){
-            var _this = this;
-            _this.editReqFlag = flag;
+        updateCurExpectation() {        //更新当前期望信息
+            
 
         },
-        changeRespEditFlag: function(flag){
+
+        changeReqEditFlag: function(flag){  //改变点击按钮的标志位，用于显示请求数据中不同的项目
+            var _this = this;
+            _this.editReqFlag = flag;
+        },
+        changeRespEditFlag: function(flag){ //改变点击按钮的标志位，用于显示返回数据中不同的项目
             var _this = this;
             _this.editRespFlag = flag;
         },
-
 
     }
 })
@@ -229,3 +226,19 @@ function syntaxHighlight(json) {
         return '<span class="' + cls + '">' + match + '</span>';
     });
 }
+
+
+
+
+// //请求数据的body的格式
+// $("input[name=reqBodyFormat]").click(function(){
+//     var type = $(this).val();
+//     console.log(type);
+// })
+
+
+// //返回数据body的格式
+// $("input[name=respBodyFormat]").click(function(){
+//     var type = $(this).val();
+//     console.log(type);
+// })

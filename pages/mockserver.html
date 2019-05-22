@@ -101,7 +101,7 @@
                                                     </div>
                                                     
                                                     <div style=" width:100%; text-align:left; margin-left:15px; margin-right:15px; margin-top:30px">
-                                                        <hr class="hrLine" style="width:20%;"/>注:详细的接口数据可在编辑页面中填写 <hr class="hrLine" style="width:20%;"/>
+                                                        <hr class="hrLine" style="width:28%;"/><span style="font-family: 黑体">注:详细的接口数据可在编辑页面中填写</span><hr class="hrLine" style="width:20%;"/>
                                                     </div> 
 
                                                
@@ -210,9 +210,8 @@
                                     <div class="modal-footer">
                                         <button type="button" class="btn btn-default" data-dismiss="modal">关闭
                                         </button>
-                                        <button type="button" class="btn btn-primary" @click="addBaseInfo">
-                                                
-                                            <a href="#edit" data-toggle="tab">提交</a>
+                                        <button data-dismiss="modal" type="button" class="btn btn-primary" @click="addBaseInfo">
+                                            <a href="#edit">提交</a>
                                         </button>
                                     </div>
                                 </div>
@@ -232,14 +231,49 @@
                                     <div class="modal-footer">
                                             <button type="button" class="btn btn-default" data-dismiss="modal">关闭
                                             </button>
-                                            <button type="button" class="btn btn-primary" @click="delCurExpectation()">
-                                                    
-                                                <a data-toggle="tab">确定</a>
+                                            <button data-dismiss="modal" type="button" class="btn btn-primary" @click="delCurExpectation()">
+                                                确定
                                             </button>
                                         </div>
                                 </div>
                             </div>
                         </div>
+                        <!-- successModal start -->
+                        <div class="modal fade" id="successModal" tabindex="-1" role="dialog" aria-labelledby="successModalLabel" aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                                    <h4 class="modal-title">操作成功</h4>
+                                </div>
+                                <div class="modal-body">
+                                    <h4>操作成功！</h4>
+                                </div>
+                                <div class="modal-footer">
+                                    <button data-dismiss="modal" class="btn btn-success" type="button">确定</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- successModal end -->
+                    <!-- failModal start -->
+                    <div class="modal fade" id="failModal" tabindex="-1" role="dialog" aria-labelledby="failModalLabel" aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                                    <h4 class="modal-title">操作失败</h4>
+                                </div>
+                                <div class="modal-body">
+                                    <h4>操作失败！</h4>
+                                </div>
+                                <div class="modal-footer">
+                                    <button data-dismiss="modal" class="btn btn-success" type="button">确定</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- failModal end -->
 
                     </div>
                     <div class="col-lg-9" >
@@ -302,7 +336,7 @@
                                     <div>
                                         
                                         <div style="margin-left:800px; margin-top: 20px;">
-                                            <a class="btn btn-white btn-sm" ><i class="icon-ok" ></i>提交修改</a>
+                                            <a class="btn btn-white btn-sm" @click="updateCurExpectation"><i class="icon-ok" ></i>提交修改</a>
                                         </div>
 
                                         <h3 style="padding-left:20px; "><span class="label label-info">基本设置</span></h3>
@@ -310,7 +344,7 @@
                                             <div>
                                                 <div class="row" style="margin-left:20px; margin-top:20px;">
                                                     <div  style="display: inline-block;"> <h5>期望名称:</h5></div>
-                                                    <div  style="display: inline-block;"> <input class="form-control" v-model="curExpecation.expectationName"></div>
+                                                    <div  style="display: inline-block;"> <input class="form-control" v-model="editCurData.expectationName"></div>
                                                 </div>
 
                                                 <div style="margin-left:20px; margin-top:20px;">
@@ -318,7 +352,7 @@
                                                     <div  style="display: inline-block;">
                                                         <div class="input-group ">
                                                             <div class="input-group-btn">
-                                                                <select type="button" v-model="curExpecation.httpRequest.method" class="btn btn-default dropdown-toggle " data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{{ selectedMethod }} <span class="caret"></span>
+                                                                <select type="button" v-model="editCurData.httpRequest.method" class="btn btn-default dropdown-toggle " data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{{ selectedMethod }} <span class="caret"></span>
                                                                     <option value="POST">POST</option>
                                                                     <option value="GET">GET</option>
                                                                     <option value="PUT">PUT</option>
@@ -328,7 +362,7 @@
                                                                     <option value="PATCH">PATCH</option>
                                                                 </select>
                                                             </div>
-                                                            <input class="form-control" v-model="curExpecation.httpRequest.path">
+                                                            <input class="form-control" style="width: 400px" v-model="editCurData.httpRequest.path">
                                                         </div>
                                                     </div>
                                                 </div>
@@ -336,29 +370,44 @@
                                         </div>
 
                                         <h3 style="padding-left:20px"><span class="label label-info">请求参数设置</span></h3>
-                                        <div class="btn-group" role="group" style="padding-top:20px; margin-left:300px">
-                                            <button type="button" class="btn btn-primary" @click="changeReqEditFlag('1')">body</button>
-                                            <button type="button" class="btn btn-primary" @click="changeReqEditFlag('2')">query</button>
-                                            <button type="button" class="btn btn-primary" @click="changeReqEditFlag('3')">headers</button>
-                                            <button type="button" class="btn btn-primary" @click="changeReqEditFlag('4')">cookies</button>
-                                            <button type="button" class="btn btn-primary" @click="changeReqEditFlag('5')">高级</button>
+                                        <div class="btn-group btn-group-toggle" data-toggle="buttons" style="padding-top:20px; margin-left:300px">
+                                            <label class="btn btn-primary active" @click="changeReqEditFlag('1')">
+                                                <input type="radio" autocomplete="off" checked> body
+                                            </label>
+                                            <label class="btn btn-primary" @click="changeReqEditFlag('2')">
+                                                <input type="radio" autocomplete="off"> query
+                                            </label>
+                                            <label class="btn btn-primary" @click="changeReqEditFlag('3')">
+                                                <input type="radio" autocomplete="off"> headers
+                                            </label>
+                                            <label class="btn btn-primary" @click="changeReqEditFlag('4')">
+                                                <input type="radio" autocomplete="off"> cookies
+                                            </label>
+                                            <label class="btn btn-primary" @click="changeReqEditFlag('5')">
+                                                <input type="radio" autocomplete="off"> 高级
+                                            </label>
+                                           
                                         </div>
                                           
-                                        <div class="well" style="margin-left:20px; margin-top:20px;" v-if="editReqFlag==='1'">
+                                        <div class="well" style="margin-left:20px; margin-top:20px;" v-show="editReqFlag==='1'">
                                             <label class="checkbox-inline">
-                                                <input type="radio" name="optionsRadiosinline" value="json" checked>
-                                                json
+                                                <input type="radio" name="reqBodyFormat" value="JSON" v-model="editCurData.httpRequest.type">
+                                                JSON
                                             </label>
                                             <label class="checkbox-inline">
-                                                <input type="radio" name="optionsRadiosinline" value="raw">
-                                                raw
+                                                <input type="radio" name="reqBodyFormat" value="XML" v-model="editCurData.httpRequest.type">
+                                                XML
+                                            </label>
+                                            <label class="checkbox-inline">
+                                                <input type="radio" name="reqBodyFormat" value="STRING" v-model="editCurData.httpRequest.type">  <!--reqBodyType-->
+                                                STRING
                                             </label>
 
-                                            <textarea class="form-control" style="margin-top:20px; height:250px">asd</textarea>
+                                            <textarea class="form-control" style="margin-top:20px; height:250px" v-model="editCurData.httpRequest.body"></textarea>
                                         </div>
 
-                                        <div class="well" style="margin-left:20px; margin-top:20px;" v-if="editReqFlag==='2'">
-                                            <row class="col-lg-12" style="display:inline-block; margin-top:10px" v-for="(index,item) in requestParams">
+                                        <div class="well" style="margin-left:20px; margin-top:20px;" v-show="editReqFlag==='2'">
+                                            <div class="col-lg-12" style="display:inline-block; margin-top:10px" v-for="(index,item) in requestParams">
                                                 <div class="form-group col-lg-2 text-right">
                                                     请求参数:
                                                 </div>
@@ -372,12 +421,12 @@
                                                     <a class="btn btn-white btn-sm" @click="addRequestList"><i class="icon-plus"></i></a>
                                                     <a class="btn btn-white btn-sm" @click="delRequestList(index)"><i class="icon-remove"></i></a>
                                                 </div>
-                                            </row>
+                                            </div>
 
                                         </div>
 
-                                        <div class="well" style="margin-left:20px; margin-top:20px;" v-if="editReqFlag==='3'">
-                                            <row class="col-lg-12" style="display:inline-block; margin-top:10px" v-for="(index,item) in reqHeaders">
+                                        <div class="well" style="margin-left:20px; margin-top:20px;" v-show="editReqFlag==='3'">
+                                            <div class="col-lg-12" style="display:inline-block; margin-top:10px" v-for="(index,item) in reqHeaders">
                                                 <div class="form-group col-lg-2 text-right">
                                                     请求头部:
                                                 </div>
@@ -391,11 +440,11 @@
                                                     <a class="btn btn-white btn-sm" @click="addReqHeaders"><i class="icon-plus"></i></a>
                                                     <a class="btn btn-white btn-sm" @click="delReqHeaders(index)"><i class="icon-remove"></i></a>
                                                 </div>
-                                            </row>
+                                            </div>
                                         </div>
 
-                                        <div class="well" style="margin-left:20px; margin-top:20px;" v-if="editReqFlag==='4'">
-                                            <row class="col-lg-12" style="display:inline-block; margin-top:10px" v-for="(index,item) in reqCookies">
+                                        <div class="well" style="margin-left:20px; margin-top:20px;" v-show="editReqFlag==='4'">
+                                            <div class="col-lg-12" style="display:inline-block; margin-top:10px" v-for="(index,item) in reqCookies">
                                                 <div class="form-group col-lg-2 text-right">
                                                     cookies
                                                 </div>
@@ -409,15 +458,15 @@
                                                     <a class="btn btn-white btn-sm" @click="addReqCookies"><i class="icon-plus"></i></a>
                                                     <a class="btn btn-white btn-sm" @click="delReqCookies(index)"><i class="icon-remove"></i></a>
                                                 </div>
-                                            </row>
+                                            </div>
                                         </div>
 
-                                        <div class="well" style="margin-left:20px; margin-top:20px; height: 100px;" v-if="editReqFlag==='5'">
+                                        <div class="well" style="margin-left:20px; margin-top:20px; height: 100px;" v-show="editReqFlag==='5'">
                                             <div class="form-group col-lg-12" >
                                                 <div class="col-lg-6 nopadding" >
-                                                    <label class="col-lg-2 control-label ">security:</label>
+                                                    <label class="col-lg-2 control-label ">secure:</label>
                                                     <div class="col-lg-4">
-                                                        <select class="form-control" v-model="security">
+                                                        <select class="form-control" v-model="editCurData.httpRequest.secure">
                                                             <option value="">请选择</option>
                                                             <option value="true">true</option>
                                                             <option value="false">false</option>
@@ -427,10 +476,10 @@
                                                 <div class="col-lg-6 nopadding">
                                                     <label class="col-lg-2 control-label ">keepalive:</label>
                                                     <div class="col-lg-4">
-                                                        <select class="form-control" v-model="keepalive">
-                                                            <option value="">请选择</option>
-                                                            <option value="true">true</option>
-                                                            <option value="false">false</option>
+                                                        <select class="form-control" v-model="editCurData.httpRequest.keepAlive">
+                                                            <option value="" >请选择</option>
+                                                            <option value="true" >true</option>
+                                                            <option value="false" >false</option>
                                                         </select>
                                                     </div>
                                                 </div>
@@ -440,42 +489,48 @@
                                         <div v-if="respforwardFlag=='response'"> 
                                             <h3 style="padding-left:20px"><span class="label label-info">返回数据设置</span></h3>
                                             <div class="form-group col-lg-12" style="margin-top:20px; display:inline-block">
-                                                <row>
+                                                <div>
                                                     <div class="col-lg-5 nopadding" >
                                                         <label class="col-lg-3 control-label center">状态码:</label>
                                                         <div class="col-lg-5">
-                                                            <input class="form-control" v-model="respCode" placeholder="请输入状态码">
+                                                            <input class="form-control" v-model="editCurData.httpResponse.statusCode" placeholder="请输入状态码">
                                                         </div>
                                                         
                                                     </div>
                                                     <div class="col-lg-5 nopadding">
                                                         <label class="col-lg-3 control-label center" >延时时间:</label>
                                                         <div class="col-lg-5" >
-                                                            <input class="form-control" v-model="respDelayTime" placeholder="输入延时时间">
+                                                            <input class="form-control" v-model="editCurData.httpResponse.delayTime" placeholder="输入延时时间">
                                                         </div>
                                                         <div class="col-lg-4 nopadding">ms</div>
                                                     </div>
-                                                </row>
-                                                <div class="btn-group" role="group" style="padding-top:20px; margin-left:300px">
-                                                    <button type="button" class="btn btn-primary" @click="changeRespEditFlag('1')">body</button>
-                                                    <button type="button" class="btn btn-primary" @click="changeRespEditFlag('2')">headers</button>
-                                                    <button type="button" class="btn btn-primary" @click="changeRespEditFlag('3')">cookies</button>
-                                                    
                                                 </div>
-                                                <div class="well " style="margin-left:20px; margin-top:20px;" v-if="editRespFlag==='1'">
+                                                <div class="btn-group btn-group-toggle" data-toggle="buttons" style="padding-top:20px; margin-left:300px">
+                                                    <label class="btn btn-primary active" @click="changeRespEditFlag('1')">
+                                                        <input type="radio" autocomplete="off" checked> body
+                                                    </label>
+                                                    <label class="btn btn-primary" @click="changeRespEditFlag('2')">
+                                                        <input type="radio" autocomplete="off"> headers
+                                                    </label>
+                                                    <label class="btn btn-primary" @click="changeRespEditFlag('3')">
+                                                        <input type="radio" autocomplete="off"> cookies
+                                                    </label>
+                                                </div>
+                                         
+                                                <div class="well " style="margin-left:20px; margin-top:20px;" v-show="editRespFlag==='1'">
                                                     <div class="col-lg-10">
                                                         <div class="col-lg-5">
                                                             <label class="checkbox-inline">
-                                                                <input type="radio" name="optionsRadiosinline" value="json" checked>
-                                                                json
+                                                                <input type="radio" name="respBodyFormat" value="JSON" v-model="editCurData.httpResponse.type"> 
+                                                                JSON
                                                             </label>
                                                             <label class="checkbox-inline">
-                                                                <input type="radio" name="optionsRadiosinline" value="raw">
-                                                                raw
+                                                                <input type="radio" name="respBodyFormat" value="XML" v-model="editCurData.httpResponse.type">
+                                                                XML
                                                             </label>
                                                             <label class="checkbox-inline">
-                                                                <input type="radio" name="optionsRadiosinline" value="string">
-                                                                string
+                                                                <input type="radio" name="respBodyFormat" value="STRING" v-model="editCurData.httpResponse.type">
+                                                                STRING
                                                             </label>
                                                         </div>
                                                         
@@ -483,15 +538,15 @@
                                                             报错信息:
                                                         </div>
                                                         
-                                                        <div class="col-lg-3">
-                                                            <input class="form-control" v-model="respReasonPhrase" placeholder="">
+                                                        <div class="col-lg-5">
+                                                            <input class="form-control" v-model="editCurData.httpResponse.reasonPhrase" placeholder="">
                                                         </div>
                                                     </div>
-                                                    <textarea class="form-control" style="margin-top:20px; height:250px">asd</textarea>
+                                                    <textarea class="form-control" style="margin-top:40px; height:250px" v-model="editCurData.httpResponse.body"></textarea>
                                                 </div>
 
-                                                <div class="well" style="margin-left:20px; margin-top:20px;" v-if="editRespFlag==='2'">
-                                                    <row class="col-lg-12" style="display:inline-block; margin-top:10px" v-for="(index,item) in respHeaders">
+                                                <div class="well" style="margin-left:20px; margin-top:20px;" v-show="editRespFlag==='2'">
+                                                    <div class="col-lg-12" style="display:inline-block; margin-top:10px" v-for="(index,item) in respHeaders">
                                                         <div class="form-group col-lg-2 text-right">
                                                             返回头部:
                                                         </div>
@@ -505,11 +560,11 @@
                                                             <a class="btn btn-white btn-sm" @click="addRespHeaders"><i class="icon-plus"></i></a>
                                                             <a class="btn btn-white btn-sm" @click="delRespHeaders(index)"><i class="icon-remove"></i></a>
                                                         </div>
-                                                    </row>
+                                                    </div>
                                                 </div>
 
-                                                <div class="well" style="margin-left:20px; margin-top:20px;" v-if="editRespFlag==='3'">
-                                                    <row class="col-lg-12" style="display:inline-block; margin-top:10px" v-for="(index,item) in respCookies">
+                                                <div class="well" style="margin-left:20px; margin-top:20px;" v-show="editRespFlag==='3'">
+                                                    <div class="col-lg-12" style="display:inline-block; margin-top:10px" v-for="(index,item) in respCookies">
                                                         <div class="form-group col-lg-2 text-right">
                                                             cookie:
                                                         </div>
@@ -523,30 +578,30 @@
                                                             <a class="btn btn-white btn-sm" @click="addRespCookies"><i class="icon-plus"></i></a>
                                                             <a class="btn btn-white btn-sm" @click="delRespCookies(index)"><i class="icon-remove"></i></a>
                                                         </div>
-                                                    </row>
+                                                    </div>
                                                 </div>
 
                                             </div>
                                         </div>
 
-                                        <div v-if="respforwardFlag=='forward'"> 
+                                        <div v-show="respforwardFlag=='forward'"> 
                                             <h3 style="padding-left:20px"><span class="label label-info">转发数据设置</span></h3>
                                             <div class="well" style="margin-left:20px; margin-top:20px;">
                                                 <div class="col-lg-6 nopadding" >
                                                     <div  style="display: inline-block;"> <h5>host:</h5></div>
-                                                    <div  style="display: inline-block;"> <input class="form-control" v-model=""></div>
+                                                    <div  style="display: inline-block;"> <input class="form-control" v-model="editCurData.httpForwardEntity.host"></div>
                                                 </div>
 
                                                 <div class="col-lg-6 nopadding" >
                                                     <div  style="display: inline-block;"> <h5>port:</h5></div>
-                                                    <div  style="display: inline-block;"> <input class="form-control" v-model=""></div>
+                                                    <div  style="display: inline-block;"> <input class="form-control" v-model="editCurData.httpForwardEntity.port"></div>
                                                 </div>
                                                 
                                                 <div class="row" style=" margin-top:50px;">
                                                     <div class="col-lg-6 " >
                                                         <label class="col-lg-2 control-label ">协议:</label>
                                                         <div class="col-lg-4">
-                                                            <select class="form-control" v-model="">
+                                                            <select class="form-control" v-model="editCurData.httpForwardEntity.scheme">
                                                                 <option value="" selected>请选择</option>
                                                                 <option value="HTTP">HTTP</option>
                                                                 <option value="HTTPS">HTTPS</option>
