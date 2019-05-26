@@ -215,7 +215,7 @@
                               <input type="checkbox" v-bind:value="case_wrapper.caseId" class="check-case single-case-incaselib" v-model="selectedCases" @change="checkChanged($event)">
                             </div>
                             <div class="case-main">
-                              <a class="view-case" @click.stop="viewCase(case_wrapper.caseId, 'PE4')"><span>查</span><span>看</span>></a>
+                              <a class="view-case" @click.stop="viewCase(case_wrapper.caseId, 'PE4')"><span>查</span><span>看</span></a>
                             </div>
                             <footer class="case-footer">
                               
@@ -240,7 +240,7 @@
                               class="check-case flow-node-incaselib" @change="checkChanged($event)" v-model="checkedFlowNodes">
                             </div>
                             <div class="case-main">
-                              <a class="view-case" @click.stop="viewCase(case_wrapper.caseId, 'PE4')"><span>查</span><span>看</span>></a>
+                              <a class="view-case" @click.stop="viewCase(case_wrapper.caseId, 'PE4')"><span>查</span><span>看</span></a>
                             </div>
                             <footer class="case-footer">
                                 2
@@ -290,7 +290,7 @@
                                 <input type="checkbox" :value="'sort'+'-'+scene.sceneId+'-'+case_wrapper.caseId" class="check-case check-case-inscene" v-model="selectedSceneCases" @change="checkFlowNode($event)"> <!--lrlrq -->
                               </div>
                               <div class="case-main">
-                                <a class="view-case" @click.stop="viewCase(scene.sceneId, case_wrapper.caseId, 'PE6')"><span>查</span><span>看</span>></a>
+                                <a class="view-case" @click.stop="viewCase(scene.sceneId, case_wrapper.caseId, 'PE6')"><span>查</span><span>看</span></a>
                               </div>
                             </div>
                             <div class="runnerclass" :id="'runner' + '-' + scene.sceneId+'-'+case_wrapper.caseId">
