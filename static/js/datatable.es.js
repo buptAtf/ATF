@@ -2312,6 +2312,9 @@ $(document).ready(function () {
 					hidden: function () {
 						// [startRow, startCol, endRow, endCol]
 						var selection = handsontable.getSelected()[0];
+						var caseIdStr = sessionStorage.getItem('caseIdList');
+						var caseIdList = caseIdStr.split(',');
+						sessionStorage.setItem('caseId', caseIdList[selection[0]]);
 						if (selection && selection[1] >= 7 && selection[0] == selection[2] && selection[1] == selection[3]) {
 							return false;
 						}
@@ -2467,6 +2470,7 @@ $(document).ready(function () {
 									Vac.alert('该脚本下未查询到相关数据！')
 									$('#no-data-tip').css({display: 'block'});
 								}
+								let caseIdList = [];
 								data.tableData.forEach((value) => {
 									var data = {};
 									({
@@ -2480,7 +2484,8 @@ $(document).ready(function () {
 										caseCode: data.casecode
 									} = value);
 									sessionStorage.setItem('caseCompositeType',data.caseCompositeType);
-									sessionStorage.setItem('testCaseId',data.id);
+									// sessionStorage.setItem('testCaseId',data.id);
+									caseIdList.push(data.id);
 									data.testcaseId=value.id+","+value.caseCompositeType;
 									// console.log(value);
 									dataKey.forEach((key) => {
@@ -2489,6 +2494,7 @@ $(document).ready(function () {
 									});
 									destrutData.push(data);
 								});
+								sessionStorage.setItem('caseIdList',caseIdList);
 							}
 							// console.log("destrutData:\n"+destrutData);
 							dataSource = destrutData;
@@ -3066,7 +3072,6 @@ $(document).ready(function () {
 		// //搜索功能函数 end
 		//编辑单元格数据
 		function editCellData(key, selection) {
-			console.log(selection)
 			var header = handsontable.getColHeader(selection[0].start.col);
 			var testcaseId = dataSource[selection[0].start.row].testcaseId;
 			if (scriptId!=-1){
@@ -3152,12 +3157,10 @@ $(document).ready(function () {
 function APIFieldModalInit(){
 	$('.APIFieldVerificationParaRow').remove();
 	$('.APIFieldExtractionParaRow').remove();
-	APIFieldVerificationParaAdd();
-	APIFieldExtractionParaAdd();
-	$('input[name="APIFieldVerificationParaExp"]').last().change(APIFieldVerificationParaAdd);
-	$('input[name="APIFieldExtractionParaExp"]').last().change(APIFieldExtractionParaAdd);
 	APIFieldModalLoadVerificationData();
 	APIFieldModalLoadExtractionData();
+	APIFieldVerificationParaAdd();
+	APIFieldExtractionParaAdd();
 	$("#inlineRadio1").prop('checked','checked');
 	$(".APIFieldExtractionParaRow").hide();
 	$('#APIFieldModal').modal('show');
@@ -3167,7 +3170,7 @@ function APIFieldModalLoadVerificationData(){
 	$.ajax({
         url: address3 + 'scripttemplateController/getInterfaceCheckValues',
         data: JSON.stringify({
-			"testCaseId":sessionStorage.getItem('testCaseId'),
+			"testCaseId":sessionStorage.getItem('caseId'),
 			"caseCompositeType":sessionStorage.getItem('caseCompositeType')
 		}),
         type: 'post',
@@ -3217,7 +3220,7 @@ function APIFieldModalLoadExtractionData(){
 	$.ajax({
         url: address3 + 'scripttemplateController/getInterfaceExtractValues',
         data: JSON.stringify({
-			"testCaseId":sessionStorage.getItem('testCaseId'),
+			"testCaseId":sessionStorage.getItem('caseId'),
 			"caseCompositeType":sessionStorage.getItem('caseCompositeType')
 		}),
         type: 'post',
@@ -3343,7 +3346,7 @@ function APIUpload() {
 		$.ajax({
 			url: address3 + 'scripttemplateController/interfaceCheckSave',
 			data: JSON.stringify({
-				"testCaseId":sessionStorage.getItem('testCaseId'),
+				"testCaseId":sessionStorage.getItem('caseId'),
 				"caseCompositeType":sessionStorage.getItem('caseCompositeType'),
 				"interfaceCheckEntities":APIFieldVerificationData
 			}),
@@ -3382,7 +3385,7 @@ function APIUpload() {
 		$.ajax({
 			url: address3 + 'scripttemplateController/interfaceExtractSave',
 			data: JSON.stringify({
-				"testCaseId":sessionStorage.getItem('testCaseId'),
+				"testCaseId":sessionStorage.getItem('caseId'),
 				"caseCompositeType":sessionStorage.getItem('caseCompositeType'),
 				"interfaceExtractEntities":APIFieldExtractionData
 			}),
