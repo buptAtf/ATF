@@ -3339,7 +3339,8 @@ function APIUpload() {
 				singleData.pathExpression=APIFieldVerificationParaExp;
 				singleData.compareChar=APIFieldVerificationParaSel;
 				singleData.expectValue=APIFieldVerificationParaVal;
-				APIFieldVerificationData.push(singleData);
+				let singleData_Json = JSON.stringify(singleData);
+				APIFieldVerificationData.push(singleData_Json);
 			}
 		});
 		console.log(APIFieldVerificationData);
@@ -3378,7 +3379,8 @@ function APIUpload() {
 				let singleData={};
 				singleData.pathExpression=APIFieldExtractionParaExp;
 				singleData.name=APIFieldExtractionParaName;
-				APIFieldExtractionData.push(singleData);
+				let singleData_Json = JSON.stringify(singleData);
+				APIFieldExtractionData.push(singleData_Json);
 			}
 		});
 		console.log(APIFieldExtractionData);
