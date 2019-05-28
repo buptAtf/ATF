@@ -2,16 +2,16 @@ var app = new Vue({
     el: "#v-mockserver",
     data: {
         allExpecation: [],      //所有的期望
-        curExpecation: {},      //当前的期望
+        curExpecation: {httpRequest:""},      //当前的期望
         curExpecationRet: {},   //当前期望的返回
         editCurData: {id:"",expectationName:"",creator:"",httpRequest:"",httpResponse:"",httpForwardEntity:"",type:""},
         selectedExpId: "",      //选中的期望的id
-        requestParams: [{reqkey:"",reqvalue:""}],       //规则的请求的参数
-        responseParams: [{respkey:"",respvalue:""}],    //规则的返回参数
-        reqHeaders: [{reqkey:"",reqvalue:""}],    //请求头部的值
-        respHeaders: [{respkey:"",respvalue:""}], //返回头部的值
-        reqCookies: [{reqkey:"",reqvalue:""}],    //请求cookies
-        respCookies: [{respkey:"",respvalue:""}], //返回cookise的值
+        requestParams: [{key:"",value:""}],       //规则的请求的参数
+        responseParams: [{key:"",value:""}],    //规则的返回参数
+        reqHeaders: [{key:"",value:""}],    //请求头部的值
+        respHeaders: [{key:"",value:""}], //返回头部的值
+        reqCookies: [{key:"",value:""}],    //请求cookies
+        respCookies: [{key:"",value:""}], //返回cookise的值
         keepalive: "",      //请求报文中的长连接 
         newCreator: "",            //创建人
         newExpectationName: "",    //期望名称
@@ -91,12 +91,15 @@ var app = new Vue({
                         _this.curExpecationRet = data.httpForwardEntity; //当前期望的期望返回的数据
                     }
                     _this.curExpecationRet = JSON.stringify(_this.curExpecationRet, null, 2);   //将返回的数据解析为JSON数据
+                    
+                    _this.processDisplayData();    //处理返回的数据，用于显示编辑页面中的headers等类型的数据
+                    
                 }
             }) 
             
         },
         addRequestList: function(){
-            this.requestParams.push({reqkey:"",reqvalue:""});
+            this.requestParams.push({key:"",value:""});
         },
         delRequestList: function(index){
             if(this.requestParams.length !== 1){
@@ -104,7 +107,7 @@ var app = new Vue({
             }
         },
         addResponseList: function(){
-            this.responseParams.push({respkey:"",respvalue:""});
+            this.responseParams.push({key:"",value:""});
         },
         delResponseList: function(index){
             if(this.responseParams.length !== 1){
@@ -112,7 +115,7 @@ var app = new Vue({
             }
         },
         addReqHeaders: function(){
-            this.reqHeaders.push({reqkey:"",reqvalue:""});
+            this.reqHeaders.push({key:"",value:""});
         },
         delReqHeaders: function(index){
             if(this.reqHeaders.length !== 1){
@@ -120,7 +123,7 @@ var app = new Vue({
             }
         },
         addReqCookies: function(){
-            this.reqCookies.push({reqkey:"",reqvalue:""});
+            this.reqCookies.push({key:"",value:""});
         },
         delReqCookies: function(index){
             if(this.reqCookies.length !== 1){
@@ -128,17 +131,17 @@ var app = new Vue({
             }
         },
         addRespHeaders: function(){
-            this.respHeaders.push({respkey:"",respvalue:""});
+            this.respHeaders.push({key:"",value:""});
         },
-        delRespHeaders: function(){
+        delRespHeaders: function(index){
             if(this.respHeaders.length !== 1){
                 this.respHeaders.splice(index,1);
             }
         },
         addRespCookies: function(){
-            this.respCookies.push({respkey:"",respvalue:""});
+            this.respCookies.push({key:"",value:""});
         },
-        delRespCookies: function(){
+        delRespCookies: function(index){
             if(this.respCookies.length !== 1){
                 this.respCookies.splice(index,1);
             }
@@ -189,8 +192,85 @@ var app = new Vue({
 
         },
         updateCurExpectation() {        //更新当前期望信息
+            var _this = this;
             
+            var processPostData = function(source){     //处理要发送的数据，把页面中用户输入好的数据转变为json字符串形式
+                let ret = {};
+                for(let i=0; source[i]!=undefined && source[i].key!=""; i++){
+                    ret[source[i].key] = source[i].value;
+                }
+                return JSON.stringify(ret);     //返回的数据是一个字符串
+            }
 
+            _this.editCurData.httpRequest.headers = processPostData(_this.reqHeaders);      //处理请求的headers
+            _this.editCurData.httpRequest.cookies = processPostData(_this.reqCookies);      //处理请求的cookies
+            _this.editCurData.httpRequest.queryParameters = processPostData(_this.requestParams);   //处理请求的参数
+            if(_this.editCurData.httpResponse!==null){      //如果返回不是null的话，再进行操作
+                _this.editCurData.httpResponse.headers = processPostData(_this.respHeaders);
+                _this.editCurData.httpResponse.cookies = processPostData(_this.respCookies);
+            }
+
+            $.ajax({
+                url: address3 + "mockServer/updateExpectation",
+                type: "post",
+                contentType: "application/json",
+                data: JSON.stringify(
+                    _this.editCurData
+                ),
+                success: function(data){
+                    if(data.respCode==='0000') {
+                        _this.getAllExpectation();
+                        $("#successModal").modal();   //显示操作成功的模态框
+                    } else {
+                        $("#failModal").modal();
+                    }
+                }
+            })
+        },
+        processDisplayData(){   //处理数据后，用于页面的显示
+            var _this = this;
+            //1.把后端接口返回的字符串值，转化为一个对象
+            //2.把用于v-model监听的全局数组变量清空，在这里进行结构，把json对象解码到定义的变量中
+            //3.很开心，把一堆shit业务逻辑写成了一个小shit function
+            var processStep = function(sourceData,globalData){
+                let i = 0;
+                if(sourceData!==""){
+                    var dataObj = JSON.parse(sourceData);   //把传进来的字符串变量，解析成json对象
+                } else {
+                    var dataObj = null;
+                }
+                for(let key in dataObj){        //读取出json对象中的每一个属性，并将每一个属性
+                    globalData[i].key = key;
+                    globalData[i].value = dataObj[key];
+                    globalData.push({key:"",value:""});
+                    i++;
+                }
+            }
+
+            if(_this.editCurData.httpRequest.type==='JSON'){    //如果请求的数据body是json格式的话，在前端进行json格式展示
+                let body = JSON.parse(_this.editCurData.httpRequest.body);
+                _this.editCurData.httpRequest.body = JSON.stringify(body, null, 2);   //将返回的数据解析为JSON数据
+            }
+            if(_this.editCurData.httpResponse!==null && _this.editCurData.httpResponse.type==='JSON'){    //如果返回的数据body格式是json的话，前台展示为json格式
+                let body = JSON.parse(_this.editCurData.httpResponse.body);
+                _this.editCurData.httpResponse.body = JSON.stringify(body, null, 2);   //将返回的数据解析为JSON数据
+            }
+            console.error("难受啊马飞")
+            
+            _this.requestParams = [{key:"",value:""}];   //先清除请求数据的参数，再重新赋值，不然会累积之前冗余项
+            _this.reqHeaders = [{key:"",value:""}];   //先清除请求数据的headers，再重新赋值，不然会累积之前冗余项
+            _this.reqCookies = [{key:"",value:""}];   //先清除请求数据的cookies，再重新赋值，不然会累积之前冗余项
+            _this.respHeaders = [{key:"",value:""}];
+            _this.respCookies = [{key:"",value:""}];
+
+            processStep(_this.editCurData.httpRequest.queryParameters, _this.requestParams);        //处理用于发送请求的“请求的参数”和显示的请求的参数
+            processStep(_this.editCurData.httpRequest.headers, _this.reqHeaders);
+            processStep(_this.editCurData.httpRequest.cookies, _this.reqCookies);
+            if(_this.editCurData.httpResponse!==null){  //当返回的数据不是null的时候，再进行数据操作
+                processStep(_this.editCurData.httpResponse.headers, _this.respHeaders);
+                processStep(_this.editCurData.httpResponse.cookies, _this.respCookies);
+            }
+            
         },
 
         changeReqEditFlag: function(flag){  //改变点击按钮的标志位，用于显示请求数据中不同的项目

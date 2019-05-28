@@ -165,8 +165,14 @@ var app = new Vue({
                     _this.currentCase
                 ),
                 success: function(data){
-
-                    console.log(data);
+                    if(data.respCode==='0000') {
+                        _this.getAllFlowcaseList();    //重新获取流程用例
+                        $("#successModal").modal();   //显示操作成功的模态框
+                        
+                    } else {
+                        $("#failModal").modal();
+                    }
+                    
                 },
             })
         },

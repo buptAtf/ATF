@@ -155,10 +155,10 @@
                                                             请求参数:
                                                         </div>
                                                         <div class="form-group col-lg-3">
-                                                            <input type="text" class="form-control" v-model="requestParams[index].reqkey" placeholder="参数名称">
+                                                            <input type="text" class="form-control" v-model="requestParams[index].key" placeholder="参数名称">
                                                         </div>
                                                         <div class="form-group col-lg-5">
-                                                            <input type="text" class="form-control" v-model="requestParams[index].reqvalue" placeholder="参数值" >
+                                                            <input type="text" class="form-control" v-model="requestParams[index].value" placeholder="参数值" >
                                                         </div>
                                                         <div class="form-group col-lg-2">
                                                             <a class="btn btn-white btn-sm" @click="addRequestList"><i class="icon-plus"></i></a>
@@ -189,10 +189,10 @@
                                                             返回参数:
                                                         </div>
                                                         <div class="form-group col-lg-3">
-                                                            <input type="text" class="form-control" v-model="responseParams[index].reqkey" placeholder="参数名称">
+                                                            <input type="text" class="form-control" v-model="responseParams[index].key" placeholder="参数名称">
                                                         </div>
                                                         <div class="form-group col-lg-5">
-                                                            <input type="text" class="form-control" v-model="responseParams[index].reqvalue" placeholder="参数值" >
+                                                            <input type="text" class="form-control" v-model="responseParams[index].value" placeholder="参数值" >
                                                         </div>
                                                         <div class="form-group col-lg-2">
                                                             <a class="btn btn-white btn-sm" @click="addResponseList"><i class="icon-plus"></i></a>
@@ -218,7 +218,28 @@
                             </div>
                         </div>
 
-                        
+                        <!-- 提交修改 start-->
+                        <div class="modal fade" id="updateModal" tabindex="-1" role="dialog" aria-labelledby="delModalLabel" aria-hidden="true">
+                            <div class="modal-dialog">
+                            <div class="modal-content" >
+                                <div class="modal-header">
+                                    <h4 class="modal-title">提交修改</h4>
+                                </div>
+                                <div class="modal-body" >
+                                    <h4>确认保存当前的修改?</h4>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-default" data-dismiss="modal">关闭
+                                    </button>
+                                    <button data-dismiss="modal" type="button" class="btn btn-primary" @click="updateCurExpectation()">
+                                        确定
+                                    </button>
+                                </div>
+                            </div>
+                            </div>
+                        </div>
+                        <!-- 提交修改 end-->
+
                         <div class="modal fade" id="delModal" tabindex="-1" role="dialog" aria-labelledby="delModalLabel" aria-hidden="true">
                             <div class="modal-dialog">
                                 <div class="modal-content" >
@@ -336,7 +357,7 @@
                                     <div>
                                         
                                         <div style="margin-left:800px; margin-top: 20px;">
-                                            <a class="btn btn-white btn-sm" @click="updateCurExpectation"><i class="icon-ok" ></i>提交修改</a>
+                                            <a class="btn btn-white btn-sm" data-toggle="modal" data-target="#updateModal"><i class="icon-ok" ></i>提交修改</a>
                                         </div>
 
                                         <h3 style="padding-left:20px; "><span class="label label-info">基本设置</span></h3>
@@ -402,7 +423,7 @@
                                                 <input type="radio" name="reqBodyFormat" value="STRING" v-model="editCurData.httpRequest.type">  <!--reqBodyType-->
                                                 STRING
                                             </label>
-
+                                            
                                             <textarea class="form-control" style="margin-top:20px; height:250px" v-model="editCurData.httpRequest.body"></textarea>
                                         </div>
 
@@ -412,10 +433,10 @@
                                                     请求参数:
                                                 </div>
                                                 <div class="form-group col-lg-2 ">
-                                                    <input type="text" class="form-control" v-model="requestParams[index].reqkey" placeholder="参数名称">
+                                                    <input type="text" class="form-control" v-model="requestParams[index].key" placeholder="参数名称">
                                                 </div>
                                                 <div class="form-group col-lg-5">
-                                                    <input type="text" class="form-control" v-model="requestParams[index].reqvalue" placeholder="参数值" >
+                                                    <input type="text" class="form-control" v-model="requestParams[index].value" placeholder="参数值" >
                                                 </div>
                                                 <div class="form-group col-lg-2">
                                                     <a class="btn btn-white btn-sm" @click="addRequestList"><i class="icon-plus"></i></a>
@@ -431,10 +452,10 @@
                                                     请求头部:
                                                 </div>
                                                 <div class="form-group col-lg-4 ">
-                                                    <input type="text" class="form-control" v-model="reqHeaders[index].reqkey" placeholder="头部名称">
+                                                    <input type="text" class="form-control" v-model="reqHeaders[index].key" placeholder="头部名称">
                                                 </div>
                                                 <div class="form-group col-lg-4">
-                                                    <input type="text" class="form-control" v-model="reqHeaders[index].reqvalue" placeholder="参数值" >
+                                                    <input type="text" class="form-control" v-model="reqHeaders[index].value" placeholder="参数值" >
                                                 </div>
                                                 <div class="form-group col-lg-2">
                                                     <a class="btn btn-white btn-sm" @click="addReqHeaders"><i class="icon-plus"></i></a>
@@ -449,10 +470,10 @@
                                                     cookies
                                                 </div>
                                                 <div class="form-group col-lg-4 ">
-                                                    <input type="text" class="form-control" v-model="reqCookies[index].reqkey" placeholder="cookie头">
+                                                    <input type="text" class="form-control" v-model="reqCookies[index].key" placeholder="cookie头">
                                                 </div>
                                                 <div class="form-group col-lg-4">
-                                                    <input type="text" class="form-control" v-model="reqCookies[index].reqvalue" placeholder="cookie值" >
+                                                    <input type="text" class="form-control" v-model="reqCookies[index].value" placeholder="cookie值" >
                                                 </div>
                                                 <div class="form-group col-lg-2">
                                                     <a class="btn btn-white btn-sm" @click="addReqCookies"><i class="icon-plus"></i></a>
@@ -467,7 +488,7 @@
                                                     <label class="col-lg-2 control-label ">secure:</label>
                                                     <div class="col-lg-4">
                                                         <select class="form-control" v-model="editCurData.httpRequest.secure">
-                                                            <option value="">请选择</option>
+                                                            <option value="" selected>请选择</option>
                                                             <option value="true">true</option>
                                                             <option value="false">false</option>
                                                         </select>
@@ -477,9 +498,9 @@
                                                     <label class="col-lg-2 control-label ">keepalive:</label>
                                                     <div class="col-lg-4">
                                                         <select class="form-control" v-model="editCurData.httpRequest.keepAlive">
-                                                            <option value="" >请选择</option>
-                                                            <option value="true" >true</option>
-                                                            <option value="false" >false</option>
+                                                            <option selected>请选择</option>
+                                                            <option value=true>true</option>
+                                                            <option value=false>false</option>
                                                         </select>
                                                     </div>
                                                 </div>
@@ -551,10 +572,10 @@
                                                             返回头部:
                                                         </div>
                                                         <div class="form-group col-lg-4 ">
-                                                            <input type="text" class="form-control" v-model="respHeaders[index].respkey" placeholder="头部名称">
+                                                            <input type="text" class="form-control" v-model="respHeaders[index].key" placeholder="头部名称">
                                                         </div>
                                                         <div class="form-group col-lg-4">
-                                                            <input type="text" class="form-control" v-model="respHeaders[index].respvalue" placeholder="参数值" >
+                                                            <input type="text" class="form-control" v-model="respHeaders[index].value" placeholder="参数值" >
                                                         </div>
                                                         <div class="form-group col-lg-2">
                                                             <a class="btn btn-white btn-sm" @click="addRespHeaders"><i class="icon-plus"></i></a>
@@ -569,10 +590,10 @@
                                                             cookie:
                                                         </div>
                                                         <div class="form-group col-lg-4 ">
-                                                            <input type="text" class="form-control" v-model="respCookies[index].respkey" placeholder="cookie头部">
+                                                            <input type="text" class="form-control" v-model="respCookies[index].key" placeholder="cookie头部">
                                                         </div>
                                                         <div class="form-group col-lg-4">
-                                                            <input type="text" class="form-control" v-model="respCookies[index].respvalue" placeholder="cookie值" >
+                                                            <input type="text" class="form-control" v-model="respCookies[index].value" placeholder="cookie值" >
                                                         </div>
                                                         <div class="form-group col-lg-2">
                                                             <a class="btn btn-white btn-sm" @click="addRespCookies"><i class="icon-plus"></i></a>

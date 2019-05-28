@@ -75,7 +75,7 @@
                 <div class="panel-heading ">用例详情及节点数据
                   <div style="float:right">
                     <a class="btn btn-white btn-sm" @click="editFlag=!editFlag"><i class="icon-edit" ></i>编辑</a>
-                    <a class="btn btn-white btn-sm" @click="saveFlowTestcaseInfo"><i class="icon-ok" ></i>提交修改</a>
+                    <a class="btn btn-white btn-sm" data-toggle="modal" data-target="#updateModal" ><i class="icon-ok" ></i>提交修改</a>
                   </div>
                 </div>
                 
@@ -178,6 +178,7 @@
                           <div class="col-lg-6">
                               <input class="form-control " v-model="item.data" readonly="{{editFlag}}">
                           </div>
+                          <a class="btn btn-white btn-sm"><i class="glyphicon glyphicon-cog" ></i></a>
                           
                       </div>
                     </div>
@@ -186,8 +187,27 @@
                     <hr class="hrLine" style="width:100%; margin-top:30px"/>
                   </section>
 
-                  
-
+                  <!-- 提交修改 start-->
+                  <div class="modal fade" id="updateModal" tabindex="-1" role="dialog" aria-labelledby="delModalLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                      <div class="modal-content" >
+                        <div class="modal-header">
+                            <h4 class="modal-title">提交修改</h4>
+                        </div>
+                        <div class="modal-body" >
+                            <h4>确认保存当前的修改?</h4>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">关闭
+                            </button>
+                            <button data-dismiss="modal" type="button" class="btn btn-primary" @click="saveFlowTestcaseInfo()">
+                                确定
+                            </button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <!-- 提交修改 end-->
 
                   <!-- view script start -->
                   <div class="modal fade" id="viewScript" tabindex="-1" role="dialog">
@@ -246,6 +266,44 @@
                   </div>
                   <!-- view script end -->
 
+                  <!-- successModal start -->
+                  <div class="modal fade" id="successModal" tabindex="-1" role="dialog" aria-labelledby="successModalLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                                <h4 class="modal-title">操作成功</h4>
+                            </div>
+                            <div class="modal-body">
+                                <h4>操作成功！</h4>
+                            </div>
+                            <div class="modal-footer">
+                                <button data-dismiss="modal" class="btn btn-success" type="button">确定</button>
+                            </div>
+                        </div>
+                    </div>
+                  </div>
+                  <!-- successModal end -->
+
+                  <!-- failModal start -->
+                  <div class="modal fade" id="failModal" tabindex="-1" role="dialog" aria-labelledby="failModalLabel" aria-hidden="true">
+                      <div class="modal-dialog">
+                          <div class="modal-content">
+                              <div class="modal-header">
+                                  <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                                  <h4 class="modal-title">操作失败</h4>
+                              </div>
+                              <div class="modal-body">
+                                  <h4>操作失败！</h4>
+                              </div>
+                              <div class="modal-footer">
+                                  <button data-dismiss="modal" class="btn btn-success" type="button">确定</button>
+                              </div>
+                          </div>
+                      </div>
+                  </div>
+                  <!-- failModal end -->
+                      
                 </div>
                 </section>
             </div>
