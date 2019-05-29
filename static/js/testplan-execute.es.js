@@ -345,6 +345,25 @@ var vBody = new Vue({
 				}
 			})
 		},
+		fullScreen: function(){
+			// this.$refs.logShow.style.width = "100%" ;
+			// this.$refs.logShow.style.height = "100%" ;
+			var logDiv =document.getElementById("log");
+			logDiv.style.width="100%";
+			logDiv.style.height="100%";
+		},
+		updateScreen: function(){
+			var _this = this;
+			var logDiv =document.getElementById("log");
+			logDiv.style.width="50%";
+			logDiv.style.height="50%";
+			_this.logShow=!_this.logShow;
+		},
+		subScreen: function(){
+			var logDiv =document.getElementById("log");
+			logDiv.style.width="50%";
+			logDiv.style.height="50%";
+		},
 		startQueryResult: function() {
 			var _this = this;
 			$.ajax({
@@ -422,8 +441,10 @@ var vBody = new Vue({
 				}),
 				success: function(data) {
 					if(data.respCode=="0000"){
-						let textarea = $("#logarea")
-						textarea.val(data.logSeg);
+						let textarea = $("#logarea");
+						textarea.text(data.logSeg);
+						var logarea=document.getElementById("logarea");
+						hljs.highlightBlock(logarea);
 						textarea.scrollTop(99999999999);	
 						syncQueryIncLog(data)
 					}
