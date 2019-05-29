@@ -534,7 +534,8 @@ var vBody = new Vue({
 					}
 					let selectNode = '#runner-'+d.sceneId+'-'+d.testcaseId;
 					if($(selectNode)!=null){
-						if(d.runnerName!="null/null"){
+						console.log(d.runnerName)
+						if(d.runnerName!=null){
 							let runner=d.runnerName.replace(/-/g, "_")
 							let runnerpors = runner.split('/')
 							console.log($(selectNode).children().text("分配执行机为："+runnerpors[0]))
