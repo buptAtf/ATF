@@ -203,11 +203,9 @@
                                             class="icon-double-angle-right"></i></button>
                                 </div>
                                 <div id="hidden-1">
-                                    <button id="logFullBtn" class="btn btn-white" @click="fullScreen()"><i
+                                    <button id="logFullBtn" v-if="fullFlag" class="btn btn-white" @click="fullScreen()"><i
                                             class="icon-fullscreen"></i></button>
-                                </div>
-                                <div id="hidden-1">
-                                    <button id="logSubBtn" class="btn btn-white" @click="subScreen()"><i
+                                    <button id="logSubBtn" v-else class="btn btn-white" @click="subScreen()"><i
                                             class="fa fa-compress"></i></button>
                                 </div>
                                 <div id="logcontent">
@@ -216,7 +214,7 @@
                                             <h3 class="panel-title">运行日志</h3>
                                         </div>
                                         <div id="area">
-                                            <pre class="pre"><code  id="logarea" class="json"></code></pre>
+                                            <pre class="pre"><code  id="logarea" class="javascript"></code></pre>
                                         </div>
                                     </div>
                                 </div>
