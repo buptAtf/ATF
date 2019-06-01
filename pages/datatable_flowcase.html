@@ -37,6 +37,14 @@
       background-color: #ebebeb;
       border-color: #adadad;
     }
+    .flowcase{
+            position:absolute;
+            right:0;
+            top:30%;
+            height:50px;
+            width:50px;
+            background:red;
+        }
   </style>
 </head>
 
@@ -62,8 +70,8 @@
 
         <div class="row" style="margin-top:20px;">
             <div class="col-lg-3">
-              <section class="panel panel-default">
-                <div class="panel-heading text-center" >流程用例</div>
+              <section class=" panel panel-default" style="height:835px; overflow:auto">
+                <div class="panel-heading text-center " >流程用例</div>
                 <div class="list-group" >
                   <a :class="selectedCaseId==item.id?'list-group-item text-center active': 'list-group-item text-center'" v-for="item in flowcaseList" @click=queryThisCase(item.id)>{{ item.casecode }}</a>
                   <!-- 使用了三目表达式，选中的哪个用例的id就高亮显示哪一个 -->
@@ -71,7 +79,7 @@
               </section>
             </div>
             <div class="col-lg-8">
-              <section class="panel panel-default">
+              <section class="panel panel-default" style="height:835px; overflow:auto">
                 <div class="panel-heading ">用例详情及节点数据
                   <div style="float:right">
                     <a class="btn btn-white btn-sm" @click="editFlag=!editFlag"><i class="icon-edit" ></i>编辑</a>
@@ -129,7 +137,7 @@
 
                   <hr class="hrLine" style="width:100%; margin-top:200px"/>
                   
-                  <section v-for="nodeinfo in nodeInfoList">
+                  <section v-for="nodeinfo in nodeInfoList" >
                     <h4 style="margin-left:30px; margin-top:30px"><span class="label label-info" >节点</span></h4>
                     <div class="col-lg-6 nopadding">
                       <h5><span class="col-lg-3 text-center">被测系统</span></h5>

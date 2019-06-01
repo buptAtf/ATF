@@ -4,8 +4,9 @@ var app = new Vue({
         allExpecation: [],      //所有的期望
         curExpecation: {httpRequest:""},      //当前的期望
         curExpecationRet: {},   //当前期望的返回
+        runExpecationRet: {},   //运行结果的返回
         editCurData: {id:"",expectationName:"",creator:"",httpRequest:"",httpResponse:"",httpForwardEntity:"",type:""},
-        runData:{method:"", path:"", body:"", type:"", headers:"", cookies:"", keepAlive:"", secure:"", pathType:true, methodType: true},
+        runData:{method:"", path:"", body:"", type:"", queryParameters:"", headers:"", cookies:"", keepAlive:"", secure:"", pathType:true, methodType: true},
         selectedExpId: "",      //选中的期望的id
         requestParams: [{key:"",value:""}],       //规则的请求的参数
         responseParams: [{key:"",value:""}],    //规则的返回参数
@@ -23,6 +24,7 @@ var app = new Vue({
         editReqFlag: "1",              //请求参数设置显示的标志位
         editRespFlag: "1",
         runFlag: "1",
+        runRetFlag: 'ready',
         respforwardFlag: "response",    //返回的数据是response还是forward
     },
     ready: function(){
@@ -95,26 +97,30 @@ var app = new Vue({
                     } else if(_this.respforwardFlag==='forward'){
                         _this.curExpecationRet = data.httpForwardEntity; //当前期望的期望返回的数据
                     }
-                    _this.curExpecationRet = JSON.stringify(_this.curExpecationRet, null, 2);   //将返回的数据解析为JSON数据
-                    _this.processDisplayData();    //处理返回的数据，用于显示编辑页面中的headers等类型的数据
-                    
+
                     if(data.runRequestId!==null){
                         _this.queryRunInfo(data.runRequestId);
                     }
+
+                    _this.curExpecationRet = JSON.stringify(_this.curExpecationRet, null, 2);   //将返回的数据解析为JSON数据
+                    // _this.processDisplayData();    //处理返回的数据，用于显示编辑页面中的headers等类型的数据
+                    
                 }
             }) 
             
         },
         queryRunInfo: function(id) {      //查询上次用户退出时，运行的信息
+            const _this = this;
             $.ajax({
                 url: address3 + "/mockServer/getRunRequest",
                 type: "post",
-                contentType: "application/json",
+                contentType: "application/x-www-form-urlencoded",
                 data: {
                     "id": id
                 },
                 success: function(data) {
-
+                    _this.runData = data;
+                    _this.processDisplayData();    //处理返回的数据，用于显示编辑页面中的headers等类型的数据  放在这里的原因是，异步请求，如果不放在这里，运行的参数为空
                     console.log(data);
                 }
             })
@@ -284,6 +290,7 @@ var app = new Vue({
             var processStep = function(sourceData,globalData){
                 let i = 0;
                 if(sourceData!==""){
+                    console.log(sourceData);
                     var dataObj = JSON.parse(sourceData);   //把传进来的字符串变量，解析成json对象
                 } else {
                     var dataObj = null;
@@ -311,6 +318,10 @@ var app = new Vue({
             _this.respHeaders = [{key:"",value:""}];
             _this.respCookies = [{key:"",value:""}];
 
+            _this.runParams = [{key:"",value:""}];
+            _this.runHeaders = [{key:"",value:""}];
+            _this.runCookies = [{key:"",value:""}];
+
             if(_this.editCurData.httpRequest!==null){
                 processStep(_this.editCurData.httpRequest.queryParameters, _this.requestParams);        //处理用于发送请求的“请求的参数”和显示的请求的参数
                 processStep(_this.editCurData.httpRequest.headers, _this.reqHeaders);
@@ -319,6 +330,12 @@ var app = new Vue({
             if(_this.editCurData.httpResponse!==null){  //当返回的数据不是null的时候，再进行数据操作
                 processStep(_this.editCurData.httpResponse.headers, _this.respHeaders);
                 processStep(_this.editCurData.httpResponse.cookies, _this.respCookies);
+            }
+
+            if(_this.runData!==null) {
+                processStep(_this.runData.queryParameters, _this.runParams);
+                processStep(_this.runData.headers, _this.runHeaders);
+                processStep(_this.runData.cookies, _this.runCookies);
             }
         },
 
@@ -342,16 +359,22 @@ var app = new Vue({
                 contentType: "application/json",
                 data: JSON.stringify(_this.runData),
                 success: function(data) {
-
-                    console.log(data)
+                    _this.runRetFlag = 'ok';
+                    _this.runExpecationRet = JSON.stringify(data, null, 2); ;
+                    
                     if(data.respCode==='0000'){
+                        let temprunData = _this.runData;
+                        temprunData.expectationId = _this.selectedExpId;
                         //运行结束，保存当前数据
                         $.ajax({
                             url: address3+ "/mockServer/saveRunRequest",
                             type: "post",
                             contentType: "application/json",
-                            data: JSON.stringify(_this.runData),
+                            data: JSON.stringify(temprunData),
                             success: function(data) {
+
+                                
+                                // _this.curExpecationRet = JSON.stringify(_this.curExpecationRet, null, 2);   //将返回的数据解析为JSON数据
                                 console.log(data);
                             },
 

@@ -12,6 +12,9 @@
         .hrLine{
             vertical-align:middle; display:inline-block;
         }
+
+
+
     </style>
 </head>
 <body id="v-mockserver">
@@ -794,7 +797,9 @@
                                         </div>
 
                                         <h3 style="padding-left:20px"><span class="label label-info">返回结果</span></h3>
-                                        <pre class="well" style="margin-left:20px; margin-top:20px">{{ curExpecationRet }}
+                                        <pre class="well" style="margin-left:20px; margin-top:20px" v-if="runRetFlag=='ok'">{{ runExpecationRet }}
+                                        </pre>
+                                        <pre class="well" style="margin-left:20px; margin-top:20px" v-if="runRetFlag=='ready'">请运行后查看结果
                                         </pre>
                                         
                                     </div>
