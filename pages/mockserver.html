@@ -355,7 +355,6 @@
                             <div id="edit" class="tab-pane fade">
                                 <section class="panel" style="height:800px; overflow:auto">
                                     <div>
-                                        
                                         <div style="margin-left:800px; margin-top: 20px;">
                                             <a class="btn btn-white btn-sm" data-toggle="modal" data-target="#updateModal"><i class="icon-ok" ></i>提交修改</a>
                                         </div>
@@ -641,7 +640,167 @@
                             </div>
 
                             <div id="run" class="tab-pane fade">
-                                <p>q q</p>
+                                <section class="panel" style="height:800px; overflow:auto">
+                                    <div>
+                                        <div style="margin-left:800px; margin-top: 20px;">
+                                            <a class="btn btn-white btn-sm" data-toggle="modal" data-target="#" @click="runCurExpectation"><i class="icon-ok" ></i>运行</a>
+                                        </div>
+
+                                        <!-- <h3 style="padding-left:20px; "><span class="label label-info">基本设置</span></h3> -->
+                                        <div class="well" style="margin-left:20px; margin-top:20px;">
+                                            <div>
+                                                <!-- <div class="row" style="margin-left:20px; margin-top:20px;">
+                                                    <div  style="display: inline-block;"> <h5>期望名称:</h5></div>
+                                                    <div  style="display: inline-block;"> <input class="form-control" v-model="editCurData.expectationName"></div>
+                                                </div> -->
+
+                                                <div style="margin-left:20px; margin-top:20px;">
+                                                    <div  style="display: inline-block;"> <h5>接口路径:</h5></div>
+                                                    <div  style="display: inline-block;">
+                                                        <div class="input-group ">
+                                                            <div class="input-group-btn">
+                                                                <select type="button" v-model="runData.method" class="btn btn-default dropdown-toggle " data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{{ selectedMethod }} <span class="caret"></span>
+                                                                    <option value="POST">POST</option>
+                                                                    <option value="GET">GET</option>
+                                                                    <option value="PUT">PUT</option>
+                                                                    <option value="DELETE">DELETE</option>
+                                                                    <option value="HEAD">HEAD</option>
+                                                                    <option value="OPTIONS">OPTIONS</option>
+                                                                    <option value="PATCH">PATCH</option>
+                                                                </select>
+                                                            </div>
+                                                            <input class="form-control" style="width: 400px" v-model="runData.path">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <h3 style="padding-left:20px"><span class="label label-info">请求参数设置</span></h3>
+                                        <div class="btn-group btn-group-toggle" data-toggle="buttons" style="padding-top:20px; margin-left:300px">
+                                            <label class="btn btn-primary active" @click="changeRunFlag('1')">
+                                                <input type="radio" autocomplete="off" checked> body
+                                            </label>
+                                            <label class="btn btn-primary" @click="changeRunFlag('2')">
+                                                <input type="radio" autocomplete="off"> query
+                                            </label>
+                                            <label class="btn btn-primary" @click="changeRunFlag('3')">
+                                                <input type="radio" autocomplete="off"> headers
+                                            </label>
+                                            <label class="btn btn-primary" @click="changeRunFlag('4')">
+                                                <input type="radio" autocomplete="off"> cookies
+                                            </label>
+                                            <label class="btn btn-primary" @click="changeRunFlag('5')">
+                                                <input type="radio" autocomplete="off"> 高级
+                                            </label>
+                                           
+                                        </div>
+                                          
+                                        <div class="well" style="margin-left:20px; margin-top:20px;" v-show="runFlag==='1'">
+                                            <label class="checkbox-inline">
+                                                <input type="radio" name="reqBodyFormat" value="JSON" v-model="runData.type">
+                                                JSON
+                                            </label>
+                                            <label class="checkbox-inline">
+                                                <input type="radio" name="reqBodyFormat" value="XML" v-model="runData.type">
+                                                XML
+                                            </label>
+                                            <label class="checkbox-inline">
+                                                <input type="radio" name="reqBodyFormat" value="STRING" v-model="runData.type">  <!--reqBodyType-->
+                                                STRING
+                                            </label>
+                                            
+                                            <textarea class="form-control" style="margin-top:20px; height:250px" v-model="runData.body"></textarea>
+                                        </div>
+
+                                        <div class="well" style="margin-left:20px; margin-top:20px;" v-show="runFlag==='2'">
+                                            <div class="col-lg-12" style="display:inline-block; margin-top:10px" v-for="(index,item) in runParams">
+                                                <div class="form-group col-lg-2 text-right">
+                                                    请求参数:
+                                                </div>
+                                                <div class="form-group col-lg-2 ">
+                                                    <input type="text" class="form-control" v-model="runParams[index].key" placeholder="参数名称">
+                                                </div>
+                                                <div class="form-group col-lg-5">
+                                                    <input type="text" class="form-control" v-model="runParams[index].value" placeholder="参数值" >
+                                                </div>
+                                                <div class="form-group col-lg-2">
+                                                    <a class="btn btn-white btn-sm" @click="addRunParams"><i class="icon-plus"></i></a>
+                                                    <a class="btn btn-white btn-sm" @click="delRunParams(index)"><i class="icon-remove"></i></a>
+                                                </div>
+                                            </div>
+
+                                        </div>
+
+                                        <div class="well" style="margin-left:20px; margin-top:20px;" v-show="runFlag==='3'">
+                                            <div class="col-lg-12" style="display:inline-block; margin-top:10px" v-for="(index,item) in runHeaders">
+                                                <div class="form-group col-lg-2 text-right">
+                                                    请求头部:
+                                                </div>
+                                                <div class="form-group col-lg-4 ">
+                                                    <input type="text" class="form-control" v-model="runHeaders[index].key" placeholder="头部名称">
+                                                </div>
+                                                <div class="form-group col-lg-4">
+                                                    <input type="text" class="form-control" v-model="runHeaders[index].value" placeholder="参数值" >
+                                                </div>
+                                                <div class="form-group col-lg-2">
+                                                    <a class="btn btn-white btn-sm" @click="addRunHeaders"><i class="icon-plus"></i></a>
+                                                    <a class="btn btn-white btn-sm" @click="delRunHeaders(index)"><i class="icon-remove"></i></a>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="well" style="margin-left:20px; margin-top:20px;" v-show="runFlag==='4'">
+                                            <div class="col-lg-12" style="display:inline-block; margin-top:10px" v-for="(index,item) in runCookies">
+                                                <div class="form-group col-lg-2 text-right">
+                                                    cookies
+                                                </div>
+                                                <div class="form-group col-lg-4 ">
+                                                    <input type="text" class="form-control" v-model="runCookies[index].key" placeholder="cookie头">
+                                                </div>
+                                                <div class="form-group col-lg-4">
+                                                    <input type="text" class="form-control" v-model="runCookies[index].value" placeholder="cookie值" >
+                                                </div>
+                                                <div class="form-group col-lg-2">
+                                                    <a class="btn btn-white btn-sm" @click="addRunCookies"><i class="icon-plus"></i></a>
+                                                    <a class="btn btn-white btn-sm" @click="delRunCookies(index)"><i class="icon-remove"></i></a>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="well" style="margin-left:20px; margin-top:20px; height: 100px;" v-show="runFlag==='5'">
+                                            <div class="form-group col-lg-12" >
+                                                <div class="col-lg-6 nopadding" >
+                                                    <label class="col-lg-2 control-label ">secure:</label>
+                                                    <div class="col-lg-4">
+                                                        <select class="form-control" v-model=""> <!-- runData.secure-->
+                                                            <option value="" selected>请选择</option>
+                                                            <option value=true>true</option>
+                                                            <option value=false>false</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <div class="col-lg-6 nopadding">
+                                                    <label class="col-lg-2 control-label ">keepalive:</label>
+                                                    <div class="col-lg-4">
+                                                        <select class="form-control" v-model=""> <!-- runData.keepAlive-->
+                                                            <option selected>请选择</option>
+                                                            <option value=true>true</option>
+                                                            <option value=false>false</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <h3 style="padding-left:20px"><span class="label label-info">返回结果</span></h3>
+                                        <pre class="well" style="margin-left:20px; margin-top:20px">{{ curExpecationRet }}
+                                        </pre>
+                                        
+                                    </div>
+                                </section>
+                                
+
                             </div>
                         </div>
 
