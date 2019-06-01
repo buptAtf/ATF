@@ -26,6 +26,7 @@ var vBody = new Vue({
 		selectState: '',		// 选择状态
 		userId:sessionStorage.getItem('userId'),
 		projectName: sessionStorage.getItem('projectNameStorage'),	//项目名称
+		fullFlag:true,
 
 		// save the value obtained from back end and will set to the selects' options
 		testPlans: [], 
@@ -351,6 +352,7 @@ var vBody = new Vue({
 			var logDiv =document.getElementById("log");
 			logDiv.style.width="100%";
 			logDiv.style.height="100%";
+			this.fullFlag=false;
 		},
 		updateScreen: function(){
 			var _this = this;
@@ -363,6 +365,7 @@ var vBody = new Vue({
 			var logDiv =document.getElementById("log");
 			logDiv.style.width="50%";
 			logDiv.style.height="50%";
+			this.fullFlag=true;
 		},
 		startQueryResult: function() {
 			var _this = this;
@@ -471,8 +474,11 @@ var vBody = new Vue({
 					success: function(data) {
 						if(data.respCode=="0000"){
 							let textarea = $("#logarea")
-							if(data.logSeg!=null)
-								textarea.val(textarea.val()+data.logSeg);
+							if(data.logSeg!=null){
+								textarea.text(textarea.text()+data.logSeg);
+								var logarea=document.getElementById("logarea");
+								hljs.highlightBlock(logarea);
+							}
 							textarea.scrollTop(99999999999);
 							syncQueryIncLog(data)
 						}
@@ -534,7 +540,8 @@ var vBody = new Vue({
 					}
 					let selectNode = '#runner-'+d.sceneId+'-'+d.testcaseId;
 					if($(selectNode)!=null){
-						if(d.runnerName!="null/null"){
+						console.log(d.runnerName)
+						if(d.runnerName!=null){
 							let runner=d.runnerName.replace(/-/g, "_")
 							let runnerpors = runner.split('/')
 							console.log($(selectNode).children().text("分配执行机为："+runnerpors[0]))
