@@ -1,6 +1,7 @@
 var app = new Vue({
     el: '#v-aut',
     data: {
+        autId:"",//被选中的弟
         autList: [],
         tt: 0, //总条数
         pageSize: 10, //页面大小
@@ -21,6 +22,16 @@ var app = new Vue({
         selectedAbstractarchitecture_name: '',
         selectedAut_desc: '',
         failMsg:"操作失败",
+        //以下参数用于移动端设备配置
+        platformName:"",    //设备类型
+        deviceName:"",      //设备名
+        automationName:"",  //？？？
+        appPackage:"",      //应用包名
+        appActivity:"",     // 启动activity
+        noReset:true,        //禁止重置
+        appiumurl:"",             //连接URL
+        initflag:false,
+        mobileId:-1,
     },
     ready: function() {
         getAut(this.currentPage, this.pageSize, this.order, this.sort);
@@ -77,6 +88,38 @@ var app = new Vue({
             getAut(ts.currentPage, ts.pageSize, 'id', 'asc');
         },
 
+        //添加
+        initMobile: function() {
+            var _this = this;
+            $.ajax({
+                // url: address3+'mobileController/initMobile',
+                url: 'http://10.101.164.78:8080/atfcloud2.0a/mobileController/initMobile',
+
+                type: 'POST',
+                contentType: 'application/json',
+                data: JSON.stringify({
+                    'autId': _this.autId,
+                    'platformName': _this.platformName,
+                    'deviceName': _this.deviceName,
+                    'automationName': _this.automationName,
+                    'appPackage':_this.appPackage,
+                    'appActivity': _this.appActivity,
+                    'noReset':_this.noReset=="1"?true:false,
+                    'url': _this.appiumurl
+                }),
+                success: function(data) {
+                    if(data.respCode==0000){
+                        $('#successModal').modal();
+                    }else{
+                        _this.failMsg = data.Msg
+                        $('#failModal2').modal();
+                    }
+                },
+                error: function() {
+                    alert("ajax请求失败，请稍后访问......")
+                }
+            });
+        },
 
         //添加
         insert: function() {
@@ -149,9 +192,11 @@ var app = new Vue({
             });
         },
 
-        checkDel:()=>{
+        checkDel(){
             app.getIds();
+            var _this = this;
             const selectedInput = $('input[name="chk_list"]:checked');
+            _this.autId = selectedInput.attr('id');
             if (selectedInput.length === 0) {
                 $('#selectAlertModal').modal();
             } else{
@@ -186,13 +231,65 @@ var app = new Vue({
             });
         },
 
-        checkUpdate:()=>{
+        checkUpdate(){
             app.getSelected();
+            var _this = this;
             const selectedInput = $('input[name="chk_list"]:checked');
+            _this.autId = selectedInput.attr('id');
             if (selectedInput.length === 0) {
                 $('#selectAlertModal').modal();
             } else{
                 $('#updateModal').modal();
+            } 
+        },
+        terminalSet(){
+            var _this = this;
+            var selectedInput = $('input[name="chk_list"]:checked');
+            var selectedId = selectedInput.attr('id');
+            _this.autId = selectedInput.attr('id');
+            if (selectedInput.length === 0) {
+                $('#selectAlertModal').modal();
+            } else{
+                $.ajax({
+                    url: address3+'mobileController/queryMobile',
+                    url: 'http://10.101.164.78:8080/atfcloud2.0a/mobileController/queryMobile',
+
+                    type: 'post',
+                    contentType:'application/json',
+                    data: JSON.stringify({
+                        'autId': selectedId
+                    }),
+                    success: function(data) {
+                       if (data.respCode=="0000") {
+                        _this.platformName = data.mobileProperties.platformName;
+                        _this.deviceName = data.mobileProperties.deviceName;
+                        _this.automationName = data.mobileProperties.automationName;
+                        _this.appPackage = data.mobileProperties.appPackage;
+                        _this.appActivity = data.mobileProperties.appActivity;
+                        _this.noReset = data.mobileProperties.noReset?"1":"0";
+                        _this.appiumurl = data.mobileProperties.url;
+                        _this.mobileId = data.mobileEntity.id;
+                        $('#terminalSetModal').modal();
+                        initflag = true;
+                        } else if(data.respMsg == "该被测系统无移动端内容") {
+                            _this.mobileId = -1;
+                            _this.platformName = "";
+                            _this.deviceName ="";
+                            _this.automationName = "";
+                            _this.appPackage = "";
+                            _this.appActivity = "";
+                            _this.noReset = "1";
+                            _this.appiumurl = "";
+                            $('#terminalSetModal').modal();
+                        }else {
+                            alert(data.respMsg)
+                        }
+                    },
+                    error: function() {
+                        alert(data.respMsg)
+                    }
+                });
+
             } 
         },
         //修改测试系统
@@ -229,8 +326,10 @@ var app = new Vue({
         },
         //获取当前选中行内容
         getSelected: function() {
+            var _this = this;
             var selectedInput = $('input[name="chk_list"]:checked');
             var selectedId = selectedInput.attr('id');
+            _this.autId = selectedInput.attr('id');
             $('input[name="id"]').val(selectedId);
             $('#updateForm input[name="code"]').val(selectedInput.parent().next().next().children().html());
             $('#updateForm input[name="nameMedium"]').val(selectedInput.parent().next().next().next().html());
@@ -240,12 +339,14 @@ var app = new Vue({
 
         //传递当前页选中测试系统id到功能点页面
         toTransact: function() {
+            var _this = this;
             var selectedInput = $('input[name="chk_list"]:checked');
+            _this.autId = selectedInput.attr('id');
             if (selectedInput.length === 0) {
                 $('#selectAlertModal').modal();
             } else {
                 var selectedId = selectedInput.attr('id');
-                var selectedName=selectedInput.parent().next().next().html();
+                var selectedName=selectedInput.parent().next().next()[0].firstChild.innerHTML;
                 sessionStorage.setItem("autId", selectedId);
                 sessionStorage.setItem("autName", selectedName); 
                 location.href = "transact.html";
@@ -259,12 +360,14 @@ var app = new Vue({
         },
         //传递当前页选中测试系统id到自动化构件维护页面
         toComponent: function() {
+            var _this = this;
             var selectedInput = $('input[name="chk_list"]:checked');
+            _this.autId = selectedInput.attr('id');
             if (selectedInput.length === 0) {
                 $('#selectAlertModal').modal();
             } else {
                 var selectedId = selectedInput.attr('id');
-                var selectedName=selectedInput.parent().next().next().html();
+                var selectedName=selectedInput.parent().next().next()[0].firstChild.innerHTML;
                 sessionStorage.setItem("autId", selectedId);
                 sessionStorage.setItem("autName", selectedName); 
                 location.href = "component.html";
@@ -272,12 +375,14 @@ var app = new Vue({
         },
         //传递当前页选中测试系统id和名称到配置系统数据页面
         toAutdata: function() {
+            var _this = this;
             var selectedInput = $('input[name="chk_list"]:checked');
+            _this.autId = selectedInput.attr('id');
             if (selectedInput.length === 0) {
                 $('#selectAlertModal').modal();
             } else {
                 var selectedId = selectedInput.attr('id');
-                var selectedName=selectedInput.parent().next().next().html();
+                var selectedName=selectedInput.parent().next().next()[0].firstChild.innerHTML;
                 sessionStorage.setItem("autId", selectedId);
                 sessionStorage.setItem("autName", selectedName); 
                 location.href = "autdata.html";
@@ -285,12 +390,14 @@ var app = new Vue({
         },
         //传递当前页选中测试系统id和名称到执行代码管理页面
         toExeccode: function() {
+            var _this = this;
             var selectedInput = $('input[name="chk_list"]:checked');
+            _this.autId = selectedInput.attr('id');
             if (selectedInput.length === 0) {
                 $('#selectAlertModal').modal();
             } else {
                 var selectedId = selectedInput.attr('id');
-                var selectedName=selectedInput.parent().next().next().html();
+                var selectedName=selectedInput.parent().next().next()[0].firstChild.innerHTML;
                 sessionStorage.setItem("autId", selectedId);
                 sessionStorage.setItem("autName", selectedName); 
                 location.href = "execcode.html";
@@ -439,6 +546,9 @@ function getAbstr(){
         success:function(data){
             // console.log(data)
             app.abstrList=data.architectureRespDTOList;
+        },
+        error: function() {
+            alert(data.respMsg)
         }
     });
 }
