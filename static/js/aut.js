@@ -30,7 +30,6 @@ var app = new Vue({
         appActivity:"",     // 启动activity
         noReset:true,        //禁止重置
         appiumurl:"",             //连接URL
-        initflag:false,
         mobileId:-1,
     },
     ready: function() {
@@ -91,34 +90,63 @@ var app = new Vue({
         //添加
         initMobile: function() {
             var _this = this;
-            $.ajax({
-                // url: address3+'mobileController/initMobile',
-                url: 'http://10.101.164.78:8080/atfcloud2.0a/mobileController/initMobile',
-
-                type: 'POST',
-                contentType: 'application/json',
-                data: JSON.stringify({
-                    'autId': _this.autId,
-                    'platformName': _this.platformName,
-                    'deviceName': _this.deviceName,
-                    'automationName': _this.automationName,
-                    'appPackage':_this.appPackage,
-                    'appActivity': _this.appActivity,
-                    'noReset':_this.noReset=="1"?true:false,
-                    'url': _this.appiumurl
-                }),
-                success: function(data) {
-                    if(data.respCode==0000){
-                        $('#successModal').modal();
-                    }else{
-                        _this.failMsg = data.Msg
-                        $('#failModal2').modal();
+            if(_this.mobileId == -1){
+                $.ajax({
+                    url: address3+'mobileController/initMobile',
+                    type: 'POST',
+                    contentType: 'application/json',
+                    data: JSON.stringify({
+                        'autId': _this.autId,
+                        'platformName': _this.platformName,
+                        'deviceName': _this.deviceName,
+                        'automationName': _this.automationName,
+                        'appPackage':_this.appPackage,
+                        'appActivity': _this.appActivity,
+                        'noReset':_this.noReset=="1"?true:false,
+                        'url': _this.appiumurl
+                    }),
+                    success: function(data) {
+                        if(data.respCode==0000){
+                            $('#successModal').modal();
+                        }else{
+                            _this.failMsg = data.Msg
+                            $('#failModal2').modal();
+                        }
+                    },
+                    error: function() {
+                        alert("ajax请求失败，请稍后访问......")
                     }
-                },
-                error: function() {
-                    alert("ajax请求失败，请稍后访问......")
-                }
-            });
+                });
+            }
+            else{
+                $.ajax({
+                    url: address3+'mobileController/updateMobile',
+                    type: 'POST',
+                    contentType: 'application/json',
+                    data: JSON.stringify({
+                        'autId': _this.autId,
+                        'platformName': _this.platformName,
+                        'deviceName': _this.deviceName,
+                        'automationName': _this.automationName,
+                        'appPackage':_this.appPackage,
+                        'appActivity': _this.appActivity,
+                        'noReset':_this.noReset=="1"?true:false,
+                        'url': _this.appiumurl,
+                        "id" : _this.mobileId
+                    }),
+                    success: function(data) {
+                        if(data.respCode=="0000"){
+                            $('#successModal').modal();
+                        }else{
+                            _this.failMsg = data.Msg
+                            $('#failModal2').modal();
+                        }
+                    },
+                    error: function() {
+                        alert("ajax请求失败，请稍后访问......")
+                    }
+                });
+            }
         },
 
         //添加
@@ -252,8 +280,6 @@ var app = new Vue({
             } else{
                 $.ajax({
                     url: address3+'mobileController/queryMobile',
-                    url: 'http://10.101.164.78:8080/atfcloud2.0a/mobileController/queryMobile',
-
                     type: 'post',
                     contentType:'application/json',
                     data: JSON.stringify({
@@ -270,7 +296,6 @@ var app = new Vue({
                         _this.appiumurl = data.mobileProperties.url;
                         _this.mobileId = data.mobileEntity.id;
                         $('#terminalSetModal').modal();
-                        initflag = true;
                         } else if(data.respMsg == "该被测系统无移动端内容") {
                             _this.mobileId = -1;
                             _this.platformName = "";
