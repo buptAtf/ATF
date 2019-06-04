@@ -412,7 +412,7 @@
                                            
                                         </div>
                                           
-                                        <div class="well" style="margin-left:20px; margin-top:20px;" v-show="editReqFlag==='1'">
+                                        <div class="well" style="margin-left:20px; margin-top:20px;" v-if="editReqFlag==='1'">
                                             <label class="checkbox-inline">
                                                 <input type="radio" name="reqBodyFormat" value="JSON" v-model="editCurData.httpRequest.type">
                                                 JSON

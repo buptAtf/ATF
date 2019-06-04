@@ -4,19 +4,12 @@
 <head>
   <meta charset="utf-8">
   <link rel="import" href="./common/header.html?__inline">
-  <link rel="stylesheet" type="text/css" href="../static/css/handsontable.full.css">
-  <link rel="stylesheet" type="text/css" href="../static/css/jquery.dataTables.min.css">
+  
+  
   <link rel="stylesheet" type="text/css" href="../static/css/index.css">
   <link rel="stylesheet" type="text/css" href="..//static/css/pagination.css">
   <link rel="stylesheet" href="../static/css/bootstrap-select.min.css">
 
-
-  <script src="../lib/jquery.js"></script>
-  <script src="../lib/bootstrap.min.js"></script>
-  <script type="text/javascript" src="../lib/bootstrap-select.min.js"></script> <!--有关下拉框搜索的js文件要放到前面，不然渲染不出来-->
-  <script type="text/javascript" src="../lib/vue.js"></script>
-  <script type="text/javascript" src="../lib/handsontable.full.js"></script>
-  <script type="text/javascript" src="../lib/jquery.dataTables.min.js"></script>
 
   <title>测试资源管理-流程用例</title>
   <style>
@@ -63,14 +56,14 @@
           </div>
         </div>
         <div class="row" style="margin-left: 20px;">
-          <a class="btn btn-white">
-              <span onclick="location.href='datatable.html'"> 切换单用例展示</span>
+          <a >
+              <span onclick="location.href='datatable.html'" class="btn btn-white btn-bg" > 切换单用例展示 <i class="glyphicon glyphicon-retweet"></i></span>
           </a>
         </div>
 
         <div class="row" style="margin-top:20px;">
             <div class="col-lg-3">
-              <section class=" panel panel-default" style="height:835px; overflow:auto">
+              <section class=" panel panel-default" style="width: 250px; position:fixed; top: 130px; left: 220px; " >
                 <div class="panel-heading text-center " >流程用例</div>
                 <div class="list-group" >
                   <a :class="selectedCaseId==item.id?'list-group-item text-center active': 'list-group-item text-center'" v-for="item in flowcaseList" @click=queryThisCase(item.id)>{{ item.casecode }}</a>
@@ -79,7 +72,7 @@
               </section>
             </div>
             <div class="col-lg-8">
-              <section class="panel panel-default" style="height:835px; overflow:auto">
+              <section class="panel panel-default"  >
                 <div class="panel-heading ">用例详情及节点数据
                   <div style="float:right">
                     <a class="btn btn-white btn-sm" @click="editFlag=!editFlag"><i class="icon-edit" ></i>编辑</a>
@@ -331,14 +324,15 @@
   <!--content end -->
 
 
-  <!-- <link rel="import" href="./common/footer.html?__inline"> -->
+  <link rel="import" href="./common/footer.html?__inline">
   <script src="../lib/vue-resource.min.js"></script>
   <script src="../static/js/config.js"></script>
   <script src="../static/js/vac-functions.es.js"></script>
+
+  <script type="text/javascript" src="../lib/bootstrap-select.min.js"></script>   <!--用于下拉框的js文件-->
   <script src="../static/js/datatable_flowcase.js"></script>
-  <script type="text/javascript" src="../lib/jquery.validate.js"></script>
-  
   <script type="text/javascript" src="../lib/jquery-ui.js"></script>
+  <script type="text/javascript" src="../lib/jquery.validate.js"></script>
 </body>
 
 

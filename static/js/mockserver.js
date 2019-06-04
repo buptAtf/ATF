@@ -5,7 +5,7 @@ var app = new Vue({
         curExpecation: {httpRequest:""},      //当前的期望
         curExpecationRet: {},   //当前期望的返回
         runExpecationRet: {},   //运行结果的返回
-        editCurData: {id:"",expectationName:"",creator:"",httpRequest:"",httpResponse:"",httpForwardEntity:"",type:""},
+        editCurData: {id:"",expectationName:"",creator:"",httpRequest:{type:""},httpResponse:"",httpForwardEntity:"",type:""},
         runData:{method:"", path:"", body:"", type:"", queryParameters:"", headers:"", cookies:"", keepAlive:"", secure:"", pathType:true, methodType: true},
         selectedExpId: "",      //选中的期望的id
         requestParams: [{key:"",value:""}],       //规则的请求的参数
@@ -102,7 +102,9 @@ var app = new Vue({
                         _this.queryRunInfo(data.runRequestId);
                     }
 
-                    _this.curExpecationRet = JSON.stringify(_this.curExpecationRet, null, 2);   //将返回的数据解析为JSON数据
+                    _this.curExpecationRet = JSON.stringify(_this.curExpecationRet, null, 2);   //将返回的数据解析为JSON数据,解析后的数据有双引号转义，强行用正则进行处理
+                    let temp = _this.curExpecationRet.replace(/\\n/g,'');   //第一步把\n去掉
+                    _this.curExpecationRet = temp.replace(/\\"/g,"'");   //第二步把反斜杠去掉
                     // _this.processDisplayData();    //处理返回的数据，用于显示编辑页面中的headers等类型的数据
                     
                 }
