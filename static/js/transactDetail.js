@@ -1847,7 +1847,7 @@ var app = new Vue({
             }
             function getTemplate() {
                 Vac.ajax({
-                    url: address3 + 'scripttemplateController/queryTemplateByTransId',
+                    url: address3 + 'scriptTemplate/queryTemplateByTransId',
                     data: { 'id': _this.transactId },
                     success: function (data) {
                         _this.templateList = data.o;
@@ -1943,7 +1943,7 @@ var app = new Vue({
                     }
                     _this.operationRows = [];
                     Vac.ajax({
-                        url: address3 + 'scripttemplateController/showScripttemplateTable',
+                        url: address3 + 'scriptTemplate/showScripttemplateTable',
                         data: data,
                         success: function (data) {
                             // _this.scriptIsChanged = false
@@ -1992,7 +1992,7 @@ var app = new Vue({
                 return
             }
             Vac.ajax({
-                url: address3 + 'scripttemplateController/showScripttemplateTable',
+                url: address3 + 'scriptTemplate/showScripttemplateTable',
                 data: args,
                 success: function (data) {
                     // _this.scriptIsChanged = false
@@ -2040,7 +2040,7 @@ var app = new Vue({
                 Vac.alert('请输入名称');
             else
                 Vac.ajax({
-                    url: address3 + 'scripttemplateController/insert',
+                    url: address3 + 'scriptTemplate/insert',
                     data: _this.newTemplate,
                     success: function (data) {
                         if (data.respCode === '0000') {
@@ -2065,7 +2065,7 @@ var app = new Vue({
             var templateId = this.checkedTemplate[0];
             _this.script_id = _this.templateList[templateId].id;
             Vac.ajax({
-                url: address3 + 'scripttemplateController/delete',
+                url: address3 + 'scriptTemplate/delete',
                 data: { 'id': _this.script_id },
                 success: function (data) {
                     if (data.respCode === '0000') {
@@ -2240,7 +2240,7 @@ var app = new Vue({
             // UI(""登录页面"").webedit("webedit").set("3");UI(""登录页面"").webedit("webedit").set("444");UI("welcome to the system").webedit("webedit").set("333")
             // return
             Vac.ajax({
-                url: address3 + 'scripttemplateController/saveScriptTemplate',
+                url: address3 + 'scriptTemplate/saveScriptTemplate',
                 data: {
                     'scriptId': _this.script_id || _this.templateList[0].id,
                     'content': sendData
@@ -2263,7 +2263,7 @@ var app = new Vue({
             var sendData = this.generateScriptString();
             var _this = this;
             Vac.ajax({
-                url: address3 + 'scripttemplateController/showscripttemplateTableSave',
+                url: address3 + 'scriptTemplate/showscripttemplateTableSave',
                 data: {
                     'autId': _this.autId,
                     'script_id': _this.script_id || _this.templateList[0].id,

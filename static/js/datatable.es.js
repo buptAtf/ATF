@@ -2555,24 +2555,27 @@ $(document).ready(function () {
 
 												console.log(totalColumnsHeaders)
 												data.caseCompositeType = dataSource[value[0]].caseCompositeType;
-												tbdata.colName = value[1];
+												tbdata.widgetName = value[1].split('++')[0];
+												tbdata.colName = value[1].split('++')[1];
 												tbdata.data = value[3];
 												var changedIndex;
-												let flag = false;
 												changedData.forEach((value, index) => {
-													if (value.testcaseId == data.testcaseId) {
+													let flag = false;
+													if (value.testcaseId == data.testcaseId) {//该用例有修改
 														changedIndex = index;
-														if(value.tbHead == data.tbHead){
-															flag = true;
-														}
-														else{
-															flag = false;
-														}
+														value.dataList.forEach((changedtb, tbindex)=> {
+															if(changedtb.colName == tbdata.colName){//该列有修改
+																flag = true;
+																changedtb.splice(tbindex, 1, tbdata);
+															}
+														});
+														if(flag == false){//该列无修改
+															value.dataList.push(tbdata);													}
 													}
 												});
-												if (changedIndex !== undefined) {
-													changedData.splice(changedIndex, 1, data);
-												} else {
+												if (changedIndex == undefined){//无该用例修改
+													data.dataList = [];
+													data.dataList.push(tbdata);
 													changedData.push(data);
 												}
 											});
@@ -2739,10 +2742,12 @@ $(document).ready(function () {
 		};
 		//保存按钮
 		document.getElementById('saveAll').onclick = function () {
-			var data = { data: changedData };
+
 			Vac.ajax({
-				url: address3 + 'scripttemplateController/scripttemplateInf',
-				data: { jsonStr: JSON.stringify(data) },
+				url: address3 + 'dataCenter/saveTableData',
+				data: JSON.stringify({
+					"data": changedData
+				}) ,
 				success: function (data, textStatus) {
 					if (data.respCode === '0000') {
 						Vac.alert('保存成功')
@@ -3119,7 +3124,7 @@ function APIFieldModalInit(){
 
 function APIFieldModalLoadVerificationData(){
 	$.ajax({
-        url: address3 + 'scripttemplateController/getInterfaceCheckValues',
+        url: address3 + 'scriptTemplate/getInterfaceCheckValues',
         data: JSON.stringify({
 			"testCaseId":sessionStorage.getItem('caseId'),
 			"caseCompositeType":sessionStorage.getItem('caseCompositeType')
@@ -3169,7 +3174,7 @@ function APIFieldModalLoadVerificationData(){
 
 function APIFieldModalLoadExtractionData(){
 	$.ajax({
-        url: address3 + 'scripttemplateController/getInterfaceExtractValues',
+        url: address3 + 'scriptTemplate/getInterfaceExtractValues',
         data: JSON.stringify({
 			"testCaseId":sessionStorage.getItem('caseId'),
 			"caseCompositeType":sessionStorage.getItem('caseCompositeType')
@@ -3296,7 +3301,7 @@ function APIUpload() {
 		});
 		console.log(APIFieldVerificationData);
 		$.ajax({
-			url: address3 + 'scripttemplateController/interfaceCheckSave',
+			url: address3 + 'scriptTemplate/interfaceCheckSave',
 			data: JSON.stringify({
 				"testCaseId":sessionStorage.getItem('caseId'),
 				"caseCompositeType":sessionStorage.getItem('caseCompositeType'),
@@ -3336,7 +3341,7 @@ function APIUpload() {
 		});
 		console.log(APIFieldExtractionData);
 		$.ajax({
-			url: address3 + 'scripttemplateController/interfaceExtractSave',
+			url: address3 + 'scriptTemplate/interfaceExtractSave',
 			data: JSON.stringify({
 				"testCaseId":sessionStorage.getItem('caseId'),
 				"caseCompositeType":sessionStorage.getItem('caseCompositeType'),

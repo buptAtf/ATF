@@ -221,7 +221,7 @@ var vBody = new Vue({
 						_this.exeStrategy3Start= data.selectSceneDto.sceneEntity.exeStrategy3Start || '1';
 						_this.exeStrategy3Order= data.selectSceneDto.sceneEntity.exeStrategy3Order || '1';
 						_this.exeStrategy3Status= data.selectSceneDto.sceneEntity.exeStrategy3Status || '1';
-						_this.exeStrategyErr= data.selectSceneDto.sceneEntity.exe_strategy_err || '1';
+						_this.exeStrategyErr= data.selectSceneDto.sceneEntity.exeStrategyErr || '1';
 						if(!(data.selectSceneDto.caseDtos && data.selectSceneDto.caseDtos.length)) {
 							Vac.alert('未查询到相关的用例信息')
 						}
