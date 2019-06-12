@@ -123,7 +123,7 @@ var app = new Vue({
                 success: function(data) {
                     _this.runData = data;
                     _this.processDisplayData();    //处理返回的数据，用于显示编辑页面中的headers等类型的数据  放在这里的原因是，异步请求，如果不放在这里，运行的参数为空
-                    console.log(data);
+                    
                 }
             })
         },
@@ -239,7 +239,6 @@ var app = new Vue({
                         $("#failModal").modal();
                     }
                     
-                    console.log(data);
                 },
             })
 
@@ -292,7 +291,7 @@ var app = new Vue({
             var processStep = function(sourceData,globalData){
                 let i = 0;
                 if(sourceData!==""){
-                    console.log(sourceData);
+                    
                     var dataObj = JSON.parse(sourceData);   //把传进来的字符串变量，解析成json对象
                 } else {
                     var dataObj = null;
@@ -377,7 +376,7 @@ var app = new Vue({
 
                                 
                                 // _this.curExpecationRet = JSON.stringify(_this.curExpecationRet, null, 2);   //将返回的数据解析为JSON数据
-                                console.log(data);
+                                
                             },
 
                         })
