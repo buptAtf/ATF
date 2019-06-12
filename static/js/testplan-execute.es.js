@@ -336,7 +336,7 @@ var vBody = new Vue({
 						})
 
 					} else {
-						Vac.alert(respMsg);
+						Vac.alert(data.respMsg);
 						_this.setResultIcon();
 					}
 				},
