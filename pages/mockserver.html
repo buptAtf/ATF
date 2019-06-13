@@ -412,7 +412,8 @@
                                            
                                         </div>
                                           
-                                        <div class="well" style="margin-left:20px; margin-top:20px;" v-show="editReqFlag==='1'">
+                                        <div class="well" style="margin-left:20px; margin-top:20px;" v-if="editReqFlag==='1'">
+                                            <div key="test">
                                             <label class="checkbox-inline">
                                                 <input type="radio" name="reqBodyFormat" value="JSON" v-model="editCurData.httpRequest.type">
                                                 JSON
@@ -425,7 +426,7 @@
                                                 <input type="radio" name="reqBodyFormat" value="STRING" v-model="editCurData.httpRequest.type">  <!--reqBodyType-->
                                                 STRING
                                             </label>
-                                            
+                                            </div>
                                             <textarea class="form-control" style="margin-top:20px; height:250px" v-model="editCurData.httpRequest.body"></textarea>
                                         </div>
 
@@ -701,15 +702,15 @@
                                           
                                         <div class="well" style="margin-left:20px; margin-top:20px;" v-show="runFlag==='1'">
                                             <label class="checkbox-inline">
-                                                <input type="radio" name="reqBodyFormat" value="JSON" v-model="runData.type">
+                                                <input type="radio" name="runBodyFormat" value="JSON" v-model="runData.type">
                                                 JSON
                                             </label>
                                             <label class="checkbox-inline">
-                                                <input type="radio" name="reqBodyFormat" value="XML" v-model="runData.type">
+                                                <input type="radio" name="runBodyFormat" value="XML" v-model="runData.type">
                                                 XML
                                             </label>
                                             <label class="checkbox-inline">
-                                                <input type="radio" name="reqBodyFormat" value="STRING" v-model="runData.type">  <!--reqBodyType-->
+                                                <input type="radio" name="runBodyFormat" value="STRING" v-model="runData.type">  <!--reqBodyType-->
                                                 STRING
                                             </label>
                                             

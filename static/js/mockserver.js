@@ -5,7 +5,7 @@ var app = new Vue({
         curExpecation: {httpRequest:""},      //当前的期望
         curExpecationRet: {},   //当前期望的返回
         runExpecationRet: {},   //运行结果的返回
-        editCurData: {id:"",expectationName:"",creator:"",httpRequest:"",httpResponse:"",httpForwardEntity:"",type:""},
+        editCurData: {id:"",expectationName:"",creator:"",httpRequest:{type:""},httpResponse:"",httpForwardEntity:"",type:""},
         runData:{method:"", path:"", body:"", type:"", queryParameters:"", headers:"", cookies:"", keepAlive:"", secure:"", pathType:true, methodType: true},
         selectedExpId: "",      //选中的期望的id
         requestParams: [{key:"",value:""}],       //规则的请求的参数
@@ -102,7 +102,9 @@ var app = new Vue({
                         _this.queryRunInfo(data.runRequestId);
                     }
 
-                    _this.curExpecationRet = JSON.stringify(_this.curExpecationRet, null, 2);   //将返回的数据解析为JSON数据
+                    _this.curExpecationRet = JSON.stringify(_this.curExpecationRet, null, 2);   //将返回的数据解析为JSON数据,解析后的数据有双引号转义，强行用正则进行处理
+                    let temp = _this.curExpecationRet.replace(/\\n/g,'');   //第一步把\n去掉
+                    _this.curExpecationRet = temp.replace(/\\"/g,"'");   //第二步把反斜杠去掉
                     // _this.processDisplayData();    //处理返回的数据，用于显示编辑页面中的headers等类型的数据
                     
                 }
@@ -121,7 +123,7 @@ var app = new Vue({
                 success: function(data) {
                     _this.runData = data;
                     _this.processDisplayData();    //处理返回的数据，用于显示编辑页面中的headers等类型的数据  放在这里的原因是，异步请求，如果不放在这里，运行的参数为空
-                    console.log(data);
+                    
                 }
             })
         },
@@ -237,7 +239,6 @@ var app = new Vue({
                         $("#failModal").modal();
                     }
                     
-                    console.log(data);
                 },
             })
 
@@ -290,7 +291,7 @@ var app = new Vue({
             var processStep = function(sourceData,globalData){
                 let i = 0;
                 if(sourceData!==""){
-                    console.log(sourceData);
+                    
                     var dataObj = JSON.parse(sourceData);   //把传进来的字符串变量，解析成json对象
                 } else {
                     var dataObj = null;
@@ -375,7 +376,7 @@ var app = new Vue({
 
                                 
                                 // _this.curExpecationRet = JSON.stringify(_this.curExpecationRet, null, 2);   //将返回的数据解析为JSON数据
-                                console.log(data);
+                                
                             },
 
                         })

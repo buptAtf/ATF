@@ -13,36 +13,14 @@ var app = new Vue({
         nodeInfoList: {},       //当前用例的所有节点信息
         scriptList: {},         //查看脚本的脚本列表
         nodeData: {},
-
+        missionList: [],
     },
     ready: function(){
-        var _this = this;
+        const _this = this;
         
         _this.queryAllAut();
         _this.getAllFlowcaseList();
-        
-
-        // var p1 = new Promise((resolve,reject) =>{
-        //     _this.queryAllAut();
-        //     resolve("查询系统OK");
-        // }).then((v)=>{
-        //     console.log(v);
-        // });
-
-        // var p2 = new Promise((resolve, reject) =>{
-        //     _this.getAllFlowcaseList();
-        //     resolve("查询流程用例完成");
-        // }).then((v) =>{
-        //     console.log(v);
-        // });
-
-        // p = Promise.all([p1, p2]);
-        // p.then( () =>{
-        //     _this.flagShow = true;
-            
-        // })
-        
-
+        _this.getMission();
         $('.3').addClass('open');
         $('.3 .arrow').addClass('open');
         $('.3-ul').css({display: 'block'});
@@ -177,6 +155,28 @@ var app = new Vue({
             })
         },
 
+        //获取添加案例任务编号下拉列表
+        getMission: function(){
+            var _this = this;
+            $.ajax({
+                url: address3 + "missionController/pagedBatchQueryTestMission",
+                type: 'post',
+                contentType: 'application/json',
+                data: JSON.stringify({
+                    'pageSize': 10000,
+                    'currentPage': 1,
+                    'orderType': "desc",
+                    'orderColumns': 'modified_time',
+                    'nameMedium': '',
+                    'descMedium': '',
+                    'codeLong': ''
+                }),
+                success:function(data){
+                    // console.log(data)
+                    _this.missionList=data.list;
+                }
+            });
+        },
 
     },
 
