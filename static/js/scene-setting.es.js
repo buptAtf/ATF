@@ -932,7 +932,7 @@ var vBody = new Vue({
                     type: 'POST',
                     contentType: 'application/json',
                     data: JSON.stringify({
-                        'autId': _this.autId,
+                        'sceneId': _this.sceneid,
                         'platformName': _this.platformName,
                         'deviceName': _this.deviceName,
                         'automationName': _this.automationName,
