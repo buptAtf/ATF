@@ -1856,8 +1856,8 @@ var app = new Vue({
                             if (_this.templateList.length) {
                                 _this.checkedTemplate = [0];
                                 _this.showScripttemplateTable({
-                                    "aut_id": $('#autSelect').val(),
-                                    "script_id": _this.templateList[0].id
+                                    "autId": $('#autSelect').val(),
+                                    "scriptId": _this.templateList[0].id
                                 });
                                 _this.selectedScript = 1;
                             } else {
@@ -1934,8 +1934,8 @@ var app = new Vue({
                     var templateId = +value;
                     _this.script_id = _this.templateList[templateId].id;
                     var data = {
-                        aut_id: _this.autId,
-                        script_id: _this.templateList[templateId].id
+                        autId: _this.autId,
+                        scriptId: _this.templateList[templateId].id
                     };
                     _this.showScripttemplateTableArgs = {
                         aut_id: _this.autId,
@@ -1943,8 +1943,9 @@ var app = new Vue({
                     }
                     _this.operationRows = [];
                     Vac.ajax({
-                        url: address3 + 'scriptTemplate/showScripttemplateTable',
+                        url: address3 + 'scriptTemplate/queryScriptInfo',
                         data: data,
+                        // data: {"autId":"122","scriptId":1530},
                         success: function (data) {
                             // _this.scriptIsChanged = false
                             _this.operationRows = []
@@ -1988,20 +1989,20 @@ var app = new Vue({
         },
         showScripttemplateTable: function (args) {
             var _this = this;
-            if(args.aut_id==null){
+            if(args.autId==null){
                 return
             }
             Vac.ajax({
-                url: address3 + 'scriptTemplate/showScripttemplateTable',
+                url: address3 + 'scriptTemplate/queryScriptInfo',
                 data: args,
                 success: function (data) {
                     // _this.scriptIsChanged = false
                     _this.operationRows = []
-                    if (data.success === true) {
+                    if (data.respCode === '0000') {
                         // {id:Symbol(), functions: [], operation: {element:'', ui: '',parameters:[{Name:'', Value: ''}]}}
-                        _this.scriptLength = data.o.data.length
+                        _this.scriptLength = data.data.length
 
-                        for (var operationRow of data.o.data) {
+                        for (var operationRow of data.data) {
                             let row = {
                                 id: null,
                                 functions: [],
@@ -2013,10 +2014,10 @@ var app = new Vue({
                                 parameters: []
                             }
                             row.id = Symbol()
-                            row.functions.push({ name: operationRow.function })
-                            row.operation.element = operationRow.operator[2]
-                            row.operation.ui = operationRow.operator[0]
-                            row.operation.classType = operationRow.operator[1]
+                            row.functions.push({ name: operationRow.methodName })
+                            row.operation.element = operationRow.elementName
+                            row.operation.ui = operationRow.uiname
+                            row.operation.classType = operationRow.elementWidget
                             for (let para of operationRow.arguments) {
                                 row.parameters.push({
                                     Name: para.name,
@@ -2028,7 +2029,7 @@ var app = new Vue({
                             // _this.operationRows = [row]
                         }
                     } else {
-                        Vac.alert(data.msg)
+                        Vac.alert(data.respMsg);
                     }
                 }
             });
@@ -2263,18 +2264,18 @@ var app = new Vue({
             var sendData = this.generateScriptString();
             var _this = this;
             Vac.ajax({
-                url: address3 + 'scriptTemplate/showscripttemplateTableSave',
+                url: address3 + 'scriptTemplate/scriptParameterized',
                 data: {
                     'autId': _this.autId,
-                    'script_id': _this.script_id || _this.templateList[0].id,
+                    'scriptId': _this.script_id || _this.templateList[0].id,
                     'content': sendData
                 },
                 success: function (data) {
-                    if (data.success == true) {
-                        Vac.alert(data.msg);
+                    if (data.respCode == '0000') {
+                        Vac.alert(data.respMsg);
                         _this.showScripttemplateTable({
-                            "aut_id": _this.autId,
-                            "script_id": _this.script_id || _this.templateList[0].id
+                            "autId": _this.autId,
+                            "scriptId": _this.script_id || _this.templateList[0].id
                         });
                         return;
                     }
