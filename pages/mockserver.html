@@ -356,7 +356,7 @@
                                 
                             </div>
                             <div id="edit" class="tab-pane fade">
-                                <section class="panel" style="height:1350px; overflow:auto">
+                                <section class="panel" style="height:1000px; overflow:auto">
                                     <div>
                                         <div style="margin-left:800px; margin-top: 20px;">
                                             <a class="btn btn-white btn-sm" data-toggle="modal" data-target="#updateModal"><i class="icon-ok" ></i>提交修改</a>
@@ -489,25 +489,23 @@
                                             <div class="form-group col-lg-12" >
                                                 <div class="col-lg-6 nopadding" >
                                                     <label class="col-lg-2 control-label ">secure:</label>
-                                                        <label class="checkbox-inline">
-                                                            <input type="radio" name="reqSecure" value=true v-model="editCurData.httpRequest.secure">
-                                                            true
-                                                        </label>
-                                                        <label class="checkbox-inline">
-                                                            <input type="radio" name="reqSecure" value=false v-model="editCurData.httpRequest.secure">
-                                                            false
-                                                        </label>
+                                                    <div class="col-lg-4">
+                                                        <select class="form-control" v-model="editCurData.httpRequest.secure">
+                                                            <option value="" selected>请选择</option>
+                                                            <option value="true">true</option>
+                                                            <option value="false">false</option>
+                                                        </select>
+                                                    </div>
                                                 </div>
                                                 <div class="col-lg-6 nopadding">
                                                     <label class="col-lg-2 control-label ">keepalive:</label>
-                                                        <label class="checkbox-inline">
-                                                            <input type="radio" name="reqKeepAlive" value=true v-model="editCurData.httpRequest.keepAlive">
-                                                            true
-                                                        </label>
-                                                        <label class="checkbox-inline">
-                                                            <input type="radio" name="reqKeepAlive" value=false v-model="editCurData.httpRequest.keepAlive">
-                                                            false
-                                                        </label>
+                                                    <div class="col-lg-4">
+                                                        <select class="form-control" v-model="editCurData.httpRequest.keepAlive">
+                                                            <option selected>请选择</option>
+                                                            <option value=true>true</option>
+                                                            <option value=false>false</option>
+                                                        </select>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
@@ -646,7 +644,7 @@
                             </div>
 
                             <div id="run" class="tab-pane fade">
-                                <section class="panel" style="height:1350px; overflow:auto">
+                                <section class="panel" style="height:1000px; overflow:auto">
                                     <div>
                                         <div style="margin-left:800px; margin-top: 20px;">
                                             <a class="btn btn-white btn-sm" data-toggle="modal" data-target="#" @click="runCurExpectation"><i class="icon-ok" ></i>运行</a>
@@ -779,7 +777,7 @@
                                                 <div class="col-lg-6 nopadding" >
                                                     <label class="col-lg-2 control-label ">secure:</label>
                                                     <div class="col-lg-4">
-                                                        <select class="form-control" v-model=""> <!-- runData.secure-->
+                                                        <select class="form-control" v-model="runData.secure"> <!-- runData.secure-->
                                                             <option value="" selected>请选择</option>
                                                             <option value=true>true</option>
                                                             <option value=false>false</option>
@@ -789,7 +787,7 @@
                                                 <div class="col-lg-6 nopadding">
                                                     <label class="col-lg-2 control-label ">keepalive:</label>
                                                     <div class="col-lg-4">
-                                                        <select class="form-control" v-model=""> <!-- runData.keepAlive-->
+                                                        <select class="form-control" v-model="runData.keepAlive"> <!-- runData.keepAlive-->
                                                             <option selected>请选择</option>
                                                             <option value=true>true</option>
                                                             <option value=false>false</option>

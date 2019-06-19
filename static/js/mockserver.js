@@ -338,6 +338,19 @@ var app = new Vue({
                 processStep(_this.runData.headers, _this.runHeaders);
                 processStep(_this.runData.cookies, _this.runCookies);
             }
+
+            if (_this.editCurData.httpRequest.secure !== null) {    //对显示进行必要的处理，将布尔型的值转化为string型，v-model绑定的radio才能显示
+                _this.editCurData.httpRequest.secure = _this.editCurData.httpRequest.secure.toString();
+            }
+            if (_this.editCurData.httpRequest.keepAlive !== null) {  //对显示进行必要的处理，将布尔型的值转化为string型，v-model绑定的radio才能显示
+                _this.editCurData.httpRequest.keepAlive = _this.editCurData.httpRequest.keepAlive.toString();
+            }
+            if (_this.runData.keepAlive !== null) {   //对显示进行必要的处理，将布尔型的值转化为string型，v-model绑定的radio才能显示
+                _this.runData.keepAlive = _this.runData.keepAlive.toString();
+            }
+            if (_this.runData.secure !== null) {   //对显示进行必要的处理，将布尔型的值转化为string型，v-model绑定的radio才能显示
+                _this.runData.secure = _this.runData.secure.toString();
+            }
         },
 
         runCurExpectation: function() {
