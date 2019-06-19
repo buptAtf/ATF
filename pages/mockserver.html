@@ -489,23 +489,25 @@
                                             <div class="form-group col-lg-12" >
                                                 <div class="col-lg-6 nopadding" >
                                                     <label class="col-lg-2 control-label ">secure:</label>
-                                                    <div class="col-lg-4">
-                                                        <select class="form-control" v-model="editCurData.httpRequest.secure">
-                                                            <option value="" selected>请选择</option>
-                                                            <option value="true">true</option>
-                                                            <option value="false">false</option>
-                                                        </select>
-                                                    </div>
+                                                        <label class="checkbox-inline">
+                                                            <input type="radio" name="reqSecure" value=true v-model="editCurData.httpRequest.secure">
+                                                            true
+                                                        </label>
+                                                        <label class="checkbox-inline">
+                                                            <input type="radio" name="reqSecure" value=false v-model="editCurData.httpRequest.secure">
+                                                            false
+                                                        </label>
                                                 </div>
                                                 <div class="col-lg-6 nopadding">
                                                     <label class="col-lg-2 control-label ">keepalive:</label>
-                                                    <div class="col-lg-4">
-                                                        <select class="form-control" v-model="editCurData.httpRequest.keepAlive">
-                                                            <option selected>请选择</option>
-                                                            <option value=true>true</option>
-                                                            <option value=false>false</option>
-                                                        </select>
-                                                    </div>
+                                                        <label class="checkbox-inline">
+                                                            <input type="radio" name="reqKeepAlive" value=true v-model="editCurData.httpRequest.keepAlive">
+                                                            true
+                                                        </label>
+                                                        <label class="checkbox-inline">
+                                                            <input type="radio" name="reqKeepAlive" value=false v-model="editCurData.httpRequest.keepAlive">
+                                                            false
+                                                        </label>
                                                 </div>
                                             </div>
                                         </div>
