@@ -34,7 +34,7 @@
                 </div>
                 <div class="row">
                     <div class="col-lg-3">
-                        <section class="panel panel-info" style="height:835px; overflow:auto">
+                        <section class="panel panel-info" style="width: 250px; position:fixed; top: 130px; left: 220px; ">
                             <header class="panel-heading">
                                 映射规则列表
                                 <div style="float:right">
@@ -314,7 +314,7 @@
                         </ul>
                         <div class="tab-content">
                             <div id="preview" class="tab-pane fade in active">
-                                <section class="panel" style="height:800px; overflow:auto">
+                                <section class="panel" style="height:1000px; overflow:auto">
                                     <h3 style="padding-left:20px"><span class="label label-info">基本信息</span></h3>
                                     <div class="col-lg-12" style="padding-top:30px">
                                         <div class="col-lg-6" >
@@ -356,7 +356,7 @@
                                 
                             </div>
                             <div id="edit" class="tab-pane fade">
-                                <section class="panel" style="height:800px; overflow:auto">
+                                <section class="panel" style="height:1000px; overflow:auto">
                                     <div>
                                         <div style="margin-left:800px; margin-top: 20px;">
                                             <a class="btn btn-white btn-sm" data-toggle="modal" data-target="#updateModal"><i class="icon-ok" ></i>提交修改</a>
@@ -644,7 +644,7 @@
                             </div>
 
                             <div id="run" class="tab-pane fade">
-                                <section class="panel" style="height:800px; overflow:auto">
+                                <section class="panel" style="height:1000px; overflow:auto">
                                     <div>
                                         <div style="margin-left:800px; margin-top: 20px;">
                                             <a class="btn btn-white btn-sm" data-toggle="modal" data-target="#" @click="runCurExpectation"><i class="icon-ok" ></i>运行</a>
@@ -777,7 +777,7 @@
                                                 <div class="col-lg-6 nopadding" >
                                                     <label class="col-lg-2 control-label ">secure:</label>
                                                     <div class="col-lg-4">
-                                                        <select class="form-control" v-model=""> <!-- runData.secure-->
+                                                        <select class="form-control" v-model="runData.secure"> <!-- runData.secure-->
                                                             <option value="" selected>请选择</option>
                                                             <option value=true>true</option>
                                                             <option value=false>false</option>
@@ -787,7 +787,7 @@
                                                 <div class="col-lg-6 nopadding">
                                                     <label class="col-lg-2 control-label ">keepalive:</label>
                                                     <div class="col-lg-4">
-                                                        <select class="form-control" v-model=""> <!-- runData.keepAlive-->
+                                                        <select class="form-control" v-model="runData.keepAlive"> <!-- runData.keepAlive-->
                                                             <option selected>请选择</option>
                                                             <option value=true>true</option>
                                                             <option value=false>false</option>
