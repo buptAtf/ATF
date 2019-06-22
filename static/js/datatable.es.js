@@ -2565,8 +2565,9 @@ $(document).ready(function () {
 														changedIndex = index;
 														value.dataList.forEach((changedtb, tbindex)=> {
 															if(changedtb.colName == tbdata.colName){//该列有修改
+																console.log(changedtb)
 																flag = true;
-																changedtb.splice(tbindex, 1, tbdata);
+																changedtb[tbindex].data = tbdata.data;
 															}
 														});
 														if(flag == false){//该列无修改
@@ -2580,6 +2581,8 @@ $(document).ready(function () {
 												}
 											});
 										}
+										console.log("1")
+										console.log(changedData)
 									},
 								});
 								// console.log(handsontable)
