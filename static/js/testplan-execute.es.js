@@ -428,9 +428,9 @@ var vBody = new Vue({
 					else{
 						_this.setResultIcon(data.insStatuses)
 						//若出错  则弹框询问
-						if(data.insStatuses[0].manualChooseErrExecuting == true){
-							_this.runInterrupt();
+						if(data.insStatuses[0].manualChooseErrExecuting == true && data.insStatuses[0].status==3){
 							_this.interruptData = data;
+							_this.runInterrupt();
 						}
 						else{
 							_this.syncQueryIncInsStatus(data)
@@ -453,21 +453,23 @@ var vBody = new Vue({
 						clearInterval(name);
 						_this.interruptTime=5;
 						_this.interruptExe=0;
+						_this.instanceErrorChoice(2);
 						return  false;
 					}
 					//如果秒数大于0
-					if(_this.interruptTime > 0||_this.interruptExe == 1){
-						//将秒数写入到页面并将秒数减一
-						_this.interruptTime-- ;
-					}else{
+					if(_this.interruptTime < 1 || _this.interruptExe == 1){
 						//清除定时任务 
 						$('#runInterrupt').modal('hide');
-						clearInterval(name);
-						_this.syncQueryIncInsStatus(_this.interruptData)
-						_this.interruptTime=5;
 						_this.interruptExe=0;
+						clearInterval(name);
+						_this.interruptTime=5;
+						_this.instanceErrorChoice(1);
+
 						//跳转
 						return  true
+					}else{
+						//将秒数写入到页面并将秒数减一
+						_this.interruptTime-- ;
 					}
 				}   ,
 				//每秒执行一次
@@ -478,15 +480,40 @@ var vBody = new Vue({
 			var _this = this;
 			_this.interruptExe=1;
 			$('#runInterrupt').modal('hide');
-			Vac.alert('继续执行')
 
 		},
 		runStop(){
 			var _this = this;
 			_this.interruptExe=2;
 			$('#runInterrupt').modal('hide');
-			Vac.alert('停止执行')
-
+		},
+		instanceErrorChoice(status){
+			var _this = this;
+			let errorContinuing = status==2 ? false : true;
+			$.ajax({
+				url: address3 + 'batchRunCtrlController/instanceErrorChoice',
+				type: 'post',
+				contentType: 'application/json',
+				data: JSON.stringify({
+					"batchId": _this.interruptData.batchId, 
+					"sceneId": _this.interruptData.insStatuses[0].sceneId,
+					"caseId":_this.interruptData.insStatuses[0].testcaseId,
+					"errorContinuing":errorContinuing,
+				}),
+				success: function(data) {
+					if(data.respCode=="0000"){
+						if(errorContinuing){
+							_this.syncQueryIncInsStatus(_this.interruptData)
+						}
+					}
+					else{
+						Vac.alert(data.respMsg);
+					}
+				},
+				error: function() {
+					Vac.alert('网络错误！请点击重新查询！');
+				}
+			});
 		},
 		startQueryLog: function() {
 			var _this = this;
