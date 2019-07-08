@@ -74,6 +74,9 @@
 												-->
 											</select>
                                         </div>
+                                        <div class="col-xs-2">
+											<a class="btn btn-default" data-toggle="modal" href="#addruleModal">录制规则输入</a>
+                                        </div>
                                     </div>
                                 </form>
                                 <!-- select end -->
@@ -783,6 +786,44 @@
 		                </div>
 		            </div>
 					<!-- addElementModal end -->
+					<!-- addrule start -->
+					<div class="modal fade" id="addruleModal" tabindex="-1" role="dialog" aria-hidden="true">
+						<div class="modal-dialog">
+							<div class="modal-content">
+								<div class="modal-header">
+									<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+									<h4 class="modal-title">添加规则</h4>
+								</div>
+								<div class="modal-body" >
+									<!-- modal-body start -->
+									
+									<section class="panel">
+										<form id="addruleForm" class="form-horizontal" role="form">
+											<div class="form-group">
+												<label class="col-xs-3 control-label">规则名称</label>
+												<div class="col-xs-5">
+													<input type="text" class="form-control" name="ruleName" v-model="ruleName">
+												</div>
+											</div>
+											<div class="form-group ">
+												<label class="col-xs-3 control-label">规则描述</label>
+												<div class="col-xs-5">
+													<input type="text" class="form-control" name="ruleDesc" v-model="ruleDesc">
+												</div>
+											</div>
+										</form>
+									</section>
+									
+									<!-- modal-body end -->
+								</div>
+								<div class="modal-footer">
+									<button  data-dismiss="modal"  class="btn btn-default"    type="button">取消</button>
+									<button data-dismiss="modal" class="btn btn-success" type="button" @click="addrule()">添加</button>
+								</div>
+							</div>
+						</div>
+					</div>
+					<!-- addrule end -->
 					<!-- batchImportModal start-->
                     <div class="modal fade" id="batchImportModal" tabindex="-1" role="dialog" aria-labelledby="importModalLabel" aria-hidden="true">
                         <div class="modal-dialog">

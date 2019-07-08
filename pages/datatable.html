@@ -747,7 +747,7 @@
         </div><br>
         <div style="margin: 30px;"></div>
         <div class="sticky-top">
-          <label>界面提取</label>
+          <label>数据校验</label>
           <div>
             <button class="btn btn-white" @click="showUiAndElement2($event, 2)">
               <i class=" icon-trash"></i>
@@ -974,8 +974,8 @@
                     <span v-else>收起筛选</span>
                     <i :class="{'icon-angle-down':!iconflag, 'icon-angle-up':iconflag}"></i>
                   </a>
-                  <a class="btn btn-white" style="float: right;">
-                    <span onclick="location.href='datatable_flowcase.html'">切换流程用例展示</span>
+                  <a  style="float: right;">
+                    <span onclick="location.href='datatable_flowcase.html'" class="btn btn-white btn-bg">切换流程用例展示 <i class="glyphicon glyphicon-retweet"></i></span>
                   </a>
                 </h4>
               </div>

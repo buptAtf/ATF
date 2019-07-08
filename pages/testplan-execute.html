@@ -263,7 +263,7 @@
                                                     </div>
                                                     <div class="case-main">
                                                         <a class="view-case"
-                                                           @click.stop="viewCase(case_wrapper.caseId, 'PE4')"><span>查</span><span>看</span>></a>
+                                                           @click.stop="viewCase(case_wrapper.caseId, 'PE4')"><span>查</span><span>看</span></a>
                                                     </div>
                                                     <footer class="case-footer">
 
@@ -295,7 +295,7 @@
                                                         </div>
                                                         <div class="case-main">
                                                             <a class="view-case"
-                                                               @click.stop="viewCase(case_wrapper.caseId, 'PE4')"><span>查</span><span>看</span>></a>
+                                                               @click.stop="viewCase(case_wrapper.caseId, 'PE4')"><span>查</span><span>看</span></a>
                                                         </div>
                                                         <footer class="case-footer">
                                                             2
@@ -372,7 +372,7 @@
                                                         </div>
                                                         <div class="case-main">
                                                             <a class="view-case"
-                                                               @click.stop="viewCase(scene.sceneId, case_wrapper.caseId, 'PE6')"><span>查</span><span>看</span>></a>
+                                                               @click.stop="viewCase(scene.sceneId, case_wrapper.caseId, 'PE6')"><span>查</span><span>看</span></a>
                                                         </div>
                                                     </div>
                                                     <div class="runnerclass"
@@ -769,7 +769,29 @@
         </div>
     </div>
 </div>
->
+<!--出错信息提示-->
+<div class='modal fade' tabindex='-1' role='dialog' id='runInterrupt' aria-hidden='true'
+     aria-labelledby='addTestRound' data-toggle='modal'>
+    <div class='modal-dialog '>
+        <div class='modal-content'>
+            <div class='modal-header'>
+                <button type='button' class='close' data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class='modal-title' id='addTestRound'>用理执行出错</h4>
+            </div>
+            <div class="modal-body">
+                <form class="form-horizontal">
+                    <div class="form-group">
+                        <label class="col-sm-8 control-label">执行用例出错，请选择是否继续执行，{{interruptTime}}后自动继续执行</label>
+                    </div>
+                </form>
+                <div class='modal-footer'>
+                    <button type="button" class="btn btn-default" @click=runContinue()>继续执行</button>
+                    <button type="button" class="btn btn-primary" @click=runStop()>取消</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 <!-- /.modal -->
 <!-- <link rel="import" href="./common-vac/alert.html?__inline"> -->
 <!-- <link rel="import" href="./common-vac/confirm.html?__inline"> -->

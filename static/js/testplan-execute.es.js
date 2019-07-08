@@ -113,7 +113,13 @@ var vBody = new Vue({
 		},
 		logShow:false,
 		
-		//
+		//出错查询的时间
+		interruptTime : 5,
+		//是否通过界面点击进行执行了,0:用户不动 1：点击执行 2：点击取消
+		interruptExe : 0,
+		//出错时的断点保存循环查询的data
+		interruptData: {},
+
 	},
 	created: function(){
 		var _this = this;
@@ -336,7 +342,7 @@ var vBody = new Vue({
 						})
 
 					} else {
-						Vac.alert(respMsg);
+						Vac.alert(data.respMsg);
 						_this.setResultIcon();
 					}
 				},
@@ -387,7 +393,7 @@ var vBody = new Vue({
 						}
 						else{
 							_this.setResultIcon(data.insStatuses)
-							syncQueryIncInsStatus(data)
+							_this.syncQueryIncInsStatus(data)
 						}
 					}
 					else{
@@ -398,36 +404,116 @@ var vBody = new Vue({
 					Vac.alert('网络错误！请点击重新查询！');
 				}
 			});
-			function syncQueryIncInsStatus (values){
-				$.ajax({
-					url: address3 + 'batchRunCtrlController/syncQueryIncInsStatus',
-					type: 'post',
-					contentType: 'application/json',
-					data: JSON.stringify({
-						"batchId": values.batchId,
-						"reqSyncNo": values.respSyncNo,
-						"sessionId":values.sessionId, 
-					}),
-					success: function(data) {
-						if(data.respSyncNo==-1){
-							_this.setResultIcon(data.insStatuses)
-							console.log("finish this branch")
-							_this.exeStautShow = '<i class="icon-ok"></i>已执行';
-						} 
-						else if(data.respSyncNo==-2){
-							syncQueryIncInsStatus(values)
+		},
+		syncQueryIncInsStatus (values){
+			var _this =this;
+			$.ajax({
+				url: address3 + 'batchRunCtrlController/syncQueryIncInsStatus',
+				type: 'post',
+				contentType: 'application/json',
+				data: JSON.stringify({
+					"batchId": values.batchId,
+					"reqSyncNo": values.respSyncNo,
+					"sessionId":values.sessionId, 
+				}),
+				success: function(data) {
+					if(data.respSyncNo==-1){
+						_this.setResultIcon(data.insStatuses)
+						console.log("finish this branch")
+						_this.exeStautShow = '<i class="icon-ok"></i>已执行';
+					} 
+					else if(data.respSyncNo==-2){
+						_this.syncQueryIncInsStatus(values)
+					}
+					else{
+						_this.setResultIcon(data.insStatuses)
+						//若出错  则弹框询问
+						if(data.insStatuses[0].manualChooseErrExecuting == true && data.insStatuses[0].status==3){
+							_this.interruptData = data;
+							_this.runInterrupt();
 						}
 						else{
-							_this.setResultIcon(data.insStatuses)
-							syncQueryIncInsStatus(data)
-							console.log("continue this branch")
+							_this.syncQueryIncInsStatus(data)
 						}
-					},
-					error: function() {
-						Vac.alert('网络错误！请点击重新查询！');
+
+						console.log("continue this branch")
 					}
-				});
-			}
+				},
+				error: function() {
+					Vac.alert('网络错误！请点击重新查询！');
+				}
+			});
+		},
+		runInterrupt(){
+			$('#runInterrupt').modal('show');
+			var _this = this;
+			var name=setInterval(
+				function(){
+					if(_this.interruptExe == 2){
+						clearInterval(name);
+						_this.interruptTime=5;
+						_this.interruptExe=0;
+						_this.instanceErrorChoice(2);
+						return  false;
+					}
+					//如果秒数大于0
+					if(_this.interruptTime < 1 || _this.interruptExe == 1){
+						//清除定时任务 
+						$('#runInterrupt').modal('hide');
+						_this.interruptExe=0;
+						clearInterval(name);
+						_this.interruptTime=5;
+						_this.instanceErrorChoice(1);
+
+						//跳转
+						return  true
+					}else{
+						//将秒数写入到页面并将秒数减一
+						_this.interruptTime-- ;
+					}
+				}   ,
+				//每秒执行一次
+				1000
+			);
+		},
+		runContinue(){
+			var _this = this;
+			_this.interruptExe=1;
+			$('#runInterrupt').modal('hide');
+
+		},
+		runStop(){
+			var _this = this;
+			_this.interruptExe=2;
+			$('#runInterrupt').modal('hide');
+		},
+		instanceErrorChoice(status){
+			var _this = this;
+			let errorContinuing = status==2 ? false : true;
+			$.ajax({
+				url: address3 + 'batchRunCtrlController/instanceErrorChoice',
+				type: 'post',
+				contentType: 'application/json',
+				data: JSON.stringify({
+					"batchId": _this.interruptData.batchId, 
+					"sceneId": _this.interruptData.insStatuses[0].sceneId,
+					"caseId":_this.interruptData.insStatuses[0].testcaseId,
+					"errorContinuing":errorContinuing,
+				}),
+				success: function(data) {
+					if(data.respCode=="0000"){
+						if(errorContinuing){
+							_this.syncQueryIncInsStatus(_this.interruptData)
+						}
+					}
+					else{
+						Vac.alert(data.respMsg);
+					}
+				},
+				error: function() {
+					Vac.alert('网络错误！请点击重新查询！');
+				}
+			});
 		},
 		startQueryLog: function() {
 			var _this = this;

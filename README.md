@@ -5,6 +5,30 @@ ATF 1.0: 基于 vue 1.0 + fis3
 ## 配置环境
 > **注意**：请确保所安装的node版本为 `6.9.0`。
 
+### 源代码的拉取
+从github远程库拉取到本地，并创建分支关联分支
+从远端克隆项目：
+```
+git clone https://github.com/buptAtf/ATF.git
+```
+进入下载的文件
+```
+cd atf
+```
+
+创建分支(branchName为本地分支的名字)
+```
+git checkout -b branchName
+```
+进入分支
+```
+git checkout -b branchName
+```
+设置push关联
+```
+git push --set-uptstream origin branchName
+```
+关联成功直接使用git push便可推送修改
 ### 全局安装fis3
 ```
 npm install -g fis3
@@ -42,3 +66,4 @@ fis3 release -wl
 ```
 npm run build
 ```
+

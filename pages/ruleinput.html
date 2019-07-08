@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <link rel="import" href="./common/header.html?__inline">
+  <!-- css for this page only -->
+  <!-- 引入样式 -->
+  <!-- <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-default/index.css"> -->
+  <link rel="stylesheet" type="text/css" href="../static/css/index.css">
+  <link rel="stylesheet" type="text/css" href="../static/css/elementLibrary.css">
+  <link rel="stylesheet" type="text/css" href="../static/css/metroStyle.css">
+  <link rel="stylesheet" href="text/css" href="../static/css/case-operation.scss">
+  <title>用例信息查看</title>
+  <style>
+    #menuContent,
+    .elementContent,
+    .tab-content {
+      height: calc(100vh - 190px);
+      background-color: #fff;
+    }
+  </style>
+</head>
+
+<body id="" v-cloak>
+  <di class="content" id="app1">
+    <!--header start-->
+    <!-- <link rel="import" href="./common/header-guide.html?__inline"> -->
+    <!--header end-->
+    <!--sidebar start-->
+    <!-- <link rel="import" href="./common/aside-guide.html?__inline"> -->
+    <!--sidebar end-->
+    <!--main content start-->
+    <div class="row">
+      <div class="col-xs-12">
+          <section class="panel panel-pad panel-bottom bar">
+              <!-- select start -->
+              <form class="form-horizontal">
+                  <div class="form-group bar ">
+                      <!-- <label class="col-xs-2 control-label">被测系统</label>
+                      <div class="col-xs-2">
+                          <input class="form-control" id="autid" v-model="autName" readonly>
+                          </input>
+                      </div>
+                      <label class="col-xs-1 control-label">功能点</label>
+                      <div class="col-xs-2">
+                          <input class="form-control " id="transid" v-model="transName" readonly>
+                          </input>
+                      </div> -->
+                      <label class="col-xs-2 control-label">规则名称</label>
+                      <div class="col-xs-2">
+                          <input class="form-control" id="caselibid"  v-model="ruleName" readonly>
+                          </input>
+                      </div>
+                      <label class="col-xs-1 control-label">规则描述</label>
+                      <div class="col-xs-2">
+                          <input class="form-control " id="transid" v-model="ruleDesc" readonly>
+                          </input>
+                      </div>
+                      <div class="col-xs-2">
+                          <a class="btn btn-default" data-toggle="modal" @click="rulesave()">保存规则</a>
+                      </div>
+                  </div>
+              </form>
+              <!-- select end -->
+          </section>
+      </div>
+  </div>
+    <section id="main-content" style="margin-left: 0;">
+      <section class="wrapper" style="margin-top: 0;">
+
+      </section>
+    </section>
+    <!-- <object-repo></object-repo> -->
+
+    <!--main content end-->
+    <div class="footer">
+      <link rel="import" href="./common/copy-right.html?__inline">
+    </div>
+  </di>
+</body>
+
+</html>
+<link rel="import" href="./common/footer.html?__inline">
+<!-- 先引入 Vue -->
+<!-- <script src="https://unpkg.com/vue/dist/vue.js"></script> -->
+<!--script for this page only-->
+<!-- ztree -->
+<script type="text/javascript" src="../lib/jquery.ztree.all.min.js"></script>
+<link rel="import" href="./common-vac/alert.html?__inline">
+<link rel="import" href="./common-vac/confirm.html?__inline">
+<script src="../static/js/config.js"></script>
+<script src="../static/js/vac-functions.es.js"></script>
+<script type="text/javascript" src="../lib/jquery.ztree.exhide.min.js"></script>
+
+<!-- 引入组件库 -->
+<!-- <script src="https://unpkg.com/element-ui/lib/index.js"></script> -->
+<script>
+  var app = new Vue({
+    el: '#app1',
+    data: function () {
+      return {
+        ruleName: '',
+        ruleDesc: '',
+      }
+    },
+    ready: function() {
+      var _this=this;
+      var queryArgs = location.search.slice(1);
+      var o = {};
+      var arr = queryArgs.split('&');
+      for (let item of arr) {
+        let a = item.split('=');
+        o[a[0]] = a[1];
+      }
+      console.log(o)
+      
+      _this.recordData = o.viewcaseargs ?  o.viewcaseargs : '';console.log( _this.recordData);
+      _this.ruleName = o.ruleName;
+      _this.ruleDesc = o.ruleDesc;
+      console.log(' _this.autid'+ _this.autid+'_this.transid'+_this.transid)
+      // $('#'+this.activeName).tab('show')
+    },
+    methods: {
+      rulesave(){
+        Vac.alert("功能正在努力开发中.......loading");      },
+    },
+  })
+</script>

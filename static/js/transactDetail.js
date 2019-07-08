@@ -40,7 +40,8 @@ var app = new Vue({
             relatePropList: [], //关联属性
             relatePropListLength: 0,
 
-
+            ruleName:"",
+            ruleDesc:"",
             templateList: [],
             checkedTemplate: [],
             lastCheckedTemplate: null,
@@ -561,6 +562,13 @@ var app = new Vue({
         }
     },
     methods: {
+        addrule(){
+            var _this = this;
+            window.open('ruleinput.html?ruleName='+_this.ruleName+'&ruleDesc='+_this.ruleDesc,'_blank');
+        },
+        linkDownload (url) {
+            window.open(url,'_blank') // 新窗口打开外链接
+        },
         //初始化获取测试系统和功能点
         getAutandTrans: function () {
             var _this = this;
@@ -1847,7 +1855,7 @@ var app = new Vue({
             }
             function getTemplate() {
                 Vac.ajax({
-                    url: address3 + 'scripttemplateController/queryTemplateByTransId',
+                    url: address3 + 'scriptTemplate/queryTemplateByTransId',
                     data: { 'id': _this.transactId },
                     success: function (data) {
                         _this.templateList = data.o;
@@ -1856,8 +1864,8 @@ var app = new Vue({
                             if (_this.templateList.length) {
                                 _this.checkedTemplate = [0];
                                 _this.showScripttemplateTable({
-                                    "aut_id": $('#autSelect').val(),
-                                    "script_id": _this.templateList[0].id
+                                    "autId": $('#autSelect').val(),
+                                    "scriptId": _this.templateList[0].id
                                 });
                                 _this.selectedScript = 1;
                             } else {
@@ -1934,8 +1942,8 @@ var app = new Vue({
                     var templateId = +value;
                     _this.script_id = _this.templateList[templateId].id;
                     var data = {
-                        aut_id: _this.autId,
-                        script_id: _this.templateList[templateId].id
+                        autId: _this.autId,
+                        scriptId: _this.templateList[templateId].id
                     };
                     _this.showScripttemplateTableArgs = {
                         aut_id: _this.autId,
@@ -1943,8 +1951,9 @@ var app = new Vue({
                     }
                     _this.operationRows = [];
                     Vac.ajax({
-                        url: address3 + 'scripttemplateController/showScripttemplateTable',
+                        url: address3 + 'scriptTemplate/queryScriptInfo',
                         data: data,
+                        // data: {"autId":"122","scriptId":1530},
                         success: function (data) {
                             // _this.scriptIsChanged = false
                             _this.operationRows = []
@@ -1988,20 +1997,20 @@ var app = new Vue({
         },
         showScripttemplateTable: function (args) {
             var _this = this;
-            if(args.aut_id==null){
+            if(args.autId==null){
                 return
             }
             Vac.ajax({
-                url: address3 + 'scripttemplateController/showScripttemplateTable',
+                url: address3 + 'scriptTemplate/queryScriptInfo',
                 data: args,
                 success: function (data) {
                     // _this.scriptIsChanged = false
                     _this.operationRows = []
-                    if (data.success === true) {
+                    if (data.respCode === '0000') {
                         // {id:Symbol(), functions: [], operation: {element:'', ui: '',parameters:[{Name:'', Value: ''}]}}
-                        _this.scriptLength = data.o.data.length
+                        _this.scriptLength = data.data.length
 
-                        for (var operationRow of data.o.data) {
+                        for (var operationRow of data.data) {
                             let row = {
                                 id: null,
                                 functions: [],
@@ -2013,10 +2022,10 @@ var app = new Vue({
                                 parameters: []
                             }
                             row.id = Symbol()
-                            row.functions.push({ name: operationRow.function })
-                            row.operation.element = operationRow.operator[2]
-                            row.operation.ui = operationRow.operator[0]
-                            row.operation.classType = operationRow.operator[1]
+                            row.functions.push({ name: operationRow.methodName })
+                            row.operation.element = operationRow.elementName
+                            row.operation.ui = operationRow.uiname
+                            row.operation.classType = operationRow.elementWidget
                             for (let para of operationRow.arguments) {
                                 row.parameters.push({
                                     Name: para.name,
@@ -2028,7 +2037,7 @@ var app = new Vue({
                             // _this.operationRows = [row]
                         }
                     } else {
-                        Vac.alert(data.msg)
+                        Vac.alert(data.respMsg);
                     }
                 }
             });
@@ -2040,7 +2049,7 @@ var app = new Vue({
                 Vac.alert('请输入名称');
             else
                 Vac.ajax({
-                    url: address3 + 'scripttemplateController/insert',
+                    url: address3 + 'scriptTemplate/insert',
                     data: _this.newTemplate,
                     success: function (data) {
                         if (data.respCode === '0000') {
@@ -2065,7 +2074,7 @@ var app = new Vue({
             var templateId = this.checkedTemplate[0];
             _this.script_id = _this.templateList[templateId].id;
             Vac.ajax({
-                url: address3 + 'scripttemplateController/delete',
+                url: address3 + 'scriptTemplate/delete',
                 data: { 'id': _this.script_id },
                 success: function (data) {
                     if (data.respCode === '0000') {
@@ -2240,7 +2249,7 @@ var app = new Vue({
             // UI(""登录页面"").webedit("webedit").set("3");UI(""登录页面"").webedit("webedit").set("444");UI("welcome to the system").webedit("webedit").set("333")
             // return
             Vac.ajax({
-                url: address3 + 'scripttemplateController/saveScriptTemplate',
+                url: address3 + 'scriptTemplate/saveScriptTemplate',
                 data: {
                     'scriptId': _this.script_id || _this.templateList[0].id,
                     'content': sendData
@@ -2263,18 +2272,18 @@ var app = new Vue({
             var sendData = this.generateScriptString();
             var _this = this;
             Vac.ajax({
-                url: address3 + 'scripttemplateController/showscripttemplateTableSave',
+                url: address3 + 'scriptTemplate/scriptParameterized',
                 data: {
                     'autId': _this.autId,
-                    'script_id': _this.script_id || _this.templateList[0].id,
+                    'scriptId': _this.script_id || _this.templateList[0].id,
                     'content': sendData
                 },
                 success: function (data) {
-                    if (data.success == true) {
-                        Vac.alert(data.msg);
+                    if (data.respCode == '0000') {
+                        Vac.alert(data.respMsg);
                         _this.showScripttemplateTable({
-                            "aut_id": _this.autId,
-                            "script_id": _this.script_id || _this.templateList[0].id
+                            "autId": _this.autId,
+                            "scriptId": _this.script_id || _this.templateList[0].id
                         });
                         return;
                     }

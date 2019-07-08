@@ -1886,7 +1886,7 @@ var app = new Vue({
                     }
                     else{
                         $.ajax({
-                            url: address3 + "scripttemplateController/queryTemplateByTransId",
+                            url: address3 + "scriptTemplate/queryTemplateByTransId",
                             data: JSON.stringify({ "id": val }),
                             type: "POST",
                             contentType: 'application/json',
@@ -2062,7 +2062,7 @@ function sanji() {
 
     var val = $('#casetransid').val();
     $.ajax({
-        url: address3 + "scripttemplateController/queryTemplateByTransId",
+        url: address3 + "scriptTemplate/queryTemplateByTransId",
         data: JSON.stringify({ "id": val }),
         type: "POST",
         contentType: 'application/json',
@@ -2150,7 +2150,7 @@ function second() {
 function third() {
     var val = $("#2ji").val();
     $.ajax({
-        url: address3 + "scripttemplateController/queryTemplateByTransId",
+        url: address3 + "scriptTemplate/queryTemplateByTransId",
         data: JSON.stringify({ "id": val }),
         type: "POST",
         contentType: 'application/json',
@@ -2226,7 +2226,7 @@ function disan() {
 
     var val = $('select[name="subautid"]').parent().parent().next().find('select[name="subtransid"]').val();
     $.ajax({
-        url: address3 + "scripttemplateController/queryTemplateByTransId",
+        url: address3 + "scriptTemplate/queryTemplateByTransId",
         data: JSON.stringify({ "id": val }),
         type: "POST",
         contentType: 'application/json',

@@ -87,7 +87,16 @@ var vBody = new Vue({
 		// 调试轮次
 		debugRound: null,
 		exeScope: null,
-		isDebugInfoShow: false
+		isDebugInfoShow: false,
+		//以下参数用于移动端设备配置
+        platformName:"",    //设备类型
+        deviceName:"",      //设备名
+        automationName:"",  //？？？
+        appPackage:"",      //应用包名
+        appActivity:"",     // 启动activity
+        noReset:true,        //禁止重置
+        appiumurl:"",             //连接URL
+        mobileId:-1,
 	},
 	computed: {
 		panelHeight: function(){
@@ -101,6 +110,7 @@ var vBody = new Vue({
 		this.setSelectListener();
 		// 用于页面加载时获取所有的用例
 		this.getCases();
+		this.terminalSet();
 		// 数据池模态框消失
 		$('#editDataPool').on('hidden.bs.modal', function(e){
 			_this.poolData.poolName = '';
@@ -221,7 +231,7 @@ var vBody = new Vue({
 						_this.exeStrategy3Start= data.selectSceneDto.sceneEntity.exeStrategy3Start || '1';
 						_this.exeStrategy3Order= data.selectSceneDto.sceneEntity.exeStrategy3Order || '1';
 						_this.exeStrategy3Status= data.selectSceneDto.sceneEntity.exeStrategy3Status || '1';
-						_this.exeStrategyErr= data.selectSceneDto.sceneEntity.exe_strategy_err || '1';
+						_this.exeStrategyErr= data.selectSceneDto.sceneEntity.exeStrategyErr || '1';
 						if(!(data.selectSceneDto.caseDtos && data.selectSceneDto.caseDtos.length)) {
 							Vac.alert('未查询到相关的用例信息')
 						}
@@ -286,6 +296,8 @@ var vBody = new Vue({
 			}else if(type === 4){
 				this.getDataPool();
 			} else if (type === 3) {
+				this.getExecuteStrategy();
+			} else if (type === 5) {
 				this.getExecuteStrategy();
 			} else if (type == 1) {
 				setTimeout(() => {
@@ -874,12 +886,114 @@ var vBody = new Vue({
 				success:function(data){
 					if (data.respCode === '0000'){
 						Vac.alert("排序保存成功");
+						console.error("我福林是SB")
 					}
 				},
 				error:function(){
 					Vac.alert("排序保存失败");
 				}
 			})
-		}
+		},
+		
+        //添加
+        initMobile: function() {
+			var _this = this;
+			console.error("我福林是SB")
+            if(_this.mobileId == -1){
+                $.ajax({
+                    url: address3+'mobileController/initMobile',
+                    type: 'POST',
+                    contentType: 'application/json',
+                    data: JSON.stringify({
+                        'sceneId': _this.sceneid,
+                        'platformName': _this.platformName,
+                        'deviceName': _this.deviceName,
+                        'automationName': _this.automationName,
+                        'appPackage':_this.appPackage,
+                        'appActivity': _this.appActivity,
+                        'noReset':_this.noReset=="1"?true:false,
+                        'url': _this.appiumurl
+                    }),
+                    success: function(data) {
+                        if(data.respCode=="0000"){
+							Vac.alert(data.respMsg);
+                        }else{
+							Vac.alert(data.respMsg);
+                        }
+                    },
+                    error: function() {
+                        alert("ajax请求失败，请稍后访问......")
+                    }
+                });
+            }
+            else{
+                $.ajax({
+                    url: address3+'mobileController/updateMobile',
+                    type: 'POST',
+                    contentType: 'application/json',
+                    data: JSON.stringify({
+                        'sceneId': _this.sceneid,
+                        'platformName': _this.platformName,
+                        'deviceName': _this.deviceName,
+                        'automationName': _this.automationName,
+                        'appPackage':_this.appPackage,
+                        'appActivity': _this.appActivity,
+                        'noReset':_this.noReset=="1"?true:false,
+                        'url': _this.appiumurl,
+                        "id" : _this.mobileId
+                    }),
+                    success: function(data) {
+                        if(data.respCode=="0000"){
+							Vac.alert(data.respMsg);
+					    }else{
+							Vac.alert(data.respMsg);
+                        }
+                    },
+                    error: function() {
+						Vac.alert("ajax请求失败，请稍后访问......")
+                    }
+                });
+            }
+		},
+		terminalSet(){
+            var _this = this;
+			$.ajax({
+				url: address3+'mobileController/queryMobile',
+				type: 'post',
+				contentType:'application/json',
+				data: JSON.stringify({
+					'sceneId': _this.sceneid,
+				}),
+				success: function(data) {
+					if (data.respCode=="0000") {
+					_this.platformName = data.mobileProperties.platformName;
+					_this.deviceName = data.mobileProperties.deviceName;
+					_this.automationName = data.mobileProperties.automationName;
+					_this.appPackage = data.mobileProperties.appPackage;
+					_this.appActivity = data.mobileProperties.appActivity;
+					_this.noReset = data.mobileProperties.noReset?"1":"0";
+					_this.appiumurl = data.mobileProperties.url;
+					_this.mobileId = data.mobileEntity.id;
+					
+					} else if(data.respMsg == "该被测系统无移动端内容") {
+						_this.mobileId = -1;
+						_this.platformName = "";
+						_this.deviceName ="";
+						_this.automationName = "";
+						_this.appPackage = "";
+						_this.appActivity = "";
+						_this.noReset = "1";
+						_this.appiumurl = "";
+					}
+					else{
+						Vac.alert("ajax请求失败，请稍后访问......")
+					}
+				},
+				error: function() {
+					alert(data.respMsg)
+				}
+			});
+
+		},
 	}
 });

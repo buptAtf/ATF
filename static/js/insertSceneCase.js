@@ -1284,7 +1284,7 @@ function sanji() {
     var val = $('select[name="autid"]').parent().parent().next().find('select[name="transid"]').val();
 
     $.ajax({
-        url: address3 + "scripttemplateController/queryTemplateByTransId",
+        url: address3 + "scriptTemplate/queryTemplateByTransId",
         data: JSON.stringify({ "id": val }),
         type: "POST",
         contentType: 'application/json',

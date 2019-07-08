@@ -12,70 +12,6 @@ function viewScriptHandler (event,caseCompositeType) {//查看脚本按钮的函
 	view.getData(testcaseId,caseCompositeType);//查看脚本
 	event.stopPropagation();
 }
-/*
-var bootstraptable = new Vue({//与 bootstraptable 绑定
-	el: '#boorstraptable',
-	data: {
-	  columns: [
-		  {
-			  title: 'ItemLALALA',
-			  field: 'id',
-			  sortable: true
-		  },
-		  {
-			  field: 'name',
-			  title: 'Item Name',
-			  sortable: true
-		  }, {
-			  field: 'price',
-			  title: 'Item Price',
-			  sortable: true
-		  }
-	  ],
-	  data: [
-		  {
-			  "id": 0,
-			  "name": "Item 0",
-			  "price": "$0"
-		  }
-	  ],
-	  options: {
-		  editable:true,
-		  sortName: 'id', 
-		  sortOrder: 'esc',
-		  sortStable: true,
-		  locale: 'zh-CN',
-		  pagination: true,
-		  showPaginationSwitch: true,
-		  search: true,
-		  showToggle: true,
-		  showRefresh: true,
-		  showColumns: true,
-	  }
-	},
-	methods: {
-	  addBook () {//change the Array by pop and push
-		var _this=this;
-		_this.columns.push({field: 'price',title: 'Item Price2'})
-	  },
-	  addBook2: function () {//change the Array by index,it cant rander modify;but if array change by other way it will render
-		var _this=this;
-		var length = Math.ceil(Math.random()*10);
-		_this.books[2]={id: length, name: '西游记'+length, author: '吴承恩'+length, price: 20+length};
-	  },
-	  changeBook: function () {//change the Array by =，it can work,perfect 
-		var _this=this;
-		var length = Math.ceil(Math.random()*10);
-		_this.books=[
-			{id: 23, name: '阿亮你看我', author: '余小C', price: 30},
-			{id: 32, name: '凯哥我点了', author: 'D主', price: 24},]
-	  },
-	  seeBook: function () {//see the Array
-	  var _this=this;
-		console.log(_this.books)
-	  },
-  }
-});*/
 var view = new Vue({//与查看脚本的模态框相绑定
 	el: '#script-modal',
 	data: {
@@ -1875,7 +1811,7 @@ $(document).ready(function () {
 													// console.log(value);
 													dataKey.forEach((key) => {
 														// console.log("12Key:" + key+"data_"+key+"qweqwe"+value["data_"+key]);
-														data[key] = value["data_"+key];
+														data[key] = value["data_"+key.split("++")[1]];
 													});
 													destrutData.push(data);
 												});
@@ -2408,6 +2344,7 @@ $(document).ready(function () {
 				}
 			});
 			totalColumnsOptions = columnsOptions.concat(totalColumnsOptions);
+			console.log(totalColumnsOptions)
 			return totalColumnsOptions;
 		};
 		var getTotalColHeaders = function (data) {
@@ -2431,7 +2368,9 @@ $(document).ready(function () {
 			var dataKey = [];
 			if (data) {
 				data.forEach((value) => {
-					dataKey.push(value[1]);
+					let key = value[0]+"++"+value[1]
+					dataKey.push(key);
+					//dataKey.push(value[1]); 
 				});
 			}
 			return dataKey;
@@ -2490,7 +2429,7 @@ $(document).ready(function () {
 									// console.log(value);
 									dataKey.forEach((key) => {
 										// console.log("12Key:" + key+"data_"+key+"qweqwe"+value["data_"+key]);
-										data[key] = value["data_"+key];
+										data[key] = value["data_"+key.split("++")[1]];
 									});
 									destrutData.push(data);
 								});
@@ -2498,6 +2437,8 @@ $(document).ready(function () {
 							}
 							// console.log("destrutData:\n"+destrutData);
 							dataSource = destrutData;
+							console.log("dataSource")
+							console.log(dataSource)
 							// console.log("data:dataSource")
 							// console.log(dataSource)
 							rowSelectFlags.length = dataSource.length;
@@ -2605,27 +2546,43 @@ $(document).ready(function () {
 									},
 									afterChange: function (changes, source) {
 										if (changes) {
-											// console.log(changes)
+											console.log(changes)
 											changes.forEach((value) => {
-												var data = {};
+												var data = {},
+													tbdata = {};
 												// data.testcaseId = handsontable.getDataAtRowProp(value[0], 'casecode');
 												data.testcaseId = dataSource[value[0]].testcaseId.split(',')[0];
+
+												console.log(totalColumnsHeaders)
 												data.caseCompositeType = dataSource[value[0]].caseCompositeType;
-												data.tbHead = value[1];
-												data.value = value[3];
+												tbdata.widgetName = value[1].split('++')[0];
+												tbdata.colName = value[1].split('++')[1];
+												tbdata.data = value[3];
 												var changedIndex;
 												changedData.forEach((value, index) => {
-													if (value.testcaseId == data.testcaseId && value.tbHead == data.tbHead) {
+													let flag = false;
+													if (value.testcaseId == data.testcaseId) {//该用例有修改
 														changedIndex = index;
+														value.dataList.forEach((changedtb, tbindex)=> {
+															if(changedtb.colName == tbdata.colName){//该列有修改
+																console.log(changedtb)
+																flag = true;
+																changedtb[tbindex].data = tbdata.data;
+															}
+														});
+														if(flag == false){//该列无修改
+															value.dataList.push(tbdata);													}
 													}
 												});
-												if (changedIndex !== undefined) {
-													changedData.splice(changedIndex, 1, data);
-												} else {
+												if (changedIndex == undefined){//无该用例修改
+													data.dataList = [];
+													data.dataList.push(tbdata);
 													changedData.push(data);
 												}
 											});
 										}
+										console.log("1")
+										console.log(changedData)
 									},
 								});
 								// console.log(handsontable)
@@ -2788,10 +2745,12 @@ $(document).ready(function () {
 		};
 		//保存按钮
 		document.getElementById('saveAll').onclick = function () {
-			var data = { data: changedData };
+
 			Vac.ajax({
-				url: address3 + 'scripttemplateController/scripttemplateInf',
-				data: { jsonStr: JSON.stringify(data) },
+				url: address3 + 'dataCenter/saveTableData',
+				data: JSON.stringify({
+					"data": changedData
+				}) ,
 				success: function (data, textStatus) {
 					if (data.respCode === '0000') {
 						Vac.alert('保存成功')
@@ -3168,7 +3127,7 @@ function APIFieldModalInit(){
 
 function APIFieldModalLoadVerificationData(){
 	$.ajax({
-        url: address3 + 'scripttemplateController/getInterfaceCheckValues',
+        url: address3 + 'scriptTemplate/getInterfaceCheckValues',
         data: JSON.stringify({
 			"testCaseId":sessionStorage.getItem('caseId'),
 			"caseCompositeType":sessionStorage.getItem('caseCompositeType')
@@ -3218,7 +3177,7 @@ function APIFieldModalLoadVerificationData(){
 
 function APIFieldModalLoadExtractionData(){
 	$.ajax({
-        url: address3 + 'scripttemplateController/getInterfaceExtractValues',
+        url: address3 + 'scriptTemplate/getInterfaceExtractValues',
         data: JSON.stringify({
 			"testCaseId":sessionStorage.getItem('caseId'),
 			"caseCompositeType":sessionStorage.getItem('caseCompositeType')
@@ -3345,7 +3304,7 @@ function APIUpload() {
 		});
 		console.log(APIFieldVerificationData);
 		$.ajax({
-			url: address3 + 'scripttemplateController/interfaceCheckSave',
+			url: address3 + 'scriptTemplate/interfaceCheckSave',
 			data: JSON.stringify({
 				"testCaseId":sessionStorage.getItem('caseId'),
 				"caseCompositeType":sessionStorage.getItem('caseCompositeType'),
@@ -3385,7 +3344,7 @@ function APIUpload() {
 		});
 		console.log(APIFieldExtractionData);
 		$.ajax({
-			url: address3 + 'scripttemplateController/interfaceExtractSave',
+			url: address3 + 'scriptTemplate/interfaceExtractSave',
 			data: JSON.stringify({
 				"testCaseId":sessionStorage.getItem('caseId'),
 				"caseCompositeType":sessionStorage.getItem('caseCompositeType'),

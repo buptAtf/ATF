@@ -39,6 +39,7 @@
                         <a class="btn btn-white" @click="toAutdata"><i class="icon-cog"></i> 配置系统数据</a>
                         <a class="btn btn-white" data-toggle="modal" @click="toComponent"><i class="icon-cog"></i> 自动化构件维护</a>
                         <a class="btn btn-white"  @click="toExeccode"><i class="icon-cog"></i> 执行代码管理</a>
+                        <a class="btn btn-white" @click="terminalSet"><i class="icon-edit"></i> 移动端设备配置</a>
                         <!-- insertModal start -->
                         <div class="modal fade" id="insertModal" tabindex="-1" role="dialog" aria-labelledby="insertModalLabel" aria-hidden="true">
                             <div class="modal-dialog">
@@ -90,6 +91,76 @@
                             </div>
                         </div>
                         <!-- insertModal end -->
+                        <!-- terminalSetModal start -->
+                        <div class="modal fade" id="terminalSetModal" tabindex="-1" role="dialog" aria-labelledby="terminalSetModalLabel" aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                                        <h4 class="modal-title">配置移动端设备信息</h4>
+                                    </div>
+                                    <div class="modal-body">
+                                        <!-- modal-body start -->
+                                        <section class="panel">
+                                            <form id="insertForm" class="form-horizontal" role="form">
+                                                <div class="form-group">
+                                                    <label class="col-lg-3 control-label">设备类型</label>
+                                                    <div class="col-lg-5">
+                                                        <input type="text" class="form-control" name="platformName"  v-model="platformName">
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="col-lg-3 control-label">设备名称</label>
+                                                    <div class="col-lg-5">
+                                                        <input type="text" class="form-control" name="deviceName"  v-model="deviceName" >
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="col-lg-3 control-label">自动化类型</label>
+                                                    <div class="col-lg-5">
+                                                        <input type="text" class="form-control" name="automationName"  v-model="automationName" >
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="col-lg-3 control-label">应用包名</label>
+                                                    <div class="col-lg-5">
+                                                        <input type="text" class="form-control" name="appPackage"  v-model="appPackage" >
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="col-lg-3 control-label">启动appActivity</label>
+                                                    <div class="col-lg-5">
+                                                        <input type="text" class="form-control" name="appActivity"  v-model="appActivity" >
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="col-lg-3 control-label">是否重置</label>
+                                                    <div class="col-lg-5">
+                                                        <select class="form-control" name="noReset"  v-model="noReset" >
+                                                            <option value="1">是</option>
+                                                            <option value="0">否</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="col-lg-3 control-label">接口路径</label>
+                                                    <div class="input-group col-lg-8">
+                                                        <span class="input-group-addon" id="basic-addon3">https://</span>
+                                                        <input type="text" class="form-control" id="appiumurl" aria-describedby="basic-addon3"  v-model="appiumurl">
+                                                    </div>
+                                                </div>
+                                            </form>
+                                        </section>
+                                        <!-- modal-body end -->
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button data-dismiss="modal" class="btn btn-default" type="button">取消</button>
+                                        <button data-dismiss="modal" class="btn btn-success" type="button" v-on:click="initMobile()">添加</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- terminalSetModal end -->
                         <!-- delModal start -->
                         <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="insertModalLabel" aria-hidden="true">
                             <div class="modal-dialog">

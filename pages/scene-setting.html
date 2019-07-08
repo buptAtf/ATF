@@ -209,6 +209,8 @@
               执行过程控制</button>
               <button class="btn btn-white" @click="operationType(4);"><i class="icon-cogs"></i>
               数据资源池配置</button>
+              <button class="btn btn-white" @click="operationType(5);"><i class="icon-mobile-phone"></i>
+              移动端配置</button>
               <button class="btn btn-white" @click="debug();"><i class="icon-wrench"></i>
               调试</button>
               <button class="btn btn-white" @click="saveSort();"><i class="icon-refresh"></i>
@@ -348,6 +350,7 @@
             <span v-show="tooltipType===2">触发器设置</span>
             <span v-show="tooltipType===3">执行过程控制</span>
             <span v-show="tooltipType===4">数据资源池配置</span>
+            <span v-show="tooltipType===5">配置移动端设备信息</span>
             <button type="button" class="close" id="btn-closetooltip" @click="toggleTooltip">
             <i :class="{'icon-resize-full':tooltipFlag,'icon-resize-small':!tooltipFlag}"></i>
             </button>
@@ -500,7 +503,7 @@
                 <div class="select-wrapper">
                   <div class="select-group">
                     <label>出错操作</label>
-                    <select v-model="exe_strategy.exe_strategy_err">
+                    <select v-model="exeStrategyErr">
                       <!-- <option value="0">保持原样不做处理</option> -->
                       <option value="1">出错后终止</option>
                       <option value="2">出错后继续执行</option>
@@ -561,6 +564,48 @@
                 </table>
               </div>
             </div>
+            <!-- 配置移动端设备信息 -->
+            <div v-show="tooltipType===5" class="timeArrange">
+              <div>
+                <label>设备类型</label>
+                <input  name="platformName"  v-model="platformName" >
+              </div>
+              <div>
+                <label>设备名称</label>
+                <input type="text" name="deviceName"  v-model="deviceName" >
+              </div>
+              <div>
+                <label>自动化类型</label>
+                <input type="text"  name="automationName"  v-model="automationName" >
+              </div>
+              <div>
+                <label>应用包名</label>
+                <input type="text" name="appPackage"  v-model="appPackage" >
+              </div>
+              <div>
+                <label>启动appActivity</label>
+                <input type="text" name="appActivity"  v-model="appActivity" >
+              </div>
+              
+              <div class="select-wrapper">
+                <div class="select-group">
+                  <label>是否重置</label>
+                  <select v-model="noReset">
+                    <option value="1">是</option>
+                    <option value="0">否</option>
+                  </select>
+                </div>
+              </div>
+              <div>
+                <label >接口路径</label>
+                <input type="text"id="appiumurl" v-model="appiumurl">
+              </div>
+              <div>
+                <button class="btn btn-info exeTimeSave" @click="initMobile()">
+                保存
+                </button>
+              </div>
+            </div>
           </div>
         </div>
         <link rel="import" href="./common/copy-right.html?__inline">
@@ -574,6 +619,8 @@
     <script src="../static/js/vac-functions.es.js"></script>
     <script src="../static/js/scene-setting.es.js"></script>
     <script src="../../lib/common-scripts.js"></script>
+    <script type="text/javascript" src="../lib/jquery.validate.js"></script>
+
     <script type="text/javascript">
     document.querySelector('.sidebar-toggle-box').addEventListener('click', function() {
     if (document.body.offsetWidth <= 768) {
