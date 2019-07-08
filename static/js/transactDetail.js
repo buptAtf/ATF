@@ -40,7 +40,8 @@ var app = new Vue({
             relatePropList: [], //关联属性
             relatePropListLength: 0,
 
-
+            ruleName:"",
+            ruleDesc:"",
             templateList: [],
             checkedTemplate: [],
             lastCheckedTemplate: null,
@@ -561,6 +562,13 @@ var app = new Vue({
         }
     },
     methods: {
+        addrule(){
+            var _this = this;
+            window.open('ruleinput.html?ruleName='+_this.ruleName+'&ruleDesc='+_this.ruleDesc,'_blank');
+        },
+        linkDownload (url) {
+            window.open(url,'_blank') // 新窗口打开外链接
+        },
         //初始化获取测试系统和功能点
         getAutandTrans: function () {
             var _this = this;
