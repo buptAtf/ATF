@@ -70,7 +70,7 @@
       <section class="wrapper" style="margin-top: 0;">
         <div v-for="item in elements" style="margin-top:20px;">
           <a style="position: absolute; margin-top: {{item.pointY}}px; margin-left: {{item.pointX}}px" data-toggle="modal" href="#setRuleModal" >
-            <img :src="'http://10.101.167.184:8080/'+item.screenShotPath" @click="makeRules(item.classType)" style="width:50%; height:50%;">
+            <img :src="'http://10.101.167.184:8080/'+item.screenShotPath" @click="makeRules(item.classType)" style="width:{{item.sizeWidth}}px; height:{{item.sizeHeight}}px;">
           </a>
         </div>
 
