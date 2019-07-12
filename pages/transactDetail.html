@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <link rel="import" href="./common/header.html?__inline">
     <link rel="stylesheet" type="text/css" href="../static/css/script.scss">
     <link rel="stylesheet" type="text/css" href="../static/css/index.css">
@@ -74,9 +75,16 @@
 												-->
 											</select>
                                         </div>
-                                        <div class="col-xs-2">
-											<a class="btn btn-default" data-toggle="modal" href="#addruleModal">录制规则输入</a>
-                                        </div>
+                                        <div class="col-xs-3">
+											<div class="col-xs-5">
+												<a class="btn btn-default" data-toggle="modal" href="#addruleModal">录制规则输入</a>
+											</div>
+											<div class="col-xs-2">
+											</div>
+											<div class="col-xs-5">
+												<a class="btn btn-default" @click = "downloadRecorder()">录制工具下载</a>
+											</div>
+										</div>
                                     </div>
                                 </form>
                                 <!-- select end -->
@@ -330,6 +338,31 @@
 				                                                    </tr>
 				                                                </thead>
 				                                                <tbody id="relatePropTbody">
+				                                                    <tr class="text-center">
+				                                                        <td colspan="3">暂无数据</td>
+				                                                    </tr>
+				                                                </tbody>
+				                                            </table>
+				                                        </div>
+				                                    </section>
+
+													<section class="panel small-panel">
+				                                        <header class="panel-heading">规则</header>
+				                                        <div class="property">
+				                                            主属性
+				                                            <a class="btn btn-white btn-sm pull-right" @click="addMainProp"><i class="icon-plus"></i></a>
+				                                            <a class="btn btn-white btn-sm pull-right" @click="delMainProp"><i class="icon-minus"></i></a>
+				                                        </div>
+				                                        <div class="property">
+				                                            <table class="table table-bordered">
+				                                                <thead>
+				                                                    <tr>
+				                                                        <th style="width:5%"></th>
+				                                                        <th>属性名</th>
+				                                                        <th>属性值</th>
+				                                                    </tr>
+				                                                </thead>
+				                                                <tbody id="mainTbody">
 				                                                    <tr class="text-center">
 				                                                        <td colspan="3">暂无数据</td>
 				                                                    </tr>

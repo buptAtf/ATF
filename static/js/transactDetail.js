@@ -562,6 +562,9 @@ var app = new Vue({
         }
     },
     methods: {
+        downloadRecorder: function(){
+            window.location.href = address4 + "atf-data/atf-recorder.zip";
+        },
         addrule(){
             var _this = this;
             window.open('ruleinput.html?ruleName='+_this.ruleName+'&ruleDesc='+_this.ruleDesc,'_blank');
