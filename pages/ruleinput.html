@@ -39,16 +39,16 @@
 
                       <label class="col-xs-2 control-label">规则名称</label>
                       <div class="col-xs-2">
-                          <input class="form-control" id="caselibid"  v-model="ruleName" readonly>
-                          </input>
+                        <input class="form-control" id="caselibid"  v-model="ruleName" readonly>
+                        </input>
                       </div>
                       <label class="col-xs-1 control-label">规则描述</label>
                       <div class="col-xs-2">
-                          <input class="form-control " id="transid" v-model="ruleDesc" readonly>
-                          </input>
+                        <input class="form-control " id="transid" v-model="ruleDesc" readonly>
+                        </input>
                       </div>
                       <div class="col-xs-2">
-                          <a class="btn btn-default" data-toggle="modal" @click="rulesave()">保存规则</a>
+                        <a class="btn btn-default" data-toggle="modal" @click="saveRules()">保存规则</a>
                       </div>
                   </div>
               </form>
@@ -58,9 +58,9 @@
   </div>
     <section id="main-content" style="margin-left: 0;">
       <section class="wrapper" style="margin-top: 0;">
-        <div v-for="item in elements" style="margin-top:20px;">
+        <div v-for="(index,item) in elements" style="margin-top:20px;">
           <a style="position: absolute; margin-top: {{item.pointY}}px; margin-left: {{item.pointX}}px" data-toggle="modal" href="#setRuleModal" >
-            <img :src="'http://10.101.167.184:8080/'+item.screenShotPath" @click="setCurType(item.classType, item.elementId)" style="width:{{item.sizeWidth}}px; height:{{item.sizeHeight}}px;">
+            <img :src="'http://10.101.167.184:8080/'+item.screenShotPath" @click="setCurType(item.classType, item.elementId, index)" style="width:{{item.sizeWidth}}px; height:{{item.sizeHeight}}px;">
           </a>
         </div>
       </section>
@@ -142,7 +142,9 @@
                   <div class="form-group">
                     <label class="col-xs-3 control-label">标准值</label>
                     <div class="col-xs-5">
-                      <input class="form-control" v-model="selectValue">
+                      <select class="form-control" v-model="selectEleVal">
+                        <option v-for="item in elements[modal.index].optionTexts"  :value="item">{{item}}</option>
+                      </select>
                     </div>
                   </div>
 

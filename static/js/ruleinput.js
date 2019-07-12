@@ -5,7 +5,7 @@
       return {
         ruleName: '',
         ruleDesc: '',
-        modal: {type:'',elementId:''},
+        modal: {type:'',elementId:'', index:''},
         elements: {},
         isRestraint: false, //输入框是否有限制
         inputMust: false,   //输入框是否必输
@@ -14,6 +14,8 @@
         inputMaxLength: '', //输入的最大长度
         inputElement:[],    //输入元素的字段
         setOrder: 0,        //输入顺序
+        selectValue: [],    //下拉框的列表选择值
+        selectEleVal: '',   //当前下拉框的选择值
       }
     },
     ready: function() {
@@ -52,7 +54,6 @@
                 success: function(data) {
                     _this.elements = data.uis[0].elements;
                     
-                    
                 }
             })
         },
@@ -60,7 +61,7 @@
             const _this = this;
             this.setOrder++;    //记录用户的顺序
             if(_this.modal.type=='webedit') {
-                var inputEle = {};
+                let inputEle = {};
                 inputEle.inputMust = _this.inputMust;       //设置是否是必输项
                 inputEle.isRestraint = _this.isRestraint;       //是否设置规则
                 inputEle.inputValue = _this.inputValue;         //标准输入值
@@ -71,17 +72,39 @@
                 inputEle.elementId = _this.modal.elementId;
                 _this.inputElement.push(inputEle);    //将设置好的输入框元素推入数组
 
-                console.log(JSON.stringify(inputEle));
             } else if(_this.modal.type=='weblist') {
-                
-
-
+                let selectEle = {};
+                selectEle.value = _this.selectEleVal;   //把当前下拉框的值赋值
+                selectEle.order = _this.setOrder;;  //用户点击的顺序
+                _this.selectValue.push(selectEle);
             }
         },
-        setCurType: function(type , elementId) {    //确定当前点击的模态框的类型
+        setCurType: function(type , elementId, index) {    //确定当前点击的模态框的类型、elementId 和传参回来的顺序
             this.modal.type = type;
             this.modal.elementId = elementId;
+            this.modal.index = index;
+
+            this.inputValue = '';       //将上次的输入值清除
+            this.inputMinLength = '';
+            this.inputMaxLength = '';
+            this.selectEleVal = '';
         },
+        saveRules: function() {
+            var ret = {};
+            ret.inputElement = this.inputElement;
+            ret.selectValue = this.selectValue;
+
+            $.ajax({
+                url: address3 + "/regulationController/saveRegulation",
+                type: "POST",
+                contentType: "json/application",
+                data: JSON.stringify(ret),
+                success: function(data) {
+                    console.log(data);
+                }
+            })
+            console.log(JSON.stringify(ret));
+        }
 
     },
 
