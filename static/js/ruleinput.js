@@ -98,7 +98,7 @@
             $.ajax({
                 url: address3 + "/regulationController/saveRegulation",
                 type: "POST",
-                contentType: "json/application",
+                contentType: "application/json",
                 data: JSON.stringify(ret),
                 success: function(data) {
                     console.log(data);
