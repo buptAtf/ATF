@@ -1,10 +1,14 @@
 <!DOCTYPE html>
 <html>
 <head>
-    
+
     <link rel="import" href="./common/header.html?__inline">
     <link rel="stylesheet" type="text/css" href="../static/css/index.css">
-    <link rel="stylesheet" type="text/css" href="..//static/css/pagination.css">
+    <link rel="stylesheet" type="text/css" href="../static/css/pagination.css">
+    <link rel="stylesheet" type="text/css" href="../static/css/scene.css">
+    <!-- <link rel="stylesheet" type="text/css" href="../static/css/base/bootstrap.min.css"> -->
+    <link rel="stylesheet" type="text/css" href="../static/css/bootstrap-datetimepicker.min.css">
+    <script src="http://d3js.org/d3.v3.min.js"></script>
     <title>规则执行查询</title>
     <style>
         pre {outline: 1px solid #ccc; padding: 5px; margin: 5px; }
@@ -21,6 +25,7 @@
 
         <section id="main-content">
             <section class="wrapper">
+                <!-- breadcrumb start -->
                 <div class="row">
                     <div class="col-lg-12">
                         <ul class="breadcrumb">
@@ -29,7 +34,283 @@
                         </ul>
                     </div> 
                 </div>
+                <!-- breadcrumb end -->
+                <!-- table start -->
+                <div class="row" v-if="!addshow">
+                    <div class="col-lg-12">
+                        <section class="panel">
+                            <!-- <header class="panel-heading">
+                                批量执行查询
+                            </header> -->
+                            <div class="filter">
+                                <div class="row">
+                                    <div  style="padding: 10px 0;">
+                                    </div>
+                                    <form class="form-horizontal col-sm-12">
+                                        <div class="form-group">
+                                            <label class="col-sm-1 control-label">创建时间</label>
+                                            <div class="input-group date form_date_start col-sm-2" data-date-format="yyyy-mm-dd" >
+                                                <input class="form-control"  type="text" value="" v-model="creatTimeStart" style="width:114px;" readonly>
+                                                <span class="input-group-addon"><span class="glyphicon glyphicon-remove"></span></span>
+                                                <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
+                                            </div>
+                                            <!-- <input type="hidden" id="dtp_input0" value=""  /> -->
+                                            <label class="col-sm-1 control-label" style="width:40px">至</label>
+                                            <div class="input-group date form_date_end col-sm-2" data-date-format="yyyy-mm-dd" >
+                                                <input class="form-control"  type="text" value=""  v-model="creatTimeEnd" style="width:114px;" readonly >
+                                                <span class="input-group-addon"><span class="glyphicon glyphicon-remove"></span></span>
+                                                <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
+                                            </div>
+                                            <!-- <input type="hidden" id="dtp_input1" value=""/> -->
+                                            <label class="col-sm-1 control-label">时间段</label>
+                                            <div class="col-sm-2">
+                                                <select class="form-control" v-model="period_flag" @change="creatTimeInit()">
+                                                    <option value="1" selected>一天内</option>
+                                                    <option value="2" >近一周内</option>
+                                                    <option value="3" >近一月内</option>                                                                                                                                                                                                                                        <!--原来是 item.phasename -->
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                            <div class="filter">
+                                <div class="row">
+                                    <form class="form-horizontal col-sm-12">
+                                        <div class="form-group">
+                                            <label class="col-sm-1 control-label">用例来源</label>
+                                            <div class="col-sm-2">
+                                                <select class="form-control" v-model="caseSourceChannel">
 
+                                                    <option value="1" selected>测试计划</option>
+                                                    <option value="2" >场景</option>
+                                                    <option value="3" >数据编写</option>
+                                                    <option value="4" >模板调试</option>                                                                                                                                                                                                                                        <!--原来是 item.phasename -->
+                                                </select>
+                                            </div>
+                                            <label class="col-sm-1 control-label">测试计划</label>
+                                            <div class="col-sm-2">
+                                                <select class="form-control"  v-model="testPlanId">
+                                                    <option selected>请选择</option>
+                                                    <option v-for="(index,item) in testPlans" v-bind:value="item.id">{{item.nameMedium}}</option>                                                                                                                                                                                                                                                       <!--原来是 item.phasename -->
+                                                </select>
+                                            </div>
+                                            <label class="col-sm-1 control-label">执行状态</label>
+                                            <div class="col-sm-2">
+                                                <select class="form-control"  v-model="runStatus">
+                                                    <option selected  >请选择</option>
+                                                    <option value="0" >初始</option>
+                                                    <option value="1" >执行中</option>
+                                                    <option value="2" >执行完毕</option>
+                                                    <option value="3" >错误终止</option>
+                                                    <option value="4" >人工终止</option>
+
+                                                </select>
+                                            </div>
+                                            <div class="col-sm-1">
+                                                <a class="btn btn-primary" @click="queryBatchByClick()">查询</a><!-- 留待@click中写函数-->
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+
+
+                            <!-- 表格 -->
+                            <style>
+                                #sample_1 th,
+                                #sample_1 td {
+                                    word-break: keep-all;
+                                }
+                            </style>
+                            <div style="overflow-x: auto;">
+                                <table class="table table-striped table-bordered border-top text-center" id="sample_1">
+                                    <thead>
+                                    <tr>
+                                        <th class="hidden-phone text-center" data-order="casecode" data-sort="desc">操作</th>
+                                        <th class="text-center" data-order="autId" data-sort="desc">发起用户</th>
+                                        <!-- <th class="hidden-phone text-center" data-order="transId">创建日期</th> -->
+                                        <th class="hidden-phone text-center" width="120px" data-order="transId">创建时间</th>
+                                        <!-- <th class="hidden-phone text-center" data-order="transId">执行产品</th> -->
+                                        <th class="hidden-phone text-center" data-order="transId">用例来源</th>
+                                        <!-- <th class="hidden-phone text-center" data-order="transId">用例库</th> -->
+                                        <th class="hidden-phone text-center" data-order="transId">测试计划</th>
+                                        <th class="hidden-phone text-center" data-order="transId">测试阶段</th>
+                                        <th class="hidden-phone text-center" data-order="transId">测试轮次</th>
+                                        <th class="hidden-phone text-center" data-order="transId">执行轮次</th>
+                                        <!-- <th class="hidden-phone text-center" data-order="transId">场景名称</th> -->
+                                        <th class="hidden-phone text-center" data-order="transId">用例总数</th>
+                                        <th class="hidden-phone text-center" data-order="transId">成功用例数</th>
+                                        <th class="hidden-phone text-center" data-order="transId">失败用例数</th>
+                                        <th class="hidden-phone text-center" data-order="transId">跳过用例数</th>
+                                        <th class="hidden-phone text-center" data-order="transId">用例饼状图</th>
+                                        <!-- <th class="hidden-phone text-center" data-order="transId">执行单详细度</th> -->
+                                        <th class="hidden-phone text-center" data-order="transId">执行状态</th>
+                                        <th class="hidden-phone text-center" data-order="transId">执行结果</th>
+                                        <!-- <th class="hidden-phone text-center" data-order="transId">执行结果信息</th> -->
+                                        <!-- <th class="hidden-phone text-center" data-order="transId">完成日期</th> -->
+                                        <th class="hidden-phone text-center" data-order="transId">完成时间</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody id="sceneTable">
+                                    <tr class="odd gradeX" v-for="scene in sceneList" id="{{scene.batchId}}">
+                                        <td class="center " width="" :data-id="scene.batchId">
+                                            <button class="btn btn-xs btn-success" @click="getRecord(scene.batchId,scene.testPlan)">记录单</button>
+                                        </td>
+                                        <td class="center " width="">{{ scene.startUser }}</td>
+                                        <!-- <td class="center " width="">{{ scene.createDatze }}</td> -->
+                                        <td class="center " width="">{{ formatDate(scene.createTime) }}</td>
+                                        <!-- <td class="center " width="">{{ executeProduct[scene.executeProduct] }}</td> -->
+                                        <!-- <td class="center " width="">{{ caseSourceChannel[scene.caseSourceChannel] }}</td> -->
+                                        <td class="center " width="">{{ scene.instanceSource }}</td>
+                                        <!-- <td class="center " width="">{{ scene.caseLibId }}</td> -->
+                                        <!-- <td class="center " width=""  @click="goTestExec(scene.testPlan)">{{ scene.testPlanName }}</td> -->
+                                        <td class="center " width="" >
+                                            <button class="btn btn-xs btn-success" @click="goTestExec(scene.testPlan)">{{ scene.testPlanName }}</button>
+                                        </td>
+                                        <td class="center " width="">{{ scene.testPhase }}</td>
+                                        <td class="center " width="">{{ scene.testRound }}</td>
+                                        <td class="center " width="">{{ scene.executionRound }}</td>
+                                        <!-- <td class="center " width="">{{ scene.sceneId }}</td> -->
+                                        <!-- <td class="center " width="">{{ runScopeFlag[scene.runScopeFlag] }}</td> -->
+                                        <td class="center " width="">{{ scene.totalInsCount }}</td>
+                                        <td class="center " width="" >{{ scene.successInsCount }}</td>
+                                        <td class="center " width="" >{{ scene.failedInsCount }}</td>
+                                        <td class="center " width="" >{{ scene.notRunInsCount }}</td>
+                                        <td class="center " width="">
+                                            <button class="btn btn-xs btn-success" data-toggle="modal" @click="getCount(scene.successInsCount,scene.failedInsCount,scene.notRunInsCount)">饼状图</button>
+                                        </td>
+                                        <td class="center " width="">{{ scene.executingStatus }}</td>
+                                        <td class="center " width="" v-if="scene.executedResult==null">执行中</td>
+                                        <td class="center " width="" v-else>{{ scene.executedResult }}</td>
+                                        <!-- <td class="center " width="">{{ scene.resultMessage }}</td> -->
+
+                                        <!-- <td class="center " width="">{{ recordSaveType[scene.recordSaveType] }}</td>
+                                        <td class="center " width="">{{ scene.maxRecordPerRound }}</td>
+                                        <td class="center " width="">{{ recordVerboseType[scene.recordVerboseType] }}</td>
+                                        <td class="center " width="">{{ runStatus[scene.runStatus] }}</td>
+                                        <td class="center " width="">{{ runResult[scene.runResult] }}</td>
+                                        <td class="center " width="">{{ scene.runResultMessage }}</td> -->
+                                        <!-- <td class="center " width="">{{ scene.creatorId }}</td>
+                                        <td class="center " width="">{{ scene.finishDate }}</td> -->
+                                        <td class="center " width="">{{ formatDate(scene.finishTime) }}</td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <!-- 分页 -->
+                            <pagination   :total-count="page.totalCount" :current-page="page.currentPage" :total-page="page.totalPage" :page-size="page.pageSize"  v-on:turn-topage="getExecutionRecord"></pagination>
+                            <!-- <div class="row">
+                                <div class="col-lg-12 text-center">
+                                    <div class="pagination-wrap" v-if="totalPage!=0">
+                                        <div class="num">
+                                            <select size="1" name="sample_1_length" aria-controls="sample_1" class="form-control" v-model="pageSize" id="mySelect">
+                                                <option value="5" >5条/页</option>
+                                                <option value="10">10条/页</option>
+                                                <option value="20" selected>20条/页</option>
+                                                <option value="50">50条/页</option>
+                                            </select>
+                                        </div>
+                                        <ul class="pagination">
+                                            <li :class="currentPage==1?'disabled':''">
+                                                <a href="#" @click="turnToPage(1)">首页</a>
+                                            </li>
+                                            <li :class="currentPage==1?'disabled':''">
+                                                <a @click="turnToPage(currentPage-1)" href="#">上一页</a>
+                                            </li>
+                                            <li>
+                                                <a href="#" @click="turnToPage(currentPage-3)" v-text="currentPage-3" v-if="currentPage-3>0"></a>
+                                            </li>
+                                            <li>
+                                                <a href="#" @click="turnToPage(currentPage-2)" v-text="currentPage-2" v-if="currentPage-2>0"></a>
+                                            </li>
+                                            <li>
+                                                <a href="#" @click="turnToPage(currentPage-1)" v-text="currentPage-1" v-if="currentPage-1>0"></a>
+                                            </li>
+                                            <li class="active">
+                                                <a href="#" @click="turnToPage(currentPage)" v-text="currentPage">3</a>
+                                            </li>
+                                            <li>
+                                                <a href="#" @click="turnToPage(currentPage+1)" v-text="currentPage+1" v-if="currentPage+1<=totalPage"></a>
+                                            </li>
+                                            <li>
+                                                <a href="#" @click="turnToPage(currentPage+2)" v-text="currentPage+2" v-if="currentPage+2<=totalPage"></a>
+                                            </li>
+                                            <li>
+                                                <a href="#" @click="turnToPage(currentPage+3)" v-text="currentPage+3" v-if="currentPage+3<=totalPage"></a>
+                                            </li>
+                                            <li :class="currentPage==totalPage?'disabled':''">
+                                                <a href="#" @click="turnToPage(currentPage+1)">下一页</a>
+                                            </li>
+                                            <li :class="currentPage==totalPage?'disabled':''">
+                                                <a href="#" @click="turnToPage(totalPage)">尾页</a>
+                                            </li>
+                                        </ul>
+                                        <div class="go">
+                                            <div :class="isPageNumberError?'input-group error':'input-group'">
+                                                <input class="form-control" type="number" v-model="goToPage" min="1">
+                                                <a href="#" class="input-group-addon" @click="turnToPage(goToPage)">Go</a>
+                                            </div>
+                                        </div>
+                                        <small class="small nowrap"> 当前第
+                                            <span class="text-primary" v-text="currentPage"></span> /
+                                            <span class="text-primary" v-text="totalPage"></span>页，共有
+                                            <span class="text-primary" v-text="tt"></span> 条</small>
+                                    </div>
+                                </div>
+                            </div> -->
+                        </section>
+                    </div>
+                </div>
+                <!-- table end -->
+                <!-- updateModal start -->
+                <div class="modal fade" id="updateModal" tabindex="-1" role="dialog" aria-labelledby="updateModalLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                                <h4 class="modal-title">修改测试项目</h4>
+                            </div>
+                            <div class="modal-body">
+                                <!-- modal-body start -->
+                                <section class="panel">
+                                    <form id="updateForm" class="form-horizontal" role="form">
+                                        <div class="form-group hidden">
+                                            <label class="col-lg-3 control-label">测试项目编号</label>
+                                            <div class="col-lg-5">
+                                                <input type="text" class="form-control" name="id" value="{{ selectedId}}">
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-lg-3 control-label">测试项目编号</label>
+                                            <div class="col-lg-5">
+                                                <input type="text" class="form-control" name="testProjectCode">
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-lg-3 control-label">测试项目名称</label>
+                                            <div class="col-lg-5">
+                                                <input type="text" class="form-control" name="testProjectName">
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-lg-3 control-label">描述</label>
+                                            <div class="col-lg-5">
+                                                <textarea class="form-control" rows="3" name="taskDescription"></textarea>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </section>
+                                <!-- modal-body end -->
+                            </div>
+                            <div class="modal-footer">
+                                <button data-dismiss="modal" class="btn btn-default" type="button">取消</button>
+                                <button data-dismiss="modal" class="btn btn-success" type="button" v-on:click="update">修改</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- updateModal end -->
             </section>
             <link rel="import" href="./common/copy-right.html?__inline">
         </section>
@@ -43,3 +324,8 @@
 <script src="../lib/vue-resource.min.js"></script>
 <script type="text/javascript" src="../static/js/record3.js"></script>
 <script type="text/javascript" src="../lib/jquery.validate.js"></script>
+<script type="text/javascript" src="../lib/jquery-1.8.3.min.js"></script>
+<script type="text/javascript" src="../lib/bootstrap-datetimepicker.min.js"></script>
+<script type="text/javascript" src="../lib/bootstrap-datetimepicker.zh-CN.js"></script>
+<script src="../static/js/template/pagination.js"></script>
+<script type="text/javascript" src="../static/js/ruleresult.js"></script>
