@@ -76,6 +76,7 @@
                 let selectEle = {};
                 selectEle.value = _this.selectEleVal;   //把当前下拉框的值赋值
                 selectEle.order = _this.setOrder;;  //用户点击的顺序
+                selectEle.elementId = _this.modal.elementId;
                 _this.selectValue.push(selectEle);
             }
         },
