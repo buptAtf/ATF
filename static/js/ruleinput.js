@@ -13,7 +13,7 @@
         inputMinLength: '', //输入的最短长度
         inputMaxLength: '', //输入的最大长度
         inputElement:[],    //输入元素的字段
-        setOrder: 0,        //输入顺序
+        setOrder: -1,        //输入顺序
         selectValue: [],    //下拉框的列表选择值
         selectEleVal: '',   //当前下拉框的选择值
       }
