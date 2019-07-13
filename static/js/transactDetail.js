@@ -30,6 +30,7 @@ var app = new Vue({
             faliMSG: '操作失败啦。糟糕的是没有返回信息，难道是ajax请求失败了',
             propTr: '<tr><td><input type="checkbox" name="chk_list"/></td><td contenteditable="true"></td><td contenteditable="true"></td></tr>',
 
+            classtype:null,
             classtypeList: [], //控件类型下拉列表
             mainList: [], //主属性
             mainListLength: 0,
@@ -247,6 +248,8 @@ var app = new Vue({
                                     "elementId": _this.elementId
                                 }),
                                 success: function (data) {
+
+                                    _this.classtype =  data.element.classType;
                                     var classtype = data.element.classType;
                                     $('#classtypeSelect').val(classtype);
                                     var relateParentObjectId = data.element.relateParentIdentifyObjectId;
