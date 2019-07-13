@@ -16,6 +16,15 @@
         setOrder: -1,        //输入顺序
         selectValue: [],    //下拉框的列表选择值
         selectEleVal: '',   //当前下拉框的选择值
+        singleButtonValue: [
+            {
+            "value":"a", 
+            "order":"3",
+            "elementId": 69
+            }
+        ],    //按钮的规则
+        elementRepositoryId:-1,//元素库id
+        uiId:-1,//当前下拉框的选择值
       }
     },
     ready: function() {
@@ -53,7 +62,8 @@
                 }),
                 success: function(data) {
                     _this.elements = data.uis[0].elements;
-                    
+                    _this.elementRepositoryId = data.elementRepositoryId;
+                    _this.uiId = data.uis[0].uiId;
                 }
             })
         },
@@ -94,6 +104,9 @@
             var ret = {};
             ret.inputElement = this.inputElement;
             ret.selectValue = this.selectValue;
+            ret.singleButtonValue = this.singleButtonValue;
+            ret.uiId = this.uiId;
+            ret.repositoryId = this.elementRepositoryId;
 
             $.ajax({
                 url: address3 + "/regulationController/saveRegulation",
