@@ -8,19 +8,19 @@
     color:  #FFD700 ;
 }
 
-/* Atelier-Lakeside Red */
-.hljs-variable,
-.hljs-template-variable,
-.hljs-attribute,
-.hljs-tag,
-.hljs-name,
-.hljs-regexp,
-.hljs-link,
-.hljs-name,
-.hljs-selector-id,
-.hljs-selector-class {
-    color: lightpink;
-}
+ /*!*Atelier-Lakeside Red *!*/
+/*.hljs-variable,*/
+/*.hljs-template-variable,*/
+/*.hljs-attribute,*/
+/*.hljs-tag,*/
+/*.hljs-name,*/
+/*.hljs-regexp,*/
+/*.hljs-link,*/
+/*.hljs-name,*/
+/*.hljs-selector-id,*/
+/*.hljs-selector-class {*/
+    /*color: lightpink;*/
+/*}*/
 
 /* Atelier-Lakeside Orange */
 .hljs-number,
@@ -30,19 +30,20 @@
     color:  gray;
 }
 .hljs-literal{
-    color:deepskyblue;
+    color:orangered;
 }
 .hljs-builtin-name,
+.hljs-built_in
 .hljs-builtco_in,{
-    color:red;
+    color:deepskyblue;
 }
 
-/* Atelier-Lakeside Green */
-.hljs-string,
-.hljs-symbol,
-.hljs-bullet {
-    color:   hotpink  ;
-}
+/*!* Atelier-Lakeside Green *!*/
+/*.hljs-string,*/
+/*.hljs-symbol,*/
+/*.hljs-bullet {*/
+    /*color:   hotpink  ;*/
+/*}*/
 
 /* Atelier-Lakeside Blue */
 .hljs-title,
@@ -51,6 +52,8 @@
 }
 
 /* Atelier-Lakeside Purple */
+.hljs-tag,
+.hljs-name,
 .hljs-keyword,
 .hljs-selector-tag {
     color: lawngreen;
