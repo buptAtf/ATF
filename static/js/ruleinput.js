@@ -69,10 +69,6 @@
                     _this.elementRepositoryId = data.elementRepositoryId;
                     _this.uiId = data.uis[0].uiId;
 
-                    for(let i=0; i<_this.elements.length; i++) {    //有多少个元素，就准备多少个键值对，用于显示点击之后的提示
-                        let temp = {active:false};              
-                        _this.clickActives.push(temp);
-                    }
                 }
             })
         },
@@ -109,7 +105,9 @@
             this.inputMaxLength = '';
             this.selectEleVal = '';
             this.clickActive = index;   //选中的第几个元素
-            this.clickActives[index].active = true;
+            
+            Vue.set(this.clickActives, index, true);      //监听数组内的元素
+
         },
         saveRules: function() {
             var ret = {};
