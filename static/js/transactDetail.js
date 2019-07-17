@@ -570,6 +570,8 @@ var app = new Vue({
         },
         addrule(){
             var _this = this;
+            sessionStorage.setItem('ruleName', _this.ruleName);
+            sessionStorage.setItem('ruleDesc', _this.ruleDesc);
             window.open('ruleinput.html?ruleName='+_this.ruleName+'&ruleDesc='+_this.ruleDesc,'_blank');
         },
         linkDownload (url) {

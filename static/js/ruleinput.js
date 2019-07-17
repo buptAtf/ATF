@@ -3,8 +3,8 @@
     el: '#app',
     data: function () {
       return {
-        ruleName: '',
-        ruleDesc: '',
+        ruleName: sessionStorage.getItem('ruleName'),
+        ruleDesc: sessionStorage.getItem('ruleDesc'),
         modal: {type:'',elementId:'', index:''},
         elements: {},
         isRestraint: false, //输入框是否有限制
@@ -25,25 +25,29 @@
         ],    //按钮的规则
         elementRepositoryId:-1,//元素库id
         uiId:-1,//当前下拉框的选择值
+        clickActive: -1,    //使css改变的标志位
+        clickActives:[],     //点击之后，显示已点击的标志
+        
       }
     },
     ready: function() {
       var _this=this;
-      this.getAllElements();
+      this.getAllElements();        //获取所有元素
 
-      var queryArgs = location.search.slice(1);
-      var o = {};
-      var arr = queryArgs.split('&');
-      for (let item of arr) {
-        let a = item.split('=');
-        o[a[0]] = a[1];
-      }
-      console.log(o)
+
+    //   var queryArgs = location.search.slice(1);
+    //   var o = {};
+    //   var arr = queryArgs.split('&');
+    //   for (let item of arr) {
+    //     let a = item.split('=');
+    //     o[a[0]] = a[1];
+    //   }
+    //   console.log(o)
       
-      _this.recordData = o.viewcaseargs ?  o.viewcaseargs : '';console.log( _this.recordData);
-      _this.ruleName = o.ruleName;
-      _this.ruleDesc = o.ruleDesc;
-      console.log(' _this.autid'+ _this.autid+'_this.transid'+_this.transid)
+    //   _this.recordData = o.viewcaseargs ?  o.viewcaseargs : '';console.log( _this.recordData);
+    //   _this.ruleName = o.ruleName;
+    //   _this.ruleDesc = o.ruleDesc;
+    //   console.log(' _this.autid'+ _this.autid+'_this.transid'+_this.transid)
     },
     methods: {
         rulesave() {
@@ -61,9 +65,14 @@
                     transactId: transactId
                 }),
                 success: function(data) {
-                    _this.elements = data.uis[0].elements;
+                    _this.elements = data.uis[0].elements;      //获取所有元素
                     _this.elementRepositoryId = data.elementRepositoryId;
                     _this.uiId = data.uis[0].uiId;
+
+                    for(let i=0; i<_this.elements.length; i++) {    //有多少个元素，就准备多少个键值对，用于显示点击之后的提示
+                        let temp = {active:false};              
+                        _this.clickActives.push(temp);
+                    }
                 }
             })
         },
@@ -78,14 +87,14 @@
                 inputEle.inputMinLength = _this.inputMinLength; //输入最小值
                 inputEle.inputMaxLength = _this.inputMaxLength; //输入最大值
                 inputEle.inputSpecialCh = getCheckBoxValue();   //复选框的值，不能包含的字符
-                inputEle.order = _this.setOrder;
+                inputEle.order = _this.setOrder;                //设置用户点击的顺序
                 inputEle.elementId = _this.modal.elementId;
                 _this.inputElement.push(inputEle);    //将设置好的输入框元素推入数组
 
             } else if(_this.modal.type=='weblist') {
                 let selectEle = {};
                 selectEle.value = _this.selectEleVal;   //把当前下拉框的值赋值
-                selectEle.order = _this.setOrder;;  //用户点击的顺序
+                selectEle.order = _this.setOrder;      //用户点击的顺序
                 selectEle.elementId = _this.modal.elementId;
                 _this.selectValue.push(selectEle);
             }
@@ -99,6 +108,8 @@
             this.inputMinLength = '';
             this.inputMaxLength = '';
             this.selectEleVal = '';
+            this.clickActive = index;   //选中的第几个元素
+            this.clickActives[index].active = true;
         },
         saveRules: function() {
             var ret = {};
@@ -107,20 +118,39 @@
             ret.singleButtonValue = this.singleButtonValue;
             ret.uiId = this.uiId;
             ret.repositoryId = this.elementRepositoryId;
-
+            ret.nameMedium = this.ruleName;
+            ret.descShort = this.ruleDesc;
             $.ajax({
                 url: address3 + "/regulationController/saveRegulation",
                 type: "POST",
                 contentType: "application/json",
                 data: JSON.stringify(ret),
                 success: function(data) {
+                    if(data.respCode==='0000') {
+                        
+                        $("#successModal").modal();   //显示操作成功的模态框
+                        $("#mockedit").trigger("click");
+                    } else {
+                        $("#failModal").modal();
+                    }
                     console.log(data);
                 }
             })
-            console.log(JSON.stringify(ret));
+            
         }
 
     },
+
+    // watch: {
+    //     clickActive: {
+    //         handler: function(val, oldval) {
+    //             console.log("原来是" + oldval);
+    //             console.log("现在是" + val);
+                
+    //         },
+    //         deep: true
+    //     }
+    // }
 
   })
 

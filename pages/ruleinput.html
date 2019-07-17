@@ -18,6 +18,9 @@
       height: calc(100vh - 190px);
       background-color: #fff;
     }
+    .active {
+      border:2px solid red;
+    }
   </style>
 </head>
 
@@ -56,16 +59,18 @@
           </section>
       </div>
   </div>
-    <section id="main-content" style="margin-left: 0;">
-      <section class="wrapper" style="margin-top: 0;">
-        <div v-for="(index,item) in elements" style="margin-top:20px;">
-          <a style="position: absolute; margin-top: {{item.pointY}}px; margin-left: {{item.pointX}}px" data-toggle="modal" href="#setRuleModal" >
-            <img :src="'http://10.101.167.184:8080/'+item.screenShotPath" @click="setCurType(item.classType, item.elementId, index)" style="width:{{item.sizeWidth}}px; height:{{item.sizeHeight}}px;">
-          </a>
-        </div>
-      </section>
+
+  <section id="main-content" style="margin-left: 0;">
+    <section class="wrapper" style="margin-top: 0;">
+      <div v-for="(index,item) in elements" style="margin-top:20px;">
+        <a style="position: absolute; margin-top: {{item.pointY}}px; margin-left: {{item.pointX}}px" data-toggle="modal" href="#setRuleModal" >
+          <img :src="'http://10.101.167.184:8080/'+item.screenShotPath" :class="clickActive==index?'active':''" @click="setCurType(item.classType, item.elementId, index)" style="width:{{item.sizeWidth}}px; height:{{item.sizeHeight}}px;">
+          <span v-show="clickActives[index].active==true" class="glyphicon glyphicon-ok"></span>
+        </a>
+      </div>
     </section>
-    <!-- <object-repo></object-repo> -->
+  </section>
+  <!-- <object-repo></object-repo> -->
 
 
     <!-- addrule start -->
@@ -162,8 +167,45 @@
     </div>
     <!-- addrule end -->
 
+    <!-- successModal start -->
+    <div class="modal fade" id="successModal" tabindex="-1" role="dialog" aria-labelledby="successModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+          <div class="modal-content">
+              <div class="modal-header">
+                  <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                  <h4 class="modal-title">操作成功</h4>
+              </div>
+              <div class="modal-body">
+                  <h4>操作成功！</h4>
+              </div>
+              <div class="modal-footer">
+                  <button data-dismiss="modal" class="btn btn-success" type="button">确定</button>
+              </div>
+          </div>
+      </div>
+  </div>
+  <!-- successModal end -->
+  <!-- failModal start -->
+  <div class="modal fade" id="failModal" tabindex="-1" role="dialog" aria-labelledby="failModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+          <div class="modal-content">
+              <div class="modal-header">
+                  <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                  <h4 class="modal-title">操作失败</h4>
+              </div>
+              <div class="modal-body">
+                  <h4>操作失败！</h4>
+              </div>
+              <div class="modal-footer">
+                  <button data-dismiss="modal" class="btn btn-success" type="button">确定</button>
+              </div>
+          </div>
+      </div>
+  </div>
+  <!-- failModal end -->
+
     <!--main content end-->
-    <div class="footer">
+    <div class="footer" style="position:absolute; left:40%; bottom:10px;">
       <link rel="import" href="./common/copy-right.html?__inline">
     </div>
   </div>
