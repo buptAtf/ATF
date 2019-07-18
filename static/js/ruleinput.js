@@ -111,6 +111,8 @@
         },
         saveRules: function() {
             var ret = {};
+            let transId = parseInt(sessionStorage.getItem("transactId"));     //把功能点id传过去
+
             ret.inputElement = this.inputElement;
             ret.selectValue = this.selectValue;
             ret.singleButtonValue = this.singleButtonValue;
@@ -118,6 +120,8 @@
             ret.repositoryId = this.elementRepositoryId;
             ret.nameMedium = this.ruleName;
             ret.descShort = this.ruleDesc;
+            ret.transId = transId;
+            
             $.ajax({
                 url: address3 + "/regulationController/saveRegulation",
                 type: "POST",
