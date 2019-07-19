@@ -115,7 +115,7 @@
 
             ret.inputElement = this.inputElement;
             ret.selectValue = this.selectValue;
-            ret.singleButtonValue = this.singleButtonValue;
+            ret.singleButtonValue = [];
             ret.uiId = this.uiId;
             ret.repositoryId = this.elementRepositoryId;
             ret.nameMedium = this.ruleName;
