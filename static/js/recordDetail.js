@@ -627,10 +627,10 @@ var app = new Vue({
         this.zTreeSettings.uiAndElement.callback.onClick = this.zTreeOnClick;
         this.zTreeSettings.functions.callback.onClick = this.zTreeOnClick;
         this.setDrag();
-        $('.2').addClass('open');
-        $('.2 .arrow').addClass('open');
-        $('.2-ul').css({ display: 'block' });
-        $('.2-0').css({ color: '#ff6c60' });
+        $('.4').addClass('open');
+        $('.4 .arrow').addClass('open');
+        $('.4-ul').css({ display: 'block' });
+        $('.4-1').css({ color: '#ff6c60' });
         _this.detailTabFresh();
     },
     watch: {
