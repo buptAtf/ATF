@@ -644,9 +644,14 @@ var app = new Vue({
         },
         addrule(){
             var _this = this;
-            sessionStorage.setItem('ruleName', _this.ruleName);
-            sessionStorage.setItem('ruleDesc', _this.ruleDesc);
-            window.open('ruleinput.html?ruleName='+_this.ruleName+'&ruleDesc='+_this.ruleDesc,'_blank');
+            if(_this.ruleName!='' && _this.ruleDesc!='') {
+                sessionStorage.setItem('ruleName', _this.ruleName);
+                sessionStorage.setItem('ruleDesc', _this.ruleDesc);
+                window.open('ruleinput.html?ruleName='+_this.ruleName+'&ruleDesc='+_this.ruleDesc,'_blank');
+            } else {
+                Vac.alert('规则名称和描述不能为空');
+            }
+            
         },
         linkDownload (url) {
             window.open(url,'_blank') // 新窗口打开外链接
