@@ -181,10 +181,10 @@ ready: function(){
     this.getTestPlans();
     this.getTestPhases();
     this.getTestRound();
-    $('.3').addClass('open')
-    $('.3 .arrow').addClass('open')
-    $('.3-ul').css({display: 'block'})
-    $('.3-6').css({color: '#ff6c60'})
+    $('.4').addClass('open')
+    $('.4 .arrow').addClass('open')
+    $('.4-ul').css({display: 'block'})
+    $('.4-2').css({color: '#ff6c60'})
 },
 
 watch: {
@@ -1300,6 +1300,4 @@ methods: {
         setSelect: checkFunction.setSelect,
         setSelectListener: checkFunction.setSelectListener
 }
-});/**
- * Created by Dell on 2019/7/12.
- */
+});

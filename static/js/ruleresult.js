@@ -75,10 +75,10 @@ var app = new Vue({
         _this.getExecutionRecord();
         _this.creatTimeInit();
 
-        $('.3').addClass('open')
-        $('.3 .arrow').addClass('open')
-        $('.3-ul').css({display: 'block'})
-        $('.3-8').css({color: '#ff6c60'})
+        $('.4').addClass('open')
+        $('.4 .arrow').addClass('open')
+        $('.4-ul').css({display: 'block'})
+        $('.4-3').css({color: '#ff6c60'})
     },
     methods: {        //时间格式化
         formatDate(date){

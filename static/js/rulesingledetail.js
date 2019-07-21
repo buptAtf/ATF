@@ -67,10 +67,10 @@ var app = new Vue({
         this.queryTestPlan();
         this.queryScene();
 
-        $('.3').addClass('open')
-        $('.3 .arrow').addClass('open')
-        $('.3-ul').css({display: 'block'})
-        $('.3-7').css({color: '#ff6c60'})
+        $('.4').addClass('open')
+        $('.4 .arrow').addClass('open')
+        $('.4-ul').css({display: 'block'})
+        $('.4-4').css({color: '#ff6c60'})
     },
     methods: {
         //获取选中的id
