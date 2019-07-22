@@ -16,6 +16,7 @@
         inputElement:[],    //输入元素的字段
         setOrder: -1,        //输入顺序
         selectValue: [],    //下拉框的列表选择值
+        clickButton: [],    //按钮的点击
         selectEleVal: '',   //当前下拉框的选择值
         singleButtonValue: [
             {
@@ -91,6 +92,11 @@
                 selectEle.order = _this.setOrder;      //用户点击的顺序
                 selectEle.elementId = _this.modal.elementId;
                 _this.selectValue.push(selectEle);
+            } else if(_this.modal.type=='webbutton') {
+                let buttonEle = {};
+                buttonEle.order = _this.setOrder;
+                buttonEle.elementId = _this.modal.elementId;
+                _this.clickButton.push(buttonEle);
             }
         },
         setCurType: function(type , elementId, index) {    //确定当前点击的模态框的类型、elementId 和传参回来的顺序
@@ -113,6 +119,7 @@
 
             ret.inputElement = this.inputElement;
             ret.selectValue = this.selectValue;
+            ret.clickButton = this.clickButton;
             ret.singleButtonValue = [];
             ret.uiId = this.uiId;
             ret.repositoryId = this.elementRepositoryId;
