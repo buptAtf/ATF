@@ -5,6 +5,7 @@
       return {
         ruleName: sessionStorage.getItem('ruleName'),
         ruleDesc: sessionStorage.getItem('ruleDesc'),
+        uiId: sessionStorage.getItem("uiId"),
         modal: {type:'',elementId:'', index:''},
         elements: {},
         isRestraint: false, //输入框是否有限制
@@ -24,8 +25,7 @@
             "elementId": 69
             }
         ],    //按钮的规则
-        elementRepositoryId:-1,//元素库id
-        uiId:-1,//当前下拉框的选择值
+        elementRepositoryId:sessionStorage.getItem('elementRepositoryId'),//元素库id
         clickActive: -1,    //使css改变的标志位
         clickActives:[],     //点击之后，显示已点击的标志
         
@@ -34,7 +34,7 @@
     ready: function() {
       var _this=this;
       this.getAllElements();        //获取所有元素
-
+      
 
     //   var queryArgs = location.search.slice(1);
     //   var o = {};
@@ -59,17 +59,15 @@
             const _this = this;
             let transactId = sessionStorage.getItem("transactId");  
             $.ajax({
-                url: address3 + "elementRepository/queryAllElementsForATransact",
+                url: address3 + "elementRepository/querySingleUI",
                 type: "POST",
                 contentType: "application/json",
                 data: JSON.stringify({
-                    transactId: transactId
+                    "repositoryId": _this.elementRepositoryId,
+                    "uiId": _this.uiId
                 }),
                 success: function(data) {
-                    _this.elements = data.uis[0].elements;      //获取所有元素
-                    _this.elementRepositoryId = data.elementRepositoryId;
-                    _this.uiId = data.uis[0].uiId;
-
+                    _this.elements = data.elements;      //获取所有元素
                 }
             })
         },

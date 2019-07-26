@@ -11,6 +11,7 @@ var app = new Vue({
             elementRepositoryId: 6,
             UIName: '',
             UITitle: 'UI',
+            uiId:-1,
             eleName: '',
             UILinked: '',
             eleParent: '',
@@ -205,6 +206,7 @@ var app = new Vue({
                             _this.UIName = namestr;
                             _this.UITitle = namestr;
                             var uiId = treeNode.id;
+                            _this.uiId = treeNode.id;
                             $('#UIForm input[name="UIName"]').val(namestr);
                             $('#blank').css('display', 'none');
                             $('#UI').css('display', 'block');
@@ -242,11 +244,8 @@ var app = new Vue({
                             var uiId = parentNode.id,
                                 regulationId = parentNode.regulationId,
                                 classType = nodes[0].classType;
-                            
-                            console.log("regulationId :" + parentNode.regulationId);
-                            console.log("元素类型 :" + nodes[0].classType)
-                            console.log("元素id :" + _this.elementId)
 
+                            _this.uiId = -1;
                             $("#mainTbody").children().remove();
                             $("#addiTbody").children().remove();
                             $("#assiTbody").children().remove();
@@ -255,7 +254,6 @@ var app = new Vue({
                             $('#UI').css('display', 'none');
                             $('#ele').css('display', 'block');
                             var transid = !_this.componentMode ? _this.transactId : _this.transid;
-                            console.log()
                             $.ajax({
                                 url: address3 + 'elementRepository/querySingleElement',
                                 type: 'post',
@@ -359,6 +357,10 @@ var app = new Vue({
                             console.log("regulationId :" + parentNode.regulationId);
                             console.log("元素类型 :" + nodes[0].classType)
                             console.log("元素id :" + _this.elementId)
+                            console.log("regulationId :" + _this.regulationId)
+                            if(regulationId == null){
+                                return
+                            }
                             if("webedit" == classType){
                                 $.ajax({
                                     url: address3 + 'regulationController/searchInputRegulation',
@@ -2767,6 +2769,17 @@ var app = new Vue({
         replacemess(str) {
             var name = str.replace(/<span style="color: whitesmoke;background-color: darkred;">/g, "").replace(/<\/span>/g, "");
             return name;
+        },
+        showAddruleModal(){
+            var _this = this;
+            sessionStorage.setItem("uiId", _this.uiId);
+            sessionStorage.setItem("elementRepositoryId", _this.elementRepositoryId);
+
+            if (_this.uiId == -1) {
+                $('#elementAlertModal').modal();
+            } else {
+                $('#addruleModal').modal();
+            }
         },
     }
 })
