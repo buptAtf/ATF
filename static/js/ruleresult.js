@@ -212,8 +212,9 @@ var app = new Vue({
                 contentType: 'application/json',
                 data: JSON.stringify({
                     'testPlanId': '',
-                    'caseSourceChannel': '',
                     'runStatus': '',
+                    'caseLibId': 82,
+                    'caseSourceChannel': '',
                     'pageSize': listnum,
                     'currentPage': page,
                     'queryStartTime': startTime,
@@ -257,9 +258,11 @@ var app = new Vue({
                     type: 'post',
                     contentType: 'application/json',
                     data: JSON.stringify({
-                        'testPlanId': + _this.testPlanId,
+                        'testPlanId': '',
+                        'runStatus': '',     //执行状态
+                        'caseLibId': 82,
                         'caseSourceChannel': '',
-                        'runStatus': + _this.runStatus,     //执行状态
+                        
                         "pageSize":pageSize,
                         "currentPage":currentPage,
                         'queryStartTime': startTime,
@@ -267,18 +270,18 @@ var app = new Vue({
                     }),
                     success: (data) => {
                     if ('0000' === data.respCode) {
-                _this.sceneList = data.batchRunCtrlList;
-                _this.page.totalCount=data.totalCount;
-                _this.page.totalPage=data.totalPage;
-                // _this.page.currentPage = 1;
-            } else {
-                Vac.alert('出错啦~');
-            }
-        },
-            error: () => {
-                Vac.alert('出错啦~');
-            }
-        });
+                    _this.sceneList = data.batchRunCtrlList;
+                    _this.page.totalCount=data.totalCount;
+                    _this.page.totalPage=data.totalPage;
+                    // _this.page.currentPage = 1;
+                } else {
+                    Vac.alert('出错啦~');
+                }
+            },
+                error: () => {
+                    Vac.alert('出错啦~');
+                }
+            });
         },
         //改变页面大小
         changeListNum: function(){
