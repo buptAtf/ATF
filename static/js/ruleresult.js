@@ -51,7 +51,9 @@ var app = new Vue({
         runStatus: generateConst(0, 4, '未执行', '执行中', '执行完成-正常完成', '执行完成-错误终止', '执行完成-人工终止'),
         runResult: generateConst(1, 3, '全部成功', '部分成功', '全部失败'),
         creatTimeStart: '',
+        creatTimeStartWiget: '',
         creatTimeEnd:'',
+        creatTimeEndWiget: '',
         caseSourceChannel:'',
         runStatus:'',
         testPlans:[],
@@ -340,6 +342,8 @@ var app = new Vue({
             if(_this.period_flag==="0"){         //默认值
                 retDate[0] = '1990-1-1';
                 retDate[1] = ''+ today.getFullYear()+'-'+(today.getMonth()+1)+'-'+(today.getDate());
+                _this.creatTimeStart = _this.creatTimeStartWiget;
+                _this.creatTimeEnd = _this.creatTimeEndWiget;
             } else if(_this.period_flag==="1"){ //一天内
                 retDate[0] = ''+ yestday.getFullYear()+'-'+(yestday.getMonth()+1)+'-'+yestday.getDate();
                 retDate[1] = ''+ today.getFullYear()+'-'+(today.getMonth()+1)+'-'+(today.getDate());
@@ -363,6 +367,7 @@ var app = new Vue({
                 retDate[0] = _this.creatTimeStart;
                 retDate[1] = _this.creatTimeEnd;
             }
+            console.log("creatTimeInit得到的值是" + retDate);
             return retDate;
         },
         queryBatchByClick: function(){
