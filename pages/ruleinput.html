@@ -52,6 +52,7 @@
                       </div>
                       <div class="col-xs-2">
                         <a class="btn btn-default" data-toggle="modal" @click="saveRules()">保存规则</a>
+                        <a class="btn btn-default" data-toggle="modal" href="#setPointType"">设置检测点类型</a>
                       </div>
                   </div>
               </form>
@@ -159,13 +160,45 @@
             <!-- modal-body end -->
           </div>
           <div class="modal-footer">
-            <button  data-dismiss="modal"  class="btn btn-default"    type="button">取消</button>
+            <button  data-dismiss="modal"  class="btn btn-default" type="button">取消</button>
             <button data-dismiss="modal" class="btn btn-success" type="button" @click="setRules()">添加</button>
           </div>
         </div>
       </div>
     </div>
     <!-- addrule end -->
+
+    <!-- setPointType start -->
+    <div class="modal fade" id="setPointType" tabindex="-1" role="dialog" aria-labelledby="setPointType" aria-hidden="true">
+      <div class="modal-dialog" >
+          <div class="modal-content" style="width: 600px;">
+              <div class="modal-header">
+                  <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                  <h4 class="modal-title">设置检测点类型</h4>
+              </div>
+              <div class="modal-body">
+                  <div class="form-group ">
+                    <label class="col-xs-3 control-label">检测点类型及内容:</label>
+                    <div class="col-xs-3">
+                      <select class="form-control">
+                          <option>弹窗</option>
+                      </select>
+                    </div>
+                    <div class="col-xs-5">
+                      <input class="form-control" v-model="setPointContent">
+                    </div>
+                    
+                  </div>
+
+              </div>
+              <div class="modal-footer">
+                  <button  data-dismiss="modal"  class="btn btn-default"  type="button">取消</button>
+                  <button data-dismiss="modal" class="btn btn-success" type="button" >确定</button>
+              </div>
+          </div>
+      </div>
+    </div>
+    <!-- setPointType end -->
 
     <!-- successModal start -->
     <div class="modal fade" id="successModal" tabindex="-1" role="dialog" aria-labelledby="successModalLabel" aria-hidden="true">
