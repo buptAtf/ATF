@@ -28,7 +28,7 @@
         elementRepositoryId:sessionStorage.getItem('elementRepositoryId'),//元素库id
         clickActive: -1,    //使css改变的标志位
         clickActives:[],     //点击之后，显示已点击的标志
-        checkElement: {checkStyle: '',  checkInfo:'',  elementId:''},    //检查内容的值
+        checkPoint: {checkStyle: '',  checkInfo:'',  elementId:''},    //检查内容的值
         
       }
     },
@@ -85,6 +85,8 @@
                 inputEle.inputSpecialCh = getCheckBoxValue();   //复选框的值，不能包含的字符
                 inputEle.order = _this.setOrder;                //设置用户点击的顺序
                 inputEle.elementId = _this.modal.elementId;
+
+                inputEle.checkPoint = this.checkPoint;
                 _this.inputElement.push(inputEle);    //将设置好的输入框元素推入数组
 
             } else if(_this.modal.type=='weblist') {
@@ -92,11 +94,15 @@
                 selectEle.value = _this.selectEleVal;   //把当前下拉框的值赋值
                 selectEle.order = _this.setOrder;      //用户点击的顺序
                 selectEle.elementId = _this.modal.elementId;
+                selectEle.checkPoint = this.checkPoint;
+
                 _this.selectValue.push(selectEle);
             } else if(_this.modal.type=='webbutton') {
                 let buttonEle = {};
                 buttonEle.order = _this.setOrder;
                 buttonEle.elementId = _this.modal.elementId;
+
+                buttonEle.checkPoint = this.checkPoint;
                 _this.clickButton.push(buttonEle);
             }
         },
@@ -109,7 +115,9 @@
             this.inputMinLength = '';
             this.inputMaxLength = '';
             this.selectEleVal = '';
+            this.checkPoint = {checkStyle: '',  checkInfo:'',  elementId:''};
             this.clickActive = index;   //选中的第几个元素
+            
             
             Vue.set(this.clickActives, index, true);      //监听数组内的元素
 
@@ -127,7 +135,6 @@
             ret.nameMedium = this.ruleName;
             ret.descShort = this.ruleDesc;
             ret.transId = transId;
-            ret.checkElement = this.checkElement;  //设置弹窗的内容
             
             $.ajax({
                 url: address3 + "/regulationController/saveRegulation",
