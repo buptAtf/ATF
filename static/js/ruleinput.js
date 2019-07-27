@@ -28,7 +28,7 @@
         elementRepositoryId:sessionStorage.getItem('elementRepositoryId'),//元素库id
         clickActive: -1,    //使css改变的标志位
         clickActives:[],     //点击之后，显示已点击的标志
-        setPointContent: '',    //检查内容的值
+        checkElement: {checkStyle: '',  checkInfo:'',  elementId:''},    //检查内容的值
         
       }
     },
@@ -127,7 +127,7 @@
             ret.nameMedium = this.ruleName;
             ret.descShort = this.ruleDesc;
             ret.transId = transId;
-            ret.setPointContent = this.setPointContent;  //设置弹窗的内容
+            ret.checkElement = this.checkElement;  //设置弹窗的内容
             
             $.ajax({
                 url: address3 + "/regulationController/saveRegulation",

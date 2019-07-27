@@ -180,14 +180,13 @@
                   <div class="form-group ">
                     <label class="col-xs-3 control-label">检测点类型及内容:</label>
                     <div class="col-xs-3">
-                      <select class="form-control">
-                          <option>弹窗</option>
+                      <select class="form-control" v-model="checkElement.checkStyle">
+                          <option value="popup">弹窗</option>
                       </select>
                     </div>
                     <div class="col-xs-5">
-                      <input class="form-control" v-model="setPointContent">
+                      <input class="form-control" v-model="checkElement.checkInfo">
                     </div>
-                    
                   </div>
 
               </div>
