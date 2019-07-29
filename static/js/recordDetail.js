@@ -1550,29 +1550,31 @@ var app = new Vue({
                 databoj.regulationId = regulationId;
                 console.log(nodes[0])
                 console.log(elementId)
-                if(classType == "webedit"){
-                    databoj.type = "input_element";
-
-                    databoj.inputElement = {};
-                    databoj.simpleElement = null;
-                    databoj.inputElement.elementId = elementId;
-                    databoj.inputElement.inputMaxLength = +_this.inputMaxLength
-                    databoj.inputElement.inputMinLength = +_this.inputMinLength;
-                    databoj.inputElement.inputMust = _this.inputMust == "true"?true:false;
-                    databoj.inputElement.inputSpecialCh = $('input:checkbox[name="inputSpecialCh"]:checked').map(function () {
-                        return $(this).val();
-                        }).get().join(",");
-                    databoj.inputElement.inputValue = _this.inputValue;
-                    databoj.inputElement.isRestraint = _this.isRestraint == "true"?true:false;
-                    databoj.inputElement.order = +_this.order;
-                }
-                else{
-                    databoj.type = "select_element";
-                    databoj.inputElement = null;
-                    databoj.simpleElement = {};
-                    databoj.simpleElement.elementId = elementId
-                    databoj.inputElement.order = _this.order;
-                    databoj.simpleElement.value = _this.value;
+                
+                if(_this.regulationId != null){
+                    if(classType == "webedit"){
+                        databoj.type = "input_element";
+                        databoj.inputElement = {};
+                        databoj.simpleElement = null;
+                        databoj.inputElement.elementId = elementId;
+                        databoj.inputElement.inputMaxLength = +_this.inputMaxLength
+                        databoj.inputElement.inputMinLength = +_this.inputMinLength;
+                        databoj.inputElement.inputMust = _this.inputMust == "true"?true:false;
+                        databoj.inputElement.inputSpecialCh = $('input:checkbox[name="inputSpecialCh"]:checked').map(function () {
+                            return $(this).val();
+                            }).get().join(",");
+                        databoj.inputElement.inputValue = _this.inputValue;
+                        databoj.inputElement.isRestraint = _this.isRestraint == "true"?true:false;
+                        databoj.inputElement.order = +_this.order;
+                    }
+                    else{
+                        databoj.type = "select_element";
+                        databoj.inputElement = null;
+                        databoj.simpleElement = {};
+                        databoj.simpleElement.elementId = elementId
+                        databoj.inputElement.order = _this.order;
+                        databoj.simpleElement.value = _this.value;
+                    }
                 }
                     
             }
@@ -1698,32 +1700,34 @@ var app = new Vue({
                 }
             });
 
-            $.ajax({
-                url: address3 + '/regulationController/updateElementRegulation',
-                type: 'post',
-                contentType: 'application/json',
-                data: JSON.stringify(databoj),
-                success: function (data) {
-                    if (data.respCode == 0000) {
-                        $('#successModalEle').modal();
-                        _this.getElementTree(selectedUIName);
-                        // treeObj.selectNode(nodes[0]);
+            if(_this.regulationId != null){
+                $.ajax({
+                    url: address3 + '/regulationController/updateElementRegulation',
+                    type: 'post',
+                    contentType: 'application/json',
+                    data: JSON.stringify(databoj),
+                    success: function (data) {
+                        if (data.respCode == 0000) {
+                            $('#successModalEle').modal();
+                            _this.getElementTree(selectedUIName);
+                            // treeObj.selectNode(nodes[0]);
+                            $('#blank').css('display', 'block');
+                            $('#UI').css('display', 'none');
+                            $('#ele').css('display', 'none');
+                        } else {
+                            _this.failMSG = data.respMsg;
+                            $('#failModalEle').modal('show');
+                        }
+                    },
+                    error: function () {
+                        _this.failMSG = data.respMsg;
+                        $('#failModalEle').modal('show');
                         $('#blank').css('display', 'block');
                         $('#UI').css('display', 'none');
                         $('#ele').css('display', 'none');
-                    } else {
-                        _this.failMSG = data.respMsg;
-                        $('#failModalEle').modal('show');
                     }
-                },
-                error: function () {
-                    _this.failMSG = data.respMsg;
-                    $('#failModalEle').modal('show');
-                    $('#blank').css('display', 'block');
-                    $('#UI').css('display', 'none');
-                    $('#ele').css('display', 'none');
-                }
-            });
+                });
+            }
         },
         // 添加主属性
         addMainProp: function () {

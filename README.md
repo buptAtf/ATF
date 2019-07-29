@@ -35,7 +35,7 @@ npm install -g fis3
 ```
 ### 全局安装依赖
 ```
-npm install -g fis-parser-babel-6.x fis3-hook-commonjs fis3-postpackager-loader fis3-parser-node-sass node-sass
+npm install -g fis-parser-babel-6.x fis3-hook-commonjs fis3-postpackager-loader fis-parser-node-sass node-sass
 ```
 上面的几个包是必须的。可以依次安装，也可以像上面一样一次性安装完。
 
