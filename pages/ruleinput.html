@@ -65,7 +65,7 @@
     <section class="wrapper" style="margin-top: 0;">
       <div v-for="(index,item) in elements" style="margin-top:20px;">
         <a style="position: absolute; margin-top: {{item.pointY}}px; margin-left: {{item.pointX}}px" data-toggle="modal" href="#setRuleModal" >
-          <img :src="'http://10.101.167.184:8080/'+item.screenShotPath" :class="clickActive==index?'active':''" @click="setCurType(item.classType, item.elementId, index)" style="width:{{item.sizeWidth}}px; height:{{item.sizeHeight}}px;">
+          <img :src="address4+item.screenShotPath" :class="clickActive==index?'active':''" @click="setCurType(item.classType, item.elementId, index)" style="width:{{item.sizeWidth}}px; height:{{item.sizeHeight}}px;">
           <span v-show="clickActives[index]==true" class="glyphicon glyphicon-ok"></span>
         </a>
       </div>
