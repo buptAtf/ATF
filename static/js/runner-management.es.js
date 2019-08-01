@@ -171,7 +171,7 @@ var app = new Vue({
             $('#updateForm input[name="modifierId"]').val(sessionStorage.getItem('userId'));
         },
         downloadRunner: function(){
-            window.location.href = "http://10.101.167.184:8080/atf-data/atf-runner.zip";
+            window.location.href = address4 +"/atf-data/atf-runner.zip";
         },
         logshow(identifiableName){
             var _this = this;
