@@ -185,7 +185,7 @@ var app = new Vue({
             sessionStorage.setItem("batchShow", true);
             sessionStorage.setItem("testPlanId", testPlanId);
             sessionStorage.setItem("isFromRecordSheet",true);     //判断是不是从批量执行页面跳转过去
-            location.href = "testRecord.html";
+            location.href = "rulesingledetail.html";
         },
         getCount: function (success,failed,notRun) {
             sessionStorage.setItem("success", success);

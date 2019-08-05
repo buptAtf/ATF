@@ -129,7 +129,7 @@ created: function(){
             Vac.ajax({
             url: address3 + 'testPlanController/queryTestPlan',
             data: {
-                caseLibId: _this.caselibId,
+                caseLibId: 82,
                 "nameMedium": "",
                 "descMedium": "",
             },
@@ -666,7 +666,7 @@ methods: {
                 'pageSize': pageSize,
                 "orderType":order,
                 "orderColumns":sort,
-                "caseLibId": _this.caselibId
+                "caseLibId":82
             }),
             success: function(data){
                 if(data.respCode == '0000'){
@@ -1205,7 +1205,7 @@ methods: {
                     "orderColumns":this.orderColumns,
                     "nameMedium": "",
                     "descMedium": "",
-                    "caseLibId": +initialAddRowData.caseLibId
+                    "caseLibId": 82
                 },
                 success: (data) => {
                 if ('0000' === data.respCode) {

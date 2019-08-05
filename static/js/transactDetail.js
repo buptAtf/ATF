@@ -360,33 +360,35 @@ var app = new Vue({
                             console.log("元素类型 :" + nodes[0].classType)
                             console.log("元素id :" + _this.elementId)
                             if("webedit" == classType){
-                                $.ajax({
-                                    url: address3 + 'regulationController/searchInputRegulation',
-                                    type: 'post',
-                                    contentType: 'application/json',
-                                    data: JSON.stringify({
-                                        "elementId": _this.elementId,//元素id
-                                        "regulationId":regulationId //规则id                                
-                                    }),
-                                    success: function (data) {
-                                        _this.inputMaxLength = data.inputMaxLength,
-                                        _this.inputMinLength= data.inputMinLength,
-                                        _this.inputMust= data.inputMust == true?"true":"false",
-                                        _this.inputSpecialCh= data.inputSpecialCh,
-                                        _this.inputValue= data.inputValue,
-                                        _this.isRestraint= data.isRestraint == true?"true":"false",
-                                        _this.order= data.order
-                                        var arr = data.inputSpecialCh.split(",")
-                                        document.getElementById("chinese").checked= false
-                                        document.getElementById("special").checked= false
-                                        if(arr[0] != ""){
-                                            console.log(arr)
-                                            arr.forEach(function (item){
-                                                document.getElementById(item).checked= true
-                                            })
+                                if(regulationId != null){
+                                    $.ajax({
+                                        url: address3 + 'regulationController/searchInputRegulation',
+                                        type: 'post',
+                                        contentType: 'application/json',
+                                        data: JSON.stringify({
+                                            "elementId": _this.elementId,//元素id
+                                            "regulationId":regulationId //规则id                                
+                                        }),
+                                        success: function (data) {
+                                            _this.inputMaxLength = data.inputMaxLength,
+                                            _this.inputMinLength= data.inputMinLength,
+                                            _this.inputMust= data.inputMust == true?"true":"false",
+                                            _this.inputSpecialCh= data.inputSpecialCh,
+                                            _this.inputValue= data.inputValue,
+                                            _this.isRestraint= data.isRestraint == true?"true":"false",
+                                            _this.order= data.order
+                                            var arr = data.inputSpecialCh.split(",")
+                                            document.getElementById("chinese").checked= false
+                                            document.getElementById("special").checked= false
+                                            if(arr[0] != ""){
+                                                console.log(arr)
+                                                arr.forEach(function (item){
+                                                    document.getElementById(item).checked= true
+                                                })
+                                            }
                                         }
-                                    }
-                                });
+                                    });
+                                }
                             }
                             else{
                                 if("weblist" == classType){
@@ -394,21 +396,23 @@ var app = new Vue({
                                 }
                                 if("webbutton" == classType)
                                     classType = "single_element"
-                                $.ajax({
-                                    url: address3 + 'regulationController/searchSingleRegulation',
-                                    type: 'post',
-                                    contentType: 'application/json',
-                                    data: JSON.stringify({
-                                        "elementId": _this.elementId,//元素id
-                                        "regulationId":regulationId,//规则id    
-                                        "type":classType                            
-                                    }),
-                                    success: function (data) {
-                                        _this.selectValue= data.value,
-                                        _this.order= data.order
+                                if(regulationId != null){
+                                    $.ajax({
+                                        url: address3 + 'regulationController/searchSingleRegulation',
+                                        type: 'post',
+                                        contentType: 'application/json',
+                                        data: JSON.stringify({
+                                            "elementId": _this.elementId,//元素id
+                                            "regulationId":regulationId,//规则id    
+                                            "type":classType                            
+                                        }),
+                                        success: function (data) {
+                                            _this.selectValue= data.value,
+                                            _this.order= data.order
 
-                                    }
-                                });
+                                        }
+                                    });
+                                }
                             }
                         }
                     },
@@ -2055,11 +2059,11 @@ var app = new Vue({
                         success: function (data) {
                             // _this.scriptIsChanged = false
                             _this.operationRows = []
-                            if (data.success === true) {
+                            if (data.respCode === '0000') {
                                 // {id:Symbol(), functions: [], operation: {element:'', ui: '',parameters:[{Name:'', Value: ''}]}}
-                                _this.scriptLength = data.o.data.length
-
-                                for (var operationRow of data.o.data) {
+                                _this.scriptLength = data.data.length
+        
+                                for (var operationRow of data.data) {
                                     let row = {
                                         id: null,
                                         functions: [],
@@ -2071,10 +2075,10 @@ var app = new Vue({
                                         parameters: []
                                     }
                                     row.id = Symbol()
-                                    row.functions.push({ name: operationRow.function, parameterlist: "" })
-                                    row.operation.element = operationRow.operator[2]
-                                    row.operation.ui = operationRow.operator[0]
-                                    row.operation.classType = operationRow.operator[1]
+                                    row.functions.push({ name: operationRow.methodName })
+                                    row.operation.element = operationRow.elementName
+                                    row.operation.ui = operationRow.uiname
+                                    row.operation.classType = operationRow.elementWidget
                                     for (let para of operationRow.arguments) {
                                         row.parameters.push({
                                             Name: para.name,
@@ -2086,7 +2090,7 @@ var app = new Vue({
                                     // _this.operationRows = [row]
                                 }
                             } else {
-                                Vac.alert(data.msg)
+                                Vac.alert(data.respMsg);
                             }
                         }
                     });

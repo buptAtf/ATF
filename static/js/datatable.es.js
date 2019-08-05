@@ -892,6 +892,7 @@ $(document).ready(function () {
 				transactId: null,
 				beforeOperationRows: [],
 				afterOperationRows: [],
+				checkOperationRows: [],
 				parameterVue: null,
 				beforeStr: '',
 				afterStr: '',
@@ -1210,6 +1211,26 @@ $(document).ready(function () {
 					this.getUIAndFunctions(2)
 					$('#ui-ele-modal2').modal('show')
 				},
+				showCheckFunctionSet (event, type) {
+					this.uiOrFunctions.table = 3;
+					this.selectCheckFunctionSet()
+					$('#ui-ele-modal2').modal('show')
+
+				},
+				selectCheckFunctionSet(){
+					Vac.ajax({
+						url: address3 + 'aut/selectCheckFunctionSet',
+						data: { 'id': autId },
+						success: (data) => {
+							if (data.respCode === '0000') {
+								var ztreeFunc = $.fn.zTree.init($('#functions-ul2'), setting.functions, data.omMethodRespDTOList);
+								ztreeFunc.expandAll(true);
+							} else {
+								// Vac.alert('');
+							}
+						}
+					})
+				},
 				getUIAndFunctions: function (type) {
 					var str = +type === 1 ? '' : 2
 					var setting = +type === 1 ? this.zTreeSettings : this.zTreeSettings2
@@ -1480,7 +1501,7 @@ $(document).ready(function () {
 					// 保存当前点击行，行索引值以及当前需要操作的table所绑定的数组
 					var parentRow = $(editDataVue.uiOrFunctions.target).parents('tr')
 					var index = parentRow.attr('data-index');
-					var operationRows = editDataVue.uiOrFunctions.table === 1 ? editDataVue.beforeOperationRows : editDataVue.afterOperationRows;
+					var operationRows = editDataVue.uiOrFunctions.table === 1 ? editDataVue.beforeOperationRows : (editDataVue.uiOrFunctions.table === 2?editDataVue.afterOperationRows:editDataVue.checkOperationRows );
 
 					if (editDataVue.uiOrFunctions.type === 'ui') {
 						// 点击了ui 与 元素后, 更新operation
@@ -2566,12 +2587,14 @@ $(document).ready(function () {
 														value.dataList.forEach((changedtb, tbindex)=> {
 															if(changedtb.colName == tbdata.colName){//该列有修改
 																console.log(changedtb)
+																console.log(tbindex)
 																flag = true;
-																changedtb[tbindex].data = tbdata.data;
+																changedtb.data = tbdata.data;
 															}
 														});
 														if(flag == false){//该列无修改
-															value.dataList.push(tbdata);													}
+															value.dataList.push(tbdata);
+														}
 													}
 												});
 												if (changedIndex == undefined){//无该用例修改
@@ -2581,7 +2604,6 @@ $(document).ready(function () {
 												}
 											});
 										}
-										console.log("1")
 										console.log(changedData)
 									},
 								});

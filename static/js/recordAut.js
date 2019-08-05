@@ -44,6 +44,10 @@ var app = new Vue({
         this.showTips();
     },
     methods: {
+        //下载录制工具
+        downloadRecorder: function(){
+            window.location.href = address4 + "atf-data/atf-recorder.zip";
+        },
         //获取选中的id
         getIds: function() {
             var id_array = new Array();

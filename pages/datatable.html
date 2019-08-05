@@ -749,7 +749,7 @@
         <div class="sticky-top">
           <label>数据校验</label>
           <div>
-            <button class="btn btn-white" @click="showUiAndElement2($event, 2)">
+            <button class="btn btn-white" @click="showCheckFunctionSet($event, 2)">
               <i class=" icon-trash"></i>
               添加多项
             </button>
@@ -790,7 +790,7 @@
               </tr>
             </thead>
             <tbody class="ui-sortable" id="sortable2">
-              <tr v-for="(index, row) in afterOperationRows" data-index={{index}} class="after-operation-row"
+              <tr v-for="(index, row) in checkOperationRows" data-index={{index}} class="after-operation-row"
                 track-by="id">
                 <td class="move">
                   <span class="icon-move"></span>
