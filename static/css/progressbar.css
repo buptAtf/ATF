@@ -1,0 +1,128 @@
+#progressbar{
+    position:fixed;
+    top:60px;
+    z-index : 999;
+}
+.pstep {
+    counter-reset: flag;
+    font-family: 'Microsoft YaHei','Lantinghei SC','Open Sans',Arial,'Hiragino Sans GB','STHeiti','WenQuanYi Micro Hei','SimSun',sans-serif;
+  }
+  .pstep li {
+    position: relative;
+    transition: all 0.3s ease-in-out;
+    -webkit-transition: all 0.3s ease-in-out;
+    -ms-transition: all 0.3s ease-in-out;
+  }
+  .pstep li a {
+    cursor: pointer;
+    padding: 10px 15px;
+    transition: all 0.3s ease-in-out;
+    -webkit-transition: all 0.3s ease-in-out;
+    -ms-transition: all 0.3s ease-in-out;
+  }
+  .pstep li a:before {
+    content: counter(flag);
+    counter-increment: flag;
+    transition: all 0.3s ease-in-out;
+    -webkit-transition: all 0.3s ease-in-out;
+    -ms-transition: all 0.3s ease-in-out;
+  }
+  .pstep li a:after {
+    content: "";
+    transition: all 0.3s ease-in-out;
+    -webkit-transition: all 0.3s ease-in-out;
+    -ms-transition: all 0.3s ease-in-out;
+  }
+  .pstep-arrow {
+    margin:  1px 0px 1px 180px;
+  }
+  .pstep-arrow.unhover li a:hover,
+  .pstep-arrow.unhover li a:focus {
+    background-color: #f6f6f6;
+    color: #444444;
+  }
+  .pstep-arrow.unhover li a:hover:before,
+  .pstep-arrow.unhover li a:focus:before {
+    background-color: #d2d2d2;
+    color: #ffffff;
+  }
+  .pstep-arrow.unhover li:not(:last-child) a:hover:after,
+  .pstep-arrow.unhover li:not(:last-child) a:focus:after {
+    background-color: #f6f6f6;
+  }
+  .pstep-arrow li {
+    padding-right: 20px;
+  }
+  .pstep-arrow li:last-child {
+    padding-right: 0;
+  }
+  .pstep-arrow li:nth-child(n+2) a {
+    margin-left: -20px;
+    border-radius: 0;
+  }
+  .pstep-arrow li:not(:last-child) a:after {
+    position: absolute;
+    top: -1px;
+    right: -20px;
+    width: 40px;
+    height: 40px;
+    transform: scale(0.707) rotate(45deg);
+    z-index: 1;
+    background-color: #f6f6f6;
+    border-radius: 0 5px 0 50px;
+    border-top: 1px solid #ffffff;
+    border-right: 1px solid #ffffff;
+    box-sizing: content-box;
+  }
+  .pstep-arrow li:not(:last-child) a:hover:after {
+    background-color: #00b8f5;
+  }
+  .pstep-arrow li a {
+    border-radius: 0;
+    color: #444444;
+    background-color: #f6f6f6;
+  }
+  .pstep-arrow li a:hover {
+    background-color: #00b8f5;
+    color: #ffffff;
+  }
+  .pstep-arrow li a:hover:before {
+    background: #ffffff;
+    color: #00b8f5;
+  }
+  .pstep-arrow li a:before {
+    position: absolute;
+    z-index: 2;
+    width: 20px;
+    height: 20px;
+    line-height: 20px;
+    border-radius: 20px;
+    left: 3rem;
+    font-weight: bold;
+    font-size: 1rem;
+    overflow: hidden;
+    top: 10px;
+    background: #d2d2d2;
+    color: #ffffff;
+  }
+  .pstep-arrow li.active a:before {
+    background: #ffffff;
+    color: #00b8f5;
+  }
+  .pstep-arrow li.active a:after {
+    background-color: #00b8f5;
+  }
+  .pstep-arrow li.active a,
+  .pstep-arrow li.active a:hover {
+    background-color: #00b8f5;
+    color: #ffffff;
+  }
+  .pstep-arrow li.active a:before,
+  .pstep-arrow li.active a:hover:before {
+    background-color: #ffffff;
+    color: #00b8f5;
+  }
+  .pstep-arrow li.active a:after,
+  .pstep-arrow li.active a:hover:after {
+    background-color: #00b8f5 !important;
+  }

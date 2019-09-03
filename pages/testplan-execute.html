@@ -99,13 +99,14 @@
         }
     </style>
 </head>
-<body id="v-body">
+<body>
 <!--header start-->
 <link rel="import" href="./common/header-guide.html?__inline">
 <!--header end-->
 <!--sidebar start-->
 <link rel="import" href="./common/aside-guide.html?__inline">
 <!--sidebar end-->
+<div id="v-body">
 <div v-cloak>
     <div class="content">
         <!--main content start-->
@@ -792,13 +793,17 @@
         </div>
     </div>
 </div>
+</div>
 <!-- /.modal -->
 <!-- <link rel="import" href="./common-vac/alert.html?__inline"> -->
 <!-- <link rel="import" href="./common-vac/confirm.html?__inline"> -->
+
+<script  src="../static/js/template/progressBar.js"></script>
 <script src="../static/js/config.js"></script>
 <script src="../static/js/vac-functions.es.js"></script>
 <script src="../static/js/testplan-execute.es.js"></script>
 <script src="../../lib/common-scripts.js"></script>
+
 <script>
     jQuery(function ($) {
         //解决模态框背景色越来越深的问题
