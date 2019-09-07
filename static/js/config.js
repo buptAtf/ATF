@@ -154,6 +154,8 @@ var progressbar = new Vue({
             case 'aut.html':
             case 'transact.html':
             case 'transactDetail.html':
+            case 'architecture.html':
+            case 'mockserver.html':
                     a[0].status="activing";
                     a[1].status=a[2].status=a[3].status="noactive";
                     break;
