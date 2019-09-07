@@ -1,7 +1,16 @@
 #progressbar{
+    user-select:none; 
+    -webkit-user-select:none; 
     position:fixed;
     top:60px;
     z-index : 999;
+}
+.container{
+  margin-left:180px;
+
+}
+.sidebar-closed{
+  margin-left:0;
 }
 .pstep {
     counter-reset: flag;
@@ -34,7 +43,7 @@
     -ms-transition: all 0.3s ease-in-out;
   }
   .pstep-arrow {
-    margin:  1px 0px 1px 180px;
+    margin:  0;
   }
   .pstep-arrow.unhover li a:hover,
   .pstep-arrow.unhover li a:focus {
@@ -105,24 +114,158 @@
     background: #d2d2d2;
     color: #ffffff;
   }
-  .pstep-arrow li.active a:before {
+  .pstep-arrow li.actived a:before,
+  .pstep-arrow li.actived a:before,
+  .pstep-arrow li.actived a:hover:before  {
     background: #ffffff;
     color: #00b8f5;
   }
-  .pstep-arrow li.active a:after {
-    background-color: #00b8f5;
+  .pstep-arrow li.actived a:after,
+  .pstep-arrow li.actived a,
+  .pstep-arrow li.actived a:hover,
+  .pstep-arrow li.actived a:hover:after {
+    background-color: #51c151;
+    color: #ffffff;
   }
-  .pstep-arrow li.active a,
-  .pstep-arrow li.active a:hover {
+  .pstep-arrow li.activing a,
+  .pstep-arrow li.activing a:after{
     background-color: #00b8f5;
     color: #ffffff;
   }
-  .pstep-arrow li.active a:before,
-  .pstep-arrow li.active a:hover:before {
-    background-color: #ffffff;
-    color: #00b8f5;
+  /* .pstep-arrow li.activing a,
+  .pstep-arrow li.activing a:after{
+    animation: flicker 0.75s linear 0s infinite alternate ;
+    @-moz-animation: flicker 0.75s linear 0s infinite alternate ;
+    @-o-animation: flicker 0.75s linear 0s infinite alternate ;
+    @-moz-animation: flicker 0.75s linear 0s infinite alternate ;
+    @-webkit-animation: flicker 0.75s linear 0s infinite alternate ;
+  } */
+  .hideprogress i{
+    font-size:20px;
+  }.hideprogress span{
+    line-height: 30px;
   }
-  .pstep-arrow li.active a:after,
-  .pstep-arrow li.active a:hover:after {
-    background-color: #00b8f5 !important;
+.hideprogress{
+  background-color: #f1f2f7;
+  vertical-align: middle;
+  text-align: center;
+  padding: 2px 3px;
+  float: left;
+  border:2px solid #00b8f5;
+}
+  .flash{
+    padding-left:0px
+
+  }
+.flash li:not(:last-child) a:after {
+    position: absolute;
+    top: -1px;
+    right: -15px;
+    width: 30px;
+    height: 30px;
+    transform: scale(0.707) rotate(45deg);
+    z-index: 1;
+    background-color: #f6f6f6;
+    border-radius: 0 5px 0 50px;
+    border-top: 1px solid #ffffff;
+    border-right: 1px solid #ffffff;
+    box-sizing: content-box;
+  }
+  .flash li a:before {
+    position: absolute;
+    z-index: 2;
+    width: 20px;
+    height: 20px;
+    line-height: 20px;
+    border-radius: 20px;
+    left: 3rem;
+    font-weight: bold;
+    font-size: 1rem;
+    overflow: hidden;
+    top: 5px;
+    background: #d2d2d2;
+    color: #ffffff;
+  }
+  .flash li a{
+    padding-top:5px;
+    padding-bottom:5px;
+  }
+
+  .flash0 a,
+  .flash0 a:after{
+    animation: flicker2 1.5s linear 0s infinite  ;
+  }
+  .flash1 a,
+  .flash1 a:after{
+    animation: flicker2 1.5s linear 0.3s infinite  ;
+  }
+  .flash2 a,
+  .flash2 a:after{
+    animation: flicker2 1.5s linear 0.6s infinite  ;
+  }
+  .flash3 a,
+  .flash3 a:after{
+    animation: flicker2 1.5s linear 0.9s infinite  ;
+  }
+  .flash4 a,
+  .flash4 a:after{
+    animation: flicker2 1.5s ease-in-out 1.2s infinite  ;
+  }
+
+  @keyframes flicker2{
+    from {
+      background-color: #00b8f5;
+      color: #444444;
+    }
+    to {
+      color: #444444;
+      background-color: #f8fbfc;
+    }
+  }
+
+  @keyframes flicker{
+    from {
+      background-color: #00b8f5;
+      color: #444444;
+    }
+    to {
+      color: #444444;
+      background-color: #86dcf5;
+    }
+  }
+   
+  @-moz-keyframes myfirst /* Firefox */
+  {
+    from {
+      background-color: #00b8f5;
+      color: #444444;
+    }
+    to {
+      color: #444444;
+      background-color: #86dcf5;
+    }
+  }
+
+  @-webkit-keyframes myfirst /* Safari and Chrome */
+  {
+    from {
+      background-color: #00b8f5;
+      color: #444444;
+    }
+    to {
+      color: #444444;
+      background-color: #86dcf5;
+    }
+  }
+
+  @-o-keyframes myfirst /* Opera */
+  {
+    from {
+      background-color: #00b8f5;
+      color: #444444;
+    }
+    to {
+      color: #444444;
+      background-color: #86dcf5;
+    }
   }

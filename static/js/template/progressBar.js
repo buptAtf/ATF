@@ -3,10 +3,21 @@
 //组件封装中遇到最多的问题就是大小写
 //该翻页组件的使用见tesplan
 var progressBarTemplate=`
-<div id ="container">
-    <ul class="nav nav-pills nav-justified pstep pstep-arrow">
-        <li v-for="(index, progress) in progressList " :class="progress.status===true?'active':''"  track-by="$index">
-        <a :href="#" @click = "bsStep(index)"  >{{ progress.name }}{{ progress.status }} </a>
+<div id ="container" class ="container">
+    <div class ="hideprogress " @click="hideprogress" v-show="hideFlag" > 
+        <i class ="icon-double-angle-left"></i><span>隐藏导航</span>
+    </div>
+    <div class ="hideprogress " @click="hideprogress" v-show="!hideFlag"> 
+        <i class ="icon-double-angle-right"></i><span>展开导航</span>
+    </div>
+    <ul class="nav nav-pills nav-justified pstep pstep-arrow" v-show="hideFlag">
+        <li v-for="(index, progress) in progressList " :class="progress.status"  track-by="$index">
+        <a :href="progress.href"  >{{ progress.name }} </a>
+        </li>
+    </ul>
+    <ul  v-show="hideFlag" v-for="(index, progress) in progressList " v-if="progress.status === 'activing' " class=" flash nav nav-pills nav-justified pstep pstep-arrow">
+        <li v-for="(index, progress) in progress.item " :class="'flash'+index"  :class="progress.status"  track-by="$index">
+        <a :href="progress.href"  >{{ progress.name }} </a>
         </li>
     </ul>
 </div>
@@ -20,11 +31,30 @@ var progressBar = Vue.extend({
     },
    data: function () {
        return {
+        hideFlag:true,
         progressListTimely: [],
        }
 
    },
    ready: function() {
+    var _this = this
+    _this.hideFlag = localStorage.getItem("hideprogress") == "true"?true:false;
+    if(_this.hideFlag){
+        if($(".wrapper").length ==0 ){
+            $("#main-content").css("padding-top","119px")
+        }
+        else{
+            $(".wrapper").css("margin-top","126px")
+        }
+    }
+    else{
+        if($(".wrapper").length ==0 ){
+            $("#main-content").css("padding-top","92px")
+        }
+        else{
+            $(".wrapper").css("margin-top","88px")
+        }
+    }
    },
    watch: {
     progressList: {
@@ -48,13 +78,28 @@ var progressBar = Vue.extend({
     //   }
    },
    methods: {
-     bsStep:(i)=>{
-        console.log(progressBar.progressListTimely);
-        progressBar.progressListTimely[i].status= true;
-        console.log(this.progressListTimely);
-        alert("123")
-     },
-
+    hideprogress: function() {
+        var _this = this; 
+        console.log(_this.hideFlag)
+        _this.hideFlag = !_this.hideFlag;
+        localStorage.setItem("hideprogress", _this.hideFlag);
+        if(_this.hideFlag){
+            if($(".wrapper").length ==0 ){
+                $("#main-content").css("padding-top","119px")
+            }
+            else{
+                $(".wrapper").css("margin-top","126px")
+            }
+        }
+        else{
+            if($(".wrapper").length ==0 ){
+                $("#main-content").css("padding-top","92px")
+            }
+            else{
+                $(".wrapper").css("margin-top","88px")
+            }
+        }
+    }
    }
 });
 
