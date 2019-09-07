@@ -71,6 +71,9 @@
     <section id="main-content" style="margin-left: 0;">
       <section class="wrapper" style="margin-top: 0;">
         <ul class="nav nav-tabs" role="tablist">
+          <li role="presentation" :class="{active: activeName=='exec-record'}">
+            <a href="#exec-record" aria-controls="exec-record" role="tab" data-toggle="tab">执行结果</a>
+          </li>
           <li role="presentation" :class="{active: activeName=='element-library'}">
             <a href="#element-library" aria-controls="element-library" role="tab" data-toggle="tab">元素库</a>
           </li>
@@ -240,6 +243,7 @@
 <script type="text/x-template" id="execution-record">
   <div class="tab-content" style="display: flex; flex-direction: column;">
     <!-- <iframe class="record-iframe" frameborder="0" :srcdoc="srcDoc"></iframe> -->
+    没有直接查询单条用例执行结果的接口
     <table class="table table-striped table-bordered border-top text-center" id="sample_1">
       <thead>
           <tr>
@@ -333,7 +337,8 @@
       console.log(o)
       
       _this.recordData = o.viewcaseargs ?  o.viewcaseargs : '';console.log( _this.recordData);
-      _this.activeName = o.activeName;//链接过来我是要看哪个界面的
+      // _this.activeName = o.activeName;//链接过来我是要看哪个界面的
+      _this.activeName = "exec-record";
       _this.viewScriptTestcaseId = o.testcaseId;
       $.ajax({
                 url: address3+'testcase/getSingleTestCaseInfo',

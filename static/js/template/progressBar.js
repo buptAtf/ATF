@@ -44,7 +44,7 @@ var progressBar = Vue.extend({
             $("#main-content").css("padding-top","119px")
         }
         else{
-            $(".wrapper").css("margin-top","126px")
+            $(".wrapper").css("margin-top","116px")
         }
     }
     else{
@@ -88,7 +88,7 @@ var progressBar = Vue.extend({
                 $("#main-content").css("padding-top","119px")
             }
             else{
-                $(".wrapper").css("margin-top","126px")
+                $(".wrapper").css("margin-top","116px")
             }
         }
         else{

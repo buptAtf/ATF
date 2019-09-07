@@ -1,6 +1,7 @@
 var app = new Vue({
     el: '#v-aut',
     data: {
+        newAutId:"",//新添加的系统id用于确认框的用例跳转
         autId:"",//被选中的弟
         autList: [],
         tt: 0, //总条数
@@ -148,14 +149,17 @@ var app = new Vue({
                 });
             }
         },
-
         //添加
         insert: function() {
             var _this=this;
-            var code=$('#insertForm input[name="code"]').val(),
+            var code=$('#insertForm input[name="code"]').val()||"被测系统"+new Date().valueOf(),
                 nameMedium=$('#insertForm input[name="nameMedium"]').val(),
                 inheriteArcId=$('#insertForm select[name="inheriteArcId"]').val(),
                 descShort=$('#insertForm textarea[name="descShort"]').val();
+            if(nameMedium == ''){
+                Vac.alert("系统名称不能为空");
+                return
+            }
             $.ajax({
                 url: address3+'aut/addSingleAut',
                 type: 'post',
@@ -170,6 +174,7 @@ var app = new Vue({
                     console.info(data);
                     if (data.respCode==0000) {
                         var newAutId = data.autId
+                        _this.newAutId = data.autId;
                         console.info(newAutId);
                         $.ajax({
                             url:address3+'tool/querySingleTool',
@@ -193,7 +198,7 @@ var app = new Vue({
                                         }),
                                         success:function(data){
                                             if(data.respCode==0000){
-                                                $('#successModal').modal();
+                                                $('#successAndGoModal').modal();
                                             }else{
                                                 _this.failMsg = "添加成功，但是执行代码初始化失败，请在被测系统自行配置"
                                                 $('#failModal2').modal();
@@ -209,13 +214,11 @@ var app = new Vue({
                         });
                         getAut(_this.currentPage, _this.pageSize, _this.order, _this.sort);
                     } else {
-                        // alert(data.respMsg)
-                        alert(data.respMsg)
+                        Vac.alert(data.respMsg)
                     }
                 },
                 error: function() {
-                    // alert(data.respMsg)
-                    alert(data.respMsg)
+                    Vac.alert("输入参数有问题！")
                 }
             });
         },

@@ -53,24 +53,23 @@
                                         <section class="panel">
                                             <form id="insertForm" class="form-horizontal" role="form">
                                                 <div class="form-group">
-                                                    <label class="col-lg-3 control-label">测试系统编号</label>
+                                                    <label class="col-lg-3 control-label">测试系统名称<font color="#FF0000">*</font></label>
                                                     <div class="col-lg-5">
-                                                        <input type="text" class="form-control" name="code" required>
-                                                    </div>
-                                                </div>
-                                                <div class="form-group">
-                                                    <label class="col-lg-3 control-label">测试系统名称</label>
-                                                    <div class="col-lg-5">
-                                                        <input type="text" class="form-control" name="nameMedium" required>
+                                                        <input type="text" class="form-control" name="nameMedium" required placeholder="必填项">
                                                     </div>
                                                 </div>
                                                 <div class="form-group">
                                                     <label class="col-lg-3 control-label">开发架构</label>
                                                     <div class="col-lg-5">
                                                         <select class="form-control" name="inheriteArcId">
-                                                            <option value="">-请选择开发架构-</option>
                                                             <option v-for="item in abstrList" value="{{item.id}}">{{item.name}}</option>
                                                         </select>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="col-lg-3 control-label">测试系统编号</label>
+                                                    <div class="col-lg-5">
+                                                        <input type="text" class="form-control" name="code"  placeholder="为空时自动生成">
                                                     </div>
                                                 </div>
                                                 <div class="form-group">
@@ -252,6 +251,25 @@
                                     </div>
                                     <div class="modal-footer">
                                         <button data-dismiss="modal" class="btn btn-success" type="button">确定</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- successModal end -->
+                        <!-- successModal start -->
+                        <div class="modal fade" id="successAndGoModal" tabindex="-1" role="dialog" aria-labelledby="successModalLabel" aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                                        <h4 class="modal-title">操作成功</h4>
+                                    </div>
+                                    <div class="modal-body">
+                                        <h4>操作成功！</h4>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button data-dismiss="modal" class="btn btn-success" type="button">确定</button>
+                                        <button data-dismiss="modal" class="btn btn-success" type="button" @click ="linkToTransact(newAutId,'')">管理系统功能点</button>
                                     </div>
                                 </div>
                             </div>
