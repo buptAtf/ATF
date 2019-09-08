@@ -27,8 +27,21 @@ var app = new Vue({
         }
     },
     ready: function() {
-        this.getAutId();
+        var _this = this;
+        _this.getAutId();
         getClass();
+        _this.getMethod();
+        $('#classSelect').change(function () {
+            _this.methodSelect();
+        });
+        $('#methodSelect').change(function () {
+            _this.getElementTree();
+            _this.detailTabFresh();
+            _this.getObjTree();
+
+            _this.getScriptTemplate();
+        });
+
         $('.2').addClass('open')
         $('.2 .arrow').addClass('open')
         $('.2-ul').css({display: 'block'})
@@ -43,436 +56,476 @@ var app = new Vue({
             this.autId = sessionStorage.getItem("autId");
         },
         //添加控件类型
-        addClass: function() {
-            var _this = this,
-                name = $('#addClassForm input[name="name"]').val(),
-                chsName = $('#addClassForm input[name="chsName"]').val(),
-                descShort = $('#addClassForm input[name="descShort"]').val();
-            var that=this;
-            $.ajax({
-                url: address3 + '/omClass/addSingleAutOmClass',
-                type: 'post',
-                contentType: 'application/json',
-                data: JSON.stringify({
-                    "name": name,
-                    "chsName": chsName,
-                    "descShort": descShort,
-                    "autId": that.autId
-                }),
-                success: function(data) {
-                    console.info(data);
-                    if (data.respCode==0000) {
-                        $('#successModal').modal();
-                        getClass();
-                    } else {
-                        _this.failMSG=data.respMsg;
-                        $('#failModal').modal();
-                    }
-                },
-                error: function() {
-                    $('#failModal').modal();
-                }
-            });
-        },
+        // addClass: function() {
+        //     var _this = this,
+        //         name = $('#addClassForm input[name="name"]').val(),
+        //         chsName = $('#addClassForm input[name="chsName"]').val(),
+        //         descShort = $('#addClassForm input[name="descShort"]').val();
+        //     var that=this;
+        //     $.ajax({
+        //         url: address3 + '/omClass/addSingleAutOmClass',
+        //         type: 'post',
+        //         contentType: 'application/json',
+        //         data: JSON.stringify({
+        //             "name": name,
+        //             "chsName": chsName,
+        //             "descShort": descShort,
+        //             "autId": that.autId
+        //         }),
+        //         success: function(data) {
+        //             console.info(data);
+        //             if (data.respCode==0000) {
+        //                 $('#successModal').modal();
+        //                 getClass();
+        //             } else {
+        //                 _this.failMSG=data.respMsg;
+        //                 $('#failModal').modal();
+        //             }
+        //         },
+        //         error: function() {
+        //             $('#failModal').modal();
+        //         }
+        //     });
+        // },
         //删除控件类型
-        delClass: function(e) {
-            var selectedTr = $('input[name="class"]:checked').parent().parent(),
-                classid = selectedTr.attr('id');
-            if (classid === undefined) {
-                $('#selectAlertModal').modal();
-            } else {
-                $.ajax({
-                    url: address3 + '/omClass/deleteSingleAutOmClass',
-                    type: 'post',
-                    contentType: 'application/json',
-                    data: JSON.stringify({
-                        "id": classid,
-                    }),
-                    success: function(data) {
-                        console.info(data);
-                        if (data.respCode==0000) {
-                            $('#successModal').modal();
-                            getClass();
-                        } else {
-                            $('#failModal').modal();
-                        }
-                    },
-                    error: function() {
-                        $('#failModal').modal();
-                    }
-                });
-            }
-        },
+        // delClass: function(e) {
+        //     var selectedTr = $('input[name="class"]:checked').parent().parent(),
+        //         classid = selectedTr.attr('id');
+        //     if (classid === undefined) {
+        //         $('#selectAlertModal').modal();
+        //     } else {
+        //         $.ajax({
+        //             url: address3 + '/omClass/deleteSingleAutOmClass',
+        //             type: 'post',
+        //             contentType: 'application/json',
+        //             data: JSON.stringify({
+        //                 "id": classid,
+        //             }),
+        //             success: function(data) {
+        //                 console.info(data);
+        //                 if (data.respCode==0000) {
+        //                     $('#successModal').modal();
+        //                     getClass();
+        //                 } else {
+        //                     $('#failModal').modal();
+        //                 }
+        //             },
+        //             error: function() {
+        //                 $('#failModal').modal();
+        //             }
+        //         });
+        //     }
+        // },
         // 获取当前控件对应的方法
         getMethod() {
-            var classId = $('input[name="class"]:checked').parent().parent().attr('id');
-            var that=this;
-            // console.log(that.classId)
+            var classId = $("#classSelect").find("option:selected").val();
+            var _this=this;
             $.ajax({
                 url: address3 + '/omMethod/queryAutDirectOmMethods',
                 type: 'post',
                 contentType: 'application/json',
                 data: JSON.stringify({
-                    id: that.classId,
+                    id: classId,
                 }),
                 success: function(data) {
-                    $('#methodProp').children().remove();
-                    var methodList = data.omMethodRespDTOList;
-                    app.methodList = methodList;
-                    for (var i = 0; i < methodList.length; i++) {
-                        var methodTr = $('<tr></tr>'),
-                            methodCheckTd = $(`<td><input type='radio' name='method' onclick='methodClick(event,${i})'/></td>`),
-                            flagTd = $('<td ></td>'),
-                            methodNameTd = $('<td ></td>'),
-                            methodDescriptionTd = $('<td ></td>');
-                        methodTr.attr('id', methodList[i].id);
-                        if(methodList[i].overrideFlag==0){
-                                flagTd.html('普通继承');    
-                            }else if(methodList[i].overrideFlag==1){
-                                flagTd.html('自身方法');
-                            }else{
-                                flagTd.html('');
+            //         // $('#methodProp').children().remove();
+                    if (data.respCode === '0000') {
+                        var methodList = data.omMethodRespDTOList;
+                        _this.methodList = methodList;
+                        var str = "";
+                        for (var i = 0; i < methodList.length; i++) {
+                            if (methodList[i].overrideFlag == 0 || methodList[i].overrideFlag == 1) {
+                                    str += " <option value='" + methodList[i].id + "'>" + methodList[i].name+ "</option> ";
                             }
-                        methodNameTd.html(methodList[i].name);
-                        methodDescriptionTd.html(methodList[i].descShort);
-                        methodTr.append(methodCheckTd, flagTd, methodNameTd, methodDescriptionTd);
-                        $('#methodProp').append(methodTr);
+                        }
+                        $('#methodSelect').html(str);
+                        if (str == "") {
+                            Vac.alert("该控件无方法");
+                            return;
+                        }
+                        // _this.detailTabFresh();
+                        // _this.getElementTree();
+                        // _this.classtypeSelect();
+                        // _this.getObjTree();
+                        // _this.getScriptTemplate();
 
-                        var tmpOption = $('<option>').text(methodList[i].mname).val(i);
-                        $('#defaultMethodSelect').append(tmpOption);
                     }
+
+                }
+            });
+        },
+        methodSelect(){
+            var classId = $("#classSelect").find("option:selected").val();
+            var _this=this;
+            $.ajax({
+                url: address3 + '/omMethod/queryAutDirectOmMethods',
+                type: 'post',
+                contentType: 'application/json',
+                data: JSON.stringify({
+                    id: classId,
+                }),
+                success: function(data) {
+                    //         // $('#methodProp').children().remove();
+                    if (data.respCode === '0000') {
+                        var methodList = data.omMethodRespDTOList;
+                        _this.methodList = methodList;
+                        var str = "";
+                        for (var i = 0; i < methodList.length; i++) {
+                            if (methodList[i].overrideFlag == 0 || methodList[i].overrideFlag == 1) {
+                                if (i == 0)
+                                    str += " <option value='" + methodList[i].id + "' selected='selected' >" + methodList[i].name + "</option> ";
+                                else
+                                    str += " <option value='" + methodList[i].id + "'>" + methodList[i].name + "</option> ";
+                            }
+                            }
+                        $('#methodSelect').html(str);
+                        if (str == "") {
+                            Vac.alert("该控件无方法");
+                            return;
+                        }
+                        _this.methodId = $('#methodSelect').val();
+                        // _this.detailTabFresh();
+                        // _this.getElementTree();
+                        // _this.classtypeSelect();
+                        // _this.getObjTree();
+                        // _this.getScriptTemplate();
+
+                    } else {
+                        Vac.alert(respMsg);
+                    }
+
                 }
             });
         },
         //添加方法
-        addMethod: function() {
-            var name = $('#addMethodForm input[name="name"]').val(),
-                descShort = $('#addMethodForm input[name="descShort"]').val(),
-                mtype = $('#addMethodForm input[name="mtype"]').val();
-                // author = $('#addMethodForm input[name="author"]').val(),
-                // maintainTime = $('#addMethodForm input[name="maintainTime"]').val(),
-                // outputvaluedesc = $('#addMethodForm input[name="outputvaluedesc"]').val(),
-                // inputargdesc = $('#addMethodForm input[name="inputargdesc"]').val();
-            var that=this;
-            $.ajax({
-                url: address3 + '/omMethod/addSingleAutOmMethod',
-                type: 'post',
-                contentType: 'application/json',
-                data: JSON.stringify({
-                    "autId": 1,
-                    "classId": that.classId,
-                    "name": name,
-                    "descShort": descShort,
-                    "mtype": 1,
-                    // "overrideFlag": '',
-                    // "isparameter": '',
-                    // "arguments": '',
-                    // "argsCount": '',
-                    // "labelArgument": '',
-                    // "inputArgsDesc": '',
-                    // "outputArgsDesc": '',
-                    // "waittime": '',
-                    // "timeout": '',
-                    // "creatorId": '',
-                    // "visibilityFlag": '',
-                    // "targetCodeContent": ''
-                }),
-                success: function(data) {
-                    if (data.respCode==0000) {
-                          $('#successModal').modal();
-                             //查询当前构件类型对应的方法
-                            that.getMethod();
-                    } else {
-                        $('#failModal').modal();
-                    }
-                },
-                error: function() {
-                    $('#failModal').modal();
-                }
-            });
-        },
+        // addMethod: function() {
+        //     var name = $('#addMethodForm input[name="name"]').val(),
+        //         descShort = $('#addMethodForm input[name="descShort"]').val(),
+        //         mtype = $('#addMethodForm input[name="mtype"]').val();
+        //         // author = $('#addMethodForm input[name="author"]').val(),
+        //         // maintainTime = $('#addMethodForm input[name="maintainTime"]').val(),
+        //         // outputvaluedesc = $('#addMethodForm input[name="outputvaluedesc"]').val(),
+        //         // inputargdesc = $('#addMethodForm input[name="inputargdesc"]').val();
+        //     var that=this;
+        //     $.ajax({
+        //         url: address3 + '/omMethod/addSingleAutOmMethod',
+        //         type: 'post',
+        //         contentType: 'application/json',
+        //         data: JSON.stringify({
+        //             "autId": 1,
+        //             "classId": that.classId,
+        //             "name": name,
+        //             "descShort": descShort,
+        //             "mtype": 1,
+        //             // "overrideFlag": '',
+        //             // "isparameter": '',
+        //             // "arguments": '',
+        //             // "argsCount": '',
+        //             // "labelArgument": '',
+        //             // "inputArgsDesc": '',
+        //             // "outputArgsDesc": '',
+        //             // "waittime": '',
+        //             // "timeout": '',
+        //             // "creatorId": '',
+        //             // "visibilityFlag": '',
+        //             // "targetCodeContent": ''
+        //         }),
+        //         success: function(data) {
+        //             if (data.respCode==0000) {
+        //                   $('#successModal').modal();
+        //                      //查询当前构件类型对应的方法
+        //                     that.getMethod();
+        //             } else {
+        //                 $('#failModal').modal();
+        //             }
+        //         },
+        //         error: function() {
+        //             $('#failModal').modal();
+        //         }
+        //     });
+        // },
         //删除方法
-        delMethod: function(e) {
-            var selectedTr = $('input[name="method"]:checked').parent().parent(),
-                methodid = selectedTr.attr('id');
-            var that=this;
-            if (methodid === undefined) {
-                $('#selectAlertModal').modal();
-            } else {
-                $.ajax({
-                    url: address3 + '/omMethod/deleteSingleAutOmMethod ',
-                    type: 'post',
-                    contentType: 'application/json',
-                    data: JSON.stringify({
-                        "id": methodid,
-                    }),
-                    success: function(data) {
-                        console.info(data);
-                        if (data.respCode==0000) {
-                            $('#successModal').modal();
-                            that.getMethod();
-                        } else {
-                            $('#failModal').modal();
-                        }
-                    },
-                    error: function() {
-                        $('#failModal').modal();
-                    }
-                });
-            }
-        },
+        // delMethod: function(e) {
+        //     var selectedTr = $('input[name="method"]:checked').parent().parent(),
+        //         methodid = selectedTr.attr('id');
+        //     var that=this;
+        //     if (methodid === undefined) {
+        //         $('#selectAlertModal').modal();
+        //     } else {
+        //         $.ajax({
+        //             url: address3 + '/omMethod/deleteSingleAutOmMethod ',
+        //             type: 'post',
+        //             contentType: 'application/json',
+        //             data: JSON.stringify({
+        //                 "id": methodid,
+        //             }),
+        //             success: function(data) {
+        //                 console.info(data);
+        //                 if (data.respCode==0000) {
+        //                     $('#successModal').modal();
+        //                     that.getMethod();
+        //                 } else {
+        //                     $('#failModal').modal();
+        //                 }
+        //             },
+        //             error: function() {
+        //                 $('#failModal').modal();
+        //             }
+        //         });
+        //     }
+        // },
         //添加控件supRec参数
-        addSupRecPara: function(e) {
-            var curTbody = $('#supRecTbody');
-            curTbody.append(this.supRecParaTr);
-        },
+        // addSupRecPara: function(e) {
+        //     var curTbody = $('#supRecTbody');
+        //     curTbody.append(this.supRecParaTr);
+        // },
         //删除控件supRec参数
-        delSupRecPara: function(e) {
-            var selectedTr = $('#supRecTbody').find('input[name="supRec_list"]:checked').parent().parent();
-            selectedTr.remove();
-        },
-        
+        // delSupRecPara: function(e) {
+        //     var selectedTr = $('#supRecTbody').find('input[name="supRec_list"]:checked').parent().parent();
+        //     selectedTr.remove();
+        // },
+
         //添加控件runtimeArgs参数
-        addRuntimeArgsPara: function(e) {
-            var curTbody = $('#runtimeArgsTbody');
-            curTbody.append(this.runtimeArgsParaTr);
-        },
+        // addRuntimeArgsPara: function(e) {
+        //     var curTbody = $('#runtimeArgsTbody');
+        //     curTbody.append(this.runtimeArgsParaTr);
+        // },
         //删除控件runtimeArgs参数
-        delRuntimeArgsPara: function(e) {
-            var selectedTr = $('#runtimeArgsTbody').find('input[name="runtimeArgs_list"]:checked').parent().parent();
-            selectedTr.remove();
-        },
+        // delRuntimeArgsPara: function(e) {
+        //     var selectedTr = $('#runtimeArgsTbody').find('input[name="runtimeArgs_list"]:checked').parent().parent();
+        //     selectedTr.remove();
+        // },
 
         //添加控件selfRec参数
-        addSelfRecPara: function(e) {
-            var curTbody = $('#selfRecTbody');
-            curTbody.append(this.selfRecParaTr);
-        },
+        // addSelfRecPara: function(e) {
+        //     var curTbody = $('#selfRecTbody');
+        //     curTbody.append(this.selfRecParaTr);
+        // },
         //删除控件selfRec参数
-        delSelfRecPara: function(e) {
-            var selectedTr = $('#selfRecTbody').find('input[name="selfRec_list"]:checked').parent().parent();
-            selectedTr.remove();
-        },
+        // delSelfRecPara: function(e) {
+        //     var selectedTr = $('#selfRecTbody').find('input[name="selfRec_list"]:checked').parent().parent();
+        //     selectedTr.remove();
+        // },
 
         //添加控件assistRec参数
-        addAssistRecPara: function(e) {
-            var curTbody = $('#assistRecTbody');
-            curTbody.append(this.assistRecParaTr);
-        },
-        //删除控件assistRec参数
-        delAssistRecPara: function(e) {
-            var selectedTr = $('#assistRecTbody').find('input[name="assistRec_list"]:checked').parent().parent();
-            selectedTr.remove();
-        },
+        // addAssistRecPara: function(e) {
+        //     var curTbody = $('#assistRecTbody');
+        //     curTbody.append(this.assistRecParaTr);
+        // },
+        // //删除控件assistRec参数
+        // delAssistRecPara: function(e) {
+        //     var selectedTr = $('#assistRecTbody').find('input[name="assistRec_list"]:checked').parent().parent();
+        //     selectedTr.remove();
+        // },
 
         //添加方法参数
-        addMethodPara: function(e) {
-            var curTbody = $(e.target).parent().next().find('tbody');
-            curTbody.append(this.methodParaTr);
-        },
-        //删除方法参数
-        delMethodPara: function(e) {
-            var selectedTr = $(e.target).parent().next().find('input[name="chk_list"]:checked').parent().parent();
-            selectedTr.remove();
-        },
+        // addMethodPara: function(e) {
+        //     var curTbody = $(e.target).parent().next().find('tbody');
+        //     curTbody.append(this.methodParaTr);
+        // },
+        // //删除方法参数
+        // delMethodPara: function(e) {
+        //     var selectedTr = $(e.target).parent().next().find('input[name="chk_list"]:checked').parent().parent();
+        //     selectedTr.remove();
+        // },
         //修改控件类型
-        updateClass: function() {
-            var name = $('#classForm input[name="name"]').val(),
-                chsName = $('#classForm input[name="chsName"]').val(),
-                descShort = $('#classForm input[name="descShort"]').val(),
-                overideFlag = $('#overideFlag').val(),
-                defaultMethod = $('#defaultMethodSelect').val(),
-                visibilityFlag = $('#visibilityFlag').val();
-
-            // picfile = $('#');
-
-            //supRecParaList
-            var supRecParaList = '[',
-                pTable = $('#supportedRecognitionTable'),
-                pRow = pTable.find('tr'),
-                pCol = pRow[0].children;
-
-            for (var j = 1; j < pRow.length; j++) {
-                var r = '{';
-                for (var i = 1; i < pCol.length; i++) {
-                    var tds = pRow[j].children;
-                    r += "\"" + pCol[i].id + "\"\:\"" + tds[i].innerHTML + "\",";
-                }
-                r = r.substring(0, r.length - 1);
-                r += "},";
-                supRecParaList += r;
-            }
-            if (supRecParaList.length > 1) {
-                supRecParaList = supRecParaList.substring(0, supRecParaList.length - 1);
-            }
-            supRecParaList += ']';
-
-            //runtimeArgsParaList
-            var runtimeArgsParaList = '[',
-                pTable = $('#runtimeArgsTable'),
-                pRow = pTable.find('tr'),
-                pCol = pRow[0].children;
-
-            for (var j = 1; j < pRow.length; j++) {
-                var r = '{';
-                for (var i = 1; i < pCol.length; i++) {
-                    var tds = pRow[j].children;
-                    r += "\"" + pCol[i].id + "\"\:\"" + tds[i].innerHTML + "\",";
-                }
-                r = r.substring(0, r.length - 1);
-                r += "},";
-                runtimeArgsParaList += r;
-            }
-            if (runtimeArgsParaList.length > 1) {
-                runtimeArgsParaList = runtimeArgsParaList.substring(0, runtimeArgsParaList.length - 1);
-            }
-            runtimeArgsParaList += ']';
-
-            //selfRecParaList
-            var selfRecParaList = '[',
-                pTable = $('#selfRecTable'),
-                pRow = pTable.find('tr'),
-                pCol = pRow[0].children;
-
-            for (var j = 1; j < pRow.length; j++) {
-                var r = '{';
-                for (var i = 1; i < pCol.length; i++) {
-                    var tds = pRow[j].children;
-                    r += "\"" + pCol[i].id + "\"\:\"" + tds[i].innerHTML + "\",";
-                }
-                r = r.substring(0, r.length - 1);
-                r += "},";
-                selfRecParaList += r;
-            }
-            if (selfRecParaList.length > 1) {
-                selfRecParaList = selfRecParaList.substring(0, selfRecParaList.length - 1);
-            }
-            selfRecParaList += ']';
-
-            //assistRecParaList
-            var assistRecParaList = '[',
-                pTable = $('#assistRecTable'),
-                pRow = pTable.find('tr'),
-                pCol = pRow[0].children;
-
-            for (var j = 1; j < pRow.length; j++) {
-                var r = '{';
-                for (var i = 1; i < pCol.length; i++) {
-                    var tds = pRow[j].children;
-                    r += "\"" + pCol[i].id + "\"\:\"" + tds[i].innerHTML + "\",";
-                }
-                r = r.substring(0, r.length - 1);
-                r += "},";
-                assistRecParaList += r;
-            }
-            if (assistRecParaList.length > 1) {
-                assistRecParaList = assistRecParaList.substring(0, assistRecParaList.length - 1);
-            }
-            assistRecParaList += ']';
-
-            var that = this;
-            $.ajax({
-                url: address3 + '/omClass/modifySingleAutOmClass',
-                type: 'post',
-                contentType: 'application/json',
-                data: JSON.stringify({
-                    "id": that.classId,
-                    "name": name,
-                    "chsName": chsName,
-                    "autId": that.autId,
-                    "descShort": descShort,
-                    "defaultMethod": defaultMethod,
-                    "supportedRecognitionPros": supRecParaList,
-                    "runtimeArgs": runtimeArgsParaList,
-                    "selfRecognitionPros": selfRecParaList,
-                    "assistRecognitionPros": assistRecParaList,
-                    "overideFlag": overideFlag,
-                    "creatorId": '',
-                    "modifierId": '',
-                    "visibilityFlag": visibilityFlag
-                }),
-                success: function(data) {
-                    if (data.respCode == 0000) {
-                        $('#successModal').modal();
-                        getClass();
-                    } else {
-                        $('#failModal').modal();
-                    }
-                },
-                error: function() {
-                    $('#failModal').modal();
-                }
-
-            });
-        },
+        // updateClass: function() {
+        //     var name = $('#classForm input[name="name"]').val(),
+        //         chsName = $('#classForm input[name="chsName"]').val(),
+        //         descShort = $('#classForm input[name="descShort"]').val(),
+        //         overideFlag = $('#overideFlag').val(),
+        //         defaultMethod = $('#defaultMethodSelect').val(),
+        //         visibilityFlag = $('#visibilityFlag').val();
+        //
+        //     // picfile = $('#');
+        //
+        //     //supRecParaList
+        //     var supRecParaList = '[',
+        //         pTable = $('#supportedRecognitionTable'),
+        //         pRow = pTable.find('tr'),
+        //         pCol = pRow[0].children;
+        //
+        //     for (var j = 1; j < pRow.length; j++) {
+        //         var r = '{';
+        //         for (var i = 1; i < pCol.length; i++) {
+        //             var tds = pRow[j].children;
+        //             r += "\"" + pCol[i].id + "\"\:\"" + tds[i].innerHTML + "\",";
+        //         }
+        //         r = r.substring(0, r.length - 1);
+        //         r += "},";
+        //         supRecParaList += r;
+        //     }
+        //     if (supRecParaList.length > 1) {
+        //         supRecParaList = supRecParaList.substring(0, supRecParaList.length - 1);
+        //     }
+        //     supRecParaList += ']';
+        //
+        //     //runtimeArgsParaList
+        //     var runtimeArgsParaList = '[',
+        //         pTable = $('#runtimeArgsTable'),
+        //         pRow = pTable.find('tr'),
+        //         pCol = pRow[0].children;
+        //
+        //     for (var j = 1; j < pRow.length; j++) {
+        //         var r = '{';
+        //         for (var i = 1; i < pCol.length; i++) {
+        //             var tds = pRow[j].children;
+        //             r += "\"" + pCol[i].id + "\"\:\"" + tds[i].innerHTML + "\",";
+        //         }
+        //         r = r.substring(0, r.length - 1);
+        //         r += "},";
+        //         runtimeArgsParaList += r;
+        //     }
+        //     if (runtimeArgsParaList.length > 1) {
+        //         runtimeArgsParaList = runtimeArgsParaList.substring(0, runtimeArgsParaList.length - 1);
+        //     }
+        //     runtimeArgsParaList += ']';
+        //
+        //     //selfRecParaList
+        //     var selfRecParaList = '[',
+        //         pTable = $('#selfRecTable'),
+        //         pRow = pTable.find('tr'),
+        //         pCol = pRow[0].children;
+        //
+        //     for (var j = 1; j < pRow.length; j++) {
+        //         var r = '{';
+        //         for (var i = 1; i < pCol.length; i++) {
+        //             var tds = pRow[j].children;
+        //             r += "\"" + pCol[i].id + "\"\:\"" + tds[i].innerHTML + "\",";
+        //         }
+        //         r = r.substring(0, r.length - 1);
+        //         r += "},";
+        //         selfRecParaList += r;
+        //     }
+        //     if (selfRecParaList.length > 1) {
+        //         selfRecParaList = selfRecParaList.substring(0, selfRecParaList.length - 1);
+        //     }
+        //     selfRecParaList += ']';
+        //
+        //     //assistRecParaList
+        //     var assistRecParaList = '[',
+        //         pTable = $('#assistRecTable'),
+        //         pRow = pTable.find('tr'),
+        //         pCol = pRow[0].children;
+        //
+        //     for (var j = 1; j < pRow.length; j++) {
+        //         var r = '{';
+        //         for (var i = 1; i < pCol.length; i++) {
+        //             var tds = pRow[j].children;
+        //             r += "\"" + pCol[i].id + "\"\:\"" + tds[i].innerHTML + "\",";
+        //         }
+        //         r = r.substring(0, r.length - 1);
+        //         r += "},";
+        //         assistRecParaList += r;
+        //     }
+        //     if (assistRecParaList.length > 1) {
+        //         assistRecParaList = assistRecParaList.substring(0, assistRecParaList.length - 1);
+        //     }
+        //     assistRecParaList += ']';
+        //
+        //     var that = this;
+        //     $.ajax({
+        //         url: address3 + '/omClass/modifySingleAutOmClass',
+        //         type: 'post',
+        //         contentType: 'application/json',
+        //         data: JSON.stringify({
+        //             "id": that.classId,
+        //             "name": name,
+        //             "chsName": chsName,
+        //             "autId": that.autId,
+        //             "descShort": descShort,
+        //             "defaultMethod": defaultMethod,
+        //             "supportedRecognitionPros": supRecParaList,
+        //             "runtimeArgs": runtimeArgsParaList,
+        //             "selfRecognitionPros": selfRecParaList,
+        //             "assistRecognitionPros": assistRecParaList,
+        //             "overideFlag": overideFlag,
+        //             "creatorId": '',
+        //             "modifierId": '',
+        //             "visibilityFlag": visibilityFlag
+        //         }),
+        //         success: function(data) {
+        //             if (data.respCode == 0000) {
+        //                 $('#successModal').modal();
+        //                 getClass();
+        //             } else {
+        //                 $('#failModal').modal();
+        //             }
+        //         },
+        //         error: function() {
+        //             $('#failModal').modal();
+        //         }
+        //
+        //     });
+        // },
 
         //修改方法
-        updateMethod: function() {
-            var methodname = $('#methodForm input[name="name"]').val(),
-                methoddescription = $('#methodForm input[name="description"]').val(),
-                overrideFlag=$('#methodForm select[name="overrideFlag"]').val(),
-                visibilityFlag=$('#methodForm select[name="visibilityFlag"]').val(),
-                labelArgument=$('#methodForm input[name="labelArgument"]').val(),
-                waittime = $('#methodForm input[name="waittime"]').val(),
-                timeout = $('#methodForm input[name="timeout"]').val(),
-                targetCodeContent = $('#methodForm textarea[name="targetCodeContent"]').val();
-            var paraList = '[',
-                pTable = $('#pTable'),
-                pRow = pTable.find('tr'),
-                pCol = pRow[0].children;
-
-            for (var j = 1; j < pRow.length; j++) {
-                var r = '{';
-                for (var i = 1; i < pCol.length; i++) {
-                    var tds = pRow[j].children;
-                    r += "\"" + pCol[i].id + "\"\:\"" + tds[i].innerHTML + "\",";
-                }
-                r = r.substring(0, r.length - 1);
-                r += "},";
-                paraList += r;
-            }
-            if(paraList.length>1){
-                paraList = paraList.substring(0, paraList.length - 1);                
-            }
-            paraList += ']';
-            console.log(paraList)
-            var that=this;
-            $.ajax({
-                url: address3 + '/omMethod/modifySingleAutOmMethod',
-                type: 'post',
-                contentType: 'application/json',
-                data: JSON.stringify({
-                    "id": that.methodId,
-                    "classId": that.classId,
-                    "autId": that.autId,
-                    "name": methodname,
-                    "descShort": methoddescription,
-                    "mtype": '1',
-                    "overrideFlag":overrideFlag,
-                    "visibilityFlag": visibilityFlag,
-                    "argsCount": '',
-                    "labelArgument": labelArgument,
-                    "author": '',
-                    "waittime": waittime,
-                    "timeout": timeout,
-                    "outputArgsDesc":'',
-                    "inputArgsDesc":'',
-                    "targetCodeContent": targetCodeContent,
-                    "arguments": paraList,
-                }),
-                success: function(data) {
-                    if (data.respCode==0000) {
-                        $('#successModal').modal();
-                        that.getMethod();
-                    } else {
-                        $('#failModal').modal();
-                    }
-                },
-                error: function() {
-                    $('#failModal').modal();
-                }
-            });
-        },
+        // updateMethod: function() {
+        //     var methodname = $('#methodForm input[name="name"]').val(),
+        //         methoddescription = $('#methodForm input[name="description"]').val(),
+        //         overrideFlag=$('#methodForm select[name="overrideFlag"]').val(),
+        //         visibilityFlag=$('#methodForm select[name="visibilityFlag"]').val(),
+        //         labelArgument=$('#methodForm input[name="labelArgument"]').val(),
+        //         waittime = $('#methodForm input[name="waittime"]').val(),
+        //         timeout = $('#methodForm input[name="timeout"]').val(),
+        //         targetCodeContent = $('#methodForm textarea[name="targetCodeContent"]').val();
+        //     var paraList = '[',
+        //         pTable = $('#pTable'),
+        //         pRow = pTable.find('tr'),
+        //         pCol = pRow[0].children;
+        //
+        //     for (var j = 1; j < pRow.length; j++) {
+        //         var r = '{';
+        //         for (var i = 1; i < pCol.length; i++) {
+        //             var tds = pRow[j].children;
+        //             r += "\"" + pCol[i].id + "\"\:\"" + tds[i].innerHTML + "\",";
+        //         }
+        //         r = r.substring(0, r.length - 1);
+        //         r += "},";
+        //         paraList += r;
+        //     }
+        //     if(paraList.length>1){
+        //         paraList = paraList.substring(0, paraList.length - 1);
+        //     }
+        //     paraList += ']';
+        //     console.log(paraList)
+        //     var that=this;
+        //     $.ajax({
+        //         url: address3 + '/omMethod/modifySingleAutOmMethod',
+        //         type: 'post',
+        //         contentType: 'application/json',
+        //         data: JSON.stringify({
+        //             "id": that.methodId,
+        //             "classId": that.classId,
+        //             "autId": that.autId,
+        //             "name": methodname,
+        //             "descShort": methoddescription,
+        //             "mtype": '1',
+        //             "overrideFlag":overrideFlag,
+        //             "visibilityFlag": visibilityFlag,
+        //             "argsCount": '',
+        //             "labelArgument": labelArgument,
+        //             "author": '',
+        //             "waittime": waittime,
+        //             "timeout": timeout,
+        //             "outputArgsDesc":'',
+        //             "inputArgsDesc":'',
+        //             "targetCodeContent": targetCodeContent,
+        //             "arguments": paraList,
+        //         }),
+        //         success: function(data) {
+        //             if (data.respCode==0000) {
+        //                 $('#successModal').modal();
+        //                 that.getMethod();
+        //             } else {
+        //                 $('#failModal').modal();
+        //             }
+        //         },
+        //         error: function() {
+        //             $('#failModal').modal();
+        //         }
+        //     });
+        // },
 
     },
 
@@ -480,6 +533,7 @@ var app = new Vue({
 
 //获取当前被测系统的控件类型
 function getClass() {
+    var _this=this;
     var autName=sessionStorage.getItem("autName");
     var autId=sessionStorage.getItem("autId");
     $('.autName').html(autName);
@@ -490,44 +544,48 @@ function getClass() {
         contentType: 'application/json',
         success: function(data) {
             // console.log(data)
-            $('#classProp').children().remove();
+            // $('#classProp').children().remove();
             var classList = data.omClassRespDTOList;
             app.classList=classList;
-            // console.log(classList)
+            console.log(classList)
             if(classList){
                 for (var i = 0; i < classList.length; i++) {
-                    var classTr = $('<tr></tr>'),
-                        classCheckTd = $(`<td><input type='radio' name='class' onclick='classClick(event,${i})'/></td>`),
-                        overideFlagTd = $('<td ></td>'),
-                        classNameTd = $('<td ></td>'),
-                        classDescriptionTd = $('<td ></td>');
-                    classTr.attr('id', classList[i].id);
-                    overideFlagTd.attr('id', classList[i].overideFlag);
-                    if(classList[i].overideFlag==1){
-                        overideFlagTd.html('自身控件');
-                    }else if(classList[i].overideFlag==2){
-                        overideFlagTd.html('继承自父类');
-                    }else if(classList[i].overideFlag==3){
-                        overideFlagTd.html('重载继承');
-                    }else if(classList[i].overideFlag==4){
-                        overideFlagTd.html('禁用');
-                    }else if(classList[i].overideFlag==5){
-                        overideFlagTd.html('重定义');
-                    }else{
-                        overideFlagTd.html('');
-                    }
-                    classNameTd.html(classList[i].name);
-                    classDescriptionTd.html(classList[i].descShort);
-                    classTr.append(classCheckTd, overideFlagTd ,classNameTd, classDescriptionTd);
-                    $('#classProp').append(classTr);
+                    // var classTr = $('<tr></tr>'),
+                    //     classCheckTd = $(`<td><input type='radio' name='class' onclick='classClick(event,${i})'/></td>`),
+                    //     overideFlagTd = $('<td ></td>'),
+                    //     classNameTd = $('<td ></td>'),
+                    //     classDescriptionTd = $('<td ></td>');
+                    // classTr.attr('id', classList[i].id);
+                    // overideFlagTd.attr('id', classList[i].overideFlag);
+                    // if(classList[i].overideFlag==1){
+                    //     overideFlagTd.html('自身控件');
+                    // }else if(classList[i].overideFlag==2){
+                    //     overideFlagTd.html('继承自父类');
+                    // }else if(classList[i].overideFlag==3){
+                    //     overideFlagTd.html('重载继承');
+                    // }else if(classList[i].overideFlag==4){
+                    //     overideFlagTd.html('禁用');
+                    // }else if(classList[i].overideFlag==5){
+                    //     overideFlagTd.html('重定义');
+                    // }else{
+                    //     overideFlagTd.html('');
+                    // }
+                    // classDescriptionTd.html(classList[i].descShort);
+                    // classTr.append(classCheckTd, overideFlagTd ,classNameTd, classDescriptionTd);
+                    // $('#classProp').append(classTr);
+                    _this.classId=classList[i].id;
+                    $("#classSelect option").val(_this.classId);
+
                 }
             }
+
         },
         error: function() {
             $('#failModal').modal();
         }
     });
 }
+
 // 点击控件类型
 function classClick(event, i) {
     if ($(event.target).attr("checked")) {

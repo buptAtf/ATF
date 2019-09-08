@@ -674,6 +674,7 @@ var app = new Vue({
                         return;
                     }
                     _this.autList = data.autRespDTOList;
+                    console.log(_this.autList);
                     // var str = "";
                     // for (var i = 0; i < autList.length; i++) {
 
@@ -696,6 +697,7 @@ var app = new Vue({
                             }
                             _this.transactList = data.transactRespDTOs;
                             let transactList = data.transactRespDTOs;
+                            console.log(transactList);
                             var str = "";
                             for (var i = 0; i < transactList.length; i++) {
                                 if (transactList[i].transType == null || transactList[i].transType == 1)
