@@ -29,7 +29,12 @@
             .table-responsive > .table > tfoot > tr > td {
                 white-space: nowrap;
             }
-        }  
+		}  
+		.information{
+			padding-left:30px;
+			line-height: 40px;
+			user-select: none;
+		}
     </style>
 </head>
 <body id="transactDetail" v-cloak>
@@ -94,15 +99,17 @@
                     <div class="row">
                     	<div class="col-xs-12">	
                     		<ul id="myTab" class="nav nav-tabs">
-							<li class="active">
+							<!-- <li class="active">
 								<a href="#detail" data-toggle="tab">详情	</a>
-							</li>
-							<li><a href="#elementLibrary" data-toggle="tab">元素库</a></li>
-							<li><a href="#object-repo" data-toggle="tab">对象库</a></li>
-							<li><a href="#script" data-toggle="tab">基础脚本</a></li>
+							</li> -->
+							<li class="active" ><a href="#elementLibrary" data-toggle="tab" @click="eleFlag =true">元素库</a></li>
+							<!-- <li><a href="#object-repo" data-toggle="tab">对象库</a></li> -->
+							<li><a href="#script" data-toggle="tab" @click="eleFlag =false">基础脚本</a></li>
+							<span v-show="eleFlag" class = "information"> Tips : 1.添加ui。2.选中UI，点击‘添加元素’，添加元素</span>
+							<span v-show="!eleFlag" class = "information"> Tips : 1.新增脚本。 2.选中脚本，点击添加多项，添加脚本需要操作的元素. 3.点击‘保存’‘参数化’。</span>
 							</ul>
 							<div id="myTabContent" class="tab-content">
-								<div class="tab-pane fade in active" id="detail">
+								<div class="tab-pane fade " id="detail">
 									<div class="row">
 											<div class="col-xs-12" >
 												<div  style="background:white;">
@@ -145,7 +152,7 @@
 			                                </div>
 	                                </div>
 								</div>
-								<div class="tab-pane fade" id="elementLibrary">
+								<div class="tab-pane fade in active" id="elementLibrary">
 									<div class="row">
 				                        <div class="col-xs-4">
 				                            <section class="panel tree-panel">
@@ -279,6 +286,7 @@
 				                                            </table>
 				                                        </div>
 
+														<div hidden>
 				                                        <div class="property">
 				                                            附加属性
 				                                            <a class="btn btn-white btn-sm pull-right" @click="addAddiProp"><i class="icon-plus"></i></a>
@@ -343,7 +351,8 @@
 				                                                    </tr>
 				                                                </tbody>
 				                                            </table>
-				                                        </div>
+														</div>
+														</div>
 				                                    </section>
 
 
@@ -432,7 +441,8 @@
 								                                    </tr>
 								                                </tbody>
 								                            </table>
-								                        </div>
+														</div>
+														<div hidden>
 								                        <div class="property">
 								                            附加属性
 								                            <a class="btn btn-white btn-sm pull-right" @click="addProp($event)"><i class="icon-plus"></i></a>
@@ -508,7 +518,8 @@
 								                                    </tr>
 								                                </tbody>
 								                            </table>
-								                        </div>
+														</div>
+													</div>
 								                    </section>
 								                    <a class="btn btn-info" @click="updateObj">保存</a>
 								                </div>

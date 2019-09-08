@@ -40,6 +40,7 @@ var app = new Vue({
             assiListLength: 0,
             relatePropList: [], //关联属性
             relatePropListLength: 0,
+            eleFlag:true,//用于展示tips信息
 
             ruleName:"",
             ruleDesc:"",

@@ -1,6 +1,9 @@
 var app = new Vue({
     el: '#v-transact',
     data: {
+        newTransactId:null,
+        newTransactType:null,
+        transactListFlag:true,
         transactList: [],
         tt: 0, //总条数
         pageSize: 10, //页面大小
@@ -16,7 +19,7 @@ var app = new Vue({
     },
     ready: function() {
         autSelect();
-        setval();
+        this.setval();
         changeListNum();
         $('#autSelect').change(function() {
             queryTransact();
@@ -66,34 +69,39 @@ var app = new Vue({
         //添加功能点
         insert: function() {
             $('#insertForm input[name="autId"]').val($('#autSelect').val());
-            var self=this;
-            var transType=$("#insertForm select[name='transType']").val();
+            var self = this,
+                code = $("#insertForm input[name='code']").val(),
+                transType=$("#insertForm select[name='transType']").val();
             if(transType==1){
+                self.newTransactType = 1;
+                code = code ==""?("功能点"+new Date().valueOf()):code;
                 $.ajax({
                     url: address3 + 'transactController/addSingleTransact',
                     type: 'post',
                     contentType: 'application/json',
                     data: JSON.stringify({
                         autId: $("#insertForm input[name='autId']").val(),
-                        code: $("#insertForm input[name='code']").val(),
+                        code: code,
                         nameMedium: $("#insertForm input[name='nameMedium']").val(),
                         descShort: $("#insertForm textarea[name='descShort']").val(),
                     }),
                     success: function(data) {
                         if (data.respCode=='0000') {
-                            $('#successModal').modal();
+                            self.newTransactId = data.transactId;
+                            $('#successAndGoModal').modal();
                             queryTransact();
                         } else {
-                            alert(data.respMsg)
+                            Vac.alert(data.respMsg)
                         }
                     },
                     error: function() {
-                        alert(data.respMsg)
+                        Vac.alert(data.respMsg)
                     }
                 });
             }
             else
             {
+                code = code ==""?("接口"+new Date().valueOf()):code;
               $.ajax({
                     url: address3 + 'interface/addSingleInterface',
                     type: 'post',
@@ -101,7 +109,7 @@ var app = new Vue({
                     data: JSON.stringify({
                         name: $("#insertForm input[name='nameMedium']").val(),
                         systemId: $("#insertForm input[name='autId']").val(),
-                        interfaceCode: $("#insertForm input[name='code']").val(),
+                        interfaceCode:code,
                         creatorId: self.userId,
                         description: $("#insertForm textarea[name='descShort']").val(),
                     }),
@@ -264,6 +272,9 @@ var app = new Vue({
         },
         //跳转到详情页面
         goToDetail: function(code,transType) {
+            if(code == null){
+                Vac.alert("因为插入接口没有返回对应的transactId 因此无法实现跳转，请后端同学修改");return
+            }
              if(transType==1)
              {
                 var transactId = code;
@@ -322,13 +333,54 @@ var app = new Vue({
                     }
                 }) ;  
         },
+         setval:function() {
+            // var thisURL = document.URL;
+            // var getVal = thisURL.split('?')[1];
+            // var oneVal = getVal.split('=')[1];
+            var _this =this;
+            var autId=sessionStorage.getItem("autId");
+            $("#autSelect").val(autId);
+            $.ajax({
+                url: address3 + 'transactController/pagedBatchQueryTransact',
+                type: 'POST',
+                contentType: 'application/json',
+                data: JSON.stringify({
+                    'currentPage': 1,
+                    'pageSize': 10,
+                    'orderColumns': 'modified_time',
+                    'orderType': 'desc',
+                    'autId': $('#autSelect').val(),
+                }),
+                success: function(data) {
+                    if (data.respCode=='0000') {
+                        var transactList=data.list;
+                        if(transactList.length ==0){_this.transactListFlag = false;$("#insertModal").modal('show')}
+                        else{_this.transactListFlag = true}
+                        for (var i = transactList.length - 1; i >= 0; i--) {
+                            if (transactList[i].transType==null)
+                                transactList[i].transType=1;
+                        }
+                        app.transactList = transactList;
+                        app.tt = data.totalCount;
+                        app.totalPage = Math.ceil(app.tt / app.listnum);
+                        app.pageSize = app.listnum;
+                    } else {
+                        app.failMSG=data.respMsg;
+                        $('#failModal2').modal('show');
+                    }
+                },
+                error: function() {
+                    alert(data.respMsg)
+                }
+            });
+        }
     },
 
 });
 
 
 function getTransact(page, listnum, order, sort) {
-
+    var _this =this;
     //获取list通用方法，只需要传入多个所需参数
     $.ajax({
         url: address3 + 'transactController/pagedBatchQueryTransact',
@@ -344,6 +396,8 @@ function getTransact(page, listnum, order, sort) {
         success: function(data) {
             if (data.respCode=='0000') {
                 var transactList=data.list;
+                if(transactList.length ==0){app.transactListFlag = false;$("#insertModal").modal('show')}
+                else{app.transactListFlag = true}
                 for (var i = transactList.length - 1; i >= 0; i--) {
                     if (transactList[i].transType==null)
                         transactList[i].transType=1;
@@ -420,44 +474,7 @@ function autSelect() {
 }
 
 //设置所属被测系统select为aut页面选中的aut
-function setval() {
-    // var thisURL = document.URL;
-    // var getVal = thisURL.split('?')[1];
-    // var oneVal = getVal.split('=')[1];
-    var autId=sessionStorage.getItem("autId");
-    $("#autSelect").val(autId);
-    $.ajax({
-        url: address3 + 'transactController/pagedBatchQueryTransact',
-        type: 'POST',
-        contentType: 'application/json',
-        data: JSON.stringify({
-            'currentPage': 1,
-            'pageSize': 10,
-            'orderColumns': 'modified_time',
-            'orderType': 'desc',
-            'autId': $('#autSelect').val(),
-        }),
-        success: function(data) {
-            if (data.respCode=='0000') {
-                var transactList=data.list;
-                for (var i = transactList.length - 1; i >= 0; i--) {
-                    if (transactList[i].transType==null)
-                        transactList[i].transType=1;
-                }
-                app.transactList = transactList;
-                app.tt = data.totalCount;
-                app.totalPage = Math.ceil(app.tt / app.listnum);
-                app.pageSize = app.listnum;
-            } else {
-                app.failMSG=data.respMsg;
-                $('#failModal2').modal('show');
-            }
-        },
-        error: function() {
-            alert(data.respMsg)
-        }
-    });
-}
+
 //通过选择被测系统筛选查询功能点 
 function queryTransact() {
     $.ajax({
@@ -474,6 +491,8 @@ function queryTransact() {
         success: function(data) {
             if (data.respCode=='0000') {
                 var transactList=data.list;
+                if(transactList.length ==0){app.transactListFlag = false;$("#insertModal").modal('show')}
+                else{app.transactListFlag = true}
                 for (var i = transactList.length - 1; i >= 0; i--) {
                     if (transactList[i].transType==null)
                         transactList[i].transType=1;

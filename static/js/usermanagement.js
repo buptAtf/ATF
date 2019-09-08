@@ -560,7 +560,7 @@ function search(){
 // 点击搜索按钮结束
 // var addModalVue
 var addModalVue = new Vue({
-    el: '#addModal',
+    el: '#v-demo',
     data: {
         username: '',
         reallyname: '',
@@ -574,7 +574,6 @@ var addModalVue = new Vue({
         status: '',
         iconHide: true,
         toolHide: true,
-        // 
         formValidation: null
     },
     ready: function() {
