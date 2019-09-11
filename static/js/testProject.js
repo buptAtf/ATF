@@ -87,20 +87,22 @@ var app = new Vue({
 
         //添加测试项目
         insert: function() {
-            let testProjectCode=$('#insertForm input[name="testProjectCode"]').val();
-            let testProjectName=$('#insertForm input[name="testProjectName"]').val();
-            let taskDescription=$('#insertForm textarea[name="taskDescription"]').val();
-            if(testProjectCode=='' || testProjectName=='' || taskDescription==''){
-                alert("所有项均为必填项");
+            let testProjectCode=$('#insertForm input[name="codeLong"]').val();
+            let testProjectName=$('#insertForm input[name="nameMedium"]').val();
+            let taskDescription=$('#insertForm textarea[name="descMedium"]').val();
+            testProjectCode = testProjectCode==""?"测试项目"+new Date().valueOf():testProjectCode;
+            taskDescription = taskDescription==""?"空":taskDescription;
+            if( testProjectName==''){
+                Vac.alert("名称为必填项");
             }else{
                 $.ajax({
                     url: address3 + 'testProjectController/addSingleTestProject',
                     type: 'post',
                     contentType: 'application/json',
                     data: JSON.stringify({
-                        codeLong: $('#insertForm input[name="codeLong"]').val(),
-                        nameMedium: $('#insertForm input[name="nameMedium"]').val(),
-                        descMedium: $('#insertForm textarea[name="descMedium"]').val()    
+                        codeLong: testProjectCode,
+                        nameMedium: testProjectName,
+                        descMedium:  taskDescription 
                     }),
                     success: function(data) {
                         // console.info(data);

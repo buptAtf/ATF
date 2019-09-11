@@ -1,6 +1,6 @@
 <template>
 <div class="copy-right text-center">
-    <span class="color-96">Copyright &copy; 1998－2018 BUPT All Rights Reserved <br>北京邮电大学物流工程实验室 版权所有</span> 
+    <span class="color-96">Copyright &copy; 1998－2018 BUPT All Rights Reserved <br>教育部信息网络工程研究中心 版权所有</span> 
 </div>
 </template>
 <script>

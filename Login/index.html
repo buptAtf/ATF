@@ -60,7 +60,7 @@
 	  <div class='success'>
 	  </div>
 	  <div class='disclaimer'>
-	    <p>北京邮电大学@物流工程实验室</p>
+	    <p>北京邮电大学@教育部信息网络工程研究中心实验室</p>
 	  </div>
 	</div>
 	<div class='authent'>
@@ -88,14 +88,14 @@
 		var ajaxmockjax = 1;//是否启用虚拟Ajax的请求响 0 不启用  1 启用
 		//默认账号密码
 		$(document).ready(function() {
-        // console.log(address3);
+         console.log('http://10.108.223.23:8080/atfcloud2.0a/');
 			$.ajax({
 				type: 'post',
-				url: address3 + "userController/getSessionId",
+				url: 'http://10.108.223.23:8080/atfcloud2.0a/' + "userController/getSessionId",
 				dataType: 'json',
 				success: function(data) {
 					sessionStorage.setItem('sessionId', data.obj.sessionId);
-					$('#codeImage').attr('src', address3 + 'userController/authCode?abc=' + Math.random()+"&sessionId=" + sessionStorage.getItem('sessionId'));
+					$('#codeImage').attr('src', 'http://10.108.223.23:8080/atfcloud2.0a/' + 'userController/authCode?abc=' + Math.random()+"&sessionId=" + sessionStorage.getItem('sessionId'));
 				}
 			});
 		});
@@ -199,9 +199,9 @@
 					//此处做为ajax内部判断
 					var url = "";
 					if(JsonData.login == truelogin && JsonData.pwd == truepwd && JsonData.code.toUpperCase() == CodeVal.toUpperCase()){
-						url = address3+"userController/login";
+						url = 'http://10.108.223.23:8080/atfcloud2.0a/'+"userController/login";
 					}else{
-						url =address3+"userController/login";
+						url ='http://10.108.223.23:8080/atfcloud2.0a/'+"userController/login";
 					}
 					
 					

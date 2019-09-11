@@ -15,8 +15,8 @@ var progressBarTemplate=`
         <a :href="progress.href"  >{{ progress.name }} </a>
         </li>
     </ul>
-    <ul  v-show="hideFlag" v-for="(index, progress) in progressList " v-if="progress.status === 'activing' " class=" flash nav nav-pills nav-justified pstep pstep-arrow">
-        <li v-for="(index, progress) in progress.item " :class="'flash'+index"  :class="progress.status"  track-by="$index">
+    <ul  v-show="hideFlag" v-for="(index, progress) in progressList " v-if="progress.status === 'activing' " class="  nav nav-pills nav-justified step step-square">
+        <li v-for="(index, progress) in progress.item "   :class="progress.status"   class="active"  track-by="$index">
         <a :href="progress.href"  >{{ progress.name }} </a>
         </li>
     </ul>
@@ -41,10 +41,10 @@ var progressBar = Vue.extend({
     _this.hideFlag = localStorage.getItem("hideprogress") == "true"?true:false;
     if(_this.hideFlag){
         if($(".wrapper").length ==0 ){
-            $("#main-content").css("padding-top","119px")
+            $("#main-content").css("padding-top","151px")
         }
         else{
-            $(".wrapper").css("margin-top","116px")
+            $(".wrapper").css("margin-top","145px")
         }
     }
     else{
@@ -70,7 +70,10 @@ var progressBar = Vue.extend({
        immediate: true, 
 　　　　deep: true
 　　}
-   },
+   }, 
+   created () {
+        window.addEventListener('scroll', this.handleScroll, true)
+    },
    computed: {
     // progressList1: function () {
     //     if(this.progressList == null) return -1
@@ -78,6 +81,17 @@ var progressBar = Vue.extend({
     //   }
    },
    methods: {
+    //监听滚动条
+    handleScroll: function() {
+        var t = document.documentElement.scrollTop || document.body.scrollTop;
+        var top_div = document.getElementById( "progressbar" );
+        if( t >= 100 ) {
+            top_div.style.position = "fixed";
+        } 
+        else {
+            top_div.style.position = "absolute";
+        }
+    },
     hideprogress: function() {
         var _this = this; 
         console.log(_this.hideFlag)
@@ -85,10 +99,10 @@ var progressBar = Vue.extend({
         localStorage.setItem("hideprogress", _this.hideFlag);
         if(_this.hideFlag){
             if($(".wrapper").length ==0 ){
-                $("#main-content").css("padding-top","119px")
+                $("#main-content").css("padding-top","150px")
             }
             else{
-                $(".wrapper").css("margin-top","116px")
+                $(".wrapper").css("margin-top","146px")
             }
         }
         else{
@@ -104,3 +118,4 @@ var progressBar = Vue.extend({
 });
 
 Vue.component('progressBar', progressBar);
+document.documentElement.scrollTop

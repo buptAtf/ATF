@@ -1,13 +1,16 @@
 #progressbar{
+    margin-left:180px;
+    background-color: #f6f6f6;
     user-select:none; 
     -webkit-user-select:none; 
-    position:fixed;
+    position:absolute;
     top:60px;
+    right: 0;
+    left: 0;
     z-index : 9;
 }
 .container{
-  margin-left:180px;
-
+  max-width: 100%;
 }
 .sidebar-closed{
   margin-left:0;
@@ -124,7 +127,7 @@
   .pstep-arrow li.actived a,
   .pstep-arrow li.actived a:hover,
   .pstep-arrow li.actived a:hover:after {
-    background-color: #51c151;
+    background-color: #00b8f5;
     color: #ffffff;
   }
   .pstep-arrow li.activing a,
@@ -153,119 +156,94 @@
   float: left;
   border:2px solid #00b8f5;
 }
-  .flash{
-    padding-left:0px
-
+  .step {
+    counter-reset: flag;
+    font-family: 'Microsoft YaHei','Lantinghei SC','Open Sans',Arial,'Hiragino Sans GB','STHeiti','WenQuanYi Micro Hei','SimSun',sans-serif;
   }
-.flash li:not(:last-child) a:after {
-    position: absolute;
-    top: -1px;
-    right: -15px;
-    width: 30px;
-    height: 30px;
-    transform: scale(0.707) rotate(45deg);
-    z-index: 1;
-    background-color: #f6f6f6;
-    border-radius: 0 5px 0 50px;
-    border-top: 1px solid #ffffff;
+  .step li {
+    position: relative;
+    transition: all 0.3s ease-in-out;
+    -webkit-transition: all 0.3s ease-in-out;
+    -ms-transition: all 0.3s ease-in-out;
+  }
+  .step li a {
+    cursor: pointer;
+    padding: 0px 15px 5px 15px;
+    transition: all 0.3s ease-in-out;
+    -webkit-transition: all 0.3s ease-in-out;
+    -ms-transition: all 0.3s ease-in-out;
+  }
+  .step li a:before {
+    content: counter(flag);
+    counter-increment: flag;
+    transition: all 0.3s ease-in-out;
+    -webkit-transition: all 0.3s ease-in-out;
+    -ms-transition: all 0.3s ease-in-out;
+  }
+  .step li a:after {
+    content: "";
+    transition: all 0.3s ease-in-out;
+    -webkit-transition: all 0.3s ease-in-out;
+    -ms-transition: all 0.3s ease-in-out;
+  }
+  .step-square {
+    margin-top: 28px;
+  }
+  .step-square > li:hover a:before,
+  .step-square > li:active a:before,
+  .step-square > li.active a:before {
+    background-color: #00b8f5;
+    color: #ffffff;
+    border-color: #00b8f5;
+  }
+  .step-square > li:hover a:after,
+  .step-square > li:active a:after,
+  .step-square > li.active a:after {
+    background-color: #00b8f5;
+  }
+  .step-square > li:first-child a:after {
+    left: 50%;
     border-right: 1px solid #ffffff;
-    box-sizing: content-box;
   }
-  .flash li a:before {
+  .step-square > li:last-child a:after {
+    right: 50%;
+    border-left: 1px solid #ffffff;
+  }
+  .step-square > li > a {
+    color: #ebebeb;
+  }
+  .step-square > li > a:hover {
+    background-color: #ffffff;
+    color: #00b8f5;
+  }
+  .step-square > li > a:before {
     position: absolute;
     z-index: 2;
-    width: 20px;
-    height: 20px;
-    line-height: 20px;
-    border-radius: 20px;
-    left: 3rem;
-    font-weight: bold;
-    font-size: 1rem;
-    overflow: hidden;
-    top: 5px;
-    background: #d2d2d2;
-    color: #ffffff;
+    top: -23px;
+    left: 0;
+    right: 0;
+    margin: 0 auto;
+    width: 18px;
+    height: 18px;
+    background-color: #ffffff;
+    line-height: 18px;
+    border: 1px solid #ebebeb;
   }
-  .flash li a{
-    padding-top:5px;
-    padding-bottom:5px;
+  .step-square > li > a:after {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: -65%;
+    background-color: #ebebeb;
+    z-index: 1;
+    height: 2px;
+    border: solid #ffffff;
+    border-width: 0 1px;
   }
-
-  .flash0 a,
-  .flash0 a:after{
-    animation: flicker2 1.5s linear 0s infinite  ;
-  }
-  .flash1 a,
-  .flash1 a:after{
-    animation: flicker2 1.5s linear 0.3s infinite  ;
-  }
-  .flash2 a,
-  .flash2 a:after{
-    animation: flicker2 1.5s linear 0.6s infinite  ;
-  }
-  .flash3 a,
-  .flash3 a:after{
-    animation: flicker2 1.5s linear 0.9s infinite  ;
-  }
-  .flash4 a,
-  .flash4 a:after{
-    animation: flicker2 1.5s ease-in-out 1.2s infinite  ;
-  }
-
-  @keyframes flicker2{
-    from {
-      background-color: #00b8f5;
-      color: #444444;
-    }
-    to {
-      color: #444444;
-      background-color: #f8fbfc;
-    }
-  }
-
-  @keyframes flicker{
-    from {
-      background-color: #00b8f5;
-      color: #444444;
-    }
-    to {
-      color: #444444;
-      background-color: #86dcf5;
-    }
-  }
-   
-  @-moz-keyframes myfirst /* Firefox */
-  {
-    from {
-      background-color: #00b8f5;
-      color: #444444;
-    }
-    to {
-      color: #444444;
-      background-color: #86dcf5;
-    }
-  }
-
-  @-webkit-keyframes myfirst /* Safari and Chrome */
-  {
-    from {
-      background-color: #00b8f5;
-      color: #444444;
-    }
-    to {
-      color: #444444;
-      background-color: #86dcf5;
-    }
-  }
-
-  @-o-keyframes myfirst /* Opera */
-  {
-    from {
-      background-color: #00b8f5;
-      color: #444444;
-    }
-    to {
-      color: #444444;
-      background-color: #86dcf5;
-    }
+  .step-square > li.active > a,
+  .step-square > li.active > a:focus,
+  .step-square > li.active > a:hover {
+    color: #00b8f5;
+    background: transparent;
   }

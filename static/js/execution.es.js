@@ -196,6 +196,7 @@ var app = new Vue({
         },
         //查询执行记录
         queryExecutionRecord: function(page, listnum, order, sort){ //一般查询记录的函数，与组件的区分开
+            console.log("1231111111111")
             var _this=this;
             var today = new Date();
             var endTime = ''+ today.getFullYear()+'-'+(today.getMonth()+1)+'-'+(today.getDate()+1);
@@ -249,12 +250,15 @@ var app = new Vue({
             let tempDate = _this.creatTimeChange(startTime,endTime);
             startTime = tempDate[0];
             endTime = tempDate[1];
+            console.log("122222222222222222222222231")
+            console.log(_this.testPlanId)
+            console.log("122222222222222222222222231")
             $.ajax({
                 url: address3 + 'batchRunCtrlController/pagedBatchQueryBatchRunCtrl',
                 type: 'post',
                 contentType: 'application/json',
 				data: JSON.stringify({
-                    'testPlanId': + _this.testPlanId,
+                    'testPlanId': _this.testPlanId,
                     'caseSourceChannel': '',
                     'runStatus': + _this.runStatus,     //执行状态
                     "pageSize":pageSize,
@@ -373,6 +377,7 @@ var app = new Vue({
 
 // 获取场景
 function queryExecutionRecord(page, listnum, order, sort) {
+    console.log("1231")
     //获取list通用方法，只需要传入多个所需参数
     $.ajax({
         url: address2 + 'batchRunCtrlController/pagedBatchQueryBatchRunCtrl',
