@@ -21,7 +21,8 @@ var app = new Vue({
         selectedTestProjectName: '',
         selectedTaskDescription: '',
         projectName: sessionStorage.getItem("projectNameStorage"),
-       
+        caseLibId:null,
+        projectNameStorage: null,
         
         
     },
@@ -107,8 +108,9 @@ var app = new Vue({
                     success: function(data) {
                         // console.info(data);
                         if (data.respCode=='0000') {
+                            sessionStorage.setItem("caselibId",data.caselibId)
                             getTestProject(app.currentPage, app.pageSize, 'id', 'asc');
-                            $('#successModal').modal();
+                            $('#successAndGoModal').modal();
                         } else {
                             $('#failModal').modal();
                         }
@@ -205,6 +207,15 @@ var app = new Vue({
                 sessionStorage.setItem("projectNameStorage", "("+projectNameStorage+")" );    //把项目名称存入缓存中
                 location.href = "caseManagement.html";
             }           
+        },
+        linkToCase(){
+            var _this =this;
+            if(_this.caseLibId == null){
+                Vac.alert("添加接口缺少caseLibId和项目名称两个字段，请后端同学添加")
+            }
+            sessionStorage.setItem("caselibId", _this.caseLibId);     //存储测试项目id到sessionstorage
+            sessionStorage.setItem("projectNameStorage", "("+_this.projectNameStorage+")" );    //把项目名称存入缓存中
+            location.href = "caseManagement.html";
         },
         //时间格式化
         formatDate(date){

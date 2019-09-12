@@ -47,20 +47,23 @@ function formatDate(date){
     let len = modal.length;
     for(let i =0 ; i<len;i++){
     modal[i].style.userSelect = "none"
-    modal[i].addEventListener("mousedown",function (e) {//鼠标按下的时候，得到鼠标在盒子里面的坐标
-        console.log(e)
-        console.log($(modal[i]).css('transform'))
-        console.log(modal[i])
+    modal[i].children[0].children[0].addEventListener("mousedown",function (e) {//鼠标按下的时候，得到鼠标在盒子里面的坐标
         var xy =$(modal[i]).css('transform').split(",");
+        console.log(modal[i])
+        
         var x=e.pageX - parseFloat(xy[4]);
         var y=e.pageY- parseFloat(xy[5]);;
-        console.log("x= "+x+"y = "+y)
         document.addEventListener("mousemove",move);  //鼠标移动的时候，得到模态框的坐标
         function move(e){
-        console.log(e)
-        console.log("1111111111111111 x= "+(e.pageX-x)+"y = "+(e.pageY-y))
-            modal[i].style.transform="translate("+(e.pageX-x)+"px,"+(e.pageY-y)+"px)";
-            console.log($(modal[i]).css('transform'))
+            console.log(modal[i])
+            console.log(e)
+        let adjusty =e.pageY-y
+        let adjustx =e.pageX-x
+        if(adjusty<-10) adjusty =-10
+        if(adjusty>650) adjusty =650
+        if(adjustx<-450) adjustx =-450
+        if(adjustx>550) adjustx =550
+        modal[i].style.transform="translate("+adjustx+"px,"+adjusty+"px)";
         }
         document.addEventListener("mouseup",function(){  //鼠标弹起的时候，解除鼠标移动事件
             document.removeEventListener("mousemove",move);
@@ -90,21 +93,25 @@ var progressbar = new Vue({
                         name:"添加被测系统",
                         href:"aut.html",
                         status:true,
+                        pre:0
                     },
                     {
                         name:"添加功能点",
                         href:"transact.html",
                         status:true,
+                        pre:1
                     },
                     {
                         name:"添加UI及元素",
                         href:"transactDetail.html",
                         status:true,
+                        pre:2
                     },
                     {
                         name:"配置脚本",
                         href:"transactDetail.html",
                         status:true,
+                        pre:2
                     }
                 ]
             },
@@ -117,21 +124,25 @@ var progressbar = new Vue({
                         name:"添加测试项目",
                         href:"testProject.html",
                         status:true,
+                        pre:0
                     },
                     {
                         name:"添加用例",
                         href:"caseManagement.html",
                         status:true,
+                        pre:3
                     },
                     {
                         name:"配置数据",
                         href:"datatable.html",
                         status:true,
+                        pre:3
                     },
                     {
                         name:"配置场景",
                         href:"scene.html",
                         status:true,
+                        pre:3
                     }
                 ]
             },
@@ -139,26 +150,31 @@ var progressbar = new Vue({
                 name:"测试执行",
                 href:"testplan-execute.html",
                 status:false,
+                pre:3,
                 item:[
                     {
                         name:"添加测试计划",
                         href:"testplan-execute.html",
                         status:true,
+                        pre:3
                     },
                     {
                         name:"添加待执行场景",
                         href:"testplan-execute.html",
                         status:true,
+                        pre:3
                     },
                     {
                         name:"选择执行机",
                         href:"testplan-execute.html",
                         status:true,
+                        pre:3
                     },
                     {
                         name:"执行",
                         href:"testplan-execute.html",
                         status:true,
+                        pre:3
                     }
                 ]
             },
@@ -166,16 +182,19 @@ var progressbar = new Vue({
                 name:"结果查询",
                 href:"execution.html",
                 status:false,
+                pre:3,
                 item:[
                     {
                         name:"按执行批次查询",
                         href:"execution.html",
                         status:true,
+                        pre:3,
                     },
                     {
                         name:"按记录单查询",
                         href:"testRecord.html",
                         status:true,
+                        pre:3,
                     }
                 ]
             }

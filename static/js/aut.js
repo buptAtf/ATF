@@ -174,7 +174,8 @@ var app = new Vue({
                     console.info(data);
                     if (data.respCode==0000) {
                         var newAutId = data.autId
-                        _this.newAutId = data.autId;
+                        _this.newAutId = newAutId;
+                        sessionStorage.setItem("autId",newAutId)
                         console.info(newAutId);
                         $.ajax({
                             url:address3+'tool/querySingleTool',
