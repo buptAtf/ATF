@@ -3934,3 +3934,9 @@ span.customSelect.changed {
 .customSelectInner {
     background:url(../../images/customSelect-arrow.gif) no-repeat center right;
 }
+.modal-dialog { 
+    -webkit-transition:-webkit-transform 0s ease-out !important;
+    -moz-transition:-moz-transform .0s ease-out !important;
+    -o-transition:-o-transform 0s ease-out !important;
+    transition:transform 0s ease-out !important
+}

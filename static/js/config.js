@@ -38,6 +38,36 @@ function formatDate(date){
     var s = (date.getSeconds() <10 ? '0' + date.getSeconds() : date.getSeconds());
     return Y+M+D+h+m+s;
 }
+(function (){
+    var modal = document.getElementsByClassName("modal-dialog")
+    console.log(modal[1])
+    console.log(modal[8])
+    let i =0;
+    console.log(modal[8])
+    let len = modal.length;
+    for(let i =0 ; i<len;i++){
+    modal[i].style.userSelect = "none"
+    modal[i].addEventListener("mousedown",function (e) {//鼠标按下的时候，得到鼠标在盒子里面的坐标
+        console.log(e)
+        console.log($(modal[i]).css('transform'))
+        console.log(modal[i])
+        var xy =$(modal[i]).css('transform').split(",");
+        var x=e.pageX - parseFloat(xy[4]);
+        var y=e.pageY- parseFloat(xy[5]);;
+        console.log("x= "+x+"y = "+y)
+        document.addEventListener("mousemove",move);  //鼠标移动的时候，得到模态框的坐标
+        function move(e){
+        console.log(e)
+        console.log("1111111111111111 x= "+(e.pageX-x)+"y = "+(e.pageY-y))
+            modal[i].style.transform="translate("+(e.pageX-x)+"px,"+(e.pageY-y)+"px)";
+            console.log($(modal[i]).css('transform'))
+        }
+        document.addEventListener("mouseup",function(){  //鼠标弹起的时候，解除鼠标移动事件
+            document.removeEventListener("mousemove",move);
+        })
+    })
+   }
+})()
 //用于生成与导航栏组件绑定的Vue
 var progressbar = new Vue({
     el:"#progressbar",
@@ -170,6 +200,8 @@ var progressbar = new Vue({
             case 'scene.html':
             case 'scene-setting.html':
             case 'insertSceneCase.html':
+            case 'scene-setting.html':
+                
                 a[0].status="actived";
                 a[1].status="activing";
                 a[2].status=a[3].status="noactive";

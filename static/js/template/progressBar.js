@@ -85,7 +85,7 @@ var progressBar = Vue.extend({
     handleScroll: function() {
         var t = document.documentElement.scrollTop || document.body.scrollTop;
         var top_div = document.getElementById( "progressbar" );
-        if( t >= 100 ) {
+        if( t >= 150 ) {
             top_div.style.position = "fixed";
         } 
         else {
