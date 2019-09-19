@@ -1,3 +1,9 @@
+const initialAddRowData = {
+    nameMedium: '',
+    descMedium: '',
+    testPhaseId: '',
+    testRoundId: ''
+};
 var app = new Vue({
     el: '#v-testProject',
     data: {
@@ -21,16 +27,16 @@ var app = new Vue({
         selectedTestProjectName: '',
         selectedTaskDescription: '',
         projectName: sessionStorage.getItem("projectNameStorage"),
-       
-        
-        
+        addRowData: { ...initialAddRowData },
+
+
     },
     ready: function() {
         getTestProject(this.currentPage, this.pageSize, this.order, this.sort);
         changeListNum();
-        
+
         // if(projectName==null){
-        //     projectName = '';   
+        //     projectName = '';
         // }
 
         $('.3').addClass('open')
@@ -100,12 +106,37 @@ var app = new Vue({
                     data: JSON.stringify({
                         codeLong: $('#insertForm input[name="codeLong"]').val(),
                         nameMedium: $('#insertForm input[name="nameMedium"]').val(),
-                        descMedium: $('#insertForm textarea[name="descMedium"]').val()    
+                        descMedium: $('#insertForm textarea[name="descMedium"]').val()
                     }),
                     success: function(data) {
                         // console.info(data);
                         if (data.respCode=='0000') {
                             getTestProject(app.currentPage, app.pageSize, 'id', 'asc');
+                            initialAddRowData.caseLibId = String(data.caseLibId);
+                            initialAddRowData.creatorId = sessionStorage.getItem('userId');
+                            initialAddRowData.nameMedium = $('#insertForm input[name="nameMedium"]').val();
+                            initialAddRowData.descMedium = $('#insertForm textarea[name="descMedium"]').val();
+                            initialAddRowData.testPhaseId = 3;
+                            initialAddRowData.testRoundId=11;
+                            this.addRowData =  {...initialAddRowData};
+                            console.log(this.addRowData);
+                            $.ajax({
+                                    url: address3 + 'testPlanController/insertTestPlan',
+                                    type: 'post',
+                                    contentType: 'application/json',
+                                    data: JSON.stringify(this.addRowData) ,
+                                    success: function(data) {
+                                      if ('0000' === data.respCode) {
+                                        // Vac.alert(data.respMsg);
+                                        this.addRowData = {...initialAddRowData};
+                                      } else {
+                                         Vac.alert(data.respMsg);
+                                      }
+                                    },
+                                error: function() {
+                                Vac.alert('出错啦~7');
+                                }
+                        }),
                             $('#successModal').modal();
                         } else {
                             $('#failModal').modal();
@@ -146,15 +177,16 @@ var app = new Vue({
         update: function() {
             var selectedInput = $('input[name="chk_list"]:checked');
             var id = selectedInput.attr('id');
+            var realId=id.substring(0,3);
             $.ajax({
                 url: address3 + 'testProjectController/modifySingleTestProject',
                 type: 'post',
                 contentType: 'application/json',
                 data: JSON.stringify({
-                        id: id,
+                        id: realId,
                         codeLong: $('#updateForm input[name="codeLong"]').val(),
                         nameMedium: $('#updateForm input[name="nameMedium"]').val(),
-                        descMedium: $('#updateForm textarea[name="descMedium"]').val()    
+                        descMedium: $('#updateForm textarea[name="descMedium"]').val()
                     }),
                 success: function(data) {
                     // console.info(data);
@@ -179,6 +211,17 @@ var app = new Vue({
             $('#updateForm input[name="nameMedium"]').val(selectedInput.parent().next().next().html());
             $('#updateForm textarea[name="descMedium"]').val(selectedInput.parent().next().next().next().html());
         },
+        //点击行选中该行
+        tableClick:function(trId){
+            var tbId='#'+trId+'hi';
+            if(!$(tbId).attr('checked')){
+                $(tbId).prop("checked",true);
+            }
+            else {
+                $(tbId).prop("checked",false);
+            }
+
+        },
         //进入
         to: function(id,caseLibId,name) {
             var selectedInput;
@@ -196,13 +239,13 @@ var app = new Vue({
                 $('#selectAlertModal').modal();
             } else {                //选中radio之后，长度不为0，点击进入之后，进入项目
                 if(!caseLibId){     //如果caseLibId为空的话，就查找元素从页面中找到caseLibId的值
-                    caseLibId = selectedInput.parent().next().next().next().next().html();  
+                    caseLibId = selectedInput.parent().next().next().next().next().html();
                     projectNameStorage = selectedInput.parent().next().next().html();
                 }
                 sessionStorage.setItem("caselibId", caseLibId);     //存储测试项目id到sessionstorage
                 sessionStorage.setItem("projectNameStorage", "("+projectNameStorage+")" );    //把项目名称存入缓存中
                 location.href = "caseManagement.html";
-            }           
+            }
         },
         //时间格式化
         formatDate(date){
@@ -214,10 +257,10 @@ var app = new Vue({
                 var h = (date.getHours() < 10 ? '0' + date.getHours() : date.getHours()) + ':';
                 var m = (date.getMinutes() <10 ? '0' + date.getMinutes() : date.getMinutes()) + ':';
                 var s = (date.getSeconds() <10 ? '0' + date.getSeconds() : date.getSeconds());
-                return Y+M+D+h+m+s;  
+                return Y+M+D+h+m+s;
             }else{
                 return '';
-            }     
+            }
         }
     },
 
@@ -251,7 +294,7 @@ function getTestProject(page, listnum, order, sort) {
             }
         });
     }
-    
+
 
 }
 
@@ -294,7 +337,7 @@ function resort(target) {
 
 //根据编号搜索系统
 function queryTestProject() {
- 
+
     searchFlag = true;          //如果是点击了搜索按钮，则下次查询的时候保持搜索的条件进行查询
     if(arguments[0]==='1'){     //在页面中点击搜索按钮，传入参数'1'
         app.currentPage = 1;    //将当前页面设置为1
@@ -304,7 +347,7 @@ function queryTestProject() {
         type: 'POST',
         contentType: 'application/json',
         data: JSON.stringify({
-            'currentPage': app.currentPage, 
+            'currentPage': app.currentPage,
             'pageSize': app.pageSize,
             'orderColumns': 'id',
             'orderType': 'asc',

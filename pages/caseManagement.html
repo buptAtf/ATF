@@ -1582,7 +1582,7 @@
                                     <thead>
                                         <tr>
                                             <th style="width:8px;">
-                                                <input type="checkbox" v-model="checked" v-on:click="" name="chk_all" id="chk_all" />
+                                                <input type="checkbox" v-model="checked" @click="" name="chk_all" id="chk_all" />
                                             </th>
                                             <th>节点</th>
                                             <th class="hidden-phone text-center" data-order="casecode" data-sort="desc" onclick="resort(this)">案例编号 <span class="icon-sort-up" aria-hidden="true"></span></th>
@@ -1603,9 +1603,9 @@
                                         </tr>
                                     </thead>
                                     <tbody id="caseTable">
-                                        <tr class="odd gradeX" v-for="case in caseList" id="{{case.id}}">
+                                        <tr class="odd gradeX" v-for="case in caseList" id="{{case.id}}" @click="tableClick(case.id)">
                                             <td >
-                                                <input type="checkbox" v-model="" name="chk_list" id="{{case.id}}" />
+                                                <input type="checkbox" v-model="" name="chk_list" id="{{case.id}}hi"  @click.stop=" return true "/>
                                             </td>
                                             <td><span class="icon-angle-right" v-show="case.caseCompositeType=='2'" @click="getSubCase($event)"></span></td>
                                             <td class="center hidden-phone"><a @click="showDetail($event)" class="detail-link">{{ case.casecode }}</a></td>

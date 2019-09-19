@@ -48,6 +48,16 @@ var app = new Vue({
         downloadRecorder: function(){
             window.location.href = address4 + "atf-data/atf-recorder.zip";
         },
+        //点击行选中该行
+        tableClick:function(trId){
+            var tbId='#'+trId+'hi';
+            if(!$(tbId).attr('checked')){
+                $(tbId).prop("checked",true);
+            }
+            else {
+                $(tbId).prop("checked",false);
+            }
+        },
         //获取选中的id
         getIds: function() {
             var id_array = new Array();

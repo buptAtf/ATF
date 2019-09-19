@@ -177,7 +177,10 @@ var vBody = new Vue({
 		})
 		initialAddRowData.creatorId = sessionStorage.getItem('userId');
         initialAddRowData.caseLibId = sessionStorage.getItem('caselibId');
+		initialAddRowData.testPhaseId = 3;
+		initialAddRowData.testRoundId=11;
         this.addRowData = {...initialAddRowData};
+		console.log(this.addRowData);
         this.getTestPlans();
         this.getTestPhases();
 		this.getTestRound();
@@ -1114,8 +1117,9 @@ var vBody = new Vue({
                     id: this.selectTestPlan,
                     nameMedium: this.addRowData.nameMedium,
                     descMedium: this.addRowData.descMedium,
-                    modifierId: this.addRowData.creatorId
-                };
+                    modifierId: this.addRowData.creatorId,
+                }
+			    console.log(this.addRowData);
                 Vac.ajax({
                     url: address3 + url,
                     data: data,

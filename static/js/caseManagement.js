@@ -930,6 +930,17 @@ var app = new Vue({
         
     },
     methods: {
+        //点击行选中该行
+        tableClick:function(trId){
+            var tbId='#'+trId+'hi';
+            if(!$(tbId).attr('checked')){
+                $(tbId).prop("checked",true);
+            }
+            else {
+                $(tbId).prop("checked",false);
+            }
+
+        },
         //获取案例
         getCase:function(currentPage, pageSize, order, sort) {
             var _this = this;

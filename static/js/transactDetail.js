@@ -2375,6 +2375,7 @@ var app = new Vue({
         //参数化
         para: function () {
             var sendData = this.generateScriptString();
+            console.log(sendData);
             var _this = this;
             Vac.ajax({
                 url: address3 + 'scriptTemplate/scriptParameterized',
@@ -2586,6 +2587,7 @@ var app = new Vue({
                         }
                     })
                 });
+
             } else {
                 operationRows[index].functions = [_this.uiOrFunctions.function]
                 // parameters: [{"name":"11","valueclass":"11","parameterizedcolumn":"","defaultvalue":"","description":""}]
@@ -2599,7 +2601,6 @@ var app = new Vue({
                     })
                 }
                 _this.updateRow(operationRows, index)
-
             }
             $('#ui-ele-modal').modal('hide')
             // _this.uiOrFunctions.changed = false;
@@ -2723,6 +2724,7 @@ var app = new Vue({
                     _this.operationRows.push(newRow)
                 }
             }
+
             $('#ui-ele-modal2').modal('hide')
         },
         replacemess(str) {
