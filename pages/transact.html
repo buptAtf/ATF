@@ -301,9 +301,9 @@
                                     </tr>
                                 </thead>
                                 <tbody id="caseTable">
-                                    <tr class="odd gradeX" v-for="(index,transact) in transactList" id="{{transact.id}}">
+                                    <tr class="odd gradeX" v-for="(index,transact) in transactList" id="{{transact.id}}" @click="tableClick(transact.id)">
                                         <td width="5%">
-                                            <input type="radio" v-model="" name="chk_list" id="{{transact.id}}" />
+                                            <input type="radio" v-model="" name="chk_list" id="{{transact.id}}hi"  @click.stop=" return true "/>
                                         </td>
                                         <td class="center hidden-phone" width="5%">{{index+1}}</td>
                                         <td class="center" width="15%"><a @click="goToDetail(transact.id,transact.transType)" class="detail-link">{{ transact.code}}</a></td>

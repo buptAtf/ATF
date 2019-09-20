@@ -32,12 +32,13 @@ var app = new Vue({
         noReset:true,        //禁止重置
         appiumurl:"",             //连接URL
         mobileId:-1,
+        flag:0,
     },
     ready: function() {
         getAut(this.currentPage, this.pageSize, this.order, this.sort);
         getAbstr();
         changeListNum();
-        
+
         $('.2').addClass('open');
         $('.2 .arrow').addClass('open');
         $('.2-ul').css({display: 'block'});
@@ -53,6 +54,27 @@ var app = new Vue({
             });
             //app.ids = id_array.join(',');
             $('input[name="id"]').val(id_array.join(','));
+        },
+        //点击行选中该行
+        tableClick:function(trId){
+            var tbId='#'+trId+'hi';
+            if(!$(tbId).attr('checked')){
+                $(tbId).prop("checked",true);
+            }
+            else {
+                $(tbId).prop("checked",false);
+            }
+        },
+        showFunc:function(){
+            if(this.flag==1){
+                $('#func').css("display","none");
+                $('#showFunc').text("展示高级功能");
+                this.flag=0;
+            }else{
+                $('#func').css("display","inline-block");
+                $('#showFunc').text("隐藏高级功能");
+                this.flag=1;
+            }
         },
         checkedAll: function() {
             var _this = this;

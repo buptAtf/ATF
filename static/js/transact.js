@@ -44,7 +44,16 @@ var app = new Vue({
             app.ids = id_array.join(',');
             // $('input[name="ids"]').val(id_array.join(','));
         },
-
+        //点击行选中该行
+        tableClick:function(trId){
+            var tbId='#'+trId+'hi';
+            if(!$(tbId).attr('checked')){
+                $(tbId).prop("checked",true);
+            }
+            else {
+                $(tbId).prop("checked",false);
+            }
+        },
         //turnToPage为跳转到某页
         //传入参数pageNum为要跳转的页数
         turnToPage(pageNum) {

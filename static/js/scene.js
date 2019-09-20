@@ -51,6 +51,16 @@ var app = new Vue({
             app.ids = id_array.join(',');
             // $('input[name="id"]').val(id_array.join(','));
         },
+        //点击行选中该行
+        tableClick:function(trId){
+            var tbId='#'+trId+'hi';
+            if(!$(tbId).attr('checked')){
+                $(tbId).prop("checked",true);
+            }
+            else {
+                $(tbId).prop("checked",false);
+            }
+        },
         checkedAll: function() {
             var _this = this;
             console.log(_this.checkboxModel);

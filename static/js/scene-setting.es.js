@@ -59,6 +59,7 @@ var vBody = new Vue({
 		// save the checked flow nodes
 		checkedFlowNodes: [],
 		executeDateFlag: null,
+		flag:0,
 
 		// 数据池数据
 		dataPoolTitle: '',
@@ -176,6 +177,17 @@ var vBody = new Vue({
 		},
 		toInsertSceneCase: function(){
 			location.href = "insertSceneCase.html?sceneid=" + this.sceneid + "&" + "scenename=" + this.scenename;
+		},
+		showFunc:function(){
+			if(this.flag==1){
+				$('#func').css("display","none");
+				$('#showFunc').text("展示高级功能");
+				this.flag=0;
+			}else{
+				$('#func').css("display","block");
+				$('#showFunc').text("隐藏高级功能");
+				this.flag=1;
+			}
 		},
 		getCases: function(){
 			var _this = this;
