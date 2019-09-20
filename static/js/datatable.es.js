@@ -3321,7 +3321,9 @@ function APIUpload() {
 				singleData.compareChar=APIFieldVerificationParaSel;
 				singleData.expectValue=APIFieldVerificationParaVal;
 				let singleData_Json = JSON.stringify(singleData);
-				APIFieldVerificationData.push(singleData_Json);
+				let extract={};
+				extract["compare_"+index] = singleData_Json;
+				APIFieldExtractionData.push(extract);
 			}
 		});
 		console.log(APIFieldVerificationData);
@@ -3353,15 +3355,17 @@ function APIUpload() {
 	else if($("input[name=inlineRadioOptions]")[1].checked){
 		console.log("提取");
 		var APIFieldExtractionData=[];
-		$('#APIFieldParaListBody').find('.APIFieldExtractionParaRow').each(function() {
-			var APIFieldExtractionParaExp=$(this).find("input[name=APIFieldExtractionParaExp]").val(),
-				APIFieldExtractionParaName=$(this).find("input[name=APIFieldExtractionParaName]").val();
+		$('#APIFieldParaListBody').find('.APIFieldExtractionParaRow').each(function(index,item) {
+			var APIFieldExtractionParaExp=$(item).find("input[name=APIFieldExtractionParaExp]").val(),
+				APIFieldExtractionParaName=$(item).find("input[name=APIFieldExtractionParaName]").val();
 			if(APIFieldExtractionParaExp!=""){
 				let singleData={};
 				singleData.pathExpression=APIFieldExtractionParaExp;
 				singleData.name=APIFieldExtractionParaName;
 				let singleData_Json = JSON.stringify(singleData);
-				APIFieldExtractionData.push(singleData_Json);
+				let extract={};
+				extract["extract_"+index] = singleData_Json;
+				APIFieldExtractionData.push(extract);
 			}
 		});
 		console.log(APIFieldExtractionData);

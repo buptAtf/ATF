@@ -109,6 +109,8 @@ var app = new Vue({
                         // console.info(data);
                         if (data.respCode=='0000') {
                             sessionStorage.setItem("caselibId",data.caselibId)
+                            app.caselibId = data.caselibId
+                            app.projectNameStorage = data.projectNameStorage
                             getTestProject(app.currentPage, app.pageSize, 'id', 'asc');
                             $('#successAndGoModal').modal();
                         } else {
@@ -212,6 +214,7 @@ var app = new Vue({
             var _this =this;
             if(_this.caseLibId == null){
                 Vac.alert("添加接口缺少caseLibId和项目名称两个字段，请后端同学添加")
+                return
             }
             sessionStorage.setItem("caselibId", _this.caseLibId);     //存储测试项目id到sessionstorage
             sessionStorage.setItem("projectNameStorage", "("+_this.projectNameStorage+")" );    //把项目名称存入缓存中

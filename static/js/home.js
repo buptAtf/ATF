@@ -9,7 +9,7 @@ var app = new Vue({
         
     },
     ready: function(){
-        
+        $('.-1 a').css({color: '#ff6c60'});
     }
     
 });

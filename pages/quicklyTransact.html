@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html>
+  
+<head>
+    <link rel="import" href="./common/header.html?__inline">
+    <link rel="stylesheet" type="text/css" href="../static/css/index.css">
+    <link rel="stylesheet" type="text/css" href="../static/css/pagination.css">
+    <title>quicklyTransact</title>
+    <style>
+        .info{
+            padding:10px;
+            margin:0 auto; 
+            background-color: #fff;
+            border-radius:  4px;
+            width : 800px;
+        }
+        .panel span{
+            padding:5px;
+            font-size: 1.7em;
+        }
+        .panel span i{
+            position: relative;
+            padding:5px;
+            font-size: 0.7em;
+        }
+        .panel {
+            text-align: center;
+        }
+        .modal-footer{
+            text-align: center;
+        }
+        #quicklyInfo{
+            position: absolute;
+            display: none;
+            top:2.5em;
+            transform:translate(-50%,0px) translate(-7px,0px);
+            z-index: 9999;
+            background-color: #3c4958;
+            color:#fff;
+            border-radius: 5px;
+            padding :2px 5px;
+            word-break:keep-all;
+        }
+        #quicklyInfo span{
+            font-size: 1em;
+        }
+        .panel span i:hover #quicklyInfo{
+            display: inline-block;
+        }
+        .triangle{
+            z-index: -1;
+            position: absolute;
+            left:50%;
+            top:0px;
+            display: inline-block;
+            width:20px;
+            height:20px;
+            transform: translate(-50%,-40%) rotate(45deg);
+            background-color: #3c4958;
+        }
+    </style>
+</head>
+<body id="v-quicklyTransact">
+        <div class="content">
+        <!--header start-->
+        <link rel="import" href="./common/header-guide.html?__inline">
+        <link rel="import" href="./common/aside-guide.html?__inline">
+        <section id="main-content">
+            <section class="wrapper" >
+                    <section class="panel">
+                        <span>共5步  第一步：添加功能点 <i class="icon-question-sign">
+                                <div id = "quicklyInfo">
+                                    <span>功能点:系统某个需要测试的功能流程</span>
+                                    <div class="triangle"></div>
+                                </div></i></span>
+                    </section>
+                    <section class="info">
+                            <div class="modal-content">
+                                <div class="modal-body">
+                                    <!-- modal-body start -->
+                                    <section class="panel">
+                                        <form id="insertForm" class="form-horizontal" role="form">
+                                            <div class="form-group">
+                                                <label class="col-lg-3 control-label">功能点名称<font color="red">*</font></label>
+                                                <div class="col-lg-5">
+                                                    <input type="text" class="form-control" v-model="transName" placeholder="必输项">
+                                                </div>
+                                            </div>
+                                            <div class="form-group" hidden>
+                                                <label class="col-lg-3 control-label">类型</label>  
+                                                <div class="col-lg-5">
+                                                    <select class="form-control" v-model="transType" >
+                                                        <option value="1" selected >UI</option>
+                                                        <option value="2">接口</option>
+                                                    </select>
+                                                </div>                                                      
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="col-lg-3 control-label">编码</label>
+                                                <div class="col-lg-5">
+                                                    <input type="text" class="form-control" v-model="transCode"  placeholder="为空时自动生成">
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="col-lg-3 control-label">描述</label>
+                                                <div class="col-lg-5">
+                                                    <textarea class="form-control" rows="3" v-model="transDesc"  ></textarea>
+                                                </div>
+                                            </div>
+                                        </form>
+                                    </section>
+                                    <!-- modal-body end -->
+                                </div>
+                                <div class="modal-footer">
+                                    <button data-dismiss="modal" class="btn btn-default" type="button" @click="reset()">重置</button>
+                                    <button data-dismiss="modal" class="btn btn-success" type="button" @click="insert()">添加并进入下一步</button>
+                                </div>
+                            </div>
+                        </section>
+                        
+                        <!-- failModal start -->
+                        <div class="modal fade" id="failModal" tabindex="-1" role="dialog" aria-labelledby="failModalLabel" aria-hidden="true">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                                            <h4 class="modal-title">操作失败</h4>
+                                        </div>
+                                        <div class="modal-body">
+                                            <h4>{{failMsg}}</h4>
+                                            Error：Congratulations on your coming here ,but I'm sorry to tell you about that -- Something went wrong.
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button data-dismiss="modal" class="btn btn-success" type="button">确定</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- failModal end -->
+            </section>
+            <link rel="import" href="./common/copy-right.html?__inline">
+        </section>
+</body>
+</html>
+<link rel="import" href="./common/footer.html?__inline">
+<script src="../lib/vue-resource.min.js"></script>
+<script type="text/javascript" src="../static/js/quicklyTransact.js"></script>
+

@@ -37,6 +37,6 @@
         }
     </script>
 </header>
-<div id = "progressbar">
-    <progress-bar :progress-list="progressList"></progress-bar>
+<div id = "progressbar" :class="flag" v-if="flag">
+    <progress-bar :progress-list="progressList"  :flag="flag"></progress-bar>
 </div>

@@ -76,10 +76,12 @@ var progressbar = new Vue({
     el:"#progressbar",
     data:()=>(
         {
-            progressList:[]
+            progressList:[],
+            flag : true,
         }
     ),
     ready: function() {
+        var _this = this;
         console.log("MF")
         console.log(window.location.pathname);
         let a =
@@ -88,6 +90,7 @@ var progressbar = new Vue({
                 name:"被测系统管理",
                 href:"aut.html",
                 status:true,
+                pre:0,
                 item:[
                     {
                         name:"添加被测系统",
@@ -119,6 +122,7 @@ var progressbar = new Vue({
                 name:"脚本生成",
                 href:"testProject.html",
                 status:false,
+                pre:0,
                 item:[
                     {
                         name:"添加测试项目",
@@ -205,7 +209,6 @@ var progressbar = new Vue({
             case 'transactDetail.html':
             case 'architecture.html':
             case 'mockserver.html':
-            case 'home.html':
             case 'runner-management.html':
             case 'usermanagement.html':
                     a[0].status="activing";
@@ -237,6 +240,7 @@ var progressbar = new Vue({
                 break;
             default: 
                 a[0].status=a[1].status=a[2].status=a[3].status="noactive";
+                this.flag=false;
                 break;
 
         }

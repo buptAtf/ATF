@@ -256,7 +256,7 @@
             if(userName==1){
                 sessionStorage.setItem('userId', "3")
                 sessionStorage.setItem('userName', "chai");
-                window.location.href = "testProject.html";
+                window.location.href = "home.html";
             }
             if (checkform("#form") ) {
                 if(authcode){
@@ -278,7 +278,7 @@
                                                 if (data.success === true) {
                                                     sessionStorage.setItem('userId', data.obj.id)
                                                     sessionStorage.setItem('userName', userName);
-                                                    window.location.href = "testProject.html";
+                                                    window.location.href = "home.html";
                                                 } else {
                                                     setHtml("#result", "登录失败，请重新登录");
                                                 }
@@ -321,7 +321,7 @@
                                                         if (data.success === true) {
                                                             sessionStorage.setItem('userId', data.obj.id)
                                                             sessionStorage.setItem('userName', userName);
-                                                            window.location.href = "testProject.html";
+                                                            window.location.href = "home.html";
                                                         } else {
                                                             setHtml("#result", "登录失败，请重新登录");
                                                         }

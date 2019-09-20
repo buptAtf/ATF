@@ -3,7 +3,7 @@
 //组件封装中遇到最多的问题就是大小写
 //该翻页组件的使用见tesplan
 var progressBarTemplate=`
-<div id ="container" class ="container">
+<div id ="container" class ="container" v-if ="flag">
     <div class ="hideprogress " @click="hideprogress" v-show="hideFlag" > 
         <i class ="icon-double-angle-left"></i><span>隐藏导航</span>
     </div>
@@ -27,7 +27,10 @@ var progressBar = Vue.extend({
    props: {
         progressList:{
             Type : Array,
-        }
+        },
+        flag:{
+            Type : Boolean,
+        },
     },
    data: function () {
        return {
@@ -39,22 +42,22 @@ var progressBar = Vue.extend({
    ready: function() {
     var _this = this
     _this.hideFlag = localStorage.getItem("hideprogress") == "true"?true:false;
-    if(_this.hideFlag){
-        if($(".wrapper").length ==0 ){
-            $("#main-content").css("padding-top","151px")
+        if(_this.hideFlag){
+            if($(".wrapper").length ==0 ){
+                $("#main-content").css("padding-top","151px")
+            }
+            else{
+                $(".wrapper").css("margin-top","145px")
+            }
         }
         else{
-            $(".wrapper").css("margin-top","145px")
+            if($(".wrapper").length ==0 ){
+                $("#main-content").css("padding-top","92px")
+            }
+            else{
+                $(".wrapper").css("margin-top","88px")
+            }
         }
-    }
-    else{
-        if($(".wrapper").length ==0 ){
-            $("#main-content").css("padding-top","92px")
-        }
-        else{
-            $(".wrapper").css("margin-top","88px")
-        }
-    }
    },
    watch: {
     progressList: {
@@ -69,7 +72,17 @@ var progressBar = Vue.extend({
 　　　　},
        immediate: true, 
 　　　　deep: true
-　　}
+　　},
+    flag:{
+        handler(newValue, oldValue) {
+            if($(".wrapper").length ==0 ){
+                $("#main-content").css("padding-top","68px")
+            }
+            else{
+                $(".wrapper").css("margin-top","62px")
+            }
+　　　　}
+    }
    }, 
    created () {
         window.addEventListener('scroll', this.handleScroll, true)
@@ -115,6 +128,7 @@ var progressBar = Vue.extend({
         }
     },
     openUrl(href,pre){
+        console.log(href+ "___"+pre)
         if(pre == 0){
             window.location.assign(href)
         }

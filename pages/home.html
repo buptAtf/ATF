@@ -6,6 +6,44 @@
     <link rel="stylesheet" type="text/css" href="../static/css/index.css">
     <link rel="stylesheet" type="text/css" href="../static/css/pagination.css">
     <title>home</title>
+    <style>
+    #quicklyStart{
+        position: relative;
+        display: inline-block;
+        left:9%;
+        color:#000;
+    }
+    #quicklyStart i{
+        color:#000;
+    }
+    #quicklyInfo{
+        position: absolute;
+        display: none;
+        top:-30px;
+        transform:translate(-50%,0px) translate(-18px,0px);
+        z-index: 9999;
+        background-color: black;
+        color:#fff;
+        border-radius: 5px;
+        padding :2px 5px;
+        word-break:keep-all;
+    }
+    
+    #quicklyStart:hover #quicklyInfo{
+        display: inline-block;
+    }
+    .triangle{
+        z-index: -1;
+        position: absolute;
+        left:50%;
+        top:5px;
+        display: inline-block;
+        width:20px;
+        height:20px;
+        transform: translate(-50%,0px) rotate(45deg);
+        background-color: black;
+    }
+    </style>
 </head>
 <body id="v-home">
         <div class="content">
@@ -16,7 +54,16 @@
         <section id="main-content">
             <section class="wrapper fixedwh" >
                 <div>
-                    <img  src="../static/images/Operationflow.png" width="63%"  usemap="#Map" style="margin:0 220px">
+                    <div  id = "quicklyStart">
+                        <a class="btn btn-white" type="button" href="quicklyTransact.html" value="">
+                            快速开始 <i class="icon-question-sign"></i>
+                        </a>
+                        <div id = "quicklyInfo">
+                            <span>体验最简洁的测试流程</span>
+                            <div class="triangle"></div>
+                        </div>
+                    </div>
+                    <img  src="../static/images/Operationflow.png" width="68%"  usemap="#Map" style="margin: -35px 220px 0 220px;">
                     <map name="Map" id = "CribMap">
                         <area shape="rect" coords="590,280,705,310"  href="./architecture.html"> <!--编写自动化构件库-->
                         <area shape="rect" coords="450,280,550,310" href="./aut.html"> <!--被测系统管理-->
@@ -26,13 +73,13 @@
                         <area shape="rect" coords="251,420,352,451" href="./testplan-execute.html"> <!--批量执行-->
                         <area shape="rect" coords="251,373,352,404" href="./scene.html"> <!--场景管理-->
                         <area shape="rect" coords="251,327,352,356" href="./datatable.html"> <!--测试资源配置-->
-                        <area shape="rect" coords="251,279,352,310" href="./caseManagement.html"> <!--新增用例-->
+                        <area shape="rect" coords="251,289,352,310" href="./caseManagement.html"> <!--新增用例-->
                         <area shape="rect" coords="251,490,352,520" href="./execution.html">   <!--执行记录查询-->
                         <area shape="rect" coords="43,234,141,266" href="./testProject.html">   <!--新增测试项目-->
-                        
                     </map>
                 </div>
             </section>
+            <link rel="import" href="./common/copy-right.html?__inline">
         </section>
 
    
