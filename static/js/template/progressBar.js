@@ -12,12 +12,12 @@ var progressBarTemplate=`
     </div>
     <ul class="nav nav-pills nav-justified pstep pstep-arrow" v-show="hideFlag">
         <li v-for="(index, progress) in progressList " :class="progress.status"  track-by="$index">
-        <a :href="progress.href"  >{{ progress.name }} </a>
+        <a   @click= "openUrl(progress.href,progress.pre)"   >{{ progress.name }} </a>
         </li>
     </ul>
-    <ul  v-show="hideFlag" v-for="(index, progress) in progressList " v-if="progress.status === 'activing' " class=" flash nav nav-pills nav-justified pstep pstep-arrow">
-        <li v-for="(index, progress) in progress.item " :class="'flash'+index"  :class="progress.status"  track-by="$index">
-        <a :href="progress.href"  >{{ progress.name }} </a>
+    <ul  v-show="hideFlag" v-for="(index, progress) in progressList " v-if="progress.status === 'activing' " class="  nav nav-pills nav-justified step step-square">
+        <li v-for="(index, progress) in progress.item "   :class="progress.status"   class="active"  track-by="$index">
+        <a  @click= "openUrl(progress.href,progress.pre)"  >{{ progress.name }} </a>
         </li>
     </ul>
 </div>
@@ -41,10 +41,10 @@ var progressBar = Vue.extend({
     _this.hideFlag = localStorage.getItem("hideprogress") == "true"?true:false;
     if(_this.hideFlag){
         if($(".wrapper").length ==0 ){
-            $("#main-content").css("padding-top","119px")
+            $("#main-content").css("padding-top","151px")
         }
         else{
-            $(".wrapper").css("margin-top","116px")
+            $(".wrapper").css("margin-top","145px")
         }
     }
     else{
@@ -70,7 +70,10 @@ var progressBar = Vue.extend({
        immediate: true, 
 　　　　deep: true
 　　}
-   },
+   }, 
+   created () {
+        window.addEventListener('scroll', this.handleScroll, true)
+    },
    computed: {
     // progressList1: function () {
     //     if(this.progressList == null) return -1
@@ -78,6 +81,17 @@ var progressBar = Vue.extend({
     //   }
    },
    methods: {
+    //监听滚动条
+    handleScroll: function() {
+        var t = document.documentElement.scrollTop || document.body.scrollTop;
+        var top_div = document.getElementById( "progressbar" );
+        if( t >= 150 ) {
+            top_div.style.position = "fixed";
+        } 
+        else {
+            top_div.style.position = "absolute";
+        }
+    },
     hideprogress: function() {
         var _this = this; 
         console.log(_this.hideFlag)
@@ -85,10 +99,10 @@ var progressBar = Vue.extend({
         localStorage.setItem("hideprogress", _this.hideFlag);
         if(_this.hideFlag){
             if($(".wrapper").length ==0 ){
-                $("#main-content").css("padding-top","119px")
+                $("#main-content").css("padding-top","150px")
             }
             else{
-                $(".wrapper").css("margin-top","116px")
+                $(".wrapper").css("margin-top","146px")
             }
         }
         else{
@@ -99,8 +113,46 @@ var progressBar = Vue.extend({
                 $(".wrapper").css("margin-top","88px")
             }
         }
+    },
+    openUrl(href,pre){
+        if(pre == 0){
+            window.location.assign(href)
+        }
+        if(pre == 1){
+            let autId = sessionStorage.getItem("autId")
+            if(autId == null){
+                Vac.alert("请选择或新建被测系统")
+            }
+            else{
+                window.location.assign(href)
+            }
+        }
+        if(pre == 2){
+            let autId = sessionStorage.getItem("autId")
+            let transactId = sessionStorage.getItem("transactId")
+            if(autId == null){
+                Vac.alert("请选择或新建被测系统")
+            }
+            else{
+                if(transactId == null){
+                    Vac.alert("请选择或新建功能点")
+                }
+                else{
+                    window.location.assign(href)
+                }
+            }
+        }
+        if(pre == 3){
+            let caselibId = sessionStorage.getItem("caselibId")
+            if(caselibId == null){
+                Vac.alert("请选择或新建被侧项目")
+            }
+            else{
+                window.location.assign(href)
+            }        }
     }
    }
 });
 
 Vue.component('progressBar', progressBar);
+document.documentElement.scrollTop

@@ -10,7 +10,8 @@ var execRecord = Vue.extend({
 		return {
 			address: address.slice(0, -10), // address: 10.101.167.184:8080/ATFCloud
 			srcDoc: '',
-			srcs: []
+			srcs: [],
+			testRecord:null
 		}
 	},
 	ready: function() {
@@ -20,50 +21,39 @@ var execRecord = Vue.extend({
 		queryData: function(newVal, oldVal) {
 			var me = this;
 			if (newVal) {
-				var data = JSON.parse(decodeURIComponent(newVal));
+				console.log(newVal)
+				console.log(oldVal)
 				$.ajax({
-					url: address3 + 'testrecordController/selectRecordWithTestcaseId',
-					data: {
-						sceneId: me.recorddata.sceneId,
-            			recorderStatus: me.recorddata.recorderStatus,
-					},
+					url: address3+'testRecordController/querySingleRecordByCaseId',
 					type: 'post',
-					dataType: 'json',
-					success: function(data, statusText) {
-						if(!data.length) {
-							Vac.alert("未查询到记录单");
-							return;
+					contentType: 'application/json',
+					data: JSON.stringify({
+					caseId: newVal.caseId,
+					sceneId:  newVal.sceneId ,
+					batchId:  newVal.batchId,
+					}),
+					success: function(res){
+						if(res.respCode == "0000"){
+							me.testRecord= res.recordEntity;
+							me.changeSrcDoc(address4 + res.recordEntity.resourcePath)
 						}
-						for (let item of data) {
-							if (item.resourcepath) {
-								me.srcs.push(item.resourcepath)
-							}
+						else{
+							Vac.alert(res.respMsg)
 						}
-						me.srcs = [...new Set(me.srcs)];
-						console.log(me.srcs)
-						// me.srcs = data.obj.map((item) => item.resourcepath);
-					},
-					error: function() {
-						Vac.alert("查询失败");
 					}
-				});
+				})
 			}
 		}
 	},
 	computed: {
 		queryData: function() {
 			return this.recorddata;
-		},
-		item: function () {
-			console.log(JSON.parse(decodeURIComponent(this.recorddata))['item']);
-			return JSON.parse(decodeURIComponent(this.recorddata))['item'];
 		}
 	},
 	methods: {
-		changeSrcDoc: function() {
-			this.srcDoc = `
-		
-			`
+		changeSrcDoc: function(srcDoc) {
+			this.srcDoc = srcDoc;
+			this.srcs = srcDoc;
 		}
 	}
 })

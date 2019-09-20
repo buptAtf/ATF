@@ -27,9 +27,16 @@ var app = new Vue({
         selectedTestProjectName: '',
         selectedTaskDescription: '',
         projectName: sessionStorage.getItem("projectNameStorage"),
+<<<<<<< HEAD
         addRowData: { ...initialAddRowData },
 
 
+=======
+        caseLibId:null,
+        projectNameStorage: null,
+        
+        
+>>>>>>> 7c943b06f79ab6ca5545d2a1bde4871de6cfca33
     },
     ready: function() {
         getTestProject(this.currentPage, this.pageSize, this.order, this.sort);
@@ -93,25 +100,35 @@ var app = new Vue({
 
         //添加测试项目
         insert: function() {
-            let testProjectCode=$('#insertForm input[name="testProjectCode"]').val();
-            let testProjectName=$('#insertForm input[name="testProjectName"]').val();
-            let taskDescription=$('#insertForm textarea[name="taskDescription"]').val();
-            if(testProjectCode=='' || testProjectName=='' || taskDescription==''){
-                alert("所有项均为必填项");
+            let testProjectCode=$('#insertForm input[name="codeLong"]').val();
+            let testProjectName=$('#insertForm input[name="nameMedium"]').val();
+            let taskDescription=$('#insertForm textarea[name="descMedium"]').val();
+            testProjectCode = testProjectCode==""?"测试项目"+new Date().valueOf():testProjectCode;
+            taskDescription = taskDescription==""?"空":taskDescription;
+            if( testProjectName==''){
+                Vac.alert("名称为必填项");
             }else{
                 $.ajax({
                     url: address3 + 'testProjectController/addSingleTestProject',
                     type: 'post',
                     contentType: 'application/json',
                     data: JSON.stringify({
+<<<<<<< HEAD
                         codeLong: $('#insertForm input[name="codeLong"]').val(),
                         nameMedium: $('#insertForm input[name="nameMedium"]').val(),
                         descMedium: $('#insertForm textarea[name="descMedium"]').val()
+=======
+                        codeLong: testProjectCode,
+                        nameMedium: testProjectName,
+                        descMedium:  taskDescription 
+>>>>>>> 7c943b06f79ab6ca5545d2a1bde4871de6cfca33
                     }),
                     success: function(data) {
                         // console.info(data);
                         if (data.respCode=='0000') {
+                            sessionStorage.setItem("caselibId",data.caselibId)
                             getTestProject(app.currentPage, app.pageSize, 'id', 'asc');
+<<<<<<< HEAD
                             initialAddRowData.caseLibId = String(data.caseLibId);
                             initialAddRowData.creatorId = sessionStorage.getItem('userId');
                             initialAddRowData.nameMedium = $('#insertForm input[name="nameMedium"]').val();
@@ -138,6 +155,9 @@ var app = new Vue({
                                 }
                         }),
                             $('#successModal').modal();
+=======
+                            $('#successAndGoModal').modal();
+>>>>>>> 7c943b06f79ab6ca5545d2a1bde4871de6cfca33
                         } else {
                             $('#failModal').modal();
                         }
@@ -246,6 +266,15 @@ var app = new Vue({
                 sessionStorage.setItem("projectNameStorage", "("+projectNameStorage+")" );    //把项目名称存入缓存中
                 location.href = "caseManagement.html";
             }
+        },
+        linkToCase(){
+            var _this =this;
+            if(_this.caseLibId == null){
+                Vac.alert("添加接口缺少caseLibId和项目名称两个字段，请后端同学添加")
+            }
+            sessionStorage.setItem("caselibId", _this.caseLibId);     //存储测试项目id到sessionstorage
+            sessionStorage.setItem("projectNameStorage", "("+_this.projectNameStorage+")" );    //把项目名称存入缓存中
+            location.href = "caseManagement.html";
         },
         //时间格式化
         formatDate(date){

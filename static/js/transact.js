@@ -97,6 +97,7 @@ var app = new Vue({
                     success: function(data) {
                         if (data.respCode=='0000') {
                             self.newTransactId = data.transactId;
+                            sessionStorage.setItem("transactId",data.transactId)
                             $('#successAndGoModal').modal();
                             queryTransact();
                         } else {

@@ -27,6 +27,7 @@
                         <li class="active"><a href="#"> 测试项目管理</a></li>
                     </ul>
                 </div>
+<<<<<<< HEAD
             </div>
             <!-- breadcrumb end -->
             <!--top-button start-->
@@ -68,6 +69,45 @@
                                                 <div class="col-sm-8">
                                                     <textarea class="form-control" rows="3"
                                                               name="descMedium"></textarea>
+=======
+                <!-- breadcrumb end -->
+                <!--top-button start-->
+                <div class="row">
+                    <div class="col-lg-12 top-btn">
+                        <a class="btn btn-white" data-toggle="modal" href="#insertModal"><i class="icon-plus"></i> 添加</a>
+                        <a class="btn btn-white" data-toggle="modal" href="#deleteModal"><i class="icon-trash"></i> 删除</a>
+                        <a class="btn btn-white" data-toggle="modal" href="#updateModal" @click="getSelected"><i class="icon-edit"></i> 修改</a>
+                        <a class="btn btn-white"  @click="to()"><i class="icon-cog"></i> 进入</a>
+                        <!-- insertModal start -->
+                        <div class="modal fade" id="insertModal" tabindex="-1" role="dialog" aria-labelledby="insertModalLabel" aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                                        <h4 class="modal-title">添加测试项目</h4>
+                                    </div>
+                                    <div class="modal-body">
+                                        <!-- modal-body start -->
+                                        <section class="panel">
+                                            <form id="insertForm" class="form-horizontal" role="form">
+                                                <div class="form-group">
+                                                    <label class="col-lg-3 control-label">测试项目名称<font color="red">*</font></label>
+                                                    <div class="col-lg-5">
+                                                        <input type="text" class="form-control" name="nameMedium" placeholder="必填项">
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="col-lg-3 control-label">测试项目编号</label>
+                                                    <div class="col-lg-5">
+                                                        <input type="text" class="form-control" name="codeLong"  placeholder="可为空">
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="col-lg-3 control-label">描述</label>
+                                                    <div class="col-lg-5">
+                                                        <textarea class="form-control" rows="3" name="descMedium"  placeholder="可为空" ></textarea>
+                                                    </div>
+>>>>>>> 7c943b06f79ab6ca5545d2a1bde4871de6cfca33
                                                 </div>
                                             </div>
                                         </form>
@@ -181,6 +221,7 @@
                                 </div>
                             </div>
                         </div>
+<<<<<<< HEAD
                     </div>
                     <!-- successModal end -->
                     <!-- failModal start -->
@@ -198,6 +239,43 @@
                                 </div>
                                 <div class="modal-footer">
                                     <button data-dismiss="modal" class="btn btn-success" type="button">确定</button>
+=======
+                        <!-- successModal end -->
+                        
+                        <!-- successModal start -->
+                        <div class="modal fade" id="successAndGoModal" tabindex="-1" role="dialog" aria-labelledby="successModalLabel" aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                                        <h4 class="modal-title">操作成功</h4>
+                                    </div>
+                                    <div class="modal-body">
+                                        <h4>操作成功！</h4>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button data-dismiss="modal" class="btn btn-success" type="button">确定</button>
+                                        <button data-dismiss="modal" class="btn btn-success" type="button" @click ="linkToCase">管理系统功能点</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- successModal end -->
+                        <!-- failModal start -->
+                        <div class="modal fade" id="failModal" tabindex="-1" role="dialog" aria-labelledby="failModalLabel" aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                                        <h4 class="modal-title">操作失败</h4>
+                                    </div>
+                                    <div class="modal-body">
+                                        <h4>操作失败！</h4>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button data-dismiss="modal" class="btn btn-success" type="button">确定</button>
+                                    </div>
+>>>>>>> 7c943b06f79ab6ca5545d2a1bde4871de6cfca33
                                 </div>
                             </div>
                         </div>

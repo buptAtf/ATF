@@ -116,7 +116,7 @@ var app = new Vue({
 			          window.location.href = url;
             		 } 
             		 else{ 
-             	      let url =address3+"testcase/batchImport/file/template/standard";
+             	      let url =address3+"testcase/getStandardExcelTemporary";
 			           window.location.href = url;
             		 } 
             });

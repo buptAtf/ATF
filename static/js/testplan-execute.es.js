@@ -1089,18 +1089,20 @@ var vBody = new Vue({
 			})
 		},
 
-		viewCase: function (sceneId, caseid, sourcechannel, testPhase, testRound, recorderStatus) {
+		viewCase: function (sceneId, caseId, sourcechannel, testPhase, testRound, recorderStatus) {
+			var that = this;
 			var o = {
-				sceneId, caseid,
-				testPhase: testPhase || this.testphaseValue,
-				testRound: testRound || this.testroundValue,
+				batchId:that.batchId,
+				sceneId, caseId,
+				testPhase:testPhase || this.testphaseValue,
+				testRound:testRound || this.testroundValue,
 				// executeround: this.executionround,
 				sourcechannel: sourcechannel,
-				recorderStatus: recorderStatus || '2'
+				recorderStatus: recorderStatus || '2',
 			}
-			var args = encodeURIComponent(JSON.stringify(o));
-            window.open('case-operation.html?testcaseId='+caseid+'&activeName=element-library')
-			//window.open('case-operation.html?activeName=exec-record&viewcaseargs='+args, 'case_record');
+			var args = (JSON.stringify(o));
+			sessionStorage.setItem("executeInstanceInfo",args)
+            window.open('case-operation.html')
 		},
 		
         turnToPage(currentPageParam){

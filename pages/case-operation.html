@@ -242,8 +242,8 @@
 </script>
 <script type="text/x-template" id="execution-record">
   <div class="tab-content" style="display: flex; flex-direction: column;">
-    <!-- <iframe class="record-iframe" frameborder="0" :srcdoc="srcDoc"></iframe> -->
-    没有直接查询单条用例执行结果的接口
+    <!-- <iframe class="record-iframe" frameborder="0" :srcdoc="srcDoc"></iframe>
+    没有直接查询单条用例执行结果的接口 -->
     <table class="table table-striped table-bordered border-top text-center" id="sample_1">
       <thead>
           <tr>
@@ -262,21 +262,21 @@
       </thead>
       <tbody id="recordTable">
           <tr class="odd gradeX">
-              <td class="center" width="5%">{{ item.sceneId }}</td>
-              <td class="center" width="10%">{{ item.testPhaseId }}</td>
-              <td width="">{{ item.testRoundId }}</td>
-              <td class="" width="">{{item.executeRound}}</td>
-              <td class="" width="">{{item.caseId}}</td>
-              <td class="" width="">{{item.flownodeName}}</td>
-              <td class="" width="">{{item.recorderStatus}}</td>
-              <td class="" width="">{{item.executeStatus}}</td>
-              <td class="" width="">{{item.sourceChannel}}</td>
-              <td class="" width="">{{item.resourcePath}}</td>
+              <td class="center" width="5%">{{ testRecord.sceneId }}</td>
+              <td class="center" width="10%">{{ testRecord.testPhaseId }}</td>
+              <td width="">{{ testRecord.testRoundId }}</td>
+              <td class="" width="">{{testRecord.executeRound}}</td>
+              <td class="" width="">{{testRecord.caseId}}</td>
+              <td class="" width="">{{testRecord.flownodeName}}</td>
+              <td class="" width="">{{testRecord.recorderStatus}}</td>
+              <td class="" width="">{{testRecord.executeStatus}}</td>
+              <td class="" width="">{{testRecord.sourceChannel}}</td>
+              <td class="" width="">{{testRecord.resourcePath}}</td>
               <!-- <td class="" width="">{{item.testexeinsid}}</td> -->
           </tr>
       </tbody>
   </table>
-    <iframe v-for="src in srcs" :src="address+src" frameborder="0" style="width: 100%; height: 300px; flex: 1 0 auto"></iframe>
+    <iframe :src="srcs" frameborder="0" style="width: 100%; height: 300px; flex: 1 0 auto"></iframe>
   </div>
 </script>
 
@@ -310,7 +310,11 @@
     el: '#app1',
     data: function () {
       return {
+        batchId:null,
+        senceId:null,
+        caseid:null,
         testcase:{},
+        sourcechannel:null,
         flowTestcase:[],
         caseCompositeType:-1,
         activeName: 'object-repo',
@@ -323,58 +327,78 @@
         casecode:null,
         caselibid:null,
         flowcase:null,
+        testRecord:null
       }
     },
     ready: function() {
       var _this=this;
-      var queryArgs = location.search.slice(1);
-      var o = {};
-      var arr = queryArgs.split('&');
-      for (let item of arr) {
-        let a = item.split('=');
-        o[a[0]] = a[1];
-      }
-      console.log(o)
+      var executeInstanceInfo = JSON.parse(sessionStorage.getItem('executeInstanceInfo'));
+      // var queryArgs = location.search.slice(1);
+      // var o = {};
+      // var arr = queryArgs.split('&');
+      // for (let item of arr) {
+      //   let a = item.split('=');
+      //   o[a[0]] = a[1];
+      // }
+      // console.log(o)
       
-      _this.recordData = o.viewcaseargs ?  o.viewcaseargs : '';console.log( _this.recordData);
+      // _this.recordData = o.viewcaseargs ?  o.viewcaseargs : '';
+      // console.log( _this.recordData);
       // _this.activeName = o.activeName;//链接过来我是要看哪个界面的
       _this.activeName = "exec-record";
-      _this.viewScriptTestcaseId = o.testcaseId;
+      _this.viewScriptTestcaseId = executeInstanceInfo.caseId;
+      _this.batchId = executeInstanceInfo.batchId;
+      _this.sceneId = executeInstanceInfo.sceneId;
+      _this.sourcechannel = executeInstanceInfo.sourcechannel;
+      _this.recordData=executeInstanceInfo
       $.ajax({
-                url: address3+'testcase/getSingleTestCaseInfo',
-                type: 'post',
-                contentType: 'application/json',
-                data: JSON.stringify({
-                    "id": _this.viewScriptTestcaseId
-                }),
-                success: function(res){
-                    var caseData=res.testcaseViewRespDTO;
-                    _this.testcase=res.testcaseViewRespDTO;
-                    _this.caselibid=res.testcaseViewRespDTO.caseLibId;
-                    _this.caseCompositeType=caseData.caseCompositeType;
-                    if(caseData.caseCompositeType==2){
-                      _this.flowTestcase=res.testcaseActionList;
-                    _this.flowcase=res.testcaseActionList[0].actioncasecode;
-                    }
-                    _this.autid=caseData.autId;
-                    _this.transid=caseData.transId;
-                    _this.autName=caseData.autName;
-                    _this.transName=caseData.transName;
-                    _this.casecode=caseData.casecode;
+            url: address3+'testcase/getSingleTestCaseInfo',
+            type: 'post',
+            contentType: 'application/json',
+            data: JSON.stringify({
+                "id": _this.viewScriptTestcaseId
+            }),
+            success: function(res){
+                var caseData=res.testcaseViewRespDTO;
+                _this.testcase=res.testcaseViewRespDTO;
+                _this.caselibid=res.testcaseViewRespDTO.caseLibId;
+                _this.caseCompositeType=caseData.caseCompositeType;
+                if(caseData.caseCompositeType==2){
+                  _this.flowTestcase=res.testcaseActionList;
+                _this.flowcase=res.testcaseActionList[0].actioncasecode;
                 }
-            });
+                _this.autid=caseData.autId;
+                _this.transid=caseData.transId;
+                _this.autName=caseData.autName;
+                _this.transName=caseData.transName;
+                _this.casecode=caseData.casecode;
+            }
+        });
+        // $.ajax({
+        //     url: address3+'testRecordController/querySingleRecordByCaseId',
+        //     type: 'post',
+        //     contentType: 'application/json',
+        //     data: JSON.stringify({
+        //       caseId: _this.viewScriptTestcaseId,
+        //       sceneId: _this.sceneId ,
+        //       batchId: _this.batchId,
+        //      }),
+        //     success: function(res){
+        //       _this.testRecord= res;
+        //      }
+        // })
       if(_this.activeName=='exec-record'){
-        _this.caseId = o.caseid;
-        _this.caseCompositeType = o.type;
+        _this.caseId = executeInstanceInfo.caseid;
+        _this.caseCompositeType = executeInstanceInfo.type;
       }
       else if(_this.activeName=='view-script'){
 
       }
       else if(_this.activeName=='object-rep'){
-        _this.viewScriptTestcaseId = o.testcaseId;
+        _this.viewScriptTestcaseId = executeInstanceInfo.testcaseId;
       }
       else if(_this.activeName=='exec-record'){
-        _this.viewScriptTestcaseId = o.testcaseId;
+        _this.viewScriptTestcaseId = executeInstanceInfo.testcaseId;
       }
       else{}
       console.log(' _this.autid'+ _this.autid+'_this.transid'+_this.transid)
