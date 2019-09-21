@@ -49,6 +49,7 @@
 .small-panel {
     padding: 0 25px 0 25px;
     width: 60%;
+    margin-left: 2px;
 }
 
 .elelink-panel {

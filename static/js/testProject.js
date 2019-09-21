@@ -27,19 +27,14 @@ var app = new Vue({
         selectedTestProjectName: '',
         selectedTaskDescription: '',
         projectName: sessionStorage.getItem("projectNameStorage"),
-<<<<<<< HEAD
         addRowData: { ...initialAddRowData },
-
-
-=======
         caseLibId:null,
         projectNameStorage: null,
         
         
->>>>>>> 7c943b06f79ab6ca5545d2a1bde4871de6cfca33
     },
     ready: function() {
-        getTestProject(this.currentPage, this.pageSize, this.order, this.sort);
+        this.getTestProject(this.currentPage, this.pageSize, this.order, this.sort);
         changeListNum();
 
         // if(projectName==null){
@@ -95,7 +90,7 @@ var app = new Vue({
             ts.currentPage = pageNum;
 
             //页数变化时的回调
-            getTestProject(ts.currentPage, ts.pageSize, 'id', 'asc');
+            ts.getTestProject(ts.currentPage, ts.pageSize, 'id', 'asc');
         },
 
         //添加测试项目
@@ -113,15 +108,9 @@ var app = new Vue({
                     type: 'post',
                     contentType: 'application/json',
                     data: JSON.stringify({
-<<<<<<< HEAD
-                        codeLong: $('#insertForm input[name="codeLong"]').val(),
-                        nameMedium: $('#insertForm input[name="nameMedium"]').val(),
-                        descMedium: $('#insertForm textarea[name="descMedium"]').val()
-=======
                         codeLong: testProjectCode,
                         nameMedium: testProjectName,
                         descMedium:  taskDescription 
->>>>>>> 7c943b06f79ab6ca5545d2a1bde4871de6cfca33
                     }),
                     success: function(data) {
                         // console.info(data);
@@ -129,8 +118,7 @@ var app = new Vue({
                             sessionStorage.setItem("caselibId",data.caselibId)
                             app.caselibId = data.caselibId
                             app.projectNameStorage = data.projectNameStorage
-                            getTestProject(app.currentPage, app.pageSize, 'id', 'asc');
-<<<<<<< HEAD
+                            app.getTestProject(app.currentPage, app.pageSize, 'id', 'asc');
                             initialAddRowData.caseLibId = String(data.caseLibId);
                             initialAddRowData.creatorId = sessionStorage.getItem('userId');
                             initialAddRowData.nameMedium = $('#insertForm input[name="nameMedium"]').val();
@@ -157,9 +145,6 @@ var app = new Vue({
                                 }
                         }),
                             $('#successModal').modal();
-=======
-                            $('#successAndGoModal').modal();
->>>>>>> 7c943b06f79ab6ca5545d2a1bde4871de6cfca33
                         } else {
                             $('#failModal').modal();
                         }
@@ -172,7 +157,8 @@ var app = new Vue({
         },
         //删除测试项目
         del: function() {
-            this.getIds();
+            var _this = this;
+            _this.getIds();
             console.log(app.ids)
             $.ajax({
                 url: address3 + '/testProjectController/disableSingleTestProject',
@@ -184,7 +170,7 @@ var app = new Vue({
                 success: function(data) {
                     // console.info(data);
                     if (data.respCode=='0000') {
-                        getTestProject(app.currentPage, app.pageSize, 'id', 'asc');
+                        _this.getTestProject(app.currentPage, app.pageSize, 'id', 'asc');
                         $('#successModal').modal();
                     } else {
                         $('#failModal').modal();
@@ -197,6 +183,7 @@ var app = new Vue({
         },
         //修改测试项目
         update: function() {
+            var _this=this
             var selectedInput = $('input[name="chk_list"]:checked');
             var id = selectedInput.attr('id');
             var realId=id.substring(0,3);
@@ -213,7 +200,7 @@ var app = new Vue({
                 success: function(data) {
                     // console.info(data);
                     if (data.respCode=='0000') {
-                        getTestProject(app.currentPage, app.pageSize, 'id', 'asc');
+                        _this.getTestProject(app.currentPage, app.pageSize, 'id', 'asc');
                         $('#successModal').modal();
                     } else {
                         $('#failModal').modal();
@@ -293,7 +280,33 @@ var app = new Vue({
             }else{
                 return '';
             }
-        }
+        },
+        getTestProject(page, listnum, order, sort) {
+           var _this = this;
+           if(searchFlag){
+               queryTestProject();
+           } else{
+               //获取list通用方法，只需要传入多个所需参数
+               $.ajax({
+                   url: address3 + 'testProjectController/pagedBatchQueryTestProject',
+                   type: 'post',
+                   contentType: 'application/json',
+                   data: JSON.stringify({
+                       'currentPage': page,
+                       'pageSize': listnum,
+                       'orderColumns': "modified_time",
+                       "orderType":"DESC",
+                   }),
+                   success: function(data) {
+                       // console.info(data);
+                       _this.testProjectList = data.list;
+                       _this.tt = data.totalCount;
+                       _this.totalPage = Math.ceil(_this.tt / listnum);
+                       _this.pageSize = listnum;
+                   }
+               });
+           }
+       }
     },
 
 
@@ -302,7 +315,9 @@ var app = new Vue({
 var searchFlag = false;   //是否点击搜索的标志
 
 //获取系统
+/*
 function getTestProject(page, listnum, order, sort) {
+    var _this = app;
     if(searchFlag){
         queryTestProject();
     } else{
@@ -319,16 +334,16 @@ function getTestProject(page, listnum, order, sort) {
             }),
             success: function(data) {
                 // console.info(data);
-                app.testProjectList = data.list;
-                app.tt = data.totalCount;
-                app.totalPage = Math.ceil(app.tt / listnum);
-                app.pageSize = listnum;
+                _this.testProjectList = data.list;
+                _this.tt = data.totalCount;
+                _this.totalPage = Math.ceil(_this.tt / listnum);
+                _this.pageSize = listnum;
             }
         });
     }
 
 
-}
+}*/
 
 //改变页面大小
 function changeListNum() {
@@ -336,7 +351,7 @@ function changeListNum() {
         listnum = $(this).children('option:selected').val();
         $("#mySelect").find("option[text='" + listnum + "']").attr("selected", true);
         app.currentPage = 1;
-        getTestProject('1', listnum, 'id', 'asc');
+        app.getTestProject('1', listnum, 'id', 'asc');
     })
 }
 

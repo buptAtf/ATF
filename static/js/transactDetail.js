@@ -795,7 +795,7 @@ var app = new Vue({
                     }
                     else {
                         _this.failMSG = data.respMsg;
-                        $('#failModalEle').modal('show');
+                        $('#failModal').modal('show');
                     }
                 }
 
@@ -818,7 +818,7 @@ var app = new Vue({
                     }
                     else {
                         _this.failMSG = data.respMsg;
-                        $('#failModalEle').modal('show');
+                        $('#failModal').modal('show');
                     }
                 }
             });
@@ -894,13 +894,13 @@ var app = new Vue({
                             $("#addUIName").val('');
                         } else {
                             _this.failMSG = data.respMsg;
-                            $('#failModalEle').modal('show');
+                            $('#failModal').modal('show');
                             $("#addUIName").val('');
                         }
                     },
                     error: function () {
                         _this.failMSG = data.respMsg;
-                        $('#failModalEle').modal('show');
+                        $('#failModal').modal('show');
                         $("#addUIName").val('');
                     }
                 });
@@ -925,12 +925,12 @@ var app = new Vue({
                         _this.getElementTree();
                     } else {
                         _this.failMSG = data.respMsg;
-                        $('#failModalEle').modal('show');
+                        $('#failModal').modal('show');
                     }
                 },
                 error: function () {
                     _this.failMSG = data.respMsg;
-                    $('#failModalEle').modal('show');
+                    $('#failModal').modal('show');
                 }
             });
         },
@@ -978,12 +978,12 @@ var app = new Vue({
                         $('#ele').css('display', 'none');
                     } else {
                         _this.failMSG = data.respMsg;
-                        $('#failModalEle').modal('show');
+                        $('#failModal').modal('show');
                     }
                 },
                 error: function () {
                     _this.failMSG = data.respMsg;
-                    $('#failModalEle').modal('show');
+                    $('#failModal').modal('show');
                     $('#blank').css('display', 'block');
                     $('#UI').css('display', 'none');
                     $('#ele').css('display', 'none');
@@ -1237,8 +1237,8 @@ var app = new Vue({
             var _this = this;
             var transid = !this.componentMode ? _this.transactId : _this.transid;
             var ElementName = $("#addElementName").val(),
-                ClassType = $("#addEleClassType").val(), addElemainattributename
-            addElemainattributename = $("#addElemainattributename").val(),
+                ClassType = $("#addEleClassType").val(), 
+                addElemainattributename = $("#addElemainattributename").val(),
                 addElemainattributeid = $("#addElemainattributeid").val(),
                 relateIdentifyObjectId = $("#addEleRelateIdentifyObjectId").val(),
                 relateParentIdentifyObjectId = $("#addEleRelateParentIdentifyObjectId").val(),
@@ -1278,7 +1278,7 @@ var app = new Vue({
                         _this.getElementTree();
                     } else {
                         _this.failMSG = data.respMsg;
-                        $('#failModalEle').modal();
+                        $('#failModal').modal();
                     }
                 },
                 error: function () {
@@ -1500,12 +1500,12 @@ var app = new Vue({
 
                         } else {
                             _this.failMSG = data.respMsg;
-                            $('#failModalEle').modal('show');
+                            $('#failModal').modal('show');
                         }
                     },
                     error: function () {
                         _this.failMSG = data.respMsg;
-                        $('#failModalEle').modal('show');
+                        $('#failModal').modal('show');
                     }
                 });
             }
@@ -1533,12 +1533,12 @@ var app = new Vue({
                         _this.getElementTree(UIName);
                     } else {
                         _this.failMSG = data.respMsg;
-                        $('#failModalEle').modal('show');
+                        $('#failModal').modal('show');
                     }
                 },
                 error: function () {
                     _this.failMSG = data.respMsg;
-                    $('#failModalEle').modal('show');
+                    $('#failModal').modal('show');
                 }
             });
         },
@@ -1593,55 +1593,16 @@ var app = new Vue({
             var ClassType = $('#classtypeSelect').val();
             //主属性
             var mainTd,
-                mainProperties = [],
-                mainItem = {};
-            $('#mainTbody').find('tr').each(function () {
-                mainTd = $(this).children();
+                mainProperties = [];
+            $('#mainTbody').find('tr').each(function (index,item) {
+                mainTd = $(item).children();
+                let mainItem = {}
                 mainItem.name = mainTd.eq(1).html();
                 mainItem.value = mainTd.eq(2).html();
                 mainItem.method = '';
                 mainItem.isRelative = null;
                 mainItem.toolName = '';
-                mainProperties.push(mainItem);
-            });
-            //附加属性
-            var addiTd,
-                additionalProperties = [],
-                addiItem = {};
-            $('#addiTbody').find('tr').each(function () {
-                addiTd = $(this).children();
-                addiItem.name = addiTd.eq(1).html();
-                addiItem.value = addiTd.eq(2).html();
-                addiItem.method = '';
-                addiItem.isRelative = null;
-                addiItem.toolName = '';
-                additionalProperties.push(addiItem);
-            });
-            //辅助属性
-            var assiTd,
-                assistantProperties = [],
-                assiItem = {};
-            $('#assiTbody').find('tr').each(function () {
-                assiTd = $(this).children();
-                assiItem.name = assiTd.eq(1).html();
-                assiItem.value = assiTd.eq(2).html();
-                assiItem.method = '';
-                assiItem.isRelative = null;
-                assiItem.toolName = '';
-                assistantProperties.push(assiItem);
-            });
-            //关联属性 
-            var relTd,
-                relateProperties = [],
-                relItem = {};
-            $('#relatePropTbody').find('tr').each(function () {
-                relTd = $(this).children();
-                relItem.name = relTd.eq(1).html();
-                relItem.value = relTd.eq(2).html();
-                relItem.method = '';
-                relItem.isRelative = null;
-                relItem.toolName = '';
-                relateProperties.push(relItem);
+                if(mainItem.name && mainItem.value){mainProperties.push(mainItem);}
             });
             $.ajax({
                 url: address3 + 'elementRepository/modifySingleElement',
@@ -1657,9 +1618,9 @@ var app = new Vue({
                         "relateIdentifyObjectId": relateIdentifyObjectId,
                         "relateParentIdentifyObjectId": relateParentIdentifyObjectId,
                         "mainProperties": mainProperties,
-                        "additionalProperties": additionalProperties,
-                        "assistantProperties": assistantProperties,
-                        "relateProperties": relateProperties
+                        "additionalProperties": [],
+                        "assistantProperties": [],
+                        "relateProperties": []
                     }
                 }),
                 success: function (data) {
@@ -1672,12 +1633,12 @@ var app = new Vue({
                         $('#ele').css('display', 'none');
                     } else {
                         _this.failMSG = data.respMsg;
-                        $('#failModalEle').modal('show');
+                        $('#failModal').modal('show');
                     }
                 }, 
                 error: function () {
                     _this.failMSG = data.respMsg;
-                    $('#failModalEle').modal('show');
+                    $('#failModal').modal('show');
                     $('#blank').css('display', 'block');
                     $('#UI').css('display', 'none');
                     $('#ele').css('display', 'none');
@@ -2364,11 +2325,11 @@ var app = new Vue({
                         $('#success').modal();
                         _this.scriptIsChanged = false
                     } else {
-                        $('#fail').modal();
+                        $('#failModal').modal();
                     }
                 },
                 error: function () {
-                    $('#fail').modal();
+                    $('#failModal').modal();
                 }
             })
         },

@@ -3940,3 +3940,40 @@ span.customSelect.changed {
     -o-transition:-o-transform 0s ease-out !important;
     transition:transform 0s ease-out !important
 }
+
+#onShowRectangleInfo{
+    text-align: left;
+    position: absolute;
+    display: none;
+    top:2.5em;
+    transform:translate(-50%,0px) translate(-7px,0px);
+    z-index: 9999;
+    background-color: #3c4958;
+    color:#fff;
+    border-radius: 5px;
+    padding :4px 10px;
+    word-break:break-all;
+    max-width:400px;
+    min-width:300px;
+}
+#onShowRectangleInfo span{
+    font-size: 16px;
+}
+.onShowInfo{
+    position: relative;
+    padding:5px;
+    font-size: 0.7em;
+}
+.onShowInfo:hover #onShowRectangleInfo{
+    display: inline-block;
+}
+.onShowTriangle{
+    z-index: -1;
+    position: absolute;
+    left:50%;
+    display: inline-block;
+    width:15px;
+    height:15px;
+    transform: translate(-50%,-40%) rotate(45deg);
+    background-color: #3c4958;
+}
