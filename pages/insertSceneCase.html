@@ -140,7 +140,7 @@
                                     <!-- <form class="form-horizontal col-lg-10">
                                         <div class="form-group">
                                             <div class="col-lg-2">
-                                                <input type="text" aria-controls="sample_1" class="form-control" placeholder="请输入案例编号" name="casecode" v-model="casecode">
+                                                <input type="text" aria-controls="sample_1" class="form-control" placeholder="请输入用例编号" name="casecode" v-model="casecode">
                                             </div>
                                             <div class="col-lg-1">
                                                 <a class="btn btn-white" @click="queryCase()">搜索</a>
@@ -219,10 +219,10 @@
                                                 <input type="checkbox" v-model="checked" v-on:click="" name="chk_all" id="chk_all" />
                                             </th>
                                             <!-- <th></th> -->
-                                            <th class="hidden-phone text-center" data-order="casecode" data-sort="desc" onclick="myResort(this)">案例编号 <span class="icon-sort-up" aria-hidden="true"></span></th>
+                                            <th class="hidden-phone text-center" data-order="casecode" data-sort="desc" onclick="myResort(this)">用例编号 <span class="icon-sort-up" aria-hidden="true"></span></th>
                                             <th class="text-center" data-order="autId" data-sort="desc" onclick="resort(this)">被测系统 <span class="icon-sort-up" aria-hidden="true"></span></th>
                                             <th class="hidden-phone text-center" data-order="transId" data-sort="desc" onclick="resort(this)">功能点 <span class="icon-sort-up" aria-hidden="true"></span></th>
-                                            <th class="hidden-phone text-center" data-order="caseCompositeType" data-sort="desc" onclick="resort(this)">案例组成类型 <span class="icon-sort-up" aria-hidden="true"></span></th>
+                                            <th class="hidden-phone text-center" data-order="caseCompositeType" data-sort="desc" onclick="resort(this)">用例组成类型 <span class="icon-sort-up" aria-hidden="true"></span></th>
                                             <th class="hidden-phone text-center" data-order="useStatus" data-sort="desc" onclick="resort(this)">状态 <span class="icon-sort-up" aria-hidden="true"></span></th>
                                             <th class="hidden-phone text-center" data-order="" data-sort="desc" onclick="resort(this)">关联脚本名称 <span class="icon-sort-up" aria-hidden="true"></span></th>
                                             <th class="hidden-phone text-center" data-order="author" data-sort="desc" onclick="resort(this)">脚本编辑者 <span class="icon-sort-up" aria-hidden="true"></span></th>
@@ -385,16 +385,16 @@
                                         <section class="panel">
                                             <div class="panel-body">
                                                 <div class="tab-content tasi-tab">
-                                                    <!-- 单案例 -->
+                                                    <!-- 单用例 -->
                                                     <div class="tab-pane active" id="single-case">
                                                         <fieldset disabled>
                                                         <form class="form-horizontal" role="form" id="detailForm">
                                                             <div class="form-group">
-                                                                <label class="col-lg-2 control-label hidden">案例组成类型</label>
+                                                                <label class="col-lg-2 control-label hidden">用例组成类型</label>
                                                                 <div class="col-lg-4 hidden">
                                                                     <input type="text" class="form-control" name="casecompositetype" value="1">
                                                                 </div>
-                                                                <label class="col-lg-2 control-label">案例编号</label>
+                                                                <label class="col-lg-2 control-label">用例编号</label>
                                                                 <div class="col-lg-4">
                                                                     <input type="text" class="form-control" name="casecode">
                                                                 </div>
@@ -471,7 +471,7 @@
                                                                 </div>
                                                             </div>
                                                             <div class="form-group">
-                                                                <label class="col-lg-2 control-label">案例性质</label>
+                                                                <label class="col-lg-2 control-label">用例性质</label>
                                                                 <div class="col-lg-4">
                                                                     <select class="form-control" size="1" name="caseproperty">
                                                                         <option value="1">正常值</option>
@@ -481,7 +481,7 @@
                                                                         <option value="5">流程级</option>
                                                                     </select>
                                                                 </div>
-                                                                <label class="col-lg-2 control-label">测试案例类型</label>
+                                                                <label class="col-lg-2 control-label">测试用例类型</label>
                                                                 <div class="col-lg-4">
                                                                     <select class="form-control" size="1" name="casetype">
                                                                         <option value="1">联机</option>
@@ -543,7 +543,7 @@
                                                                 </div>
                                                             </div>
                                                             <div class="form-group">
-                                                                <label class="col-lg-2 control-label">案例使用状态</label>
+                                                                <label class="col-lg-2 control-label">用例使用状态</label>
                                                                 <div class="col-lg-4">
                                                                     <select class="form-control" size="1" name="usestatus">
                                                                         <option value="1">新增</option>

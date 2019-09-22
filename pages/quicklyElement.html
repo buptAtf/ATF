@@ -23,7 +23,7 @@
         }
         .processInfo span{
             padding:5px;
-            font-size: 2em;
+            font-size: 1.7em;
         }
         .modal-footer{
             text-align: center;
@@ -57,9 +57,10 @@
                                     </div>
                                 </i>
                             </span>
+                            <a data-dismiss="modal" class="btn btn-success" type="button" @click="next()"> 添加完成并进入下一步</a>
                         </section>
 
-                        <div class="tab-pane fade in active" id="elementLibrary">
+                        <div class="tab-pane   active" id="elementLibrary">
                             <div class="row">
                                 <div class="col-xs-4">
                                     <section class="panel tree-panel">
@@ -75,11 +76,11 @@
                                             </div>
                                             <div class="form-group panel-pad form-horizontal">
                                                 <div class="col-xs-12">
-                                                    <a class="btn btn-info btn-sm" data-toggle="modal" href="#addUIModal">添加UI</a>
-                                                    <a class="btn btn-info btn-sm" @click="delUI">删除UI</a>
-                                                    <a class="btn btn-info btn-sm" data-toggle="modal" @click="addElementsingle">添加元素</a>
-                                                    <a class="btn btn-info btn-sm" @click="delElement">删除元素</a>
-                                                    <a class="btn btn-info btn-sm" data-toggle="modal" href="#batchImportModal">批量添加</a>
+                                                    <a class="btn btn-info btn-sm " data-toggle="modal" href="#addUIModal">添加UI</a>
+                                                    <a class="btn btn-info btn-sm " @click="delUI">删除UI</a>
+                                                    <a class="btn btn-info btn-sm " data-toggle="modal" @click="addElementsingle">添加元素</a>
+                                                    <a class="btn btn-info btn-sm " @click="delElement">删除元素</a>
+                                                    <a class="btn btn-info btn-sm " data-toggle="modal" href="#batchImportModal">批量添加</a>
                                                 </div>
                                             </div>
                                             <ul id="elementtree" class="ztree tree"></ul>

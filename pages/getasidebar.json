@@ -41,7 +41,7 @@
 		"item_child_list":[
             
             {
-				"item_child_name":"案例管理",
+				"item_child_name":"用例管理",
 				"item_child_address":"caseManagement.html"
             },
 

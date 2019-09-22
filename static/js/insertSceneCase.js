@@ -4,13 +4,13 @@ var app = new Vue({
         isShow: false,
         iconflag: true,
         caseNodeNum: 0,
-        caseNode: '</h3><div class="form-group"><label class="col-lg-2 control-label hidden">案例组成类型</label><div class="col-lg-4 hidden"><input type="text" class="form-control" name="caseCompositeType" value="3"></div><label class="col-lg-2 control-label">流程节点编号</label><div class="col-lg-4"><input type="text" class="form-control" name="subcasecode"></div><label class="col-lg-2 control-label">动作标识</label><div class="col-lg-4"><input type="text" class="form-control" name="actioncode"></div></div><div class="form-group"><label class="col-lg-2 control-label">被测系统</label><div class="col-lg-4"><select class="form-control" size="1" name="subautid" id=""></select></div><label class="col-lg-2 control-label">被测系统版本号</label><div class="col-lg-4"><input class="form-control" name="subversioncode"></div></div><div class="form-group"><label class="col-lg-2 control-label">功能码</label><div class="col-lg-4"><select class="form-control" size="1" name="subtransid"><option></option></select></div><label class="col-lg-2 control-label">所属模板</label><div class="col-lg-4"><select class="form-control" size="1" name="subscriptmodeflag"></select></div></div><div class="form-group"><label class="col-lg-2 control-label">执行方式</label><div class="col-lg-4"><select class="form-control" size="1" name="executemethod"><option>手工</option><option>自动化</option><option>配合</option></select></div><label class="col-lg-2 control-label">脚本管理方式</label><div class="col-lg-4"><select class="form-control" size="1" name="scriptmode"><option>模板</option></select></div></div><div class="form-group"><label class="col-lg-2 control-label">执行者</label><div class="col-lg-4"><select class="form-control" size="1" name="executor"><option v-for="user in users" value="{{user.id}}">{{user.reallyname}}</option></select></div><label class="col-lg-2 control-label">测试顺序</label><div class="col-lg-4"><input class="form-control" name="steporder"></div></div><div class="form-group"><label class="col-lg-2 control-label">案例使用状态</label><div class="col-lg-4"><select class="form-control" size="1" name="subusestatus"><option value="1">新增</option><option value="2">评审通过</option></select></div></div><div class="form-group"><label class="col-lg-2 control-label">备注</label><div class="col-lg-10"><textarea class="form-control" rows="3" name="note"></textarea></div></div>',
-        caseList: [], //案例
+        caseNode: '</h3><div class="form-group"><label class="col-lg-2 control-label hidden">用例组成类型</label><div class="col-lg-4 hidden"><input type="text" class="form-control" name="caseCompositeType" value="3"></div><label class="col-lg-2 control-label">流程节点编号</label><div class="col-lg-4"><input type="text" class="form-control" name="subcasecode"></div><label class="col-lg-2 control-label">动作标识</label><div class="col-lg-4"><input type="text" class="form-control" name="actioncode"></div></div><div class="form-group"><label class="col-lg-2 control-label">被测系统</label><div class="col-lg-4"><select class="form-control" size="1" name="subautid" id=""></select></div><label class="col-lg-2 control-label">被测系统版本号</label><div class="col-lg-4"><input class="form-control" name="subversioncode"></div></div><div class="form-group"><label class="col-lg-2 control-label">功能码</label><div class="col-lg-4"><select class="form-control" size="1" name="subtransid"><option></option></select></div><label class="col-lg-2 control-label">所属模板</label><div class="col-lg-4"><select class="form-control" size="1" name="subscriptmodeflag"></select></div></div><div class="form-group"><label class="col-lg-2 control-label">执行方式</label><div class="col-lg-4"><select class="form-control" size="1" name="executemethod"><option>手工</option><option>自动化</option><option>配合</option></select></div><label class="col-lg-2 control-label">脚本管理方式</label><div class="col-lg-4"><select class="form-control" size="1" name="scriptmode"><option>模板</option></select></div></div><div class="form-group"><label class="col-lg-2 control-label">执行者</label><div class="col-lg-4"><select class="form-control" size="1" name="executor"><option v-for="user in users" value="{{user.id}}">{{user.reallyname}}</option></select></div><label class="col-lg-2 control-label">测试顺序</label><div class="col-lg-4"><input class="form-control" name="steporder"></div></div><div class="form-group"><label class="col-lg-2 control-label">用例使用状态</label><div class="col-lg-4"><select class="form-control" size="1" name="subusestatus"><option value="1">新增</option><option value="2">评审通过</option></select></div></div><div class="form-group"><label class="col-lg-2 control-label">备注</label><div class="col-lg-10"><textarea class="form-control" rows="3" name="note"></textarea></div></div>',
+        caseList: [], //用例
         users: [], //所有用户
         priority: [], // 优先级
         executeMethod: [], // 执行方式
-        caseCompositeType: [], // 案例组成类型
-        useStatus: [], // 案例状态
+        caseCompositeType: [], // 用例组成类型
+        useStatus: [], // 用例状态
         missionList: [], //测试任务
         filterSceneId:'',//所属场景
         testpoint: '', // 测试点
@@ -20,7 +20,7 @@ var app = new Vue({
         autid: '', //被测系统
         transid: '', //功能码
         scriptmodeflag: '', //脚本模板
-        casecode: '', //搜索时输入的案例编号
+        casecode: '', //搜索时输入的用例编号
         sortparam: '', //排序参数
         tt: 0, //总条数
         pageSize: 10, //页面大小
@@ -46,7 +46,7 @@ var app = new Vue({
         this.changeListNum();
         getScene();
         this.getUsers();
-        this.getMission(); //获取案例添加表单任务编号下拉列表
+        this.getMission(); //获取用例添加表单任务编号下拉列表
         $('.3').addClass('open')
         $('.3 .arrow').addClass('open')
         $('.3-ul').css({display: 'block'})
@@ -55,7 +55,7 @@ var app = new Vue({
         $('.filterList').delegate('button.btn-danger','click',function(){
             $(event.target).closest('li').remove();
         });
-        // 筛选案例select option
+        // 筛选用例select option
         // let that=this;
         $('.filterList').delegate('select[name="propertyName"]', 'change', function() {
             let selectedProp=$(event.target).val();
@@ -698,7 +698,7 @@ var app = new Vue({
             this.sceneid = keyval[0].split('=')[1],
             this.scenename = decodeURI(keyval[1].split('=')[1]);
         },
-        //获取案例
+        //获取用例
         getCase:function(currentPage, listnum, order, sort) {
             let caseLibId=sessionStorage.getItem('caselibId');
             $.ajax({
@@ -891,7 +891,7 @@ var app = new Vue({
                 }
             });
         },
-        //获取添加案例任务编号下拉列表
+        //获取添加用例任务编号下拉列表
         getMission: function(){
             $.ajax({
                 url: address3+"missionController/selectMission",
@@ -906,7 +906,7 @@ var app = new Vue({
                 }
             });
         },
-        //添加场景案例
+        //添加场景用例
         insert: function() {
             // this.getIds();
             var id_array = new Array();
@@ -1019,7 +1019,7 @@ var app = new Vue({
             //页数变化时的回调
             this.getCase(ts.currentPage, ts.pageSize, 'id', 'asc');
         },
-        //搜索案例
+        //搜索用例
         searchCase: function(id) {
             $.ajax({
                 url: address + 'TestcaseController/viewtestcase',
@@ -1070,7 +1070,7 @@ var app = new Vue({
                 $('.selectpicker').selectpicker('refresh')
             });
         },
-        //筛选案例
+        //筛选用例
         filterCase(){
                 let data=[];
                 let list=$(".filterList>li");
@@ -1123,7 +1123,7 @@ var app = new Vue({
 });
 
 
-//查询案例
+//查询用例
 function queryCase() {
     $.ajax({
         url: address + 'TestcaseController/testcasequeryByPage',

@@ -9,7 +9,7 @@ var detailModalTemplate=`
             <div class="form-group">
                 <div class="col-lg-3 nopadding"></div>
                 <div class="col-lg-4 nopadding">
-                    <label class="col-lg-3 control-label"><i>案例编号</i></label>
+                    <label class="col-lg-3 control-label"><i>用例编号</i></label>
                     <div class="col-lg-9">
                         <input disabled  type="text" class="form-control" name="casecode" :value="testCase.casecode">
                     </div>
@@ -60,7 +60,7 @@ var detailModalTemplate=`
             </div>
             <div class="form-group">
                 <div class="col-lg-4 nopadding">
-                    <label class="col-lg-3 control-label">案例性质</label>
+                    <label class="col-lg-3 control-label">用例性质</label>
                     <div class="col-lg-9">
                         <select disabled  class="form-control" size="1" name="caseProperty" :value="testCase.caseProperty">
                             <option value="1">正常值</option>
@@ -72,7 +72,7 @@ var detailModalTemplate=`
                     </div>
                 </div>
                 <div class="col-lg-4 nopadding">
-                    <label class="col-lg-3 control-label">测试案例类型</label>
+                    <label class="col-lg-3 control-label">测试用例类型</label>
                     <div class="col-lg-9">
                         <select disabled  class="form-control" size="1" name="caseType" :value="testCase.caseType">
                             <option value="1">联机</option>
@@ -120,7 +120,7 @@ var detailModalTemplate=`
             </div>
             <div class="form-group">
                 <div class="col-lg-4 nopadding">
-                    <label class="col-lg-3 control-label"><i>案例使用状态</i></label>
+                    <label class="col-lg-3 control-label"><i>用例使用状态</i></label>
                     <div class="col-lg-9">
                         <select disabled  class="form-control" size="1" name="usestatus" :value="testCase.useStatus">
                             <option value="1">新增</option>
@@ -207,7 +207,7 @@ var detailModalTemplate=`
         <div class="row">
             <div class="form-group">
                 <div class="col-lg-4 nopadding">
-                    <label class="col-lg-3 control-label"><i>案例编号</i></label>
+                    <label class="col-lg-3 control-label"><i>用例编号</i></label>
                     <div class="col-lg-9">
                         <input disabled  type="text" class="form-control" name="casecode" :value="testCase.casecode" disabled>
                     </div>
@@ -258,7 +258,7 @@ var detailModalTemplate=`
             </div>
             <div class="form-group">
                 <div class="col-lg-4 nopadding">
-                    <label class="col-lg-3 control-label">案例性质</label>
+                    <label class="col-lg-3 control-label">用例性质</label>
                     <div class="col-lg-9">
                         <select disabled  class="form-control" size="1" name="caseProperty" :value="testCase.caseProperty">
                             <option value="1">正常值</option>
@@ -270,7 +270,7 @@ var detailModalTemplate=`
                     </div>
                 </div>
                 <div class="col-lg-4 nopadding">
-                    <label class="col-lg-3 control-label">测试案例类型</label>
+                    <label class="col-lg-3 control-label">测试用例类型</label>
                     <div class="col-lg-9">
                         <select disabled  class="form-control" size="1" name="caseType" :value="testCase.caseType">
                             <option value="1">联机</option>
@@ -318,7 +318,7 @@ var detailModalTemplate=`
             </div>
             <div class="form-group">
                 <div class="col-lg-4 nopadding">
-                    <label class="col-lg-3 control-label"><i>案例使用状态</i></label>
+                    <label class="col-lg-3 control-label"><i>用例使用状态</i></label>
                     <div class="col-lg-9">
                         <select disabled  class="form-control" size="1" name="usestatus" :value="testCase.useStatus">
                             <option value="1">新增</option>

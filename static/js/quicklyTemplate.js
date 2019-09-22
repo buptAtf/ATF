@@ -1,5 +1,5 @@
 var app = new Vue({
-    el: '#transactDetail',
+    el: '#v-quicklyTemplate',
     data: function () {
         var _this = this;
         return {
@@ -7,7 +7,6 @@ var app = new Vue({
             autList: [],
             transactId: '',
             transactList: [],
-            transid: '',
             elementRepositoryId: 6,
             UIName: '',
             UITitle: 'UI',
@@ -81,9 +80,6 @@ var app = new Vue({
                             name: 'name',
                             rootPId: 0
                         }
-                    },
-                    view:{
-                        txtSelectedEnable: true
                     }
                 },
                 functions: {
@@ -104,27 +100,14 @@ var app = new Vue({
             zTreeSettings2: {
                 uiAndElement: {
                     callback: {
-                        onClick: function(event,treeId,treeNode) {
-                            // console.log(this.getZTreeObj(treeId).setting.callback.onCheck)
-                            try {
-                                this.getZTreeObj(treeId).checkNode(treeNode, !treeNode.checked, true, true)
-                            } catch (error) {
-                                console.error(error)
-                            }
-                        },
                         onCheck: function (event, treeId, treeNode, clickFlag) {
-                            console.log('2222',treeNode.checked)
-                            
-                            
                             var _this = app; 
                             if(!treeNode.parentTId){
                                 if(!_this.checkFlag){
                                     _this.checkFlag.push(treeNode.id);
-                                    console.log('!check')
                                 }
                                 else{
                                     let index = _this.checkFlag.indexOf(treeNode.id)
-                                    console.log(index)
                                     if(index == -1){
                                         _this.checkFlag.push(treeNode.id);
                                     }
@@ -132,11 +115,8 @@ var app = new Vue({
                                         _this.checkFlag.splice(index, 1); 
                                     }
                                 }
-                                
                             }
                             _this.checkUinodes.push(treeNode)
-                            console.log(_this.checkUinodes)
-                            
                         },
                     },
                     data: {
@@ -151,9 +131,6 @@ var app = new Vue({
                         enable: true,
                         hkStyle: "checkbox",
                         chkboxType: { "Y": "ps", "N": "ps" }
-                    },
-                    view:{
-                        txtSelectedEnable: true
                     }
                 },
                 functions: {
@@ -220,7 +197,6 @@ var app = new Vue({
                     beforeDrag: _this.zTreeBeforeDrag,
                     //点击时的回调函数
                     onClick: function (event, treeId, treeNode, clickFlag) {
-                        var transid = !_this.componentMode ? _this.transactId : _this.transid;
                         if (treeNode.level == 0) { //选择的是UI
                             $(':input', '#UIForm').val('');
                             _this.getObjTree();
@@ -277,7 +253,6 @@ var app = new Vue({
                             $('#blank').css('display', 'none');
                             $('#UI').css('display', 'none');
                             $('#ele').css('display', 'block');
-                            var transid = !_this.componentMode ? _this.transactId : _this.transid;
                             console.log()
                             $.ajax({
                                 url: address3 + 'elementRepository/querySingleElement',
@@ -624,27 +599,9 @@ var app = new Vue({
         }
     },
     ready: function () {
-        this.getAutandTrans();
         var _this = this;
-        $('#autSelect').change(function () {
-            _this.transactSelect();
-            _this.autId = $('#autSelect').val();
-            _this.transactId = $('#transactSelect').val();
-
-        });
-        $('#transactSelect').change(function () {
-            _this.transactId = $('#transactSelect').val();
-            _this.getElementTree();
-            _this.detailTabFresh();
-            _this.getObjTree();
-
-            _this.getScriptTemplate();
-        });
-        $(".myFileUpload").change(function () {
-            var arrs = $(this).val().split('\\');
-            var filename = arrs[arrs.length - 1];
-            $(".show").val(filename);
-        });
+        _this.getAutandTrans();
+        _this.getScriptTemplate();
         $('#addtemplateModal').on('hidden.bs.modal', function (e) {
             _this.newTemplate = {
                 name: '',
@@ -658,7 +615,6 @@ var app = new Vue({
         $('.2 .arrow').addClass('open');
         $('.2-ul').css({ display: 'block' });
         $('.2-0').css({ color: '#ff6c60' });
-        _this.detailTabFresh();
     },
     watch: {
         operationRows: function () {
@@ -666,116 +622,13 @@ var app = new Vue({
         }
     },
     methods: {
-        downloadRecorder: function(){
-            window.location.href = address4 + "atf-data/atf-recorder.zip";
-        },
-        addrule(){
-            var _this = this;
-            if(_this.ruleName!='' && _this.ruleDesc!='') {
-                sessionStorage.setItem('ruleName', _this.ruleName);
-                sessionStorage.setItem('ruleDesc', _this.ruleDesc);
-                window.open('ruleinput.html?ruleName='+_this.ruleName+'&ruleDesc='+_this.ruleDesc,'_blank');
-            } else {
-                Vac.alert('规则名称和描述不能为空');
-            }
-            
-        },
-        linkDownload (url) {
-            window.open(url,'_blank') // 新窗口打开外链接
-        },
         //初始化获取测试系统和功能点
         getAutandTrans: function () {
             var _this = this;
-            $.ajax({
-                url: address3 + "aut/queryListAut",
-                type: "POST",
-                async: false,
-                contentType: 'application/json',
-                success: function (data) {
-                    if (data.respCode !== '0000') {
-                        Vac.alert('查询测试系统失败');
-                        return;
-                    }
-                    _this.autList = data.autRespDTOList;
-                    console.log(_this.autList);
-                    // var str = "";
-                    // for (var i = 0; i < autList.length; i++) {
-
-                    //     str += " <option value='" + autList[i].id + "' >" + autList[i].nameMedium + "</option> ";
-                    // }
-
-                    // $('#autSelect').html(str);
-                    _this.autId = sessionStorage.getItem("autId");
-                    $("#autSelect").val(_this.autId);
-                    $.ajax({
-                        url: address3 + 'transactController/queryTransactsByAutId',
-                        type: 'POST',
-                        async: false,
-                        contentType: 'application/json',
-                        data: JSON.stringify({ 'id': _this.autId }),
-                        success: function (data) {
-                            if (data.respCode !== '0000') {
-                                Vac.alert('查询测试系统失败');
-                                return;
-                            }
-                            _this.transactList = data.transactRespDTOs;
-                            let transactList = data.transactRespDTOs;
-                            console.log(transactList);
-                            var str = "";
-                            for (var i = 0; i < transactList.length; i++) {
-                                if (transactList[i].transType == null || transactList[i].transType == 1)
-                                    str += " <option value='" + transactList[i].id + "'>" + transactList[i].nameMedium + "</option> ";
-                            }
-                            $('#transactSelect').html(str);
-                            _this.transactId = sessionStorage.getItem("transactId");
-                            $("#transactSelect").val(_this.transactId);
-
-                            // 获取ui和element
-                            $.ajax({
-                                url: address3 + 'elementRepository/queryAllElementsForATransact',
-                                type: 'post',
-                                contentType: 'application/json',
-                                data: JSON.stringify({ "transactId": _this.transactId }),
-                                success: function (data) {
-                                    if (data !== null) {
-                                        var nodes = [];
-                                        var uis = data.uis;
-                                        for (var i = 0; i < uis.length; i++) {
-                                            var uiNode = {};
-                                            uiNode.id = uis[i].uiId;
-                                            uiNode.name = uis[i].uiName;
-                                            uiNode.regulationId = uis[i].regulationId;
-                                            let elements = uis[i].elements;
-                                            if (elements) {
-                                                uiNode.children = [];
-                                                for (var j = 0; j < elements.length; j++) {
-                                                    var eleNode = {};
-                                                    eleNode.id = elements[j].elementId;
-                                                    eleNode.classType = elements[j].classType;
-                                                    eleNode.name = elements[j].elementName;
-                                                    uiNode.children.push(eleNode);
-                                                }
-                                            }
-                                            nodes.push(uiNode);
-                                        }
-                                        $.fn.zTree.init($("#elementtree"), _this.setting1, nodes);
-                                        _this.elementRepositoryId = data.elementRepositoryId;
-                                        fuzzySearch('elementtree', '#keyword', null, true);
-                                    }
-                                }
-                            });
-                            // 获取classtype
-                            _this.classtypeSelect();
-                            _this.getObjTree();
-                            _this.getEleParentObjectTree();
-                            _this.getEleLinkedObjectTree();
-                            _this.getScriptTemplate();
-
-                        }
-
-                    });
-                }
-            });
+            _this.autId = sessionStorage.getItem("autId");
+            _this.transactId = sessionStorage.getItem("transactId");
+            // 获取classtype
+            //_this.classtypeSelect();
         },
         //获取测试系统
         autSelect: function () {
@@ -796,31 +649,6 @@ var app = new Vue({
                     // $('#autSelect').html(str);
 
                 }
-            });
-        },
-        //详情tab页的刷新
-        detailTabFresh: function () {
-            var id = $('#transactSelect').val() != null ? $('#transactSelect').val() : sessionStorage.getItem("transactId");
-            $.ajax({
-                async: false,
-                url: address3 + 'transactController/querySingleTransact',
-                type: 'POST',
-                contentType: 'application/json',
-                data: JSON.stringify({
-                    'id': id,
-                }),
-                success: function (data) {
-                    if (data.respCode == '0000') {
-                        $('#code').val(data.code);
-                        $('#nameMedium').val(data.nameMedium);
-                        $('#descShort').val(data.descShort);
-                    }
-                    else {
-                        _this.failMSG = data.respMsg;
-                        $('#failModal').modal('show');
-                    }
-                }
-
             });
         },
         //获取classtype
@@ -875,12 +703,9 @@ var app = new Vue({
         setval: function () {
             this.autId = sessionStorage.getItem("autId");
             this.transactId = sessionStorage.getItem("transactId");
-            $("#autSelect").val(this.autId);
-            $("#transactSelect").val(this.transactId);
         },
         addUI: function () {
             var _this = this;
-            var transid = !this.componentMode ? this.transactId : this.transid;
             var UIName = $("#addUIName").val(),
                 relateIdentifyObjectId = $("#addRelateIdentifyObjectId").val(),
                 relateParentIdentifyObjectId = $("#addRelateParentIdentifyObjectId").val();
@@ -1016,7 +841,6 @@ var app = new Vue({
             var _this = this;
             var objName = $("#addObjName").val(),
                 treeObj = $.fn.zTree.getZTreeObj("objectTree");
-            var transid = !this.componentMode ? $("#transactSelect").val() : this.transid;
             var parentid = 0, nodes;
             if (treeObj) {
                 nodes = treeObj.getSelectedNodes(true);
@@ -1071,7 +895,6 @@ var app = new Vue({
             var treeObj = $.fn.zTree.getZTreeObj("objectTree");
             var nodes = treeObj.getSelectedNodes(true);
             var ids;
-            var transid = !this.componentMode ? $("#transactSelect").val() : this.transid;
             for (var i = 0; i < nodes.length; i++) {
                 ids = nodes[i].objectId;
             }
@@ -1257,7 +1080,6 @@ var app = new Vue({
         },
         addElementinsingle: function () {
             var _this = this;
-            var transid = !this.componentMode ? _this.transactId : _this.transid;
             var ElementName = $("#addElementName").val(),
                 ClassType = $("#addEleClassType").val(), 
                 addElemainattributename = $("#addElemainattributename").val(),
@@ -1310,7 +1132,6 @@ var app = new Vue({
         },
         addElementinbatch: function () {
             var _this = this;
-            var transid = !this.componentMode ? _this.transactId : _this.transid;
             var elements = [];
             $('#ElementTbody').find('tr').each(function () {
                 let ElementTD = $(this).children(),
@@ -1362,7 +1183,6 @@ var app = new Vue({
         //点击保存按钮后更新属性
         updateProp: function () {
             var _this = this
-            var transid = !this.componentMode ? this.transactId : this.transid;
             const treeObj = $.fn.zTree.getZTreeObj("objectTree"),
                 nodes = treeObj.getSelectedNodes(true),
                 id = nodes[0].objectId,
@@ -1480,7 +1300,6 @@ var app = new Vue({
         },
         addElement: function () {
             var _this = this;
-            var transid = !this.componentMode ? _this.transactId : _this.transid;
             var ElementName = $("#addElementName").val(),
                 ClassType = $("#classtypeSelect").val(),
                 relateIdentifyObjectId = $("#addEleRelateIdentifyObjectId").val(),
@@ -1566,7 +1385,6 @@ var app = new Vue({
         },
         updateElement: function () {
             var _this = this;
-            var transid = !this.componentMode ? this.transactId : this.transid;
             var treeObj = $.fn.zTree.getZTreeObj("elementtree"),
                 nodes = treeObj.getSelectedNodes();
             var selectedUIName = _this.replacemess(nodes[0].getParentNode().name);
@@ -1711,12 +1529,12 @@ var app = new Vue({
         // 页面初始化获取元素库
         getElementTree: function (uiName) {
             var _this = this;
-            var transid = !this.componentMode ? $("#transactSelect").val() : this.transid;
+            var transactId =_this.transactId;
             $.ajax({
                 url: address3 + 'elementRepository/queryAllElementsForATransact',
                 type: 'post',
                 contentType: 'application/json',
-                data: JSON.stringify({ "transactId": transid }),
+                data: JSON.stringify({ "transactId": transactId }),
                 success: function (data) {
                     if (data !== null) {
                         var nodes = [];
@@ -1772,12 +1590,12 @@ var app = new Vue({
         // 页面初始化获取对象库
         getObjTree: function () {
             var _this = this;
-            var transid = !this.componentMode ? $("#transactSelect").val() : this.transid;
+            var transactId =this.transactId;
             $.ajax({
                 url: address3 + 'objectRepository/queryAllObjectForATransact',
                 type: 'post',
                 contentType: 'application/json',
-                data: JSON.stringify({ "transactId": transid }),
+                data: JSON.stringify({ "transactId": transactId }),
                 success: function (data) {
                     if (data !== null) {
                         var objects = data.objects;
@@ -1812,12 +1630,12 @@ var app = new Vue({
         // 页面初始化获取对象库
         getEleParentObjectTree: function () {
             var _this = this;
-            var transid = !this.componentMode ? $("#transactSelect").val() : this.transid;
+            var transactId =this.transactId;
             $.ajax({
                 url: address3 + 'objectRepository/queryAllObjectForATransact',
                 type: 'post',
                 contentType: 'application/json',
-                data: JSON.stringify({ "transactId": transid }),
+                data: JSON.stringify({ "transactId": transactId }),
                 success: function (data) {
                     if (data !== null) {
                         $.fn.zTree.init($("#eleParentTree"), _this.setting2, data.objects);
@@ -1848,12 +1666,12 @@ var app = new Vue({
         // 页面初始化获取对象库
         getEleLinkedObjectTree: function () {
             var _this = this;
-            var transid = !this.componentMode ? $("#transactSelect").val() : this.transid;
+            var transactId =this.transactId;
             $.ajax({
                 url: address3 + 'objectRepository/queryAllObjectForATransact',
                 type: 'post',
                 contentType: 'application/json',
-                data: JSON.stringify({ "transactId": transid }),
+                data: JSON.stringify({ "transactId": transactId }),
                 success: function (data) {
                     if (data !== null) {
                         $.fn.zTree.init($("#eleLinkedTree"), _this.setting2, data.objects);
@@ -2398,10 +2216,10 @@ var app = new Vue({
             var str = +type === 1 ? '' : 2;
             var _this = this;
             var setting = +type === 1 ? this.zTreeSettings : this.zTreeSettings2;
-            var transid = !this.componentMode ? $("#transactSelect").val() : this.transid;
+            var transactId = this.transactId;
             Vac.ajax({
                 url: address3 + 'elementRepository/queryAllElementsForATransact',
-                data: { transactId: transid },
+                data: { transactId: transactId },
                 success: (data) => {
                     if (data.respCode === '0000') {
                         let treeDate = data.uis.map((ui) => {

@@ -155,7 +155,7 @@ var app = new Vue({
             })
         },
 
-        //获取添加案例任务编号下拉列表
+        //获取添加用例任务编号下拉列表
         getMission: function(){
             var _this = this;
             $.ajax({

@@ -13,12 +13,12 @@ var app = new Vue({
         flowcaseflag: true,
         caseNodeNum: 1,
         caseNodeNums: [{num:1,status:true,show:true,name:"boundGroup1",display:false}],
-        caseList: [], //案例
+        caseList: [], //用例
         users: [], //所有用户
         priority: [], // 优先级
         executeMethod: [], // 执行方式
-        caseCompositeType: [], // 案例组成类型
-        useStatus: [], // 案例状态
+        caseCompositeType: [], // 用例组成类型
+        useStatus: [], // 用例状态
         missionList: [], //测试任务
         testpoint: '', // 测试点
         currentUserId: sessionStorage.getItem('userId'),//当前登录用户id
@@ -28,7 +28,7 @@ var app = new Vue({
         autid: '', //被测系统
         transid: '', //功能码
         scriptmodeflag: '', //脚本模板
-        casecode: '', //搜索时输入的案例编号
+        casecode: '', //搜索时输入的用例编号
         sortparam: '', //排序参数
         tt: 0, //总条数
         pageSize: 5, //页面大小
@@ -42,7 +42,7 @@ var app = new Vue({
         checkboxModel: [],
         checked: "",
         subCaseList: [], //流程节点
-        caselibid: sessionStorage.getItem('caselibId'), //案例库id
+        caselibid: sessionStorage.getItem('caselibId'), //用例库id
         userId:sessionStorage.getItem('userId'),
         failMSG:"操作失败啦",
         projectName: sessionStorage.getItem('projectNameStorage')
@@ -51,7 +51,7 @@ var app = new Vue({
         this.getCase(this.currentPage, this.pageSize, this.order, this.sort);
         this.getUsers();
         this.getCaseLibId();
-        this.getMission(); //获取案例添加表单任务编号下拉列表
+        this.getMission(); //获取用例添加表单任务编号下拉列表
         this.groupBound("");
         $(".myFileUpload").change(function() {
             var arrs = $(this).val().split('\\');
@@ -69,7 +69,7 @@ var app = new Vue({
         
 
 
-        //筛选案例select option
+        //筛选用例select option
         let that=this;
         $('.filterList').delegate('select[name="propertyName"]', 'change', function() {
             let selectedProp=$(event.target).val();
@@ -941,7 +941,7 @@ var app = new Vue({
             }
 
         },
-        //获取案例
+        //获取用例
         getCase:function(currentPage, pageSize, order, sort) {
             var _this = this;
             let caseLibId=sessionStorage.getItem('caselibId');
@@ -1110,7 +1110,7 @@ var app = new Vue({
                     }
                 }) ;  
         },
-        //添加案例
+        //添加用例
         insert: function() {
             var self = this;
             var insertForm=$('#insertForm div[class="tab-pane active"]');
@@ -1548,7 +1548,7 @@ var app = new Vue({
             this.getCase(ts.currentPage, ts.pageSize, 'id', 'asc');
             // ts.queryCase();
         },
-        // 流程案例添加节点案例
+        // 流程用例添加节点用例
         addCaseNode: function() {
             var _this=this;
             _this.caseNodeNum++;
@@ -1557,7 +1557,7 @@ var app = new Vue({
             _this.groupBound(_this.caseNodeNums[_this.caseNodeNum-2].name);
             _this.caseNodeNums[_this.caseNodeNum-2].display=true;
         },
-        //搜索案例
+        //搜索用例
         searchCase: function(id) {
             $.ajax({
                 url: address3 + 'TestcaseController/viewtestcase',
@@ -1568,7 +1568,7 @@ var app = new Vue({
                 }
             });
         },
-        //获取添加案例任务编号下拉列表
+        //获取添加用例任务编号下拉列表
         getMission: function(){
             var _this = this;
             $.ajax({
@@ -1649,7 +1649,7 @@ var app = new Vue({
                 $('.selectpicker').selectpicker('refresh')
             });
         },
-        //筛选案例
+        //筛选用例
         filterCase(currentPage){
                 let data=[];
                 let list=$("#filterList2>li");
@@ -1710,7 +1710,7 @@ var app = new Vue({
 
                 });
         },
-        //修改案例 第一次 为更改多种用例信息写的函数，以防后用 但可以删除
+        //修改用例 第一次 为更改多种用例信息写的函数，以防后用 但可以删除
         modifyCase(){
             let data={};
             let list=$("#filterList1>li");

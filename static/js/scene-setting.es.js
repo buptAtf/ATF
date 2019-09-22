@@ -838,7 +838,7 @@ var vBody = new Vue({
 				return
 			}
 			this.isDebugInfoShow = true;
-			// 删除选中的案例中节点案例,并生成要发送的数据
+			// 删除选中的用例中节点用例,并生成要发送的数据
 			let sendData = []
 			let flowCases = [...this.flowNodeIds.keys()]
 			

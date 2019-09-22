@@ -3311,10 +3311,10 @@ function APIUpload() {
 	if($("input[name=inlineRadioOptions]")[0].checked){
 		console.log("验证");
 		var APIFieldVerificationData=[];
-		$('#APIFieldParaListBody').find('.APIFieldVerificationParaRow').each(function() {
-			var APIFieldVerificationParaExp=$(this).find("input[name=APIFieldVerificationParaExp]").val(),
-				APIFieldVerificationParaSel=$(this).find("select").val(),
-				APIFieldVerificationParaVal=$(this).find("input[name=APIFieldVerificationParaVal]").val();
+		$('#APIFieldParaListBody').find('.APIFieldVerificationParaRow').each(function(index,item) {
+			var APIFieldVerificationParaExp=$(item).find("input[name=APIFieldVerificationParaExp]").val(),
+				APIFieldVerificationParaSel=$(item).find("select").val(),
+				APIFieldVerificationParaVal=$(item).find("input[name=APIFieldVerificationParaVal]").val();
 			if(APIFieldVerificationParaExp!=""){
 				let singleData={};
 				singleData.pathExpression=APIFieldVerificationParaExp;
@@ -3323,7 +3323,9 @@ function APIUpload() {
 				let singleData_Json = JSON.stringify(singleData);
 				let extract={};
 				extract["compare_"+index] = singleData_Json;
-				APIFieldExtractionData.push(extract);
+				if(singleData.pathExpression){
+					APIFieldVerificationData.push(extract);
+				}
 			}
 		});
 		console.log(APIFieldVerificationData);

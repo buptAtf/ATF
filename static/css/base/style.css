@@ -3957,7 +3957,7 @@ span.customSelect.changed {
     min-width:300px;
 }
 #onShowRectangleInfo span{
-    font-size: 16px;
+    font-size: 12px;
 }
 .onShowInfo{
     position: relative;
@@ -3976,4 +3976,7 @@ span.customSelect.changed {
     height:15px;
     transform: translate(-50%,-40%) rotate(45deg);
     background-color: #3c4958;
+}
+.btn-sm{
+    padding :5px;
 }
