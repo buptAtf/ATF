@@ -102,9 +102,9 @@
 							<!-- <li class="active">
 								<a href="#detail" data-toggle="tab">详情	</a>
 							</li> -->
-							<li class="active" ><a href="#elementLibrary" data-toggle="tab" @click="eleFlag =true">元素库</a></li>
+							<li class="active" ><a href="#elementLibrary" data-toggle="tab" @click="switchTab(1)">元素库</a></li>
 							<!-- <li><a href="#object-repo" data-toggle="tab">对象库</a></li> -->
-							<li><a href="#script" data-toggle="tab" @click="eleFlag =false">基础脚本</a></li>
+							<li><a href="#script" data-toggle="tab" @click="switchTab(2)">基础脚本</a></li>
 							<span v-show="eleFlag" class = "information"> Tips : 1.添加ui。2.选中UI，点击‘添加元素’，添加元素</span>
 							<span v-show="!eleFlag" class = "information"> Tips : 1.新增脚本。 2.选中脚本，点击添加多项，添加脚本需要操作的元素. 3.点击‘保存’‘参数化’。</span>
 							</ul>

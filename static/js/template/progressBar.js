@@ -16,8 +16,8 @@ var progressBarTemplate=`
         </li>
     </ul>
     <ul  v-show="hideFlag" v-for="(index, progress) in progressList " v-if="progress.status === 'activing' " class="  nav nav-pills nav-justified step step-square">
-        <li v-for="(index, progress) in progress.item "   :class="progress.status"   class="active"  track-by="$index">
-        <a  @click= "openUrl(progress.href,progress.pre)"  >{{ progress.name }} </a>
+        <li v-for="(index, progress) in progress.item "   :class="progress.status"  track-by="$index">
+        <a  @click= "openUrl(progress.href,progress.pre)"  >{{ progress.name }}{{ progress.status }} </a>
         </li>
     </ul>
 </div>
@@ -68,7 +68,6 @@ var progressBar = Vue.extend({
             for(let i = 0 ;i < newValue.length ;i++){
                 console.log(i+"--"+newValue[i].name+newValue[i].status+newValue[i].href);
             }
-
 　　　　},
        immediate: true, 
 　　　　deep: true

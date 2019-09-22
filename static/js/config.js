@@ -95,25 +95,25 @@ var progressbar = new Vue({
                     {
                         name:"添加被测系统",
                         href:"aut.html",
-                        status:true,
+                        status:"",
                         pre:0
                     },
                     {
                         name:"添加功能点",
                         href:"transact.html",
-                        status:true,
+                        status:"",
                         pre:1
                     },
                     {
                         name:"添加UI及元素",
                         href:"transactDetail.html",
-                        status:true,
+                        status:"",
                         pre:2
                     },
                     {
                         name:"配置脚本",
                         href:"transactDetail.html",
-                        status:true,
+                        status:"",
                         pre:2
                     }
                 ]
@@ -127,25 +127,25 @@ var progressbar = new Vue({
                     {
                         name:"添加测试项目",
                         href:"testProject.html",
-                        status:true,
+                        status:"",
                         pre:0
                     },
                     {
                         name:"添加用例",
                         href:"caseManagement.html",
-                        status:true,
+                        status:"",
                         pre:3
                     },
                     {
                         name:"配置数据",
                         href:"datatable.html",
-                        status:true,
+                        status:"",
                         pre:3
                     },
                     {
                         name:"配置场景",
                         href:"scene.html",
-                        status:true,
+                        status:"",
                         pre:3
                     }
                 ]
@@ -159,25 +159,25 @@ var progressbar = new Vue({
                     {
                         name:"添加测试计划",
                         href:"testplan-execute.html",
-                        status:true,
+                        status:"",
                         pre:3
                     },
                     {
                         name:"添加待执行场景",
                         href:"testplan-execute.html",
-                        status:true,
+                        status:"",
                         pre:3
                     },
                     {
                         name:"选择执行机",
                         href:"testplan-execute.html",
-                        status:true,
+                        status:"",
                         pre:3
                     },
                     {
                         name:"执行",
                         href:"testplan-execute.html",
-                        status:true,
+                        status:"",
                         pre:3
                     }
                 ]
@@ -191,50 +191,63 @@ var progressbar = new Vue({
                     {
                         name:"按执行批次查询",
                         href:"execution.html",
-                        status:true,
+                        status:"",
                         pre:3,
                     },
                     {
                         name:"按记录单查询",
                         href:"testRecord.html",
-                        status:true,
+                        status:"",
                         pre:3,
                     }
                 ]
             }
         ];
-        switch(window.location.pathname.split("/")[2]){
-            case 'aut.html':
-            case 'transact.html':
+        let pathname = window.location.pathname.split("/")[2];
+        switch(pathname){
             case 'transactDetail.html':
+                a[0].item[0].status= a[0].item[1].status= a[0].item[2].status="active";
+            case 'transact.html':
+                a[0].item[0].status= a[0].item[1].status= "active";
+            case 'aut.html':
+                a[0].item[0].status="active";
             case 'architecture.html':
             case 'mockserver.html':
             case 'runner-management.html':
             case 'usermanagement.html':
-                    a[0].status="activing";
-                    a[1].status=a[2].status=a[3].status="noactive";
+                a[0].status="activing";
+                a[1].status=a[2].status=a[3].status="noactive";
                     break;
-            case 'testProject.html':
-            case 'caseManagement.html':
-            case 'casePostRecord.html':
+            case 'scene-setting.html':
+            case 'scene.html':
+            case 'insertSceneCase.html':
+                a[1].item[0].status= a[1].item[1].status= a[1].item[2].status= a[1].item[3].status="active";
             case 'datatable.html':
             case 'datatable_flowcase.html':
-            case 'scene.html':
-            case 'scene-setting.html':
-            case 'insertSceneCase.html':
-            case 'scene-setting.html':
-                
+                a[1].item[0].status= a[1].item[1].status= a[1].item[2].status="active";
+            case 'caseManagement.html':
+            case 'casePostRecord.html':
+                a[1].item[0].status= a[1].item[1].status= "active";
+            case 'testProject.html':
+                a[1].item[0].status= "active";
                 a[0].status="actived";
                 a[1].status="activing";
                 a[2].status=a[3].status="noactive";
                 break;
             case 'testplan-execute.html':
-                    a[0].status=a[1].status="actived";
-                    a[2].status="activing";
-                    a[3].status="noactive";
-                    break;
-            case 'execution.html':
+                a[2].item[0].status= "active";
+                a[2].item[1].status= "active";
+                a[2].item[2].status= "active";
+                a[2].item[3].status= "active";
+                a[0].status=a[1].status="actived";
+                a[2].status="activing";
+                a[3].status="noactive";
+                break;
             case 'testRecord.html':
+                a[3].item[0].status= "active";
+                a[3].item[1].status= "active";
+            case 'execution.html':
+                a[3].item[0].status= "active";
                 a[0].status=a[1].status=a[2].status="actived";
                 a[3].status="activing";
                 break;

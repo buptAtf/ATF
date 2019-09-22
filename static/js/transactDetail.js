@@ -666,6 +666,18 @@ var app = new Vue({
         }
     },
     methods: {
+        //切换tab页
+        switchTab(flag){
+            if(flag == 1){
+                eleFlag =true;
+                progressbar.progressList[0].item[3].status = ""
+            }
+            else{
+                eleFlag =false
+                progressbar.progressList[0].item[3].status = "active"
+            }
+
+        },
         downloadRecorder: function(){
             window.location.href = address4 + "atf-data/atf-recorder.zip";
         },
