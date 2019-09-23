@@ -327,10 +327,8 @@ var app = new Vue({
             var filename = arrs[arrs.length - 1];
             $(".show").val(filename);
         });
-        $('.2').addClass('open');
-        $('.2 .arrow').addClass('open');
-        $('.2-ul').css({ display: 'block' });
-        $('.2-0').css({ color: '#ff6c60' });
+        $('.-1 a').css({color: '#ff6c60'});
+
     },
     watch: {
     },

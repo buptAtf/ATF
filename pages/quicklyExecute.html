@@ -7,6 +7,7 @@
     <link rel="stylesheet" type="text/css" href="../static/css/pagination.css">
     <link rel="stylesheet" type="text/css" href="../static/css/elementLibrary.css">
     <link rel="stylesheet" type="text/css" href="../static/css/metroStyle.css">
+    <link rel="stylesheet" type="text/css" href="../static/css/bootstrap-select.min.css">
 
     <title>quicklyElement</title>
     <style>
@@ -34,7 +35,7 @@
     </style> 
 </head>
 
-<body id="v-quicklyTemplate" v-cloak>
+<body id="v-quicklyExecute" v-cloak>
         <div class="content">
             <!--header start-->
             <link rel="import" href="./common/header-guide.html?__inline">
@@ -47,19 +48,18 @@
                 <section class="wrapper">
                     <section class="panel processInfo">
                         <span>
-                            共五步  第三步：配置用例
+                            共五步  第四步：执行用例
                             <i class="icon-question-sign onShowInfo">
                                 <div id = "onShowRectangleInfo">
-                                    <span>配置该功能流程操作元素的方法、顺序及操作使用参数。</span><br>
+                                    <span>执行用例</span><br>
                                     <span>Tips:</span><br>
-                                    <span>1. 添加用例。自带一个默认用例。</span><br>
-                                    <span>2. 选中用例，添加操作元素，并拖动元素调整顺序。</span><br>
-                                    <span>3. 在参数一栏编辑操作数据，配置结束。如元素为输入框且输入“北邮”，则在参数一栏编辑填写‘北邮’，点击保存。</span>
+                                    <span>1. 选择执行机</span><br>
+                                    <span>2. 点击用例执行，执行用例。</span><br>
                                     <div class="onShowTriangle"></div>
                                 </div>
                             </i>
                         </span>
-                        <a data-dismiss="modal" class="btn btn-success" type="button" @click="next()"> 配置完成并进入下一步</a>
+                        <a data-dismiss="modal" class="btn btn-success" type="button" @click="next()"> 执行完毕查看结果</a>
                     </section>
                     
                     <div class="tab-pane " id="script">
@@ -68,14 +68,8 @@
 						            <div class="col-xs-12">
 						              <section class="panel">
 						                  <header class="panel-heading">
-						                      用例
+						                      用例列表
 						                  </header>
-						                    <div class="row">
-						                    	<div class="col-xs-12 top-btn">
-							                    	<a class="btn btn-white" id="template_add" data-toggle="modal" href="#addtemplateModal"><i class="icon-plus"></i> 新增用例</a>
-      												<a class="btn btn-white" id="template_remove" @click="deleteTemplate();"><i class="icon-ban-circle"></i> 删除用例</a>
-      											</div>
-						                    </div>
 						                <table v-if="templateList.length" id="top_table" style="margin-left: 0; width: 100%;" class="table table-bordered text-center table-striped">
 						                  <thead>
 						                    <tr>
@@ -87,7 +81,7 @@
 						                  <tbody>
 						                    <tr v-for="(index,template) in templateList">
 						                      <td class="index">
-						                        <input type="checkbox" name="chk_list" :value="index" @click="change($event)" v-model="checkedTemplate" id="{{template.id}}">
+						                        <input type="checkbox" name="chk_list"  @click="setToSence(template.id)"  id="{{template.id}}">
 						                      </td>
 						                      <td class="number">{{template.name}}</td>
 						                      <td>{{template.description}}</td>
@@ -103,121 +97,29 @@
                         <div class="col-sm-12">
                             <div class="panel">
                                 <header class="panel-heading">
-                                    用例数据
+                                    执行信息
                                 </header>
                                 <div id="table2" class="table-wrapper operation-wrapper" style="margin-top: 0px;">
-                                    <div v-show="selectedScript>0">
                                     <div class="row" style="margin-bottom: 15px;padding: 0 15px;">
                                         <div class="col-xs-12 top-btn">
-                                        <a class="btn btn-white" data-toggle="modal" @click="showUIModal();">
-                                            <i class="icon-plus"></i> 添加元素</a>
-                                        <a class="btn btn-white" id="script_remove" @click="removeRow($event)">
-                                            <i class=" icon-trash"></i> 删除</a>
-                                        <a class="btn btn-white" id="up" @click="moveUp($event)">
-                                            <i class=" icon-double-angle-up"></i> 上移</a>
-                                        <a class="btn btn-white" id="down" @click="moveDown($event)">
-                                            <i class=" icon-double-angle-down"></i> 下移</a>
-                                        <a class="btn btn-white" @click="tableSave()">
-                                            <i class="icon-save"></i> 保存</a>
-                                        <!-- <a class="btn btn-white" @click="para()" >
-                                            <i class="icon-retweet"></i> 参数化</a>
-                                        </div> -->
-                                    </div>
-                                    <table v-if="operationRows.length" class="newtable table table-bordered table-condensed table-striped" id="newtable" style="width: 100%;">
-                                        <thead>
-                                        <tr>
-                                            <th class="move">排序</th>
-                                            <th class="check">选择
-                                            </th>
-                                            <th class="index">行号</th>
-                                            <th class="operations">操作项</th>
-                                            <th class="functions">方法</th>
-                                            <th class="parameters">参数</th>
-                                            <th class="add-row" style="width: 50px;text-align: center;">
-                                            <i class="icon-plus" @click="addRow()" style="font-size: 18px;display: inline-block;height: 22px;width: 22px;"></i>
-                                            </th>
-                                        </tr>
-                                        </thead>
-                                        <tbody class="ui-sortable" id="sortable">
-                                        <tr v-for="(index, row) in operationRows" class="before-operation-row ui-sortable-handle" track-by="id" data-index={{index}}>
-                                            <td class="move">
-                                            <span class="icon-move"></span>
-                                            </td>
-                                            <td class="check" @mousedown.stop="1">
-                                            <input type="checkbox" class="checkone">
-                                            </td>
-                                            <td class="index">{{index + 1}}</td>
-                                            <td class="operations" @mousedown.stop="1">
-                                            <!-- <i class="icon-edit" @click="showUiAndElement($event)" style="color: #ff6c60;"></i>
-                                            <label>UI:</label>
-                                            <span class="operation-ui">{{row.operation.ui}}</span>
-                                            <label>元素:</label>
-                                            <span class="operation-element" :data-classtype="row.operation.classType">{{row.operation.element}}</span> -->
-                                                <template v-if="row.operation.ui != '' && row.operation.element != ''">
-                                                    <i class="icon-edit" @click="showUiAndElement($event, 1)" style="color: #ff6c60;"></i>
-                                                    <label>UI:</label>
-                                                    <span class="operation-ui">{{row.operation.ui}}</span>
-                                                    <label>元素:</label>
-                                                    <span class="operation-element" :data-classtype="row.operation.classType">{{row.operation.element}}</span>
-                                                </template>
-                                                <template v-else>
-                                                    <i class="icon-edit" @click="showUiAndElement($event, 1)" style="color: #ff6c60;"></i>
-                                                    <label>公共函数:</label>
-                                                    <span class="operation-ui" style="display: none;">{{row.operation.ui}}</span>
-                                                    <span class="operation-element" style="display: none;" :data-classtype="row.operation.classType">{{row.operation.element}}</span>
-                                                </template>
-                                            </td>
-                                            <td class="functions" @mousedown.stop="1" data-index={{index}}>
-                                                <select class="functions-select form-control" style="width: 90%;" @change="changeFunction($event.target, index)">
-                                                    <template v-for="function in row.functions">
-                                                    <option v-if="row.selectedFunc == function.name" :value="function.name" :data-parameters="function.parameterlist" selected>{{function.name}}</option>
-                                                    <option v-else :value="function.name" :data-parameters="function.parameterlist">{{function.name}}</option>
-                                                    </template>
+                                            <label class="option-name control-label col-lg-2">执行机选择</label>
+                                            <div class=" col-lg-4 ">
+                                                <select class="selectpicker execute-range form-control" id="runnerselected"
+                                                        v-model="runnerselected" multiple>
                                                 </select>
-                                            </td>
-                                            <td class="parameters" @mousedown.stop="1">
-                                                <span class="icon-edit edit-param" style="color: #ff6c60" @click="editParameter($event)"></span>
-                                                <div  style="display: inline-block;">
-                                                    <div class="param-show">
-                                                    <span v-for="parameter in row.parameters" class="param-name-show">{{parameter.Name}}:
-                                                        <b class="param-value-show">{{parameter.Value}}</b>;&nbsp;&nbsp;</span>
-                                                    </div>
-                                                    <table class="param-table table table-condensed table-bordered" style="display: none;">
-                                                    <thead>
-                                                        <tr>
-                                                        <td>名称</td>
-                                                        <td>参数值</td>
-                                                        </tr>
-                                                    </thead>
-                                                    <tbody class="">
-                                                        <tr v-for="parameter in row.parameters" class="param-row">
-                                                            <td class="param-name">{{parameter.Name}}</td>
-                                                            <td class="param-value" contenteditable="true">{{parameter.Value}}</td>
-                                                        </tr>
-                                                        <tr class="bottom-row">
-                                                            <td colspan="2">
-                                                                <button @click="cancelEditParam($event)">取消</button>
-                                                                <button style="margin-left: 10px;" @click="saveParam($event)">保存</button>
-                                                            </td>
-                                                        </tr>
-                                                    </tbody>
-                                                    </table>
-                                                </div>
-                                            </td>
-                                            <td class="delete-row" style="width: 60px;" @mousedown.stop="1">
-                                            <i class="icon-plus" @click="insertRow(index)"></i>
-                                            <i class="icon-minus" @click="deleteRow(index)"></i>
-                                            </td>
-                                        </tr>
-                                        </tbody>
-                                    </table>
-                                    <div v-else style="text-align: center;margin: 20px auto;">暂无数据</div>
+                                            </div>
+                                            <a class="btn btn-white col-lg-2" data-toggle="modal" @click="executeAll();">
+                                                <i class="icon-play"></i> 用例执行
+                                            </a>
+                                        </div>
                                     </div>
-                                    <div v-show="selectedScript<=0" style="text-align: center;margin: 20px auto;">请选择用例！</div>
+                                </div>
+                                
+                                <div class="row">
                                 </div>
                             </div>
                         </div>
-                        </div>
+                        
                         <div style="flex: 1 1 auto;"></div>
                         <!-- table end -->
                         </div>
@@ -500,11 +402,6 @@
 <script src="../lib/vue-resource.min.js"></script>
 <script src="../static/js/vac-functions.es.js"></script>
 <script type="text/javascript" src="../lib/jquery-ui.js"></script>
-<script type="text/javascript" src="../static/js/quicklyTemplate.js"></script>
-
+<script type="text/javascript" src="../static/js/quicklyExecute.js"></script>
 <script type="text/javascript" src="../lib/bootstrap-select.min.js"></script>
-<script type="text/javascript" src="../static/js/fuzzysearch.js"></script>
-<script type="text/javascript" src="../lib/jquery.ztree.all.min.js"></script>
-<script type="text/javascript" src="../static/js/fuzzysearch.js"></script>
-<script type="text/javascript" src="../lib/jquery.ztree.exhide.min.js"></script>
 

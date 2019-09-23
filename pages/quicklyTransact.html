@@ -29,37 +29,6 @@
         .modal-footer{
             text-align: center;
         }
-        #quicklyInfo{
-            position: absolute;
-            display: none;
-            top:2.5em;
-            transform:translate(-50%,0px) translate(-7px,0px);
-            z-index: 9999;
-            background-color: #3c4958;
-            color:#fff;
-            border-radius: 5px;
-            padding :4px 10px;
-            word-break:break-all;
-            max-width:400px;
-            min-width:300px;
-        }
-        #quicklyInfo span{
-            font-size: 1em;
-        }
-        .panel span i:hover #quicklyInfo{
-            display: inline-block;
-        }
-        .triangle{
-            z-index: -1;
-            position: absolute;
-            left:50%;
-            top:0px;
-            display: inline-block;
-            width:20px;
-            height:20px;
-            transform: translate(-50%,-40%) rotate(45deg);
-            background-color: #3c4958;
-        }
     </style>
 </head>
 <body id="v-quicklyTransact">
@@ -70,11 +39,14 @@
         <section id="main-content">
             <section class="wrapper" >
                     <section class="panel">
-                        <span>共5步  第一步：添加功能点 <i class="icon-question-sign">
-                                <div id = "quicklyInfo">
+                        <span>共五步  第一步：添加功能点 
+                            <i class="icon-question-sign onShowInfo">
+                                <div id = "onShowRectangleInfo">
                                     <span>功能点:系统某个需要测试的功能流程</span>
-                                    <div class="triangle"></div>
-                                </div></i></span>
+                                    <div class="onShowTriangle"></div>
+                                </div>
+                            </i>
+                        </span>
                     </section>
                     <section class="info">
                             <div class="modal-content">

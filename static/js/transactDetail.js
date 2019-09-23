@@ -113,9 +113,6 @@ var app = new Vue({
                             }
                         },
                         onCheck: function (event, treeId, treeNode, clickFlag) {
-                            console.log('2222',treeNode.checked)
-                            
-                            
                             var _this = app; 
                             if(!treeNode.parentTId){
                                 if(!_this.checkFlag){
@@ -134,8 +131,20 @@ var app = new Vue({
                                 }
                                 
                             }
-                            _this.checkUinodes.push(treeNode)
-                            console.log(_this.checkUinodes)
+                            else{//如果该节点有父节点，那么就说明点击的是子节点，进行判断顺序
+                                if(!_this.checkUinodes){
+                                    _this.checkUinodes.push(treeNode.tId);
+                                }
+                                else{
+                                    let index = _this.checkUinodes.indexOf(treeNode.tId)
+                                    if(index == -1){
+                                        _this.checkUinodes.push(treeNode.tId);
+                                    }
+                                    else{
+                                        _this.checkUinodes.splice(index, 1); 
+                                    }
+                                }
+                            }
                             
                         },
                     },
@@ -2308,9 +2317,9 @@ var app = new Vue({
                         type = 2;
                     }
                     var paramTr = paramRow.querySelector('.param-value');
-                    if (paramTr.innerHTML.startsWith('Data.TableColumn')) {
+                    if (paramTr.innerHTML != "") {
                         paramValues.push(`${paramTr.innerHTML}`);
-                    } else {
+                    }  else {
                         // paramValues.push(`"${paramTr.innerHTML}"`);
                         paramValues.push(`""`);
                     }
@@ -2507,15 +2516,19 @@ var app = new Vue({
         saveParam: function (event) {
             var target = $(event.target)
             var tbody = target.parents('.param-table')
-            var trs = [...$('.param-row', tbody)]
+            console.log($('.param-row'))
+            console.log($('.param-row', tbody))
+
             var parentRow = target.parents('table').parents('tr')
             var valueShows = $('.param-value-show', parentRow)
             this.operationRows[parentRow.attr('data-index')].parameters.length = 0
-            trs.forEach((row, index) => {
+            
+            $('.param-row', tbody).each(( index,row) => {
                 var data = {}
                 data.Name = row.querySelector('.param-name').innerHTML
                 data.Value = row.querySelector('.param-value').innerHTML
                 valueShows[index].innerHTML = data.Value
+                console.log(data)
                 this.operationRows[parentRow.attr('data-index')].parameters.push(data)
             })
             this.cancelEditParam(event)
@@ -2640,8 +2653,6 @@ var app = new Vue({
             var uiNodes ;
             if(_this.checkFlag.length == 0){//如果checkFlag不为空 则奇数次点击UI 则说明不按点击顺序 使用默认顺序
                 uiNodes = _this.checkUinodes;
-                _this.checkFlag=[];
-                _this.checkUinodes=[];
             }
             else{
                 uiNodes = uiTree ? uiTree.getCheckedNodes(true) : [];
@@ -2650,6 +2661,9 @@ var app = new Vue({
             var functionNodes = functionTree ? functionTree.getCheckedNodes(true) : []
             var l=_this.operationRows.length;
             for (var node of uiNodes) {
+                if(typeof node != 'object'){
+                    node = uiTree.getNodeByTId(node);
+                }
                 if (node.isParent) {
                     continue;
                 }
@@ -2661,7 +2675,6 @@ var app = new Vue({
                     classType: node.classType
                 }
                 newRow.functions = []
-                _this.operationRows.push(newRow);
                 ajax2({
                     url: address3 + 'aut/selectMethod',
                     data: JSON.stringify({ id: _this.autId, classname: newRow.operation.classType }),
@@ -2669,21 +2682,20 @@ var app = new Vue({
                     type: 'post',
                     dataType: 'json',
                     success: function (data) {
+                        console.log(data)
                         if (data.respCode === '0000' && data.omMethodRespDTOList) {
                             var { functions, parameterlist } = _this.setFunctionAndParameter(data.omMethodRespDTOList);
                             function getNewRow(newR, objIndex, objs){
                                 return newR.operation.element == newRow.operation.element&&objIndex>l-1;
                             }
-                            _this.operationRows[_this.operationRows.findIndex(getNewRow)].functions = functions;
-                            _this.operationRows[_this.operationRows.findIndex(getNewRow)].selectedFunc = functions.length ? functions[0].name : '';
-                            _this.operationRows[_this.operationRows.findIndex(getNewRow)].parameters = parameterlist;
-                            // newRow.functions = functions;
-                            // newRow.selectedFunc = functions.length ? functions[0].name : '';
-                            // newRow.parameters = parameterlist;
-                            // _this.operationRows.find(function (x) {
-                            //     return x.element == newRow.element
-                            // })
-                            // _this.operationRows.push(newRow);
+                            newRow.functions = functions;
+                            newRow.selectedFunc = functions.length ? functions[0].name : '';
+                            newRow.parameters = parameterlist;
+                            _this.operationRows.push(newRow);
+
+                            // _this.operationRows[_this.operationRows.findIndex(getNewRow)].functions = functions;
+                            // _this.operationRows[_this.operationRows.findIndex(getNewRow)].selectedFunc = functions.length ? functions[0].name : '';
+                            // _this.operationRows[_this.operationRows.findIndex(getNewRow)].parameters = parameterlist;
 
                         } else {
                             _this.operationRows.splice(_this.operationRows.findIndex(function (x) {
@@ -2694,6 +2706,8 @@ var app = new Vue({
                     }
                 })
             }
+            _this.checkFlag=[];
+            _this.checkUinodes=[];
             if (functionNodes && functionNodes.length) {
                 for (var node of functionNodes) {
                     let newRow = {}

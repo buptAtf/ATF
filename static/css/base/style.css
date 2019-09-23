@@ -3954,7 +3954,7 @@ span.customSelect.changed {
     padding :4px 10px;
     word-break:break-all;
     max-width:400px;
-    min-width:300px;
+    min-width:350px;
 }
 #onShowRectangleInfo span{
     font-size: 12px;
@@ -3971,6 +3971,7 @@ span.customSelect.changed {
     z-index: -1;
     position: absolute;
     left:50%;
+    top:0px;
     display: inline-block;
     width:15px;
     height:15px;

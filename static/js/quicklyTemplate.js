@@ -13,7 +13,7 @@ var app = new Vue({
             eleName: '',
             UILinked: '',
             eleParent: '',
-            checkUinodes:[],//基础脚本界面 用于生成选中元素的顺序
+            checkElementNodes:[],//基础脚本界面 用于生成选中元素的顺序
             checkFlag: [],//基础脚本界面 标志 用与判断是否按照选中顺序排序  
             eleLinked: '',
             failMSG: '操作失败啦。糟糕的是没有返回信息，难道是ajax请求失败了',
@@ -100,9 +100,17 @@ var app = new Vue({
             zTreeSettings2: {
                 uiAndElement: {
                     callback: {
+                        onClick: function(event,treeId,treeNode) {
+                            // console.log(this.getZTreeObj(treeId).setting.callback.onCheck)
+                            try {
+                                this.getZTreeObj(treeId).checkNode(treeNode, !treeNode.checked, true, true)
+                            } catch (error) {
+                                console.error(error)
+                            }
+                        },
                         onCheck: function (event, treeId, treeNode, clickFlag) {
                             var _this = app; 
-                            if(!treeNode.parentTId){
+                            if(treeNode.isParent){//如果点击的是父节点，就对checkFlag进行判断
                                 if(!_this.checkFlag){
                                     _this.checkFlag.push(treeNode.id);
                                 }
@@ -116,7 +124,20 @@ var app = new Vue({
                                     }
                                 }
                             }
-                            _this.checkUinodes.push(treeNode)
+                            else{//如果该节点有父节点，那么就说明点击的是子节点，进行判断顺序
+                                if(!_this.checkElementNodes){
+                                    _this.checkElementNodes.push(treeNode.tId);
+                                }
+                                else{
+                                    let index = _this.checkElementNodes.indexOf(treeNode.tId)
+                                    if(index == -1){
+                                        _this.checkElementNodes.push(treeNode.tId);
+                                    }
+                                    else{
+                                        _this.checkElementNodes.splice(index, 1); 
+                                    }
+                                }
+                            }
                         },
                     },
                     data: {
@@ -234,7 +255,6 @@ var app = new Vue({
                             var treeObj = $.fn.zTree.getZTreeObj("elementtree");
                             var nodes = treeObj.getSelectedNodes();
                             _this.eleName = _this.replacemess(treeNode.name);
-                            console.log(treeNode)
                             _this.elementId = treeNode.id;
                             var parentNode = nodes[0].getParentNode();
                             _this.UIName = _this.replacemess(parentNode.name);
@@ -611,10 +631,7 @@ var app = new Vue({
         this.zTreeSettings.uiAndElement.callback.onClick = this.zTreeOnClick;
         this.zTreeSettings.functions.callback.onClick = this.zTreeOnClick;
         this.setDrag();
-        $('.2').addClass('open');
-        $('.2 .arrow').addClass('open');
-        $('.2-ul').css({ display: 'block' });
-        $('.2-0').css({ color: '#ff6c60' });
+        $('.-1 a').css({color: '#ff6c60'});
     },
     watch: {
         operationRows: function () {
@@ -622,6 +639,9 @@ var app = new Vue({
         }
     },
     methods: {
+        next(){
+            window.location.assign("quicklyExecute.html")
+        },
         //初始化获取测试系统和功能点
         getAutandTrans: function () {
             var _this = this;
@@ -1770,7 +1790,7 @@ var app = new Vue({
                             if (_this.templateList.length) {
                                 _this.checkedTemplate = [0];
                                 _this.showScripttemplateTable({
-                                    "autId": $('#autSelect').val(),
+                                    "autId":_this.autId,
                                     "scriptId": _this.templateList[0].id
                                 });
                                 _this.selectedScript = 1;
@@ -1792,7 +1812,7 @@ var app = new Vue({
             var index = $(event.target).val();
             if (event.target.checked) {
                 if (this.scriptIsChanged) {
-                    var promise = Vac.confirm('#vac-confirm', '.okConfirm', '.cancelConfirm', "编辑后的基础脚本未保存，是否保存？");
+                    var promise = Vac.confirm('#vac-confirm', '.okConfirm', '.cancelConfirm', "编辑后的用例数据未保存，是否保存？");
                     promise.then(() => {
                         _this.tableSave();
                         // this.checkedTemplate = this.checkedTemplate.slice(0, -1)
@@ -1815,7 +1835,7 @@ var app = new Vue({
             } else {
                 // event.preventDefault()
                 if (this.scriptIsChanged) {
-                    var promise = Vac.confirm('#vac-confirm', '.okConfirm', '.cancelConfirm', "编辑后的基础脚本未保存，是否保存？");
+                    var promise = Vac.confirm('#vac-confirm', '.okConfirm', '.cancelConfirm', "编辑后的用例数据未保存，是否保存？");
                     promise.then(() => {
                         _this.tableSave();
                         // this.checkedTemplate = this.checkedTemplate.slice(0)
@@ -1974,7 +1994,7 @@ var app = new Vue({
         deleteTemplate: function () {
             var _this = this;
             if (!_this.checkedTemplate.length) {
-                Vac.alert('请选择要删除脚本！')
+                Vac.alert('请选择要删除用例！')
                 return
             }
             var templateId = this.checkedTemplate[0];
@@ -2114,9 +2134,13 @@ var app = new Vue({
                         type = 2;
                     }
                     var paramTr = paramRow.querySelector('.param-value');
-                    if (paramTr.innerHTML.startsWith('Data.TableColumn')) {
+                    // if (paramTr.innerHTML.startsWith('Data.TableColumn')) {
+                    //     paramValues.push(`${paramTr.innerHTML}`);
+                    // } 
+                    if (paramTr.innerHTML != "") {
                         paramValues.push(`${paramTr.innerHTML}`);
-                    } else {
+                    } 
+                    else {
                         // paramValues.push(`"${paramTr.innerHTML}"`);
                         paramValues.push(`""`);
                     }
@@ -2313,11 +2337,10 @@ var app = new Vue({
         saveParam: function (event) {
             var target = $(event.target)
             var tbody = target.parents('.param-table')
-            var trs = [...$('.param-row', tbody)]
             var parentRow = target.parents('table').parents('tr')
             var valueShows = $('.param-value-show', parentRow)
             this.operationRows[parentRow.attr('data-index')].parameters.length = 0
-            trs.forEach((row, index) => {
+            $('.param-row', tbody).each(( index,row) => {
                 var data = {}
                 data.Name = row.querySelector('.param-name').innerHTML
                 data.Value = row.querySelector('.param-value').innerHTML
@@ -2437,17 +2460,14 @@ var app = new Vue({
                 // return { functions: [], parameterlist: [] };;
             }
         },
-        editRowMultiple: function () {
-            // 已经修改过
+        editRowMultiple: function () {// 已经修改过 向列表中添加元素
             var _this= this;
             _this.scriptIsChanged = true
             var uiTree = $.fn.zTree.getZTreeObj("ui-element-ul2");
             var functionTree = $.fn.zTree.getZTreeObj("functions-ul2");
             var uiNodes ;
             if(_this.checkFlag.length == 0){//如果checkFlag不为空 则奇数次点击UI 则说明不按点击顺序 使用默认顺序
-                uiNodes = _this.checkUinodes;
-                _this.checkFlag=[];
-                _this.checkUinodes=[];
+                uiNodes = _this.checkElementNodes;
             }
             else{
                 uiNodes = uiTree ? uiTree.getCheckedNodes(true) : [];
@@ -2456,6 +2476,9 @@ var app = new Vue({
             var functionNodes = functionTree ? functionTree.getCheckedNodes(true) : []
             var l=_this.operationRows.length;
             for (var node of uiNodes) {
+                if(typeof node != 'object'){
+                    node = uiTree.getNodeByTId(node);
+                }
                 if (node.isParent) {
                     continue;
                 }
@@ -2467,7 +2490,6 @@ var app = new Vue({
                     classType: node.classType
                 }
                 newRow.functions = []
-                _this.operationRows.push(newRow);
                 ajax2({
                     url: address3 + 'aut/selectMethod',
                     data: JSON.stringify({ id: _this.autId, classname: newRow.operation.classType }),
@@ -2475,21 +2497,20 @@ var app = new Vue({
                     type: 'post',
                     dataType: 'json',
                     success: function (data) {
+                        console.log(data)
                         if (data.respCode === '0000' && data.omMethodRespDTOList) {
                             var { functions, parameterlist } = _this.setFunctionAndParameter(data.omMethodRespDTOList);
                             function getNewRow(newR, objIndex, objs){
                                 return newR.operation.element == newRow.operation.element&&objIndex>l-1;
                             }
-                            _this.operationRows[_this.operationRows.findIndex(getNewRow)].functions = functions;
-                            _this.operationRows[_this.operationRows.findIndex(getNewRow)].selectedFunc = functions.length ? functions[0].name : '';
-                            _this.operationRows[_this.operationRows.findIndex(getNewRow)].parameters = parameterlist;
-                            // newRow.functions = functions;
-                            // newRow.selectedFunc = functions.length ? functions[0].name : '';
-                            // newRow.parameters = parameterlist;
-                            // _this.operationRows.find(function (x) {
-                            //     return x.element == newRow.element
-                            // })
-                            // _this.operationRows.push(newRow);
+                            newRow.functions = functions;
+                            newRow.selectedFunc = functions.length ? functions[0].name : '';
+                            newRow.parameters = parameterlist;
+                            _this.operationRows.push(newRow);
+
+                            // _this.operationRows[_this.operationRows.findIndex(getNewRow)].functions = functions;
+                            // _this.operationRows[_this.operationRows.findIndex(getNewRow)].selectedFunc = functions.length ? functions[0].name : '';
+                            // _this.operationRows[_this.operationRows.findIndex(getNewRow)].parameters = parameterlist;
 
                         } else {
                             _this.operationRows.splice(_this.operationRows.findIndex(function (x) {
@@ -2499,7 +2520,9 @@ var app = new Vue({
                         }
                     }
                 })
-            }
+            } 
+            _this.checkFlag=[];
+            _this.checkElementNodes=[];
             if (functionNodes && functionNodes.length) {
                 for (var node of functionNodes) {
                     let newRow = {}
