@@ -35,6 +35,7 @@ var app = new Vue({
                 $('#failModal').modal();
                 return ;
             }
+            /*
             new Promise(function(resolved){
                 $.ajax({
                     url: address3 + '/transactController/addSingleUITransactWithoutAut',
@@ -60,57 +61,13 @@ var app = new Vue({
             }).then(function(){
                 window.location.assign("quicklyElement.html")
             })
-            /*
-            $.ajax({
-                url: address3 + '/transactController/addSingleUITransactWithoutAut',
-                contentType: 'application/json',
-                data: JSON.stringify({ 'nameMedium': "dgghb",
-                'descShort':  "dgghb",
-                'code':  "dgghb", 
-            }),
-                type: "POST",
-                success: function (data) {
-                    if (data.respCode == "0000") {
-                        sessionStorage.setItem("autId",data.autId)
-                        sessionStorage.setItem("transactId",data.transId)
-                        sessionStorage.setItem("sceneId",data.sceneId)
-                        sessionStorage.setItem("testPlanId",data.testPlanId)
-                        window.location.assign("quicklyElement.html")
-                    }
-                    else {
-                        Vac.alert("fail")
-                    }
-                    
-                }
-            });*/
-/*
-            $.ajax({
-                url: address3 + '/transactController/addSingleUITransactWithoutAut',
-                contentType: 'application/json',
-                data: JSON.stringify({
-                    'nameMedium': _this.transName,
-                    'descShort':  _this.transDesc,
-                    'code':  _this.transCode,
-                }),
-                type: 'POST',
-                success: function(data) {
-                    if (data.respCode=='0000') {
-                        self.newTransactId = data.transactId;
-                        sessionStorage.setItem("transactId",data.transactId)
-                        $('#successAndGoModal').modal();
-                        queryTransact();
-                    } else {
-                        Vac.alert(data.respMsg)
-                    }
-                },
-                error: function() {
-                    Vac.alert(data.respMsg)
-                }
-            });*/
+            */
 
-            // sessionStorage.setItem("autId",302)
-            // sessionStorage.setItem("transactId",554)
-            // sessionStorage.setItem("sceneId",291)
+            sessionStorage.setItem("autId",426)
+            sessionStorage.setItem("transactId",674)
+            sessionStorage.setItem("sceneId",336)
+            sessionStorage.setItem("testPlanId",210)
+            window.location.assign("quicklyElement.html")
         },
         reset (){
             var _this = this;

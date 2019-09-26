@@ -20,6 +20,14 @@ var app = new Vue({
         $('.-1 a').css({color: '#ff6c60'});
     },
     methods: {
+        next(){
+            if(sessionStorage.getItem('batchId')!=null && sessionStorage.getItem('batchId')!=''){
+                window.location.assign("quicklyResult.html")
+            }
+            else{
+                Vac.alert("请先执行用例")
+            }
+        },
         getScene(){ //获取场景ID待完善
             let that=this;
             that.sceneid = "...";
@@ -173,7 +181,8 @@ var app = new Vue({
 								"testPlanId": _this.testPlanId,
 							}),
 							success: function(data) {
-								_this.batchId = data.batchId;
+                                _this.batchId = data.batchId;
+                                sessionStorage.setItem("batchId", data.batchId)
 								_this.startQueryResult();
 							},
 							error: function(){
