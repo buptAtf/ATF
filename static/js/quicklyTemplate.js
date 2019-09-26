@@ -1979,9 +1979,62 @@ var app = new Vue({
                     data: _this.newTemplate,
                     success: function (data) {
                         if (data.respCode === '0000') {
-                            Vac.alert('添加成功！')
                             $('#addtemplateModal').modal('hide')
-                            _this.getScriptTemplate();
+                            console.log("111111")
+                            var scriptmodeflag =data.scriptId
+                            $.ajax({
+                                url: address3 + 'testcase/addTestcase',
+                                type: "POST",
+                                contentType: 'application/json',
+                                data: JSON.stringify({
+                                    'caseCompositeType': '1',
+                                    'caseLibId': '253',
+                                    'casecode': 'casecode' +new Date().valueOf(),
+                                    'submissionId': '49',
+                                    'autId': _this.autId,
+                                    'version': '',
+                                    'transId': _this.transactId,
+                                    'scriptModeFlag': scriptmodeflag,
+                                    'testpoint': _this.newTemplate.name,
+                                    'testdesign': 1,
+                                    'prerequisites': '',
+                                    'datarequest': '',
+                                    'teststep': '1',
+                                    'expectresult': '1',
+                                    'checkpoint': '',
+                                    'caseproperty': '1',
+                                    'casetype': '1',
+                                    'priority': '1',
+                                    'author':  sessionStorage.getItem("userId"),
+                                    'reviewer':  sessionStorage.getItem("userId"),
+                                    'executor':  sessionStorage.getItem("userId"),
+                                    'automaton':"",
+                                    'executeMethod': '2',
+                                    'scriptMode': '1',
+                                    'useStatus': '1' ,
+                                    'note': _this.newTemplate.description,
+                                    'modifyChannel':'',
+                                    'modifyChannelNo':'',
+                                    'functionModule':"",
+                                    'tags':"",
+                                    'categoryTeam':"",
+                                    'actionList':[]
+                                }),
+                                success: function(data) {
+                                    if (data.respCode=="0000") {
+                                        console.log("22222222222")
+                                        _this.getScriptTemplate();
+                                        Vac.alert('添加成功！')
+                                    } else {
+                                        console.log("333333333333")
+                                        self.failMSG=data.respMsg;
+                                        $('#failModal2').modal();
+                                    }
+                                },
+                                error: function() {
+                                    $('#failModal').modal();
+                                }
+                            });
                         } else {
                             Vac.alert('添加失败！');
                         }

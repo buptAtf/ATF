@@ -70,7 +70,7 @@
 						                  <header class="panel-heading">
 						                      用例列表
 						                  </header>
-						                <table v-if="templateList.length" id="top_table" style="margin-left: 0; width: 100%;" class="table table-bordered text-center table-striped">
+						                <table v-if="testcaseList.length" id="top_table" style="margin-left: 0; width: 100%;" class="table table-bordered text-center table-striped">
 						                  <thead>
 						                    <tr>
 						                      <th class="index" style="text-align: center;">选择</th>
@@ -79,12 +79,12 @@
 						                    </tr>
 						                  </thead>
 						                  <tbody>
-						                    <tr v-for="(index,template) in templateList">
+						                    <tr v-for="(index,testcase) in testcaseList">
 						                      <td class="index">
-						                        <input type="checkbox" name="chk_list"  @click="setToSence(template.id)"  id="{{template.id}}">
+						                        <input type="checkbox" name="chk_list"  @click="clickToInsertSence(testcase.id)"  id="{{testcase.id}}">
 						                      </td>
-						                      <td class="number">{{template.name}}</td>
-						                      <td>{{template.description}}</td>
+						                      <td class="number">{{testcase.testpoint}}</td>
+						                      <td>{{testcase.note}}</td>
 						                    </tr>
 						                  </tbody>
 						                </table>

@@ -35,6 +35,36 @@ var app = new Vue({
         });
     },
     methods: {
+        //复制功能点
+        copyTransact(){
+            var _this = this;
+            const selectedInput = $('input[name="chk_list"]:checked');
+            if (selectedInput.length === 0) {
+                $('#selectAlertModal').modal();
+                return 
+            } 
+
+            $.ajax({
+                url: address3 + 'transactController/addSingleTransact',
+                type: 'post',
+                contentType: 'application/json',
+                data: JSON.stringify({
+                    systemId: $("#insertForm input[name='autId']").val(),
+                    autId : $('#updateForm input[name="id"]').val(),
+                }),
+                success: function(data) {
+                    if (data.respCode=='0000') {
+                        $('#successModal').modal();
+                        queryTransact();
+                    } else {
+                        Vac.alert(data.respMsg)
+                    }
+                },
+                error: function() {
+                    Vac.alert(data.respMsg)
+                }
+            });
+        },
         //获取选中的id
         getIds: function() {
             var id_array = new Array();

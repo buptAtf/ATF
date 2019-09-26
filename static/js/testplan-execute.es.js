@@ -310,6 +310,16 @@ var vBody = new Vue({
 			}
 			_this.logShow = true;
 			_this.exeStautShow = '<i class="icon-spinner"></i>执行中';
+			console.log({
+				"userId": _this.userId,
+				"recordflag": _this.recordFlag,
+				"exeScope": _this.exeScope, 
+				"selectState": _this.selectState,
+				"selectedExeInstances": selectedExeInstances,
+				"testPlanId": _this.testPlanId,
+				"identifiableRunnerName":_this.runnerExecuteType,
+				"appointedRunners" : _this.runnerselected
+			})/*
 			Vac.ajax({
 				url: address2 + 'executeController/t1',
 				type: 'post',
@@ -353,7 +363,7 @@ var vBody = new Vue({
 					Vac.alert('网络错误，执行失败！');
 					_this.setResultIcon();
 				}
-			})
+			})*/
 		},
 		fullScreen: function(){
 			// this.$refs.logShow.style.width = "100%" ;
