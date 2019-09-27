@@ -8,6 +8,13 @@ var vBody = new Vue({
 		tooltipType: 1,
 		triggerShow: false,
 		saveTriggerType: 1,
+		tt: 0, //总条数
+		pageSize: 5, //页面大小
+		currentPage: 1, //当前页
+		totalPage: 1, //总页数
+		order: 'id',
+		sort: 'asc',
+		caseList: [], //用例
 
 		alertShow: false,
 		tooltipMessage: '',
@@ -106,6 +113,7 @@ var vBody = new Vue({
 	},
 	ready:function(){
 		this.setVal();
+		this.getCase(this.currentPage, this.pageSize, this.order, this.sort);
 		var _this = this;
 		// 用于初始化 滑动鼠标选取元素
 		this.setSelectListener();
@@ -175,8 +183,72 @@ var vBody = new Vue({
             this.sceneid = keyval[0].split('=')[1],
             this.scenename = decodeURI(keyval[1].split('=')[1]);
 		},
-		toInsertSceneCase: function(){
-			location.href = "insertSceneCase.html?sceneid=" + this.sceneid + "&" + "scenename=" + this.scenename;
+		//添加场景用例
+		insert: function() {
+			// this.getIds();
+			var id_array = new Array();
+			$("#caseSelect option:selected").each(function() {
+				 id_array.push($(this).val());
+			});
+			var selectedInput =  $("#caseSelect option:selected");
+			if (selectedInput.length === 0) {
+				$('#selectAlertModal').modal();
+			} else{
+				let that=this;
+				$.ajax({
+					url: address3 + 'sceneController/insertTestcaseToScene',
+					type: 'post',
+					contentType: 'application/json',
+					data: JSON.stringify({
+						"id" : that.sceneid,
+						"creatorId" : sessionStorage.getItem("userId"),
+						// "caseIds" :'['+that.ids+']'
+						"caseIds" :id_array
+					}),
+					success: function(data) {
+						if (data.respCode=='0000') {
+							 location.href = "scene-setting.html?sceneid=" + that.sceneid + "&" + "scenename=" + that.scenename;
+							$('#successModal').modal();
+						} else {
+							$('#failModal').modal();
+						}
+					},
+					error: function() {
+						$('#failModal').modal();
+					}
+				});
+			}
+		},
+		// toInsertSceneCase: function(){
+		// 	// location.href = "insertSceneCase.html?sceneid=" + this.sceneid + "&" + "scenename=" + this.scenename;
+		// },
+		//获取用例
+		getCase:function(currentPage, pageSize, order, sort) {
+			var _this = this;
+			let caseLibId=sessionStorage.getItem('caselibId');
+			$.ajax({
+				url: address3 + 'testcase/pagedBatchQueryTestCase',
+				type: 'post',
+				contentType: 'application/json',
+				data: JSON.stringify({
+					'caseLibId': caseLibId,
+					'currentPage': currentPage,
+					'pageSize': pageSize,
+					'orderColumns': order,
+					'orderType': sort
+				}),
+				success: function(data) {
+					// console.log(data);
+					_this.caseList = data.testcaseViewRespDTOList;
+					console.log(_this.caseList);
+					_this.tt = data.totalCount;
+					_this.totalPage = Math.ceil(_this.tt / pageSize);
+					_this.pageSize = pageSize;
+					_this.queryflag = true;
+					$(".subShow").remove();;
+
+				}
+			});
 		},
 		showFunc:function(){
 			if(this.flag==1){

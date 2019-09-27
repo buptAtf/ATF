@@ -57,7 +57,7 @@ var app = new Vue({
         },
         //点击行选中该行
         tableClick:function(trId){
-            var tbId='#'+trId+'hi';
+            var tbId='#'+trId+' input';
             if(!$(tbId).attr('checked')){
                 $(tbId).prop("checked",true);
             }
