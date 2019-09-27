@@ -35,7 +35,6 @@ var app = new Vue({
                 $('#failModal').modal();
                 return ;
             }
-            /*
             new Promise(function(resolved){
                 $.ajax({
                     url: address3 + '/transactController/addSingleUITransactWithoutAut',
@@ -61,13 +60,12 @@ var app = new Vue({
             }).then(function(){
                 window.location.assign("quicklyElement.html")
             })
-            */
-
-            sessionStorage.setItem("autId",426)
-            sessionStorage.setItem("transactId",674)
-            sessionStorage.setItem("sceneId",336)
-            sessionStorage.setItem("testPlanId",210)
-            window.location.assign("quicklyElement.html")
+            // 调试使用
+            // sessionStorage.setItem("autId",426)
+            // sessionStorage.setItem("transactId",674)
+            // sessionStorage.setItem("sceneId",336)
+            // sessionStorage.setItem("testPlanId",210)
+            // window.location.assign("quicklyElement.html")
         },
         reset (){
             var _this = this;

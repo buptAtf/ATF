@@ -172,25 +172,8 @@ var app = new Vue({
 				}),
 				success: function(data) {
 					if (data.respCode === '0000') {
-						_this.startQueryLog();//查询日志
-						Vac.ajax({//因为查询执行信息需要最近执行的批量号因此需要查询批次
-							url: address2 + 'batchRunCtrlController/queryLatestBatchIdForTestPlan',
-							type: 'post',
-							contentType: 'application/json',
-							data: JSON.stringify({
-								"testPlanId": _this.testPlanId,
-							}),
-							success: function(data) {
-                                _this.batchId = data.batchId;
-                                sessionStorage.setItem("batchId", data.batchId)
-								_this.startQueryResult();
-							},
-							error: function(){
-								Vac.alert('网络错误，执行失败！');
-								_this.setResultIcon();
-							}
-						})
-
+                        sessionStorage.setItem("batchId",data.batchId);
+						Vac.alert("用例已进入执行队列。");
 					} else {
 						Vac.alert(data.respMsg);
 						_this.setResultIcon();
