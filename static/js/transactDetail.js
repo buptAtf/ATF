@@ -1033,6 +1033,15 @@ var app = new Vue({
                 }
             });
         },
+        tableClick:function(){
+            if(!$('#checkHi').attr('checked')){
+                $('#checkHi').prop("checked",true);
+            }
+            else {
+                $('#checkHi').prop("checked",false);
+            }
+
+        },
         addObj: function () {
             var _this = this;
             var objName = $("#addObjName").val(),

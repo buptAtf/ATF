@@ -604,12 +604,12 @@
 						                          </tr>
 						                        </thead>
 						                        <tbody class="ui-sortable" id="sortable">
-						                          <tr v-for="(index, row) in operationRows" class="before-operation-row ui-sortable-handle" track-by="id" data-index={{index}}>
+						                          <tr v-for="(index, row) in operationRows" class="before-operation-row ui-sortable-handle" track-by="id" data-index={{index}}  @click="tableClick()">
 						                            <td class="move">
 						                              <span class="icon-move"></span>
 						                            </td>
 						                            <td class="check" @mousedown.stop="1">
-						                              <input type="checkbox" class="checkone">
+						                              <input type="checkbox" id="checkHi" class="checkone" @click.stop=" return true ">
 						                            </td>
 						                            <td class="index">{{index + 1}}</td>
 						                            <td class="operations" @mousedown.stop="1">
