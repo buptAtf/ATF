@@ -47,8 +47,20 @@
         }
 
         .tableDiv {
-            width: 800px;
+            width: 700px;
+            margin-left: 150px;
         }
+        .sectionHeight{
+            height:1000px;
+        }
+        .methodSec{
+           margin-left:20px;
+        }
+        /*.line{*/
+            /*height:5px;*/
+            /*background-color: gainsboro;*/
+            /*margin-bottom:5px;*/
+        /*}*/
     </style>
     <title>自动化构件维护</title>
 </head>
@@ -85,14 +97,11 @@
                             <div class="form-group bar ">
                                 <label class="col-xs-2 control-label">控件名称</label>
                                 <div class="col-xs-2">
-                                    <select class="selectpicker form-control"  v-model="classId" id="classSelect" name="classSelect" data-live-search="true">
-                                        <option v-for="class in classList" :value='class.id'> {{class.name}} </option>
-                                    </select>
-                                </div>
-                                <label class="col-xs-2 control-label">方法名称</label>
-                                <div class="col-xs-2">
-                                    <select class="selectpicker form-control" id="methodSelect" v-model="methodId" data-live-search="true">
-
+                                    <select class="selectpicker form-control" v-model="classId" id="classSelect"
+                                            @change="classClick()" name="classSelect" data-live-search="true">
+                                        <option v-for="(i,class) in classList" :value='class.id' name="{{i}}">
+                                            {{class.name}}
+                                        </option>
                                     </select>
                                 </div>
                                 <div class="col-xs-3">
@@ -180,30 +189,31 @@
             <!-- class start -->
 
             <div class="row">
-                <div class="col-lg-12">
-                    <section class="panel" id="classSection">
+                <span>
+                <div class="col-lg-12"  id="classPart">
+                    <section class="panel sectionHeight" id="classSection">
                         <header class="panel-heading">
                             {{className}}
                         </header>
-                        <div>
+                        <div id="classSec">
                             <form class="form-horizontal panel-pad" id="classForm">
                                 <div class="form-group">
                                     <label class="col-lg-2 control-label">英文名称</label>
-                                    <div class="col-lg-2">
+                                    <div class="col-lg-3">
                                         <input type="text" name="name" class="form-control" value="">
                                     </div>
                                     <label class="col-lg-2 control-label">中文名称</label>
-                                    <div class="col-lg-2">
+                                    <div class="col-lg-3">
                                         <input type="text" name="chsName" class="form-control" value="">
                                     </div>
                                 </div>
                                 <div class="form-group">
                                     <label class="col-lg-2 control-label">描述</label>
-                                    <div class="col-lg-2">
+                                    <div class="col-lg-3">
                                         <input type="text" name="descShort" class="form-control" value="">
                                     </div>
                                     <label class="col-lg-2 control-label">默认方法</label>
-                                    <div class="col-lg-2">
+                                    <div class="col-lg-3">
                                         <select class="form-control" size="1" id="defaultMethodSelect"
                                                 style="margin-top:5px">
                                             <option value="">-选择默认方法-</option>
@@ -234,7 +244,7 @@
                                                                     </div> -->
                                 <div class="form-group">
                                     <label class="col-lg-2 control-label">继承标志</label>
-                                    <div class="col-lg-2">
+                                    <div class="col-lg-3">
                                         <select class="form-control" size="1" id="overideFlag" style="margin-top:5px">
                                             <option value="">请选择</option>
                                             <option value="1">自身控件</option>
@@ -243,7 +253,7 @@
                                         </select>
                                     </div>
                                     <label class="col-lg-2 control-label">继承可见性</label>
-                                    <div class="col-lg-2">
+                                    <div class="col-lg-3">
                                         <select class="form-control" size="1" id="visibilityFlag"
                                                 style="margin-top:5px">
                                             <option value="">-请选择-</option>
@@ -252,7 +262,20 @@
                                         </select>
                                     </div>
                                 </div>
+                                <div class="line">
+                                </div>
+                                <div  class="form-group">
+                                    <label class="col-xs-2 control-label">展示方法信息</label>
+                                    <div class="col-xs-2">
+                                    <select class="selectpicker form-control" id="methodSelect" v-model="methodId" data-live-search="true">
 
+                                    </select>
+                                    </div>
+                                    <div class="col-xs-4">
+                                        <input type="button" class="btn btn-primary" @click="methodClick()" value="确定">
+                                         <input type="button" class="btn btn-primary" @click="methodClick2()" value="取消">
+                                    </div>
+                                </div>
                                 <!-- <div class="form-group"> -->
 
                                 <!-- <label class="col-lg-2 control-label">缩略图</label>
@@ -265,7 +288,7 @@
                                 <!--  <input id="input-id" type="file" class="file" data-preview-file-type="text">
                              </div> -->
                                 <!-- </div> -->
-                                <div class="tableDiv">
+                                <div class="tableDiv" id="tableSection">
                                     <div class="property">
                                         运行时参数
                                         <a class="btn btn-white btn-sm pull-right"
@@ -380,7 +403,11 @@
                                             </tbody>
                                         </table>
                                     </div>
+                                    <div class="row">
+                                        <a class="btn btn-info rightBtn" @click="updateClass">保存</a>
+                                    </div>
                                 </div>
+
                                 <!-- <div class="property">
                                     对象识别属性列表
                                 </div>
@@ -409,175 +436,177 @@
                                     </table>
                                 </div> -->
                             </form>
-                            <a class="btn btn-info rightBtn" @click="updateClass">保存</a>
+
                         </div>
                     </section>
                 </div>
-            </div>
-            <!-- class end -->
-            <!-- method start -->
-            <div class="col-lg-8">
-                <section class="panel" id="methodSection" style="display:none;">
-                    <header class="panel-heading">
-                        {{methodName}}
-                    </header>
-                    <div class="rightContent">
-                        <form class="form-horizontal panel-pad" id="methodForm">
-                            <div class="form-group">
-                                <label class="col-lg-2 control-label">名称</label>
-                                <div class="col-lg-3">
-                                    <input type="text" name="name" class="form-control" value="">
+                <!-- class end -->
+                <!-- method start -->
+                <div class="col-lg-6 " >
+                    <section class="panel sectionHeight" id="methodSection" style="display:none;">
+                        <header class="panel-heading">
+                            {{methodName}}
+                        </header>
+                        <div class="methodSec">
+                            <form class="form-horizontal panel-pad" id="methodForm">
+                                <div class="form-group">
+                                    <label class="col-lg-2 control-label">名称</label>
+                                    <div class="col-lg-3">
+                                        <input type="text" name="name" class="form-control" value="">
+                                    </div>
+                                    <label class="col-lg-2 control-label">描述</label>
+                                    <div class="col-lg-3">
+                                        <input type="text" name="description" class="form-control" value="">
+                                    </div>
                                 </div>
-                                <label class="col-lg-2 control-label">描述</label>
-                                <div class="col-lg-3">
-                                    <input type="text" name="description" class="form-control" value="">
+                                <!-- <div class="form-group">
+                                    <label class="col-lg-2 control-label">创建者</label>
+                                    <div class="col-lg-3">
+                                        <input type="text" name="creator" class="form-control" value="" disabled>
+                                    </div>
+                                    <label class="col-lg-2 control-label">创建时间</label>
+                                    <div class="col-lg-3">
+                                        <input type="text" name="createTime" class="form-control" value="" disabled>
+                                    </div>
                                 </div>
-                            </div>
-                            <!-- <div class="form-group">
-                                <label class="col-lg-2 control-label">创建者</label>
-                                <div class="col-lg-3">
-                                    <input type="text" name="creator" class="form-control" value="" disabled>
+                                <div class="form-group">
+                                    <label class="col-lg-2 control-label">修改者</label>
+                                    <div class="col-lg-3">
+                                        <input type="text" name="modifier" class="form-control" value="" disabled>
+                                    </div>
+                                    <label class="col-lg-2 control-label">修改时间</label>
+                                    <div class="col-lg-3">
+                                        <input type="text" name="modifiedTime" class="form-control" value="" disabled>
+                                    </div>
+                                </div> -->
+                                <div class="form-group">
+                                    <label class="col-lg-2 control-label">继承标志</label>
+                                    <div class="col-lg-3">
+                                        <select class="form-control" size="1" name="overrideFlag" style="margin-top:5px">
+                                            <option value="">-请选择-</option>
+                                            <option value="1">自身方法</option>
+                                            <option value="4">禁用</option>
+                                        </select>
+                                    </div>
+                                    <label class="col-lg-2 control-label">继承可见性</label>
+                                    <div class="col-lg-3">
+                                        <select class="form-control" size="1" class="visibilityFlag" name="visibilityFlag"
+                                                style="margin-top:5px">
+                                            <option value="">-请选择-</option>
+                                            <option value="1">公共</option>
+                                            <option value="0">私有</option>
+                                        </select>
+                                    </div>
                                 </div>
-                                <label class="col-lg-2 control-label">创建时间</label>
-                                <div class="col-lg-3">
-                                    <input type="text" name="createTime" class="form-control" value="" disabled>
+                                <div class="form-group">
+                                    <label class="col-lg-2 control-label">标志参数化列</label>
+                                    <div class="col-lg-3">
+                                        <input type="text" name="labelArgument" class="form-control">
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="form-group">
-                                <label class="col-lg-2 control-label">修改者</label>
-                                <div class="col-lg-3">
-                                    <input type="text" name="modifier" class="form-control" value="" disabled>
+                                <div class="property">
+                                    参数列表
+                                    <a class="btn btn-white btn-sm pull-right" @click="addMethodPara($event)"><i
+                                            class="icon-plus"></i></a>
+                                    <a class="btn btn-white btn-sm pull-right" @click="delMethodPara($event)"><i
+                                            class="icon-minus"></i></a>
                                 </div>
-                                <label class="col-lg-2 control-label">修改时间</label>
-                                <div class="col-lg-3">
-                                    <input type="text" name="modifiedTime" class="form-control" value="" disabled>
+                                <div class="property">
+                                    <table class="table table-bordered m-right-table" id="pTable">
+                                        <thead>
+                                        <tr>
+                                            <th style="width:5%"></th>
+                                            <th id="name">参数名称</th>
+                                            <th id="type">值类型</th>
+                                            <th id="parameterizeColumn">参数化列</th>
+                                            <th id="desc">描述</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody id="methodPara">
+                                        <tr v-for="item in paraList">
+                                            <td>
+                                                <input type="checkbox" name="chk_list"/>
+                                            </td>
+                                            <td contenteditable="true">{{item.name}}</td>
+                                            <td contenteditable="true">{{item.type}}</td>
+                                            <td contenteditable="true">{{item.parameterizeColumn}}</td>
+                                            <td contenteditable="true">{{item.desc}}</td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
                                 </div>
-                            </div> -->
-                            <div class="form-group">
-                                <label class="col-lg-2 control-label">继承标志</label>
-                                <div class="col-lg-3">
-                                    <select class="form-control" size="1" name="overrideFlag" style="margin-top:5px">
-                                        <option value="">-请选择-</option>
-                                        <option value="1">自身方法</option>
-                                        <option value="4">禁用</option>
-                                    </select>
+                                <div class="form-group">
+                                    <label class="col-lg-2 control-label">等待时间</label>
+                                    <div class="col-lg-3">
+                                        <input type="text" name="waittime" class="form-control">
+                                    </div>
+                                    <label class="col-lg-2 control-label">超时时间</label>
+                                    <div class="col-lg-3">
+                                        <input type="text" name="timeout" class="form-control">
+                                    </div>
                                 </div>
-                                <label class="col-lg-2 control-label">继承可见性</label>
-                                <div class="col-lg-3">
-                                    <select class="form-control" size="1" class="visibilityFlag" name="visibilityFlag"
-                                            style="margin-top:5px">
-                                        <option value="">-请选择-</option>
-                                        <option value="1">公共</option>
-                                        <option value="0">私有</option>
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label class="col-lg-2 control-label">标志参数化列</label>
-                                <div class="col-lg-3">
-                                    <input type="text" name="labelArgument" class="form-control">
-                                </div>
-                            </div>
-                            <div class="property">
-                                参数列表
-                                <a class="btn btn-white btn-sm pull-right" @click="addMethodPara($event)"><i
-                                        class="icon-plus"></i></a>
-                                <a class="btn btn-white btn-sm pull-right" @click="delMethodPara($event)"><i
-                                        class="icon-minus"></i></a>
-                            </div>
-                            <div class="property">
-                                <table class="table table-bordered m-right-table" id="pTable">
-                                    <thead>
-                                    <tr>
-                                        <th style="width:5%"></th>
-                                        <th id="name">参数名称</th>
-                                        <th id="type">值类型</th>
-                                        <th id="parameterizeColumn">参数化列</th>
-                                        <th id="desc">描述</th>
-                                    </tr>
-                                    </thead>
-                                    <tbody id="methodPara">
-                                    <tr v-for="item in paraList">
-                                        <td>
-                                            <input type="checkbox" name="chk_list"/>
-                                        </td>
-                                        <td contenteditable="true">{{item.name}}</td>
-                                        <td contenteditable="true">{{item.type}}</td>
-                                        <td contenteditable="true">{{item.parameterizeColumn}}</td>
-                                        <td contenteditable="true">{{item.desc}}</td>
-                                    </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                            <div class="form-group">
-                                <label class="col-lg-2 control-label">等待时间</label>
-                                <div class="col-lg-3">
-                                    <input type="text" name="waittime" class="form-control">
-                                </div>
-                                <label class="col-lg-2 control-label">超时时间</label>
-                                <div class="col-lg-3">
-                                    <input type="text" name="timeout" class="form-control">
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label class="col-lg-2 control-label">目标代码</label>
-                                <div class="col-lg-8">
+                                <div class="form-group">
+                                    <label class="col-lg-2 control-label">目标代码</label>
+                                    <div class="col-lg-8">
                                     <textarea type="text" name="targetCodeContent" class="form-control"
                                               rows='15'></textarea>
+                                    </div>
                                 </div>
-                            </div>
-                            <!-- <div class="form-group">
-                                <label class="col-lg-2 control-label">mtype</label>
-                                <div class="col-lg-3">
-                                    <input type="text" name="mtype" class="form-control" value="">
+                                <!-- <div class="form-group">
+                                    <label class="col-lg-2 control-label">mtype</label>
+                                    <div class="col-lg-3">
+                                        <input type="text" name="mtype" class="form-control" value="">
+                                    </div>
+                                    <label class="col-lg-2 control-label">author</label>
+                                    <div class="col-lg-3">
+                                        <input type="text" name="author" class="form-control" value="">
+                                    </div>
                                 </div>
-                                <label class="col-lg-2 control-label">author</label>
-                                <div class="col-lg-3">
-                                    <input type="text" name="author" class="form-control" value="">
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label class="col-lg-2 control-label">outputvaluedesc</label>
-                                <div class="col-lg-3">
-                                    <input type="text" name="outputvaluedesc" class="form-control" value="">
-                                </div>
-                                <label class="col-lg-2 control-label">inputargdesc</label>
-                                <div class="col-lg-3">
-                                    <input type="text" name="inputargdesc" class="form-control" value="">
-                                </div>
-                            </div> -->
-                            <!--    <div class="form-group">
-                                <label class="col-lg-2 control-label">有无参数</label>
-                                <div class="col-lg-3">
-                                    <select class="form-control" name="isPara">
-                                        <option>有</option>
-                                        <option>无</option>
-                                    </select>
-                                </div>
-                            </div> -->
+                                <div class="form-group">
+                                    <label class="col-lg-2 control-label">outputvaluedesc</label>
+                                    <div class="col-lg-3">
+                                        <input type="text" name="outputvaluedesc" class="form-control" value="">
+                                    </div>
+                                    <label class="col-lg-2 control-label">inputargdesc</label>
+                                    <div class="col-lg-3">
+                                        <input type="text" name="inputargdesc" class="form-control" value="">
+                                    </div>
+                                </div> -->
+                                <!--    <div class="form-group">
+                                    <label class="col-lg-2 control-label">有无参数</label>
+                                    <div class="col-lg-3">
+                                        <select class="form-control" name="isPara">
+                                            <option>有</option>
+                                            <option>无</option>
+                                        </select>
+                                    </div>
+                                </div> -->
 
-                            <!-- <div class="form-group">
-                                <label class="col-lg-2 control-label">等待时间</label>
-                                <div class="col-lg-3">
-                                    <input type="text" name="waittime" class="form-control" value="">
-                                </div>
-                                <label class="col-lg-2 control-label">超时时间</label>
-                                <div class="col-lg-3">
-                                    <input type="text" name="timeout" class="form-control" value="">
-                                </div>
-                            </div> -->
-                            <!--  <div class="form-group">
-                                 <label class="col-lg-2 control-label">目标代码</label>
-                                 <div class="col-lg-9">
-                                     <textarea class="form-control" rows="10" name="objectcode"></textarea>
-                                 </div>
-                             </div> -->
-                        </form>
-                        <a class="btn btn-info rightBtn" @click="updateMethod">保存</a>
-                    </div>
-                </section>
+                                <!-- <div class="form-group">
+                                    <label class="col-lg-2 control-label">等待时间</label>
+                                    <div class="col-lg-3">
+                                        <input type="text" name="waittime" class="form-control" value="">
+                                    </div>
+                                    <label class="col-lg-2 control-label">超时时间</label>
+                                    <div class="col-lg-3">
+                                        <input type="text" name="timeout" class="form-control" value="">
+                                    </div>
+                                </div> -->
+                                <!--  <div class="form-group">
+                                     <label class="col-lg-2 control-label">目标代码</label>
+                                     <div class="col-lg-9">
+                                         <textarea class="form-control" rows="10" name="objectcode"></textarea>
+                                     </div>
+                                 </div> -->
+                            </form>
+                            <a class="btn btn-info rightBtn" @click="updateMethod">保存</a>
+                        </div>
+                    </section>
+                </div>
+                <!-- method end -->
+                    </span>
             </div>
-            <!-- method end -->
+
             <!-- successModal start -->
             <div class="modal fade" id="successModal" tabindex="-1" role="dialog" aria-labelledby="successModalLabel"
                  aria-hidden="true">
