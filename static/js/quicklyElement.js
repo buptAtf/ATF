@@ -106,6 +106,7 @@ var app = new Vue({
                             _this.UIName = namestr;
                             _this.UITitle = namestr;
                             var uiId = treeNode.id;
+                            _this.uiId = treeNode.id;
                             $('#UIForm input[name="UIName"]').val(namestr);
                             $('#blank').css('display', 'none');
                             $('#UI').css('display', 'block');
@@ -333,6 +334,18 @@ var app = new Vue({
     watch: {
     },
     methods: {
+        
+        showAddruleModal(){
+            var _this = this;
+            sessionStorage.setItem("uiId", _this.uiId);
+            sessionStorage.setItem("elementRepositoryId", _this.elementRepositoryId);
+
+            if (!_this.uiId&&_this.uiId == -1) {
+                $('#elementAlertModal').modal();
+            } else {
+                $('#addruleModal').modal();
+            }
+        },
         downloadRecorder: function(){
             window.location.href = address4 + "atf-data/atf-recorder.zip";
         },

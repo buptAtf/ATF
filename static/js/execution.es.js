@@ -180,12 +180,14 @@ var app = new Vue({
             sessionStorage.setItem("batchShow", true);
             sessionStorage.setItem("testPlanId", testPlanId);
             sessionStorage.setItem("isFromRecordSheet",true);     //判断是不是从批量执行页面跳转过去
-            location.href = "testRecord.html";
+            window.open("testRecord.html"); 
+            //location.href = "testRecord.html";
         },
         getCount: function (success,failed,notRun) {
             sessionStorage.setItem("success", success);
             sessionStorage.setItem("failed", failed);
             sessionStorage.setItem("notRun", notRun);
+            //window.open("pieChart.html");                 //在另外新建窗口中打开窗口
             location.href = "pieChart.html";
         },
         //传递当前页选中的场景id到场景管理页面

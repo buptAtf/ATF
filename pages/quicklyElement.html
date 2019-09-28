@@ -31,6 +31,9 @@
         .form-horizontal{
             overflow:hidden;
         }
+        .form-group{
+            margin-bottom:2px
+        }
     </style> 
 </head>
 
@@ -82,6 +85,13 @@
                                                     <a class="btn btn-info btn-sm " @click="delElement">删除元素</a>
                                                     <a class="btn btn-info btn-sm " data-toggle="modal" href="#batchImportModal">批量添加</a>
                                                 </div>
+                                                <div style="height: 5px;"></div>
+                                                <div class="col-xs-12">
+                                                    <a class="btn btn-info btn-sm " @click="downloadRecorder">录制工具下载</a>
+                                                    <a class="btn btn-info btn-sm " @click="showAddruleModal">录制规则录入</a>
+                                                </div>
+                                            </div>
+                                            <div class="form-group panel-pad form-horizontal">
                                             </div>
                                             <ul id="elementtree" class="ztree tree"></ul>
                                         </div>
@@ -252,6 +262,50 @@
 		            </div>
                     <!-- addElementModalbatch end -->
                     
+					<!-- addrule start -->
+					<div class="modal fade" id="addruleModal" tabindex="-1" role="dialog" aria-hidden="true">
+						<div class="modal-dialog">
+							<div class="modal-content">
+								<div class="modal-header">
+									<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+									<h4 class="modal-title">添加规则</h4>
+								</div>
+								<div class="modal-body" >
+									<!-- modal-body start -->
+                                    <section class="panel row">
+                                        <div  class="col-xs-1"></div>
+                                        <div  class="col-xs-9">
+                                            <i class="icon-warning-sign"></i>    
+                                            <label>请您在规则录入前，确认该UI已完成界面录制!</label>
+                                        </div>
+									</section>
+									<section class="panel">
+										<form id="addruleForm" class="form-horizontal" role="form">
+											<div class="form-group">
+												<label class="col-xs-3 control-label">规则名称</label>
+												<div class="col-xs-5">
+													<input type="text" class="form-control" name="ruleName" v-model="ruleName">
+												</div>
+											</div>
+											<div class="form-group ">
+												<label class="col-xs-3 control-label">规则描述</label>
+												<div class="col-xs-5">
+													<input type="text" class="form-control" name="ruleDesc" v-model="ruleDesc">
+												</div>
+											</div>
+										</form>
+									</section>
+									
+									<!-- modal-body end -->
+								</div>
+								<div class="modal-footer">
+									<button  data-dismiss="modal"  class="btn btn-default"    type="button">取消</button>
+									<button data-dismiss="modal" class="btn btn-success" type="button" @click="addrule()">添加</button>
+								</div>
+							</div>
+						</div>
+					</div>
+					<!-- addrule end -->
                     <!-- addUIModal start -->
                     <div class="modal fade" id="addUIModal" tabindex="-1" role="dialog" aria-labelledby="insertModalLabel" aria-hidden="true">
                         <div class="modal-dialog">
@@ -366,44 +420,6 @@
 		                </div>
 		            </div>
 					<!-- addElementModal end -->
-					<!-- addrule start -->
-					<div class="modal fade" id="addruleModal" tabindex="-1" role="dialog" aria-hidden="true">
-						<div class="modal-dialog">
-							<div class="modal-content">
-								<div class="modal-header">
-									<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-									<h4 class="modal-title">添加规则</h4>
-								</div>
-								<div class="modal-body" >
-									<!-- modal-body start -->
-									
-									<section class="panel">
-										<form id="addruleForm" class="form-horizontal" role="form">
-											<div class="form-group">
-												<label class="col-xs-3 control-label">规则名称</label>
-												<div class="col-xs-5">
-													<input type="text" class="form-control" name="ruleName" v-model="ruleName">
-												</div>
-											</div>
-											<div class="form-group ">
-												<label class="col-xs-3 control-label">规则描述</label>
-												<div class="col-xs-5">
-													<input type="text" class="form-control" name="ruleDesc" v-model="ruleDesc">
-												</div>
-											</div>
-										</form>
-									</section>
-									
-									<!-- modal-body end -->
-								</div>
-								<div class="modal-footer">
-									<button  data-dismiss="modal"  class="btn btn-default"    type="button">取消</button>
-									<button data-dismiss="modal" class="btn btn-success" type="button" @click="addrule()">添加</button>
-								</div>
-							</div>
-						</div>
-					</div>
-					<!-- addrule end -->
                     <!-- successModal start -->
                     <div class="modal fade" id="successModal" tabindex="-1"  role="dialog" aria-labelledby="successModalLabel" aria-hidden="true">
                         <div class="modal-dialog">

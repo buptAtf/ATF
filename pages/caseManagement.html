@@ -1605,7 +1605,7 @@
                                     <tbody id="caseTable">
                                         <tr class="odd gradeX" v-for="case in caseList" id="{{case.id}}" @click="tableClick(case.id)">
                                             <td >
-                                                <input type="checkbox" v-model="" name="chk_list" id="{{case.id}}hi"  @click.stop=" return true "/>
+                                                <input type="checkbox" v-model="" name="chk_list" id="{{case.id}}"  @click.stop=" return true "/>
                                             </td>
                                             <td><span class="icon-angle-right" v-show="case.caseCompositeType=='2'" @click="getSubCase($event)"></span></td>
                                             <td class="center hidden-phone"><a @click="showDetail($event)" class="detail-link">{{ case.casecode }}</a></td>

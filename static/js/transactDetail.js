@@ -2113,7 +2113,7 @@ var app = new Vue({
                 }
             }
         },
-        showScripttemplateTable: function (args) {
+        showScripttemplateTable: function (args) { //展示该脚本的所有信息
             var _this = this;
             if(args.autId==null){
                 return
@@ -2669,11 +2669,13 @@ var app = new Vue({
             }
             var functionNodes = functionTree ? functionTree.getCheckedNodes(true) : []
             var l=_this.operationRows.length;
-            for (var node of uiNodes) {
-                if(typeof node != 'object'){
+            let uilen = uiNodes.length,finishNum=0;
+            for (var node of uiNodes) { 
+                if(typeof node != 'object'){//因为有两种节点格式 所以判断 如果不是对象（节点），那么就去查找
                     node = uiTree.getNodeByTId(node);
                 }
                 if (node.isParent) {
+                    ++finishNum
                     continue;
                 }
                 let newRow = {}; // {id:Symbol(), functions: [], operation: {element:'', ui: ''},parameters:[{Name: '', Value: ''}]}}
@@ -2701,7 +2703,9 @@ var app = new Vue({
                             newRow.selectedFunc = functions.length ? functions[0].name : '';
                             newRow.parameters = parameterlist;
                             _this.operationRows.push(newRow);
-
+                            if(++finishNum == uilen){
+                                _this.para()
+                            }
                             // _this.operationRows[_this.operationRows.findIndex(getNewRow)].functions = functions;
                             // _this.operationRows[_this.operationRows.findIndex(getNewRow)].selectedFunc = functions.length ? functions[0].name : '';
                             // _this.operationRows[_this.operationRows.findIndex(getNewRow)].parameters = parameterlist;

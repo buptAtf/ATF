@@ -39,18 +39,19 @@ var app = new Vue({
         copyTransact(){
             var _this = this;
             const selectedInput = $('input[name="chk_list"]:checked');
+            console.log(selectedInput[0].id)
+            console.log(sessionStorage.getItem('autId'))
             if (selectedInput.length === 0) {
                 $('#selectAlertModal').modal();
                 return 
             } 
-
             $.ajax({
-                url: address3 + 'transactController/addSingleTransact',
+                url: address3 + 'transactController/copySingleTransact',
                 type: 'post',
                 contentType: 'application/json',
                 data: JSON.stringify({
-                    systemId: $("#insertForm input[name='autId']").val(),
-                    autId : $('#updateForm input[name="id"]').val(),
+                    systemId: sessionStorage.getItem('autId'),
+                    autId : selectedInput[0].id,
                 }),
                 success: function(data) {
                     if (data.respCode=='0000') {
@@ -64,6 +65,7 @@ var app = new Vue({
                     Vac.alert(data.respMsg)
                 }
             });
+            
         },
         //获取选中的id
         getIds: function() {

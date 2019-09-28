@@ -17,7 +17,7 @@ var progressBarTemplate=`
     </ul>
     <ul  v-show="hideFlag" v-for="(index, progress) in progressList " v-if="progress.status === 'activing' " class="  nav nav-pills nav-justified step step-square">
         <li v-for="(index, progress) in progress.item "   :class="progress.status"  track-by="$index">
-        <a  @click= "openUrl(progress.href,progress.pre)"  >{{ progress.name }}{{ progress.status }} </a>
+        <a  @click= "openUrl(progress.href,progress.pre)"  >{{ progress.name }}</a>
         </li>
     </ul>
 </div>

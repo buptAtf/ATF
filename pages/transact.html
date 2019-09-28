@@ -46,7 +46,7 @@
                     <div class="col-lg-12 top-btn">
                         <a class="btn btn-white" data-toggle="modal" href="#insertModal"><i class="icon-plus"></i> 添加</a>
                         <a class="btn btn-white" data-toggle="modal" href="#importModal" @click="getCaseLibId"><i class="icon-share-alt"></i>批量导入</a>
-                        <!-- <a class="btn btn-white" @click="copyTransact"><i class=" icon-copy"></i>复制功能点</a> -->
+                        <a class="btn btn-white" @click="copyTransact"><i class=" icon-copy"></i>复制功能点</a>
                         <!-- <a class="btn btn-white" @click="checkDel"><i class="icon-trash"></i> 删除</a> -->
                         <a class="btn btn-white" @click="checkUpdate"><i class="icon-edit"></i> 修改</a>
                         <!--
@@ -304,7 +304,7 @@
                                 <tbody id="caseTable">
                                     <tr class="odd gradeX" v-for="(index,transact) in transactList" id="{{transact.id}}" @click="tableClick(transact.id)">
                                         <td width="5%">
-                                            <input type="radio" v-model="" name="chk_list" id="{{transact.id}}hi"  @click.stop=" return true "/>
+                                            <input type="radio" v-model="" name="chk_list" id="{{transact.id}}"  @click.stop=" return true "/>
                                         </td>
                                         <td class="center hidden-phone" width="5%">{{index+1}}</td>
                                         <td class="center" width="15%"><a @click="goToDetail(transact.id,transact.transType)" class="detail-link">{{ transact.code}}</a></td>

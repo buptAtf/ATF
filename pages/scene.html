@@ -327,7 +327,7 @@
                                 <tbody id="sceneTable">
                                     <tr class="odd gradeX" v-for="scene in sceneList" id="{{scene.id}}" v-if="scene.deleteFlag==1" @click="tableClick(scene.id)">
                                         <td width="5%">
-                                            <input type="radio" v-model="" name="chk_list" id="{{scene.id}}hi"  @click.stop=" return true "/>
+                                            <input type="radio" v-model="" name="chk_list" id="{{scene.id}}"  @click.stop=" return true "/>
                                         </td>
                                         <td class="center hidden-phone" width="20%">{{ scene.nameMedium }}</td>
                                         <td width="25%">{{ scene.descShort }}</td>

@@ -294,7 +294,7 @@
                             <tbody id="testProjectTable">
                             <tr class="odd gradeX" v-for="project in testProjectList" id="{{project.id}}" @click="tableClick(project.id)">
                                 <td width="5%">
-                                    <input type="radio" v-model="" name="chk_list" id="{{project.id}}hi"  @click.stop=" return true "/>
+                                    <input type="radio" v-model="" name="chk_list" id="{{project.id}}"  @click.stop=" return true "/>
                                 </td>
                                 <td class="center hidden-phone detail-link" width="10%" @click="to(project.id,project.caseLibId,project.nameMedium)">{{
                                 project.codeLong }}</td>
