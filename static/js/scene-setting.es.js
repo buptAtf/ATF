@@ -9,7 +9,7 @@ var vBody = new Vue({
 		triggerShow: false,
 		saveTriggerType: 1,
 		tt: 0, //总条数
-		pageSize: 5, //页面大小
+		pageSize: 500, //页面大小
 		currentPage: 1, //当前页
 		totalPage: 1, //总页数
 		order: 'id',
