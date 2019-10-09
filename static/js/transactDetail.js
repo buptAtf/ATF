@@ -14,7 +14,7 @@ var app = new Vue({
             eleName: '',
             UILinked: '',
             eleParent: '',
-            checkUinodes:[],//基础脚本界面 用于生成选中元素的顺序
+            checkElementNodes:[],//基础脚本界面 用于生成选中元素的顺序
             checkFlag: [],//基础脚本界面 标志 用与判断是否按照选中顺序排序  
             eleLinked: '',
             failMSG: '操作失败啦。糟糕的是没有返回信息，难道是ajax请求失败了',
@@ -69,6 +69,7 @@ var app = new Vue({
 
             // 保存table中每一行的数据 [{id:Symbol(), functions: {{name: '',  parameterlist: ''}], operation: {element:'', ui: '',parameters:[]}}],
             operationRows: [],//[{id:Symbol(), functions: [], operation: {element:'1', ui: '2', parameters: [{Name: 'name1', Value: ''}]}}],
+            nextTickFlag:false, // 是否进行渲染
             // parameterVue: null,
             // ztree的设置项
             zTreeSettings: {
@@ -121,7 +122,6 @@ var app = new Vue({
                                 }
                                 else{
                                     let index = _this.checkFlag.indexOf(treeNode.id)
-                                    console.log(index)
                                     if(index == -1){
                                         _this.checkFlag.push(treeNode.id);
                                     }
@@ -129,23 +129,21 @@ var app = new Vue({
                                         _this.checkFlag.splice(index, 1); 
                                     }
                                 }
-                                
                             }
                             else{//如果该节点有父节点，那么就说明点击的是子节点，进行判断顺序
-                                if(!_this.checkUinodes){
-                                    _this.checkUinodes.push(treeNode.tId);
+                                if(!_this.checkElementNodes){
+                                    _this.checkElementNodes.push(treeNode.tId);
                                 }
                                 else{
-                                    let index = _this.checkUinodes.indexOf(treeNode.tId)
+                                    let index = _this.checkElementNodes.indexOf(treeNode.tId)
                                     if(index == -1){
-                                        _this.checkUinodes.push(treeNode.tId);
+                                        _this.checkElementNodes.push(treeNode.tId);
                                     }
                                     else{
-                                        _this.checkUinodes.splice(index, 1); 
+                                        _this.checkElementNodes.splice(index, 1); 
                                     }
                                 }
                             }
-                            
                         },
                     },
                     data: {
@@ -670,8 +668,18 @@ var app = new Vue({
         _this.detailTabFresh();
     },
     watch: {
-        operationRows: function () {
-            this.setDrag();
+        operationRows: {
+            handler() {
+                this.setDrag();
+                if(this.nextTickFlag){
+                    console.log("我他吗渲染了")
+                    this.para()
+                    console.log("我他吗渲染了")
+                    this.nextTickFlag = false
+                }
+            },
+            immediate: true,
+            deep: true
         }
     },
     methods: {
@@ -2308,6 +2316,7 @@ var app = new Vue({
         generateScriptString: function (arr) {
             var sendDataArray = [];
             var trs = Array.from(document.querySelectorAll('#sortable tr.before-operation-row '))
+            console.log(trs)
             for (var tr of trs) {
                 var UI = tr.querySelector('.operation-ui').innerHTML.replace(/^\"+|\"+$/g, "\"");
                 var element = tr.querySelector('.operation-element').innerHTML.replace(/^\"+|\"+$/g, "\"");
@@ -2653,15 +2662,14 @@ var app = new Vue({
                 // return { functions: [], parameterlist: [] };;
             }
         },
-        editRowMultiple: function () {
-            // 已经修改过
+        editRowMultiple: function () {// 已经修改过 向列表中添加元素
             var _this= this;
             _this.scriptIsChanged = true
             var uiTree = $.fn.zTree.getZTreeObj("ui-element-ul2");
             var functionTree = $.fn.zTree.getZTreeObj("functions-ul2");
             var uiNodes ;
             if(_this.checkFlag.length == 0){//如果checkFlag不为空 则奇数次点击UI 则说明不按点击顺序 使用默认顺序
-                uiNodes = _this.checkUinodes;
+                uiNodes = _this.checkElementNodes;
             }
             else{
                 uiNodes = uiTree ? uiTree.getCheckedNodes(true) : [];
@@ -2670,8 +2678,8 @@ var app = new Vue({
             var functionNodes = functionTree ? functionTree.getCheckedNodes(true) : []
             var l=_this.operationRows.length;
             let uilen = uiNodes.length,finishNum=0;
-            for (var node of uiNodes) { 
-                if(typeof node != 'object'){//因为有两种节点格式 所以判断 如果不是对象（节点），那么就去查找
+            for (var node of uiNodes) {
+                if(typeof node != 'object'){
                     node = uiTree.getNodeByTId(node);
                 }
                 if (node.isParent) {
@@ -2702,10 +2710,13 @@ var app = new Vue({
                             newRow.functions = functions;
                             newRow.selectedFunc = functions.length ? functions[0].name : '';
                             newRow.parameters = parameterlist;
-                            _this.operationRows.push(newRow);
                             if(++finishNum == uilen){
-                                _this.para()
+                                console.log(finishNum+"finishNum")
+                                console.log(uilen+"uilen")
+                                _this.nextTickFlag = true
+                                //_this.para()
                             }
+                            _this.operationRows.push(newRow);
                             // _this.operationRows[_this.operationRows.findIndex(getNewRow)].functions = functions;
                             // _this.operationRows[_this.operationRows.findIndex(getNewRow)].selectedFunc = functions.length ? functions[0].name : '';
                             // _this.operationRows[_this.operationRows.findIndex(getNewRow)].parameters = parameterlist;
@@ -2718,9 +2729,9 @@ var app = new Vue({
                         }
                     }
                 })
-            }
+            } 
             _this.checkFlag=[];
-            _this.checkUinodes=[];
+            _this.checkElementNodes=[];
             if (functionNodes && functionNodes.length) {
                 for (var node of functionNodes) {
                     let newRow = {}
