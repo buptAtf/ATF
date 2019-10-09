@@ -669,12 +669,11 @@ var app = new Vue({
     },
     watch: {
         operationRows: {
-            handler() {
+            handler(n,o) {
                 this.setDrag();
                 if(this.nextTickFlag){
-                    console.log("我他吗渲染了")
                     this.para()
-                    console.log("我他吗渲染了")
+                    console.log("operationRows渲222染了")
                     this.nextTickFlag = false
                 }
             },
@@ -2148,7 +2147,22 @@ var app = new Vue({
                                 parameters: []
                             }
                             row.id = Symbol()
-                            row.functions.push({ name: operationRow.methodName })
+                            row.selectedFunc = operationRow.methodName
+                            Vac.ajax({
+                                url: address3 + 'aut/selectMethod',
+                                data: {
+                                    id: _this.autId, // autid
+                                    classname: operationRow.elementWidget, // classname
+                                },
+                                success: function (data) {
+                                    if (data.respCode === '0000' && data.omMethodRespDTOList) {
+                                        var { functions, parameterlist } = _this.setFunctionAndParameter(data.omMethodRespDTOList);
+                                        row.functions = functions;
+                                    } else {
+                                        Vac.alert('查询数据出错！');
+                                    }
+                                }
+                            })
                             row.operation.element = operationRow.elementName
                             row.operation.ui = operationRow.uiname
                             row.operation.classType = operationRow.elementWidget
