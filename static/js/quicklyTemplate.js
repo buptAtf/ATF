@@ -2191,7 +2191,8 @@ var app = new Vue({
                     //     paramValues.push(`${paramTr.innerHTML}`);
                     // } 
                     if (paramTr.innerHTML != "") {
-                        paramValues.push(`${paramTr.innerHTML}`);
+                        let str = paramTr.innerHTML
+                        paramValues.push(str);
                     } 
                     else {
                         // paramValues.push(`"${paramTr.innerHTML}"`);
@@ -2396,7 +2397,7 @@ var app = new Vue({
             $('.param-row', tbody).each(( index,row) => {
                 var data = {}
                 data.Name = row.querySelector('.param-name').innerHTML
-                data.Value = row.querySelector('.param-value').innerHTML
+                data.Value = row.querySelector('.param-value').innerHTML.replace(/<br>$/,'')
                 valueShows[index].innerHTML = data.Value
                 this.operationRows[parentRow.attr('data-index')].parameters.push(data)
             })

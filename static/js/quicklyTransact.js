@@ -40,7 +40,7 @@ var app = new Vue({
                     url: address3 + '/transactController/addSingleUITransactWithoutAut',
                     contentType: 'application/json',
                     data: JSON.stringify({ 'nameMedium': _this.transName,
-                    'descShort':  _this.transDesc,
+                    'descShort':  _this.transDesc || ("功能点"+new Date().valueOf()),
                     'code':  _this.transCode, 
                 }),
                     type: "POST",
