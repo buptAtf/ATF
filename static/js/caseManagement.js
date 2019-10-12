@@ -48,6 +48,8 @@ var app = new Vue({
         projectName: sessionStorage.getItem('projectNameStorage')
     },
     ready: function() {
+        console.log("66666666666666");
+        console.log(sessionStorage.getItem("userId"));
         this.getCase(this.currentPage, this.pageSize, this.order, this.sort);
         this.getUsers();
         this.getCaseLibId();
@@ -929,10 +931,16 @@ var app = new Vue({
         });
         
     },
+    created: function(){
+        console.log("hhhh");
+        console.log(sessionStorage.getItem("userId"));
+        this.executorSelected = sessionStorage.getItem("userId");
+    },
+
     methods: {
         //点击行选中该行
         tableClick:function(trId){
-            var tbId='#'+trId+'hi';
+            var tbId='#'+trId+' input';
             if(!$(tbId).attr('checked')){
                 $(tbId).prop("checked",true);
             }
@@ -1284,8 +1292,8 @@ var app = new Vue({
                         that.subCaseList = data.testcaseActionViewList;
                         // console.log(that.subCaseList);
                         for (var i = that.subCaseList.length-1; i >-1; i--) {
-                            var subTr = $("<tr class='subShow'></tr>"),
-                                iconTd = $("<td></td>"),
+                            var subTr = $("<tr class='subShow' track-by='id' data-index={{index}}></tr>"),
+                                iconTd = $("<td class='move'> <a style='color:tomato' class='icon-move'></a></td>"),
                                 checkTd = $("<td><input type='checkbox' id="+that.subCaseList[i].id+" name='chksub_list'/></td>"),
                                 codeTd = $("<td></td>"),
                                 autTd = $("<td></td>"),
@@ -1329,7 +1337,126 @@ var app = new Vue({
                 $(e.target).removeClass('icon-angle-down').addClass('icon-angle-right');
             }
         },
+        ///删除流程节点
+        deleteNode: function(){
+            var testCaseActionIds=[];
+            var nodeLength=$("input[name='chksub_list']:checked").length;
+            $("input[name='chksub_list']:checked").each(function (index, item) {
+                    testCaseActionIds.push($(this).attr('id'));
+                    $(this).parent().parent().css("display","none");
+            });
+            var  that=this;
+            that.caselibId=sessionStorage.getItem("caselibId");
+            if (nodeLength === 0) {
+                $('#selectAlertModal').modal();
+            } else {
+                $.ajax({
+                    url: address3+'testcase/deleteFlowNode',
+                    type: 'post',
+                    contentType: 'application/json',
+                    data: JSON.stringify({
+                        "caseLibId": that.caselibId,
+                        "testCaseActionIds":testCaseActionIds
+                    }),
+                    success: function(data) {
+                        console.info(data);
+                        if (data.respCode==0000) {
+                            $('#successModal').modal();
+                        } else {
+                            $('#failModal').modal();
+                        }
+                    },
+                    error: function() {
+                        $('#failModal').modal();
+                    }
+                });
+            }
+        },
+        //展示添加流程节点文本框
+        addNodeShow: function(){
+            var checkedLength=$("input[name='chk_list']:checked").length;
+            var _this=this;
+            if(checkedLength!=1) {
+                $('#failModal0').modal();
+             }else if($("input[name='chk_list']:checked").parent().parent().children(".caseType").text()=="单用例"){
+                $('#failModal0').modal();
+            }else{
+                // _this.caseNodeNum++;
+                console.log(_this.caseNodeNums);
+                _this.groupBound(_this.caseNodeNums[_this.caseNodeNum-1].name);
+                _this.caseNodeNums[_this.caseNodeNum-1].display=true;
+                $("#addNodeModal").modal();
+            }
+        },
+        //添加流程节点
+        addNode: function(){
+            var actionList=[];
+            var self=this;
+            var caselibId=$("input[name='chk_list']:checked").attr("id");
+            let AddTestcaseActionDTO={};
+            //处理流程节点
+            //     for(let i=0;i<self.caseNodeNums.length;i++)
+            //     {;
+            //         if(self.caseNodeNums[i].status&&self.caseNodeNums[i].display){
+                        let form=$('#addCaseNode1');
+                        AddTestcaseActionDTO.actioncasecode=$(form).find('input[name="actioncasecode"]').val();
+                        AddTestcaseActionDTO.actioncode=$(form).find('input[name="actioncode"]').val();
+                        // AddTestcaseActionDTO.steporder=$(form).find('input[name="steporder"]').val();
+                        AddTestcaseActionDTO.autId=$(form).find('select[name="autid"]').val();
+                        AddTestcaseActionDTO.transId=$(form).find('select[name="transid"]').val();
+                        AddTestcaseActionDTO.scriptModeFlag=$(form).find('select[name="scriptmodeflag"]').val();
+                        AddTestcaseActionDTO.testpoint=$(form).find('input[name="testpoint"]').val();
+                        AddTestcaseActionDTO.prerequisites=$(form).find('textarea[name="preRequisites"]').val();
+                        AddTestcaseActionDTO.datarequest=$(form).find('textarea[name="dataRequest"]').val();
+                        AddTestcaseActionDTO.testdesign=$(form).find('textarea[name="testDesign"]').val();
+                        AddTestcaseActionDTO.teststep=$(form).find('textarea[name="testStep"]').val();
+                        AddTestcaseActionDTO.expectresult=$(form).find('textarea[name="expectResult"]').val();
+                        AddTestcaseActionDTO.checkpoint=$(form).find('textarea[name="checkPoint"]').val();
+                        AddTestcaseActionDTO.executeMethod=$(form).find('select[name="executeMethod"]').val();
+                        AddTestcaseActionDTO.scriptMode=$(form).find('select[name="scriptmode"]').val();
+                        AddTestcaseActionDTO.note=$(form).find('textarea[name="note"]').val();
+                        // actionList.push(AddTestcaseActionDTO);
+                    // }
+               // }
+            $.ajax({
+                url: address3 + 'testcase/addFlowNode',
+                type: "POST",
+                contentType: 'application/json',
+                data: JSON.stringify({
+                    'caseLibId':caselibId,
+                    'addTestCaseActionDTO':{
+                    'actioncasecode':  AddTestcaseActionDTO.actioncasecode,
+                    'actioncode': AddTestcaseActionDTO.actioncode,
+                    'autId':AddTestcaseActionDTO.autId ,
+                    'transId': AddTestcaseActionDTO.transId,
+                    'scriptModeFlag': AddTestcaseActionDTO.scriptModeFlag,
+                    'testpoint':  AddTestcaseActionDTO.testpoint,
+                    'prerequisites':AddTestcaseActionDTO.prerequisites ,
+                    'datarequest': AddTestcaseActionDTO.datarequest,
+                    'testdesign':AddTestcaseActionDTO.testdesign ,
+                    'teststep': AddTestcaseActionDTO.teststep ,
+                    'expectresult':AddTestcaseActionDTO.expectresult ,
+                    'checkpoint': AddTestcaseActionDTO.checkpoint,
+                    'executeMethod':  AddTestcaseActionDTO.executeMethod,
+                    'scriptMode': AddTestcaseActionDTO.scriptMode ,
+                    'note': AddTestcaseActionDTO.note
+            }
 
+                }),
+                success: function(data) {
+                    if (data.respCode=="0000") {
+                        $('#successModal').modal();
+                        self.getCase(self.currentPage, self.pageSize, self.order, self.sort);
+                    } else {
+                        self.failMSG=data.respMsg;
+                        $('#failModal2').modal();
+                    }
+                },
+                error: function() {
+                    $('#failModal').modal();
+                }
+            });
+        },
         //获取选中的id
         getIds: function() {
             var id_array = new Array();
@@ -1355,7 +1482,7 @@ var app = new Vue({
             }
         },
         //分配执行者
-        checkExe: () => {
+        checkExe:  function() {
             app.getIds();
             var selectedInput = $('input[name="chk_list"]:checked');
             if (selectedInput.length === 0) {
@@ -1365,7 +1492,7 @@ var app = new Vue({
             }
         },
         //分配执行方式按钮
-        checkExeM: () => {
+        checkExeM: function() {
             app.getIds();
             var selectedInput = $('input[name="chk_list"]:checked');
             if (selectedInput.length === 0) {
@@ -1407,7 +1534,7 @@ var app = new Vue({
             }
         },
 
-        checkTransid: () => {
+        checkTransid: function() {
             app.getIds();
             var selectedInput = $('input[name="chk_list"]:checked');
             if (selectedInput.length === 0) {
@@ -1416,7 +1543,7 @@ var app = new Vue({
                 $('#transid').modal();
             }
         },        
-        modifyMoreModalShow: () => {
+        modifyMoreModalShow: function() {
             var _this=this;
             app.getIds();
             if (app.ids==null||app.ids.length === 0) {
@@ -1552,6 +1679,7 @@ var app = new Vue({
         addCaseNode: function() {
             var _this=this;
             _this.caseNodeNum++;
+            console.log(_this.caseNodeNums);
             var caseNodeNum={num: _this.caseNodeNum,status:true,show:true,name:"boundGroup"+_this.caseNodeNum,display:false}
             _this.caseNodeNums.push(caseNodeNum);
             _this.groupBound(_this.caseNodeNums[_this.caseNodeNum-2].name);
@@ -1926,6 +2054,8 @@ var app = new Vue({
 
 });
 
+
+
     //分配执行者
     function executor() {
         var id_array = new Array();
@@ -2182,8 +2312,23 @@ function third() {
 }
 
 //子流程节点部分
+//3级联动 设置功能点及模板脚本
+// $(document).ready(function(e) {
+//
+//     diyi(); //第一级函数
+//     dier(); //第二级函数
+//     disan(); //第三极函数
+//     $("#subautid").change(function() {
+//         dier();
+//         disan();
+//     })
+//     $("#subtransid").change(function() {
+//         disan();
+//     })
+// });
 //一级 测试系统
 function diyi() {
+    console.log("aiya")
     $.ajax({
         async: false,
         url: address3+"aut/queryListAut",
@@ -2234,7 +2379,6 @@ function dier() {
 
 //三级 模板脚本
 function disan() {
-
     var val = $('select[name="subautid"]').parent().parent().next().find('select[name="subtransid"]').val();
     $.ajax({
         url: address3 + "scriptTemplate/queryTemplateByTransId",
@@ -2242,15 +2386,15 @@ function disan() {
         type: "POST",
         contentType: 'application/json',
         success: function(data) {
-
             var lie = data.scriptTemplateList;
             var str = "";
             for (var i = 0; i < lie.length; i++) {
 
                 str += " <option value='" + lie[i].id + "'>" + lie[i].name + "</option> ";
             }
-            $('select[name="subautid"]').parent().parent().next().find('select[name="subscriptmodeflag"]').html(str);
-            $('select[name="subautid"]').parent().parent().next().find('select[name="subscriptmodeflag"]').selectpicker('refresh');
+            console.log(str);
+            $('select[name="subautid"]').parent().parent().next().next().find('select[name="subscriptmodeflag"]').html(str);
+            $('select[name="subautid"]').parent().parent().next().next().find('select[name="subscriptmodeflag"]').selectpicker('refresh');
 
         }
 
