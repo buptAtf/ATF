@@ -28,10 +28,6 @@
             width: 1000px;
         }
 
-        .rigth {
-            float: right;
-        }
-
         #log {
             opacity: 0.75;
             position: absolute;
@@ -132,62 +128,57 @@
                     <div class="main-content" id="testround-main" style="padding: 15px 0;">
                         <div class="row">
                             <form class="form-horizontal col-lg-12">
-                                <div class="form-group ">
-                                    <div class="form-group col-lg-6">
-                                        <label class="option-name control-label col-lg-3">测试计划及状态</label>
-                                        <div class="col-lg-3">
-                                            <select class="testphase form-control" v-model="testPlanId">
-                                                <option v-for="(index,item) in testPlans" v-bind:value="item.id">
-                                                    {{item.nameMedium}}
-                                                </option>
-                                            </select>
-                                        </div>
-                                        <label class="option-name control-label col-lg-2" v-html="exeStautShow"></label>
-                                        <div class=" col-lg-4">
-                                            <a class="btn btn-white rigth" @click="testPlanManager()"> 测试计划管理</a>
-                                        </div>
+                                <div class="form-group col-lg-6">
+                                    <label class="option-name control-label col-lg-3">测试计划及状态</label>
+                                    <div class="col-lg-3">
+                                        <select class="testphase form-control" v-model="testPlanId">
+                                            <option v-for="(index,item) in testPlans" v-bind:value="item.id">
+                                                {{item.nameMedium}}
+                                            </option>
+                                        </select>
                                     </div>
-                                    <!-- <div class="form-group col-lg-6">
-                                      <label class="option-name col-lg-3 control-label">
-                                        执行轮次
-                                      </label>
-                                      <div class="col-lg-9">
-                                        <input type="text" class="form-control" name="" v-model="executionround">
-                                      </div>
-                                    </div> -->
-                                    <div class="form-group col-lg-6">
-                                        <label class="option-name col-lg-3 control-label">
-                                            执行范围
-                                        </label>
-                                        <div class="col-lg-9">
-                                            <select class="execute-range form-control" v-model="exeScope">
-                                                <option value="1" selected>所有</option>
-                                                <option value="0">已选择</option>
-                                            </select>
-                                        </div>
+                                    <label class="option-name control-label col-lg-2" v-html="exeStautShow"></label>
+                                    <div class=" col-lg-4">
+                                        <a class="btn btn-white " @click="testPlanManager()"> 测试计划管理</a>
+                                    </div>
+                                </div>
+                                <!-- <div class="form-group col-lg-6">
+                                    <label class="option-name col-lg-3 control-label">
+                                    执行轮次
+                                    </label>
+                                    <div class="col-lg-9">
+                                    <input type="text" class="form-control" name="" v-model="executionround">
+                                    </div>
+                                </div> -->
+                                <div class="form-group col-lg-6">
+                                    <label class="option-name col-lg-3 control-label">
+                                        执行范围
+                                    </label>
+                                    <div class="col-lg-9">
+                                        <select class="execute-range form-control" v-model="exeScope">
+                                            <option value="1" selected>所有</option>
+                                            <option value="0">已选择</option>
+                                        </select>
                                     </div>
                                 </div>
                             </form>
                         </div>
                         <div class="row">
                             <form class="form-horizontal col-lg-12">
-                                <div class="form-group">
-                                    <div class="form-group col-lg-6">
-                                        <label class="option-name control-label col-lg-3">执行机分配模式</label>
-                                        <div class="col-lg-3">
-                                            <select class="testphase form-control" v-model="runnerExecuteType">
-                                                <option value="appointed" selected>指定执行机</option>
-                                                <option value="auto"> 自动分配</option>
-                                            </select>
-                                        </div>
-                                        <label class="option-name control-label col-lg-2">执行机选择</label>
-                                        <div class=" col-lg-4 ">
-                                            <select class="selectpicker execute-range form-control" id="runnerselected"
-                                                    v-model="runnerselected" multiple>
-                                            </select>
-                                        </div>
+                                <div class="form-group col-lg-6">
+                                    <label class="option-name control-label col-lg-3">执行机分配模式</label>
+                                    <div class="col-lg-3">
+                                        <select class="testphase form-control" v-model="runnerExecuteType">
+                                            <option value="appointed" selected>指定执行机</option>
+                                            <option value="auto"> 自动分配</option>
+                                        </select>
                                     </div>
-
+                                    <label class="option-name control-label col-lg-2">执行机选择</label>
+                                    <div class=" col-lg-4 ">
+                                        <select class="selectpicker execute-range form-control" id="runnerselected"
+                                                v-model="runnerselected" multiple>
+                                        </select>
+                                    </div>
                                 </div>
                             </form>
                         </div>
@@ -400,23 +391,24 @@
                                                                v-model="selectedSceneCases">
                                                     </div>
                                                 </div>
-                                                <div class="case-wrapper" v-for = "index1 in (case_wrapper.flowNodes.length/7 + 1)">
+                                                <!-- <div class="case-wrapper" v-for = "index1 in (case_wrapper.flowNodes.length/7)">
                                                         <div class="case" v-for="index2 in 7" v-if = "case_wrapper.flowNodes[index1*7 + index2]"
                                                              @mousedown.stop="1"
-                                                             @click="changeCase(scene.sceneId+ '-' + case_wrapper.caseId + '-' + item.flowNodeId, 3)">
+                                                             @click="changeCase(scene.sceneId+ '-' + case_wrapper.caseId + '-' + case_wrapper.flowNodes[index1*7 + index2].flowNodeId, 3)">
                                                             <div class="case-header">
                                                                 <img :src="exeImgs[0]"
-                                                                     :id="'img' + '-' + scene.sceneId+ '-' + case_wrapper.caseId + '-' + item.flowNodeId">
-                                                                <p :title="item.flowNodeCode">{{item.flowNodeCode}} </p>
+                                                                     :id="'img' + '-' + scene.sceneId+ '-' + case_wrapper.caseId + '-' + case_wrapper.flowNodes[index1*7 + index2].flowNodeId">
+                                                                <p :title="case_wrapper.flowNodes[index1*7 + index2].flowNodeCode">{{case_wrapper.flowNodes[index1*7 + index2].flowNodeCode}} </p>
                                                                 <input type="checkbox"
-                                                                       v-bind:value="scene.sceneId+ '-' + case_wrapper.caseId + '-' + item.flowNodeId"
+                                                                       v-bind:value="scene.sceneId+ '-' + case_wrapper.caseId + '-' + case_wrapper.flowNodes[index1*7 + index2].flowNodeId"
                                                                        class="check-case check-case-inscene"
                                                                        @change="checkFlowNode($event)"
                                                                        v-model="selectedSceneCases">
                                                             </div>
                                                             <div class="case-main">
                                                                 <a class="view-case"
-                                                                   @click.stop="viewCase(scene.sceneId, case_wrapper.caseId, 'PE6')"><span>查</span><span>看</span></a>
+                                                                   @click.stop="viewCase(scene.sceneId, case_wrapper.caseId, 'PE6')"><span>查</span><span>看</span>
+                                                                </a>
                                                             </div>
                                                             <footer class="case-footer">
                                                             </footer>
@@ -425,25 +417,30 @@
                                                              :id="'runner' + '-' + scene.sceneId+'-'+case_wrapper.caseId">
                                                             <p></p>
                                                         </div>
-                                                    </div>
-                                                <!-- <div class="case-wrapper">
+                                                    </div> -->
+                                                <div class="case-wrapper">
                                                     <div class="case" v-for="item in case_wrapper.flowNodes"
                                                          @mousedown.stop="1"
                                                          @click="changeCase(scene.sceneId+ '-' + case_wrapper.caseId + '-' + item.flowNodeId, 3)">
                                                         <div class="case-header">
                                                             <img :src="exeImgs[0]"
                                                                  :id="'img' + '-' + scene.sceneId+ '-' + case_wrapper.caseId + '-' + item.flowNodeId">
-                                                            <p :title="item.flowNodeCode">{{item.flowNodeCode}} </p>
+                                                            <p class="width-limit" :title="item.flowNodeCode">{{item.flowNodeCode}} </p>
                                                             <input type="checkbox"
                                                                    v-bind:value="scene.sceneId+ '-' + case_wrapper.caseId + '-' + item.flowNodeId"
                                                                    class="check-case check-case-inscene"
                                                                    @change="checkFlowNode($event)"
                                                                    v-model="selectedSceneCases">
+                                                            <p>
+                                                                <a class="view-case"
+                                                                @click.stop="viewCase(scene.sceneId, case_wrapper.caseId, 'PE6')">查看
+                                                                </a>
+                                                            </p>
+                                                                   <!-- <a class="view-case"
+                                                                      @click.stop="viewCase(scene.sceneId, case_wrapper.caseId, 'PE6')"><span>查</span><span>看</span></a> -->
                                                         </div>
-                                                        <div class="case-main">
-                                                            <a class="view-case"
-                                                               @click.stop="viewCase(scene.sceneId, case_wrapper.caseId, 'PE6')"><span>查</span><span>看</span></a>
-                                                        </div>
+                                                        <!-- <div class="case-main">
+                                                        </div> -->
                                                         <footer class="case-footer">
                                                         </footer>
                                                     </div>
@@ -451,7 +448,7 @@
                                                          :id="'runner' + '-' + scene.sceneId+'-'+case_wrapper.caseId">
                                                         <p></p>
                                                     </div>
-                                                </div> -->
+                                                </div>
                                             </template>
                                         </div>
                                     </div>
