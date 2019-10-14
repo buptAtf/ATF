@@ -1,8 +1,8 @@
 var app = new Vue({
     el: '#v-transact',
     data: {
-        newTransactId:null,
-        newTransactType:null,
+        newTransactId:null, // 新添加的transactId
+        newTransactType:null, // 新添加的类型
         transactListFlag:true,
         transactList: [],
         tt: 0, //总条数
@@ -128,8 +128,8 @@ var app = new Vue({
                     }),
                     success: function(data) {
                         if (data.respCode=='0000') {
-                            self.newTransactId = data.transactId;
-                            sessionStorage.setItem("transactId",data.transactId)
+                            self.newTransactId = data.transId;
+                            sessionStorage.setItem("transactId",data.transId)
                             $('#successAndGoModal').modal();
                             queryTransact();
                         } else {
@@ -143,6 +143,7 @@ var app = new Vue({
             }
             else
             {
+                self.newTransactType = 2;
                 code = code ==""?("接口"+new Date().valueOf()):code;
               $.ajax({
                     url: address3 + 'interface/addSingleInterface',
@@ -314,14 +315,15 @@ var app = new Vue({
         },
         //跳转到详情页面
         goToDetail: function(code,transType) {
-            if(code == null){
+            var _this = this;
+            if(sessionStorage.getItem("transactId") == null){
                 Vac.alert("因为插入接口没有返回对应的transactId 因此无法实现跳转，请后端同学修改");return
             }
-             if(transType==1)
+             if(_this.newTransactType == 1)
              {
-                var transactId = code;
+                var transactId = sessionStorage.getItem("transactId");
+                console.log(transactId)
                 var autId = $('#autSelect').val();
-                sessionStorage.setItem("transactId",transactId);
                 sessionStorage.setItem("autId",autId);
                 location.href = "transactDetail.html";
              }

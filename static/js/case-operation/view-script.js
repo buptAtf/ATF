@@ -38,7 +38,10 @@
 </div>`
 var viewScript = Vue.extend({
 	template: templet,
-	props: ['testcaseid'],
+	props: [
+    'testcaseid',
+    'casecompositetype'
+  ],
 	data: function () {
 		return {
       queryData:'',
@@ -75,7 +78,7 @@ var viewScript = Vue.extend({
         url: address3 + 'dataCenter/getTestcaseScript',
         data: JSON.stringify({
           "testcaseId":this.testcaseid,
-          "caseCompositeType":1
+          "caseCompositeType":this.casecompositetype
         }),
         success: function (data) {
           if ('0000'!=data.respCode) {

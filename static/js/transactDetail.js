@@ -797,8 +797,7 @@ var app = new Vue({
                             _this.getObjTree();
                             _this.getEleParentObjectTree();
                             _this.getEleLinkedObjectTree();
-                            _this.getScriptTemplate();
-
+                            _this.getScriptTemplate(1); // 开始时传值为1 则不进行scriptTemplate/queryScriptInfo提示错误信息  来自测试的需求1013
                         }
 
                     });
@@ -1963,22 +1962,22 @@ var app = new Vue({
                 }
             });
         },
-        getScriptTemplate: function () {
+        getScriptTemplate: function (flag) {
             var _this = this;
             if (_this.scriptIsChanged) {
                 var promise = Vac.confirm('#vac-confirm', '.okConfirm', '.cancelConfirm', "编辑后的基础脚本未保存，是否保存？");
                 promise.then(() => {
                     _this.tableSave();
-                    getTemplate();
+                    getTemplate(flag);
                     _this.scriptIsChanged = false
                 }, () => {
-                    getTemplate();
+                    getTemplate(flag);
                     _this.scriptIsChanged = false
                 })
             } else {
-                getTemplate();
+                getTemplate(flag);
             }
-            function getTemplate() {
+            function getTemplate(flag) {
                 Vac.ajax({
                     url: address3 + 'scriptTemplate/queryTemplateByTransId',
                     data: { 'id': _this.transactId },
@@ -1990,7 +1989,8 @@ var app = new Vue({
                                 _this.checkedTemplate = [0];
                                 _this.showScripttemplateTable({
                                     "autId": $('#autSelect').val(),
-                                    "scriptId": _this.templateList[0].id
+                                    "scriptId": _this.templateList[0].id,
+                                    'flag':flag
                                 });
                                 _this.selectedScript = 1;
                             } else {
@@ -1998,6 +1998,8 @@ var app = new Vue({
                                 _this.selectedScript = 0;
                             }
                         } else {
+                            console.log("1________________"+flag)
+                            if(flag === 1){ return }
                             Vac.alert(data.respMsg);
                         }
                     }
@@ -2177,6 +2179,7 @@ var app = new Vue({
                             // _this.operationRows = [row]
                         }
                     } else {
+                        if(args.flag == 1) return
                         Vac.alert(data.respMsg);
                     }
                 }
@@ -2290,14 +2293,16 @@ var app = new Vue({
             this.setChanged()
         },
         setDrag() {
+            var _this = this;
             setTimeout(function () {
                 $("#sortable").sortable({
                     stop: (event, ui) => {
-                        if (+(ui.item[0].rowIndex - 1) === +ui.item[0].getAttribute('data-index')) {
+                        console.log(ui)
+                        if (+(ui.item[0].rowIndex - 1) === +ui.item[0].getAttribute('data-index')) {  // 如果没有改变顺序就return
                             return
                         }
                         // 拖拽停止后，改变绑定的数组中元素的顺序
-                        var _this = this;
+                        console.log(_this)
                         var target = ui.item[0].rowIndex - 1;
                         var start = ui.item[0].getAttribute('data-index');
                         if (target < 0) {

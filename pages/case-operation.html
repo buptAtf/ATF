@@ -121,7 +121,7 @@
             <exec-record :recorddata="recordData"></exec-record>
           </div>
           <di role="tabpanel" class="tab-pane" id="view-script" :class="{active: activeName=='view-script'}">
-            <view-script :testcaseid="viewScriptTestcaseId"></view-script>
+            <view-script :testcaseid="viewScriptTestcaseId" :casecompositetype="caseCompositeType"></view-script>
           </di>
         </di>
     
@@ -351,6 +351,7 @@
       _this.sceneId = executeInstanceInfo.sceneId;
       _this.sourcechannel = executeInstanceInfo.sourcechannel;
       _this.recordData=executeInstanceInfo
+      console.log(executeInstanceInfo)
       $.ajax({
             url: address3+'testcase/getSingleTestCaseInfo',
             type: 'post',
