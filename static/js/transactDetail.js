@@ -41,7 +41,7 @@ var app = new Vue({
             relatePropList: [], //关联属性
             relatePropListLength: 0,
             eleFlag:true,//用于展示tips信息
-
+            functionsList: {}, // 用于存储空间的方法详情，防止切换脚本是多次请求selectmethod接口
             ruleName:"",
             ruleDesc:"",
             inputMaxLength: -1, //绑定前段用于展示规则
@@ -2100,7 +2100,27 @@ var app = new Vue({
                                         parameters: []
                                     }
                                     row.id = Symbol()
-                                    row.functions.push({ name: operationRow.methodName })
+                                    if(_this.functionsList[operationRow.elementWidget]){
+                                        row.functions = _this.functionsList[operationRow.elementWidget];
+                                    }
+                                    else{
+                                        Vac.ajax({
+                                            url: address3 + 'aut/selectMethod',
+                                            data: {
+                                                id: _this.autId, // autid
+                                                classname: operationRow.elementWidget, // classname
+                                            },
+                                            success: function (data) {
+                                                if (data.respCode === '0000' && data.omMethodRespDTOList) {
+                                                    var { functions, parameterlist } = _this.setFunctionAndParameter(data.omMethodRespDTOList);
+                                                    row.functions = functions;
+                                                } else {
+                                                    Vac.alert('查询数据出错！');
+                                                }
+                                            }
+                                        })
+                                    }
+                                    row.selectedFunc = operationRow.methodName
                                     row.operation.element = operationRow.elementName
                                     row.operation.ui = operationRow.uiname
                                     row.operation.classType = operationRow.elementWidget
@@ -2149,22 +2169,28 @@ var app = new Vue({
                                 parameters: []
                             }
                             row.id = Symbol()
-                            row.selectedFunc = operationRow.methodName
-                            Vac.ajax({
-                                url: address3 + 'aut/selectMethod',
-                                data: {
-                                    id: _this.autId, // autid
-                                    classname: operationRow.elementWidget, // classname
-                                },
-                                success: function (data) {
-                                    if (data.respCode === '0000' && data.omMethodRespDTOList) {
-                                        var { functions, parameterlist } = _this.setFunctionAndParameter(data.omMethodRespDTOList);
-                                        row.functions = functions;
-                                    } else {
-                                        Vac.alert('查询数据出错！');
+                            if(_this.functionsList[operationRow.elementWidget]){
+                                row.functions = _this.functionsList[operationRow.elementWidget];
+                            }
+                            else{
+                                Vac.ajax({
+                                    url: address3 + 'aut/selectMethod',
+                                    data: {
+                                        id: _this.autId, // autid
+                                        classname: operationRow.elementWidget, // classname
+                                    },
+                                    success: function (data) {
+                                        if (data.respCode === '0000' && data.omMethodRespDTOList) {
+                                            var { functions, parameterlist } = _this.setFunctionAndParameter(data.omMethodRespDTOList);
+                                            row.functions = functions;
+                                            _this.functionsList[operationRow.elementWidget] = functions
+                                        } else {
+                                            Vac.alert('查询数据出错！');
+                                        }
                                     }
-                                }
-                            })
+                                })
+                            }
+                            row.selectedFunc = operationRow.methodName
                             row.operation.element = operationRow.elementName
                             row.operation.ui = operationRow.uiname
                             row.operation.classType = operationRow.elementWidget
@@ -2317,7 +2343,7 @@ var app = new Vue({
             }, 1000);
         },
         // 更改方法时改变参数
-        changeFunction: function (target, index) {
+        changeFunction: function (target, index) { // 方法的参数都保存在前端select标签中option的data-parameters属性中
             var me = this;
             var selectedIndex = target.selectedIndex;
             var option = target.options[selectedIndex];
@@ -2675,6 +2701,7 @@ var app = new Vue({
                         parameterlist.push({ Name: para.name, Value: "" });
                     }
                 }
+                console.log({ functions, parameterlist })
                 return { functions, parameterlist };
             } catch (e) {
                 console.error(e);

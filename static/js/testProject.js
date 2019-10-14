@@ -222,13 +222,13 @@ var app = new Vue({
         },
         //点击行选中该行
         tableClick:function(trId){
-            var tbId='#'+trId+'hi';
-            if(!$(tbId).attr('checked')){
-                $(tbId).prop("checked",true);
-            }
-            else {
-                $(tbId).prop("checked",false);
-            }
+                var tbId='#'+trId+' input';
+                if(!$(tbId).attr('checked')){
+                    $(tbId).prop("checked",true);
+                }
+                else {
+                    $(tbId).prop("checked",false);
+                }
 
         },
         //进入
