@@ -1089,13 +1089,14 @@ var vBody = new Vue({
 			})
 		},
 
-		viewCase: function (sceneId, caseId, sourcechannel, testPhase, testRound, recorderStatus) {
+		viewCase: function (sceneId, caseId, sourcechannel,flowNodeId, testPhase, testRound, recorderStatus) {
 			var that = this;
 			var o = {
 				batchId:that.batchId,
 				sceneId, caseId,
 				testPhase:testPhase || this.testphaseValue,
 				testRound:testRound || this.testroundValue,
+				flowNodeId,
 				// executeround: this.executionround,
 				sourcechannel: sourcechannel,
 				recorderStatus: recorderStatus || '2',

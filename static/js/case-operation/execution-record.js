@@ -5,7 +5,7 @@ sourchChannel有个特殊用法，若输入“PE4/PE6”则查询sourchChannel=P
 */
 var execRecord = Vue.extend({
 	template: '#execution-record',
-	props: ['recorddata'],
+	props: ['recorddata', "flowNodeId" ],
 	data: function () {
 		return {
 			address: address.slice(0, -10), // address: 10.101.167.184:8080/ATFCloud
@@ -43,7 +43,10 @@ var execRecord = Vue.extend({
 					}
 				})
 			}
-		}
+		},
+		flownodeid:function() {
+		  console.log('watch'+this.flownodeid);
+		  // 监听到 flownodeid 改变后请求接口改变数据
 	},
 	computed: {
 		queryData: function() {

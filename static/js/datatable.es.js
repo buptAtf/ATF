@@ -43,7 +43,8 @@ var view = new Vue({//与查看脚本的模态框相绑定
 					_this.tableData = data.scriptList;
 				}
 				if(caseCompositeType == 3){
-					_this.bodyTemplate = data.bodyTemplate
+					_this.tableData = data.scriptList;
+					// _this.bodyTemplate = data.bodyTemplate
 				}
 				},
 				error: function(XMLHttpRequest, textStatus, errorThrown) {

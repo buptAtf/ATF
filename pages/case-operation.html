@@ -15,7 +15,6 @@
     #menuContent,
     .elementContent,
     .tab-content {
-      height: calc(100vh - 190px);
       background-color: #fff;
     }
   </style>
@@ -58,8 +57,8 @@
                       </div>
                       <label class="col-xs-1 control-label" v-if="caseCompositeType==2">流程节点</label>
                       <div class="col-xs-2" v-if="caseCompositeType==2">
-                          <select  class="form-control " id="flowcase" v-model="flowcase">
-                              <option v-for ="item in flowTestcase" :value="item.actioncasecode" >{{item.actioncasecode}}</option>
+                          <select  class="form-control " id="flowcase" v-model="flowNodeId">
+                              <option v-for ="item in flowTestcase" :value="item.id" >{{item.actioncasecode}}</option>
                           </select>
                       </div>
                   </div>
@@ -118,10 +117,10 @@
             <detail-modal :test-case="testcase" :flow-cases="flowTestcase" ></detail-modal>
           </div>
           <div role="tabpanel" class="tab-pane" id="exec-record" :class="{active: activeName=='exec-record'}">
-            <exec-record :recorddata="recordData"></exec-record>
+            <exec-record :recorddata="recordData"  :flownodeid="flowNodeId" ></exec-record>
           </div>
           <di role="tabpanel" class="tab-pane" id="view-script" :class="{active: activeName=='view-script'}">
-            <view-script :testcaseid="viewScriptTestcaseId" :casecompositetype="caseCompositeType"></view-script>
+            <view-script :testcaseid="viewScriptTestcaseId" :flownodeid="flowNodeId" :casecompositetype="caseCompositeType"></view-script>
           </di>
         </di>
     
@@ -326,7 +325,7 @@
         transName:"",
         casecode:null,
         caselibid:null,
-        flowcase:null,
+        flowNodeId:null,
         testRecord:null
       }
     },
@@ -351,6 +350,7 @@
       _this.sceneId = executeInstanceInfo.sceneId;
       _this.sourcechannel = executeInstanceInfo.sourcechannel;
       _this.recordData=executeInstanceInfo
+      _this.flowNodeId=executeInstanceInfo.flowNodeId
       console.log(executeInstanceInfo)
       $.ajax({
             url: address3+'testcase/getSingleTestCaseInfo',
@@ -366,7 +366,6 @@
                 _this.caseCompositeType=caseData.caseCompositeType;
                 if(caseData.caseCompositeType==2){
                   _this.flowTestcase=res.testcaseActionList;
-                _this.flowcase=res.testcaseActionList[0].actioncasecode;
                 }
                 _this.autid=caseData.autId;
                 _this.transid=caseData.transId;

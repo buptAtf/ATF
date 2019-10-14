@@ -40,7 +40,8 @@ var viewScript = Vue.extend({
 	template: templet,
 	props: [
     'testcaseid',
-    'casecompositetype'
+    'casecompositetype',
+    'flownodeid'
   ],
 	data: function () {
 		return {
@@ -55,6 +56,16 @@ var viewScript = Vue.extend({
 	watch: {
     testcaseid: function() {
       console.log('watch'+this.testcaseid);
+      this.query();
+    },
+    casecompositetype:function() {
+      console.log('watch'+this.casecompositetype);
+      if(this.casecompositetype == 2)
+        this.casecompositetype=3
+      this.query();
+    },
+    flownodeid:function() {
+      console.log('watch'+this.flownodeid);
       this.query();
     }
 	},
@@ -71,13 +82,17 @@ var viewScript = Vue.extend({
         console.log("aaaaaaaaa");
         return;
       }
+      if(!this.casecompositetype) {
+        console.log("bbbbbbbbb");
+        return;
+      }
       var _this = this;
       $.ajax({
         type: 'post',
         contentType:"application/json",
         url: address3 + 'dataCenter/getTestcaseScript',
         data: JSON.stringify({
-          "testcaseId":this.testcaseid,
+          "testcaseId":this.flownodeid || this.testcaseid,
           "caseCompositeType":this.casecompositetype
         }),
         success: function (data) {
