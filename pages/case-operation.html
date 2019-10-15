@@ -374,20 +374,20 @@
                 _this.casecode=caseData.casecode;
             }
         });
-        // $.ajax({
-        //     url: address3+'testRecordController/querySingleRecordByCaseId',
-        //     type: 'post',
-        //     contentType: 'application/json',
-        //     data: JSON.stringify({
-        //       caseId: _this.viewScriptTestcaseId,
-        //       sceneId: _this.sceneId ,
-        //       batchId: _this.batchId,
-        
-        //      }),
-        //     success: function(res){
-        //       _this.testRecord= res;
-        //      }
-        // })
+        $.ajax({
+            url: address3+'testRecordController/querySingleRecordByCaseId',
+            type: 'post',
+            contentType: 'application/json',
+            data: JSON.stringify({
+              caseId: _this.viewScriptTestcaseId,
+              sceneId: _this.sceneId ,
+              batchId: _this.batchId,
+              flownodeId: _this.flownodeId
+             }),
+            success: function(res){
+              _this.testRecord= res;
+             }
+        })
       if(_this.activeName=='exec-record'){
         _this.caseId = executeInstanceInfo.caseid;
         _this.caseCompositeType = executeInstanceInfo.type;
@@ -404,6 +404,25 @@
       else{}
       console.log(' _this.autid'+ _this.autid+'_this.transid'+_this.transid)
       // $('#'+this.activeName).tab('show')
-    }
+    },
+    watch:{
+      flownodeId:function(newVal, oldVal) {
+		  console.log('watch'+this.flownodeId);
+		  // 监听到 flownodeid 改变后请求接口改变数据
+        $.ajax({
+            url: address3+'testRecordController/querySingleRecordByCaseId',
+            type: 'post',
+            contentType: 'application/json',
+            data: JSON.stringify({
+              caseId: _this.viewScriptTestcaseId,
+              sceneId: _this.sceneId ,
+              batchId: _this.batchId,
+              flownodeId: newVal
+             }),
+            success: function(res){
+              _this.testRecord= res;
+             }
+        })
+		}}
   })
 </script>

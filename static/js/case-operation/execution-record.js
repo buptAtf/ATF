@@ -44,9 +44,6 @@ var execRecord = Vue.extend({
 				})
 			}
 		},
-		flownodeid:function() {
-		  console.log('watch'+this.flownodeid);
-		  // 监听到 flownodeid 改变后请求接口改变数据
 	},
 	computed: {
 		queryData: function() {
