@@ -270,12 +270,12 @@
               <td class="" width="">{{testRecord.recorderStatus}}</td>
               <td class="" width="">{{testRecord.executeStatus}}</td>
               <td class="" width="">{{testRecord.sourceChannel}}</td>
-              <td class="" width="">{{testRecord.resourcePath}}</td>
+              <td class="" width="">{{testRecord.resourcePath || '无执行报告'}}</td>
               <!-- <td class="" width="">{{item.testexeinsid}}</td> -->
           </tr>
       </tbody>
   </table>
-    <iframe :src="srcs" frameborder="0" style="width: 100%; height: 300px; flex: 1 0 auto"></iframe>
+    <iframe v-if="testRecord.resourcePath" :src="srcs" frameborder="0" style="width: 100%; height: 300px; flex: 1 0 auto"></iframe>
   </div>
 </script>
 
@@ -374,20 +374,20 @@
                 _this.casecode=caseData.casecode;
             }
         });
-        $.ajax({
-            url: address3+'testRecordController/querySingleRecordByCaseId',
-            type: 'post',
-            contentType: 'application/json',
-            data: JSON.stringify({
-              caseId: _this.viewScriptTestcaseId,
-              sceneId: _this.sceneId ,
-              batchId: _this.batchId,
-              flownodeId: _this.flownodeId
-             }),
-            success: function(res){
-              _this.testRecord= res;
-             }
-        })
+        // $.ajax({
+        //     url: address3+'testRecordController/querySingleRecordByCaseId',
+        //     type: 'post',
+        //     contentType: 'application/json',
+        //     data: JSON.stringify({
+        //       caseId: _this.viewScriptTestcaseId,
+        //       sceneId: _this.sceneId ,
+        //       batchId: _this.batchId,
+        //       flownodeId: _this.flownodeId
+        //      }),
+        //     success: function(res){
+        //       _this.testRecord= res;
+        //      }
+        // })
       if(_this.activeName=='exec-record'){
         _this.caseId = executeInstanceInfo.caseid;
         _this.caseCompositeType = executeInstanceInfo.type;
@@ -405,24 +405,30 @@
       console.log(' _this.autid'+ _this.autid+'_this.transid'+_this.transid)
       // $('#'+this.activeName).tab('show')
     },
-    watch:{
-      flownodeId:function(newVal, oldVal) {
-		  console.log('watch'+this.flownodeId);
-		  // 监听到 flownodeid 改变后请求接口改变数据
-        $.ajax({
-            url: address3+'testRecordController/querySingleRecordByCaseId',
-            type: 'post',
-            contentType: 'application/json',
-            data: JSON.stringify({
-              caseId: _this.viewScriptTestcaseId,
-              sceneId: _this.sceneId ,
-              batchId: _this.batchId,
-              flownodeId: newVal
-             }),
-            success: function(res){
-              _this.testRecord= res;
-             }
-        })
-		}}
+    watch: {
+    //   flowNodeId:function() {
+    //     var _this = this;
+    //     var a =_this.flowNodeId
+    //     console.log('1111111111111'+_this.flowNodeId);
+    //     console.log(_this);
+    //     var data = {
+    //           caseId: _this.viewScriptTestcaseId,
+    //           sceneId: _this.sceneId ,
+    //           batchId: _this.batchId,
+    //           flownodeId: a,
+    //          }
+    //          console.log(data)
+    //     $.ajax({
+    //         url: address3+'testRecordController/querySingleRecordByCaseId',
+    //         type: 'post',
+    //         contentType: 'application/json',
+    //         data: JSON.stringify(data),
+    //         success: function(res){
+    //           _this.testRecord= res.recordEntity;
+    //           console.log(_this.testRecord)
+    //          }
+    //     })
+    // }
+	},
   })
 </script>

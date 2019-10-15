@@ -5,13 +5,16 @@ sourchChannel有个特殊用法，若输入“PE4/PE6”则查询sourchChannel=P
 */
 var execRecord = Vue.extend({
 	template: '#execution-record',
-	props: ['recorddata', "flowNodeId" ],
+	props: ['recorddata', "flownodeid" ],
 	data: function () {
 		return {
 			address: address.slice(0, -10), // address: 10.101.167.184:8080/ATFCloud
 			srcDoc: '',
 			srcs: [],
-			testRecord:null
+			testRecord:null,
+			caseId: '',
+			sceneId: '',
+			batchId: '',
 		}
 	},
 	ready: function() {
@@ -23,14 +26,26 @@ var execRecord = Vue.extend({
 			if (newVal) {
 				console.log(newVal)
 				console.log(oldVal)
+				me.caseId=newVal.caseId;
+				me.sceneId= newVal.sceneId;
+				me.batchId= newVal.batchId;
+			}
+		},
+		flownodeid: function(newVal, oldVal) {
+			var me = this;
+			console.log("333333333333333333333")
+			if (newVal) {
+				console.log(newVal)
+				console.log(oldVal)
 				$.ajax({
 					url: address3+'testRecordController/querySingleRecordByCaseId',
 					type: 'post',
 					contentType: 'application/json',
 					data: JSON.stringify({
-					caseId: newVal.caseId,
-					sceneId:  newVal.sceneId ,
-					batchId:  newVal.batchId,
+					caseId: me.caseId,
+					sceneId:  me.sceneId ,
+					batchId:  me.batchId,
+					flownodeId:newVal
 					}),
 					success: function(res){
 						if(res.respCode == "0000"){
@@ -43,7 +58,7 @@ var execRecord = Vue.extend({
 					}
 				})
 			}
-		},
+		}
 	},
 	computed: {
 		queryData: function() {
