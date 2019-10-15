@@ -316,7 +316,30 @@ var app = new Vue({
         //跳转到详情页面
         goToDetail: function(code,transType) {
             var _this = this;
-            if(sessionStorage.getItem("transactId") == null){
+            if(!code ){
+                Vac.alert("出问题了 transactId传值为空");return
+            }
+             if(transType == 1)
+             {
+                var transactId = sessionStorage.getItem("transactId");
+                console.log(transactId)
+                var autId = $('#autSelect').val();
+                sessionStorage.setItem("autId",autId);
+                location.href = "transactDetail.html";
+             }
+             else
+             {
+                var transactId = code;
+                var autId = $('#autSelect').val();
+                sessionStorage.setItem("transactId",transactId);
+                sessionStorage.setItem("autId",autId);
+                location.href = "interfacesManagement.html";
+             }
+        },
+        goToDetail2(){
+            var _this = this;
+            if(sessionStorage.getItem("transactId") == null  ){
+                console.log("qwwwwwwwwwwwwww"+sessionStorage.getItem("transactId") )
                 Vac.alert("因为插入接口没有返回对应的transactId 因此无法实现跳转，请后端同学修改");return
             }
              if(_this.newTransactType == 1)
