@@ -18,6 +18,9 @@ td {
   position: relative;
   min-width: 35px;
 }
+.row{
+  width:100%;
+}
 td>input[type='radio'] {
   position: absolute;
   width: 23px;
