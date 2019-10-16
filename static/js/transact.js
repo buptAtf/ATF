@@ -316,19 +316,15 @@ var app = new Vue({
         //跳转到详情页面
         goToDetail: function(code,transType) {
             var _this = this;
-<<<<<<< HEAD
-            if(code ){
-                Vac.alert("因为插入接口没有返回对应的transactId 因此无法实现跳转，请后端同学修改");return
-=======
             if(!code ){
                 Vac.alert("出问题了 transactId传值为空");return
->>>>>>> origin/recordDev
             }
              if(transType == 1)
              {
                 var transactId = sessionStorage.getItem("transactId");
                 console.log(transactId)
                 var autId = $('#autSelect').val();
+                sessionStorage.setItem("transactId",code);
                 sessionStorage.setItem("autId",autId);
                 location.href = "transactDetail.html";
              }
