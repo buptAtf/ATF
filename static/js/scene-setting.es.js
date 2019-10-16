@@ -111,16 +111,6 @@ var vBody = new Vue({
 			return { height: (this.tooltipFlag	? 0 : 200 ) + 'px' };
 		}
 	},
-	watch: {
-		/**
-		 * 监听后端的返回结果集
-		 */
-		caseSelectA:function () {
-			this.$nextTick(function () {
-				$('#caseSelect').selectpicker('refresh');
-			})
-		}
-	},
 	ready:function(){
 		this.setVal();
 		this.getCase(this.currentPage, this.pageSize, this.order, this.sort);
@@ -250,12 +240,8 @@ var vBody = new Vue({
 				success: function(data) {
 					// console.log(data);
 					_this.caseList = data.testcaseViewRespDTOList;
-					console.log($('#caseSelect'));
-					for(let item of _this.caseList){
-						$('#caseSelect').append(`<option value="${item.id}">${item.casecode} | ${item.autName} | ${item.transName} | ${item.scriptTemplateName}</option>`);
-					}
-					$('#caseSelect').selectpicker('refresh');
-						_this.tt = data.totalCount;
+					console.log(_this.caseList);
+					_this.tt = data.totalCount;
 					_this.totalPage = Math.ceil(_this.tt / pageSize);
 					_this.pageSize = pageSize;
 					_this.queryflag = true;

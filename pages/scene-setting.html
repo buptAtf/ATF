@@ -10,15 +10,11 @@
     <link rel="stylesheet" type="text/css" href="../static/css/metroStyle.css">
     <link rel="stylesheet" type="text/css" href="../static/css/scene-setting.scss">
     <link rel="stylesheet" type="text/css" href="../static/css/jquery.datetimepicker.min.css">
-    <link rel="stylesheet" href="../static/css/base/bootstrap.min.css">
-    <link rel="stylesheet" href="../static/css/bootstrap-select.min.css">
     <script src="../lib/jquery.js"></script>
     <script src="../lib/jquery-ui.js"></script>
     <script src="../lib/bootstrap.min.js"></script>
-    <script src="../lib/bootstrap-select.min.js"></script>
     <script src="../lib/jquery.datetimepicker.full.min.js"></script>
     <script type="text/javascript" src="../lib/vue.js"></script>
-
     <title>场景设置</title>
     <style>
       .tooltipwindow-top {
@@ -44,15 +40,8 @@
         line-height: 40px;
       }
     </style>
-    <script>
-       $('#caseSelect').selectpicker({
-                   multiple: true,
-                   actionsBox: true
-               })
-
-    </script>
   </head>
-  <body id="v-body" v-cloak v-clock>
+  <body id="v-body" v-cloak>
     <div class="editTrigger" id="editTrigger" v-show="triggerShow" style="z-index: 1000;display: none;">
       <header class="editTrigger-header" id="editTrigger-header">
         <span class="editTrigger-title">{{triggerInfo.editTriggerType}}触发器</span>
@@ -220,18 +209,20 @@
           </div>
           <div class="modal-body">
             <!-- modal-body start -->
+            <section class="panel">
               <form id="addForm" class="form-horizontal" role="form">
                 <div class="form-group">
-                  <br>
                   <label class="col-lg-2 control-label">添加用例</label>
                   <div class="col-lg-8">
-                    <select class="selectpicker form-control selectStyle"  multiple v-model="caseSelectA" id="caseSelect" name="caseSelect" data-live-search="true" data-live-search-placeholder="搜索">
+                    <select class="selectpicker form-control selectStyle"  multiple="multiple" size="10" v-model="caseId" id="caseSelect" name="caseSelect" data-live-search="true">
+                      <option class="optionStyle" v-for="case in caseList" :value='case.id'> {{case.casecode}}&nbsp|&nbsp{{case.autName}}&nbsp|&nbsp{{case.transName}}&nbsp|&nbsp{{case.scriptTemplateName}}&nbsp&nbsp </option>
                     </select>
-                    <br><br><br>
-                    <p style="font-size:10px; color:grey">用例展示形式为：用例编号 | 被测系统 | 功能点 | 关联脚本名称</p>
+                    <p></p>
+                    <p style="font-size:10px; color:darkred">用例展示形式为：用例编号 | 被测系统 | 功能点 | 关联脚本名称</p>
+                    <p style="font-size:10px; color:darkred">按住Ctrl键可多选</p>
                   </div>
                 </div>
-
+            </section>
             <!-- modal-body end -->
           </div>
           <div class="modal-footer">
@@ -331,7 +322,7 @@
                         </div>
                         <div v-for="time in case_wrapper">
                           <div class="case-wrapper" v-for="case in time">
-                            <!--<div class="" style="height: 30px; width: 30px; border-width: 15px; border-style: solid; border-color: transparent transparent  transparent #bebaba;margin: 0 -30px 0 20px; position: relative; top: 0%;"></div>-->
+                            <div class="" style="height: 30px; width: 30px; border-width: 15px; border-style: solid; border-color: transparent transparent  transparent #bebaba;margin: 0 -30px 0 20px; position: relative; top: 0%;"></div>
                             <div class="case"  @click="changeCase(case.id, 1)"  @mousedown.stop="1" :style="{ marginRight: (index !== time.length - 1) ? '0px' :170 + 'px'}">
                               <div class="case-header">
                                 <p :title="case.casecode" style="margin-left: 5px;">{{case.casecode}}</p>
@@ -349,7 +340,7 @@
                         </div>
                         <div class="case-wrapper">
                           <template v-for="(key, time) in case_wrapper">
-                            <!--<div class="" style="height: 30px; width: 30px; border-width: 15px; border-style: solid; border-color: transparent transparent  transparent #bebaba;margin: 0 -30px 0 20px; position: relative; top: 0%;"></div>-->
+                            <div class="" style="height: 30px; width: 30px; border-width: 15px; border-style: solid; border-color: transparent transparent  transparent #bebaba;margin: 0 -30px 0 20px; position: relative; top: 0%;"></div>
                             <div class="case" v-for="(index, case) in time" @mousedown.stop="1"
                               @click="changeCase(case.id, 2)" 
                               :style="{ marginRight: (index !== time.length - 1) ? '0px' : 170 + 'px'}">
