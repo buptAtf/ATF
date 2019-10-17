@@ -334,7 +334,7 @@
                                         <td width="20%">{{ project.runnerIp }}</td>
                                         <td width="20%">{{ project.runnerPort }}</td>
                                         <td class="hidden-phone" width="20%">{{ project.identifiableName }}</td>
-                                        <td class="hidden-phone" width="20%"><a class="btn btn-primary btn-xs" @click="logshow(project.identifiableName)">日志查看</a></td>
+                                        <td class="hidden-phone" width="20%"><a class="btn btn-primary btn-xs" @click="logshow(project.identifiableName,project.runnerIp,project.runnerPort)">日志查看</a></td>
 
                                     </tr>
                                 </tbody>

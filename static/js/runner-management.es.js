@@ -173,7 +173,7 @@ var app = new Vue({
         downloadRunner: function(){
             window.location.href = address4 + "atf-data/atf-runner.zip";
         },
-        logshow(identifiableName){
+        logshow(identifiableName,ip,runnerPort){
             var _this = this;
             _this.logShow = true
 			$.ajax({
@@ -182,7 +182,7 @@ var app = new Vue({
 				contentType: 'application/json',
 				data: JSON.stringify({
                     "logType": 1, 
-                    "identifiableName":identifiableName,
+                    "identifiableName":identifiableName+'/'+ ip +':'+runnerPort,
 					"reqSyncNo": null,
 					"sessionId":null, 
                     "latestLineNum":50,
