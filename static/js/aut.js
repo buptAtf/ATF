@@ -578,7 +578,7 @@ function queryAut() {
             'pageSize': app.pageSize,
             'orderColumns': 'id',
             'orderType': 'asc',
-            'code': app.queryAutCode
+            'codeAndName': app.queryAutCode
         }),
         success: function(data) {
             app.autList = data.autRespDTOList;

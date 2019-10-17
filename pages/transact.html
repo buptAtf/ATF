@@ -302,17 +302,18 @@
                                     </tr>
                                 </thead>
                                 <tbody id="caseTable">
-                                    <tr class="odd gradeX" v-for="(index,transact) in transactList" id="{{transact.id}}" @click="tableClick(transact.id)">
+                                    <tr class="odd gradeX" v-for="(index,transact) in transactList" id="{{transact.id}} @click="tableClick(transact.id)">
                                         <td width="5%">
                                             <input type="radio" v-model="" name="chk_list" id="{{transact.id}}"  @click.stop=" return true "/>
                                         </td>
                                         <td class="center hidden-phone" width="5%">{{index+1}}</td>
                                         <td class="center" width="15%"><a @click="goToDetail(transact.id,transact.transType)" class="detail-link">{{ transact.code}}</a></td>
                                         <td width="15%">{{ transact.nameMedium }}</td>
-                                        <td width="10%" >{{(transact.transType==1)?'UI':'接口'}}</td> 
+                                        <td width="10%"  class="type">{{(transact.transType==1)?'UI':'接口'}}</td> 
                                         <td width="20%">{{ transact.descShort}}</td>
                                         <td width="15%">{{ formatDate(transact.createTime) }}</td>
                                         <td width="15%">{{ formatDate(transact.modifiedTime) }}</td>
+                                        <td width="15%" hidden class='info'>{{ transact.elementRepositoryId}}+'_—1—_'+{{ transact.objectRepositoryId}}</td>
                                     </tr>
                                 </tbody>
                             </table>

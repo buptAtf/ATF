@@ -108,7 +108,7 @@ var app = new Vue({
                     type: 'post',
                     contentType: 'application/json',
                     data: JSON.stringify({
-                        codeLong: testProjectCode,
+                        codeLongAndName: testProjectCode,
                         nameMedium: testProjectName,
                         descMedium:  taskDescription 
                     }),
@@ -193,7 +193,7 @@ var app = new Vue({
                 contentType: 'application/json',
                 data: JSON.stringify({
                         id: realId,
-                        codeLong: $('#updateForm input[name="codeLong"]').val(),
+                        codeLongAndName: $('#updateForm input[name="codeLong"]').val(),
                         nameMedium: $('#updateForm input[name="nameMedium"]').val(),
                         descMedium: $('#updateForm textarea[name="descMedium"]').val()
                     }),
@@ -398,7 +398,7 @@ function queryTestProject() {
             'pageSize': app.pageSize,
             'orderColumns': 'id',
             'orderType': 'asc',
-            'codeLong': app.queryContent
+            'codeLongAndName': app.queryContent
         }),
         success: function(data) {
             app.testProjectList = data.list;
