@@ -324,6 +324,7 @@ var app = new Vue({
                 var transactId = sessionStorage.getItem("transactId");
                 console.log(transactId)
                 var autId = $('#autSelect').val();
+                sessionStorage.setItem("transactId",code);
                 sessionStorage.setItem("autId",autId);
                 location.href = "transactDetail.html";
              }
