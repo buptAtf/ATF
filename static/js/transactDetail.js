@@ -74,7 +74,9 @@ var app = new Vue({
             // ztree的设置项
             zTreeSettings: {
                 uiAndElement: {
-                    callback: {},
+                    callback: {
+                       
+                    },
                     data: {
                         key: {
                             children: 'children',
@@ -1040,11 +1042,14 @@ var app = new Vue({
             });
         },
         tableClick:function(){
-            if(!$('#checkHi').attr('checked')){
-                $('#checkHi').prop("checked",true);
+            
+            var target= $(event.target).parent();
+            var checkbox=target.find("input[type='checkbox']");
+            if(!checkbox.attr('checked')){
+                checkbox.prop("checked",true);
             }
             else {
-                $('#checkHi').prop("checked",false);
+                checkbox.prop("checked",false);
             }
 
         },

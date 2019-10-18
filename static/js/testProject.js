@@ -186,14 +186,12 @@ var app = new Vue({
             var _this=this
             var selectedInput = $('input[name="chk_list"]:checked');
             var id = selectedInput.attr('id');
-            console.log(id)
-            var realId=id.substring(0,3);
             $.ajax({
                 url: address3 + 'testProjectController/modifySingleTestProject',
                 type: 'post',
                 contentType: 'application/json',
                 data: JSON.stringify({
-                        id: realId,
+                        id: id,
                         codeLong: $('#updateForm input[name="codeLong"]').val(),
                         nameMedium: $('#updateForm input[name="nameMedium"]').val(),
                         descMedium: $('#updateForm textarea[name="descMedium"]').val()
