@@ -71,12 +71,13 @@ var app = new Vue({
             else{
             
                 $.ajax({
-                    url: address3 + 'transactController/copySingleTransact',
+                    url: address3 + 'transactController/copySingleInterfaceTransact',
                     type: 'post',
                     contentType: 'application/json',
                     data: JSON.stringify({
-                        systemId: sessionStorage.getItem('autId'),
-                        autId : selectedInput[0].id,
+                        autId: sessionStorage.getItem('autId'),
+                        transId: selectedInput[0].id,
+                        creatorId: sessionStorage.getItem('userId')
                     }),
                     success: function(data) {
                         if (data.respCode=='0000') {

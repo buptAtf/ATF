@@ -684,6 +684,31 @@ var app = new Vue({
         }
     },
     methods: {
+        copyTransact(){
+            var _this = this;
+            $.ajax({
+                url: address3 + 'transactController/copySingleUITransact',
+                type: 'post',
+                contentType: 'application/json',
+                data: JSON.stringify({
+                    autId: sessionStorage.getItem('autId'),
+                    transId :  !this.componentMode ? this.transactId : this.transid,
+                    elementRepositoryId: _this.elementRepositoryId,
+                    objectRepositoryId: _this.repositoryId,
+                    creatorId: sessionStorage.getItem('userId')
+                }),
+                success: function(data) {
+                    if (data.respCode=='0000') {
+                        $('#successModal').modal();
+                    } else {
+                        Vac.alert(data.respMsg)
+                    }
+                },
+                error: function() {
+                    !!data.respMsg?Vac.alert(data.respMsg): $('#failModal').modal();
+                }
+            });
+        },
         //切换tab页
         switchTab(flag){
             if(flag == 1){
@@ -2107,6 +2132,10 @@ var app = new Vue({
                                     row.id = Symbol()
                                     if(_this.functionsList[operationRow.elementWidget]){
                                         row.functions = _this.functionsList[operationRow.elementWidget];
+                                        console.log('11111111111111111111111')
+                                        console.log(_this.functionsList)
+                                        console.log(operationRow.elementWidget)
+                                        console.log(row.functions)
                                     }
                                     else{
                                         Vac.ajax({
@@ -2176,6 +2205,10 @@ var app = new Vue({
                             row.id = Symbol()
                             if(_this.functionsList[operationRow.elementWidget]){
                                 row.functions = _this.functionsList[operationRow.elementWidget];
+                                console.log('11111111111111111111111')
+                                console.log(_this.functionsList)
+                                console.log(operationRow.elementWidget)
+                                console.log(row.functions)
                             }
                             else{
                                 Vac.ajax({
@@ -2769,9 +2802,6 @@ var app = new Vue({
                                 //_this.para()
                             }
                             _this.operationRows.push(newRow);
-                            // _this.operationRows[_this.operationRows.findIndex(getNewRow)].functions = functions;
-                            // _this.operationRows[_this.operationRows.findIndex(getNewRow)].selectedFunc = functions.length ? functions[0].name : '';
-                            // _this.operationRows[_this.operationRows.findIndex(getNewRow)].parameters = parameterlist;
 
                         } else {
                             _this.operationRows.splice(_this.operationRows.findIndex(function (x) {

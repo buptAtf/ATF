@@ -26,6 +26,9 @@ var template_int = `
                         <select class="form-control selectpicker" id="transactSelect" v-model="transid" data-live-search="true">
                         </select>
                     </div>
+                    <div class="col-xs-3">
+                    <a class="btn btn-white" @click="copyTransact"><i class=" icon-copy"></i>复制接口</a>
+                    </div>
                 </div>
             </form>
             <!-- select end -->
@@ -346,6 +349,30 @@ var interfacesManagement = Vue.extend({
         $('input[name="headerParaName"]').last().change(headerParaAdd);
     },
     methods: {
+        copyTransact(){
+            var _this = this;
+            $.ajax({
+                url: address3 + 'transactController/copySingleInterfaceTransact',
+                type: 'post',
+                contentType: 'application/json',
+                data: JSON.stringify({
+                    autId: _this.autId,
+                    transId: _this.transid,
+                    creatorId: sessionStorage.getItem('userId')
+                }),
+                success: function(data) {
+                    if (data.respCode=='0000') {
+                        $('#successModal').modal();
+                        queryTransact();
+                    } else {
+                        Vac.alert(data.respMsg)
+                    }
+                },
+                error: function() {
+                    Vac.alert(data.respMsg)
+                }
+            });
+        },
         getAutandTrans: function() {
             var _this = this;
             $.ajax({
