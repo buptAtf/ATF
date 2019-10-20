@@ -21,6 +21,12 @@
     <link rel="stylesheet" type="text/css" href="../static/css/ascetic.css"/>
     <title>测试计划及执行</title>
     <style>
+        .exe-info{
+            padding-left: 10px；
+        }
+        .exe-info i{
+            color: #58c9f3;
+        }
         .case-main{
             white-space: nowrap
         }
@@ -258,10 +264,10 @@
                                                         <input type="checkbox" v-bind:value="case_wrapper.caseId"
                                                                class="check-case single-case-incaselib"
                                                                v-model="selectedCases" @change="checkChanged($event)">
-                                                    </div>
-                                                    <div class="case-main">
-                                                        <a class="view-case"
-                                                           @click.stop="viewCase(case_wrapper.caseId, 'PE4')"><span>查</span><span>看</span></a>
+                                                        <p>
+                                                            <a class="view-case"
+                                                                @click.stop="viewCase(case_wrapper.caseId, 'PE4')"><span>查看</span></a>
+                                                        </p>
                                                     </div>
                                                     <footer class="case-footer">
 
@@ -290,10 +296,10 @@
                                                                    class="check-case flow-node-incaselib"
                                                                    @change="checkChanged($event)"
                                                                    v-model="checkedFlowNodes">
-                                                        </div>
-                                                        <div class="case-main">
-                                                            <a class="view-case"
-                                                               @click.stop="viewCase(case_wrapper.caseId, 'PE4')"><span>查</span><span>看</span></a>
+                                                            <p>
+                                                                <a class="view-case"
+                                                                    @click.stop="viewCase(case_wrapper.caseId, 'PE4')"><span>查看</span></a>
+                                                            </p>
                                                         </div>
                                                         <footer class="case-footer">
                                                             2
@@ -312,6 +318,10 @@
                             <button class="hide-case-list btn btn-xs btn-info" @mousedown.stop="1"
                                     @click="saveScenesSort()">保存场景排序
                             </button>
+                            <span class = "exe-info">
+                                <i class = " icon-info-sign"></i>
+                                场景内的用例串行执行，场景之间并行执行
+                            </span>
                         </header>
                         <div id="sortable_sceneslist">
                             <div class="scene-list-wrapper  -wrapper" style="padding:0px 20px 10px 20px"
@@ -367,10 +377,10 @@
                                                                    class="check-case check-case-inscene"
                                                                    v-model="selectedSceneCases"
                                                                    @change="checkFlowNode($event)"> <!--lrlrq -->
-                                                        </div>
-                                                        <div class="case-main">
-                                                            <a class="view-case"
-                                                               @click.stop="viewCase(scene.sceneId, case_wrapper.caseId, 'PE6')"><span>查</span><span>看</span></a>
+                                                            <p>
+                                                                <a class="view-case"
+                                                                    @click.stop="viewCase(scene.sceneId, case_wrapper.caseId, 'PE6')"><span>查看</span></a>
+                                                            </p>
                                                         </div>
                                                     </div>
                                                     <div class="runnerclass"
@@ -407,7 +417,7 @@
                                                             </div>
                                                             <div class="case-main">
                                                                 <a class="view-case"
-                                                                   @click.stop="viewCase(scene.sceneId, case_wrapper.caseId, 'PE6')"><span>查</span><span>看</span>
+                                                                   @click.stop="viewCase(scene.sceneId, case_wrapper.caseId, 'PE6')"><span>查看</span>
                                                                 </a>
                                                             </div>
                                                             <footer class="case-footer">
@@ -437,7 +447,7 @@
                                                                 </a>
                                                             </p>
                                                                    <!-- <a class="view-case"
-                                                                      @click.stop="viewCase(scene.sceneId, case_wrapper.caseId, 'PE6')"><span>查</span><span>看</span></a> -->
+                                                                      @click.stop="viewCase(scene.sceneId, case_wrapper.caseId, 'PE6')"><span>查看</span></a> -->
                                                         </div>
                                                         <!-- <div class="case-main">
                                                         </div> -->

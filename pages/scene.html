@@ -7,7 +7,15 @@
     <link rel="stylesheet" type="text/css" href="../static/css/pagination.css">
     <link rel="stylesheet" type="text/css" href="../static/css/scene.css">
     <title>场景管理</title>
+    <style>
+    .exe-info i{
+        padding-left:10px;
+        color: #FF6C60;
+        font-size: 16px;
+    }
+    </style>
 </head>
+
 
 <body id="scene" v-cloak>
     <div class="content">
@@ -32,11 +40,14 @@
                 <!-- breadcrumb end -->
                 <!--top-button start-->
                 <div class="row">
-                    <div class="col-lg-3 top-btn">
+                    <div class="col-lg-6 top-btn">
                         <a class="btn btn-white" data-toggle="modal" href="#insertModal"><i class="icon-plus"></i> 添加</a>
                         <a class="btn btn-white" @click="checkDel"><i class="icon-trash"></i> 删除</a>
                         <a class="btn btn-white" @click="checkUpdate"><i class="icon-edit"></i> 修改</a>
-
+                        <span class = "exe-info">
+                            <i class = " icon-info-sign"></i>
+                            场景内的用例串行执行，场景之间并行执行
+                        </span>
                         <!-- insertModal start -->
                         <div class="modal fade" id="insertModal" tabindex="-1" role="dialog" aria-labelledby="insertModalLabel" aria-hidden="true">
                             <div class="modal-dialog">

@@ -47,6 +47,30 @@ var app = new Vue({
         $('.3-1').css({color: '#ff6c60'})
     },
     methods: {
+        queryTestProject() {
+            var _this = this;
+            searchFlag = true;          //如果是点击了搜索按钮，则下次查询的时候保持搜索的条件进行查询
+            if(arguments[0]==='1'){     //在页面中点击搜索按钮，传入参数'1'
+            _this.currentPage = 1;    //将当前页面设置为1
+            }
+            $.ajax({
+                url: address3 + 'testProjectController/pagedBatchQueryTestProject',
+                type: 'POST',
+                contentType: 'application/json',
+                data: JSON.stringify({
+                    'currentPage': _this.currentPage,
+                    'pageSize': _this.pageSize,
+                    'orderColumns': 'id',
+                    'orderType': 'asc',
+                    'codeLongAndName': _this.queryContent
+                }),
+                success: function(data) {
+                    _this.testProjectList = data.list;
+                    _this.tt = data.totalCount;
+                    _this.totalPage = Math.ceil(_this.tt / _this.listnum);
+                }
+            });
+        },
         //获取选中的id
         getIds: function() {
             var id_array = new Array();

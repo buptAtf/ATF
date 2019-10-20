@@ -18,7 +18,14 @@ var execRecord = Vue.extend({
 		}
 	},
 	ready: function() {
-		
+		var _this = this
+		window.setInterval(_this.reinitIframe(), 2000);
+	},
+	mounted:function(){
+		var bHeight = iframe.contentWindow.document.body.scrollHeight;
+		var dHeight = iframe.contentWindow.document.documentElement.scrollHeight;
+		var height = Math.max(bHeight, dHeight);
+		iframe.height = height;
 	},
 	watch: {
 		queryData: function(newVal, oldVal) {
@@ -66,6 +73,18 @@ var execRecord = Vue.extend({
 		}
 	},
 	methods: {
+		reinitIframe(){
+			var iframe = document.getElementById("recordreport");
+			try{
+				console.log('222222222222222222')
+				console.log(iframe)
+				var bHeight = iframe.contentWindow.document.body.scrollHeight;
+				var dHeight = iframe.contentWindow.document.documentElement.scrollHeight;
+				var height = Math.max(bHeight, dHeight);
+				iframe.height = height;
+				console.log(height);
+			}catch (ex){console.log('ex')}
+		},
 		changeSrcDoc: function(srcDoc) {
 			this.srcDoc = srcDoc;
 			this.srcs = srcDoc;
