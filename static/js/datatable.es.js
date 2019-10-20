@@ -1346,7 +1346,7 @@ $(document).ready(function () {
 						// console.log(row.querySelector('.param-value').innerHTML)
 						var data = {}
 						data.Name = row.querySelector('.param-name').innerHTML
-						data.Value = row.querySelector('.param-value').innerHTML
+						data.Value = row.querySelector('.param-value').innerHTML.replace('[时间戳]',new Date().valueOf())
 						valueShows[index].innerHTML = data.Value
 						operationRows[parentRow.attr('data-index')].parameters.push(data)
 					})
@@ -2579,7 +2579,8 @@ $(document).ready(function () {
 												data.caseCompositeType = dataSource[value[0]].caseCompositeType;
 												tbdata.widgetName = value[1].split('++')[0];
 												tbdata.colName = value[1].split('++')[1];
-												tbdata.data = value[3];
+												tbdata.data = value[3].replace('[时间戳]',new Date().valueOf());
+												console.log(value[3])
 												var changedIndex;
 												changedData.forEach((value, index) => {
 													let flag = false;
