@@ -48,7 +48,6 @@ var app = new Vue({
         projectName: sessionStorage.getItem('projectNameStorage')
     },
     ready: function() {
-        console.log("66666666666666");
         console.log(sessionStorage.getItem("userId"));
         this.getCase(this.currentPage, this.pageSize, this.order, this.sort);
         this.getUsers();
@@ -68,8 +67,8 @@ var app = new Vue({
         $('.filterList').delegate('button.btn-danger','click',function(){
             $(event.target).closest('li').remove();
         });
-        
 
+        this.setDrag();
 
         //筛选用例select option
         let that=this;
@@ -932,7 +931,6 @@ var app = new Vue({
         
     },
     created: function(){
-        console.log("hhhh");
         console.log(sessionStorage.getItem("userId"));
         this.executorSelected = sessionStorage.getItem("userId");
     },
@@ -948,6 +946,51 @@ var app = new Vue({
                 $(tbId).prop("checked",false);
             }
 
+        },
+        setDrag:function() {
+            var _this = this;
+            setTimeout(function () {
+                $( "#caseTable" ).sortable({  items: ".subShow",
+                    stop:function(event,ui){
+                        if (+(ui.item[0].rowIndex - 1) === +ui.item[0].getAttribute('data-index')) {  // 如果没有改变顺序就return
+                            return
+                        }
+                        var target = ui.item[0].rowIndex - 1;
+                        var start = ui.item[0].getAttribute('data-index');
+                        var testCaseId =ui.item[0].getAttribute('value');
+                        var testList=$("#caseTable").find(".subShow");
+                        console.log(testList[0]);
+                        var testCaseIdList=[];
+                        for(var i=0;i<testList.length;i++){
+                            if(testList[i].getAttribute('value')==testCaseId){
+                                testCaseIdList.push(testList[i].getAttribute('id'));
+                            }
+                        }
+                        console.log(testCaseIdList);
+                        $.ajax({
+                            url: address3+'testcase/changeFlowNodeOrder',
+                            type: 'post',
+                            contentType: 'application/json',
+                            data: JSON.stringify({
+                                "caseLibId": testCaseId,
+                                "testCaseActionIds":testCaseIdList
+                            }),
+                            success: function(data) {
+                                console.info(data);
+                                if (data.respCode!=0000) {
+                                    $('#failModal').modal();
+                                }
+                            },
+                            error: function() {
+                                $('#failModal').modal();
+                            }
+                        });
+
+                    }
+                });
+
+
+            }, 1000);
         },
         //获取用例
         getCase:function(currentPage, pageSize, order, sort) {
@@ -1292,7 +1335,7 @@ var app = new Vue({
                         that.subCaseList = data.testcaseActionViewList;
                         // console.log(that.subCaseList);
                         for (var i = that.subCaseList.length-1; i >-1; i--) {
-                            var subTr = $("<tr class='subShow' track-by='id' data-index={{index}}></tr>"),
+                            var subTr = $("<tr class='subShow' track-by='id' id="+that.subCaseList[i].id+" data-index="+i+" value="+flowId+"></tr>"),
                                 iconTd = $("<td class='move'> <a style='color:tomato' class='icon-move'></a></td>"),
                                 checkTd = $("<td><input type='checkbox' id="+that.subCaseList[i].id+" name='chksub_list'/></td>"),
                                 codeTd = $("<td></td>"),

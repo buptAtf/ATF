@@ -2325,6 +2325,7 @@ var app = new Vue({
         },
         setDrag() {
             var _this = this;
+            console.log("ayamaya");
             setTimeout(function () {
                 $("#sortable").sortable({
                     stop: (event, ui) => {

@@ -2410,7 +2410,7 @@
                                             <th class="hidden-phone text-center" data-order="testpoint" data-sort="desc" onclick="resort(this)">测试点 <span class="icon-sort-up" aria-hidden="true"></span></th>
                                         </tr>
                                     </thead>
-                                    <tbody id="caseTable">
+                                    <tbody id="caseTable" >
                                         <tr class="odd gradeX" v-for="case in caseList" id="{{case.id}}" @click="tableClick(case.id)">
                                             <td >
                                                 <input type="checkbox" v-model="" name="chk_list" id="{{case.id}}"  @click.stop=" return true "/>
@@ -2504,4 +2504,5 @@
 <!--script for this page only-->
 <script type="text/javascript" src="../static/js/caseManagement.js"></script>
 <script type="text/javascript" src="../lib/jquery.form.min.js"></script>
+<script type="text/javascript" src="../lib/jquery-ui.js"></script>
 <script type="text/javascript" src="../lib/bootstrap-select.min.js"></script>
