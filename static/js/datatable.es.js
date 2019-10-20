@@ -1604,8 +1604,8 @@ $(document).ready(function () {
 						let newRow = {}; // {id:Symbol(), functions: [], operation: {element:'', ui: '',parameters:[{Name: '', Value: ''}]}}
 						newRow.id = Symbol()
 						newRow.operation = {
-							element: node.getParentNode().name,
-							ui: node.name,
+							ui: node.getParentNode().name,
+							element: node.name,
 							classType: node.classType
 						}
 						newRow.functions = []

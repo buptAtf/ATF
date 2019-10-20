@@ -267,17 +267,12 @@ var app = new Vue({
                             var treeObj = $.fn.zTree.getZTreeObj("elementtree");
                             var nodes = treeObj.getSelectedNodes();
                             _this.eleName = _this.replacemess(treeNode.name);
-                            console.log(treeNode)
                             _this.elementId = treeNode.id;
                             var parentNode = nodes[0].getParentNode();
                             _this.UIName = _this.replacemess(parentNode.name);
                             var uiId = parentNode.id,
                                 regulationId = parentNode.regulationId,
                                 classType = nodes[0].classType;
-                            
-                            console.log("regulationId :" + parentNode.regulationId);
-                            console.log("元素类型 :" + nodes[0].classType)
-                            console.log("元素id :" + _this.elementId)
 
                             $("#mainTbody").children().remove();
                             $("#addiTbody").children().remove();
@@ -386,11 +381,6 @@ var app = new Vue({
                                     }
                                 }
                             });
-
-
-                            console.log("regulationId :" + parentNode.regulationId);
-                            console.log("元素类型 :" + nodes[0].classType)
-                            console.log("元素id :" + _this.elementId)
                             if("webedit" == classType){
                                 if(regulationId != null){
                                     $.ajax({
@@ -1411,7 +1401,6 @@ var app = new Vue({
                     "elements": elements
                 }),
                 success: function (data) {
-                    console.info(data);
                     if (data.respCode == "0000") {
                         $('#successModalEle').modal();
                         _this.getElementTree();
@@ -1646,8 +1635,6 @@ var app = new Vue({
                     classType = nodes[0].classType,
                     databoj = {};
                 databoj.regulationId = regulationId;
-                console.log(nodes[0])
-                console.log(elementId)
                     
             }
             var rEleName = $('#rEleName').val(),
@@ -2028,7 +2015,6 @@ var app = new Vue({
                                 _this.selectedScript = 0;
                             }
                         } else {
-                            console.log("1________________"+flag)
                             if(flag === 1){ return }
                             Vac.alert(data.respMsg);
                         }
@@ -2132,10 +2118,6 @@ var app = new Vue({
                                     row.id = Symbol()
                                     if(_this.functionsList[operationRow.elementWidget]){
                                         row.functions = _this.functionsList[operationRow.elementWidget];
-                                        console.log('11111111111111111111111')
-                                        console.log(_this.functionsList)
-                                        console.log(operationRow.elementWidget)
-                                        console.log(row.functions)
                                     }
                                     else{
                                         Vac.ajax({
@@ -2191,7 +2173,7 @@ var app = new Vue({
                         // {id:Symbol(), functions: [], operation: {element:'', ui: '',parameters:[{Name:'', Value: ''}]}}
                         _this.scriptLength = data.data.length
 
-                        for (var operationRow of data.data) {
+                        for (let operationRow of data.data) {
                             let row = {
                                 id: null,
                                 functions: [],
@@ -2205,10 +2187,6 @@ var app = new Vue({
                             row.id = Symbol()
                             if(_this.functionsList[operationRow.elementWidget]){
                                 row.functions = _this.functionsList[operationRow.elementWidget];
-                                console.log('11111111111111111111111')
-                                console.log(_this.functionsList)
-                                console.log(operationRow.elementWidget)
-                                console.log(row.functions)
                             }
                             else{
                                 Vac.ajax({
@@ -2358,16 +2336,13 @@ var app = new Vue({
         },
         setDrag() {
             var _this = this;
-            console.log("ayamaya");
             setTimeout(function () {
                 $("#sortable").sortable({
                     stop: (event, ui) => {
-                        console.log(ui)
                         if (+(ui.item[0].rowIndex - 1) === +ui.item[0].getAttribute('data-index')) {  // 如果没有改变顺序就return
                             return
                         }
                         // 拖拽停止后，改变绑定的数组中元素的顺序
-                        console.log(_this)
                         var target = ui.item[0].rowIndex - 1;
                         var start = ui.item[0].getAttribute('data-index');
                         if (target < 0) {
@@ -2400,7 +2375,6 @@ var app = new Vue({
         generateScriptString: function (arr) {
             var sendDataArray = [];
             var trs = Array.from(document.querySelectorAll('#sortable tr.before-operation-row '))
-            console.log(trs)
             for (var tr of trs) {
                 var UI = tr.querySelector('.operation-ui').innerHTML.replace(/^\"+|\"+$/g, "\"");
                 var element = tr.querySelector('.operation-element').innerHTML.replace(/^\"+|\"+$/g, "\"");
@@ -2481,7 +2455,6 @@ var app = new Vue({
         //参数化
         para: function () {
             var sendData = this.generateScriptString();
-            console.log(sendData);
             var _this = this;
             Vac.ajax({
                 url: address3 + 'scriptTemplate/scriptParameterized',
@@ -2618,8 +2591,7 @@ var app = new Vue({
         saveParam: function (event) {
             var target = $(event.target)
             var tbody = target.parents('.param-table')
-            console.log($('.param-row'))
-            console.log($('.param-row', tbody))
+            
 
             var parentRow = target.parents('table').parents('tr')
             var valueShows = $('.param-value-show', parentRow)
@@ -2630,7 +2602,6 @@ var app = new Vue({
                 data.Name = row.querySelector('.param-name').innerHTML
                 data.Value = row.querySelector('.param-value').innerHTML
                 valueShows[index].innerHTML = data.Value
-                console.log(data)
                 this.operationRows[parentRow.attr('data-index')].parameters.push(data)
             })
             this.cancelEditParam(event)
@@ -2740,10 +2711,8 @@ var app = new Vue({
                         parameterlist.push({ Name: para.name, Value: "" });
                     }
                 }
-                console.log({ functions, parameterlist })
                 return { functions, parameterlist };
             } catch (e) {
-                console.error(e);
                 // return { functions: [], parameterlist: [] };;
             }
         },
@@ -2786,7 +2755,6 @@ var app = new Vue({
                     type: 'post',
                     dataType: 'json',
                     success: function (data) {
-                        console.log(data)
                         if (data.respCode === '0000' && data.omMethodRespDTOList) {
                             var { functions, parameterlist } = _this.setFunctionAndParameter(data.omMethodRespDTOList);
                             function getNewRow(newR, objIndex, objs){
@@ -2796,8 +2764,6 @@ var app = new Vue({
                             newRow.selectedFunc = functions.length ? functions[0].name : '';
                             newRow.parameters = parameterlist;
                             if(++finishNum == uilen){
-                                console.log(finishNum+"finishNum")
-                                console.log(uilen+"uilen")
                                 _this.nextTickFlag = true
                                 //_this.para()
                             }
