@@ -68,7 +68,6 @@ var app = new Vue({
             $(event.target).closest('li').remove();
         });
 
-        this.setDrag();
 
         //筛选用例select option
         let that=this;
@@ -947,51 +946,6 @@ var app = new Vue({
             }
 
         },
-        setDrag:function() {
-            var _this = this;
-            setTimeout(function () {
-                $( "#caseTable" ).sortable({  items: ".subShow",
-                    stop:function(event,ui){
-                        if (+(ui.item[0].rowIndex - 1) === +ui.item[0].getAttribute('data-index')) {  // 如果没有改变顺序就return
-                            return
-                        }
-                        var target = ui.item[0].rowIndex - 1;
-                        var start = ui.item[0].getAttribute('data-index');
-                        var testCaseId =ui.item[0].getAttribute('value');
-                        var testList=$("#caseTable").find(".subShow");
-                        console.log(testList[0]);
-                        var testCaseIdList=[];
-                        for(var i=0;i<testList.length;i++){
-                            if(testList[i].getAttribute('value')==testCaseId){
-                                testCaseIdList.push(testList[i].getAttribute('id'));
-                            }
-                        }
-                        console.log(testCaseIdList);
-                        $.ajax({
-                            url: address3+'testcase/changeFlowNodeOrder',
-                            type: 'post',
-                            contentType: 'application/json',
-                            data: JSON.stringify({
-                                "caseLibId": testCaseId,
-                                "testCaseActionIds":testCaseIdList
-                            }),
-                            success: function(data) {
-                                console.info(data);
-                                if (data.respCode!=0000) {
-                                    $('#failModal').modal();
-                                }
-                            },
-                            error: function() {
-                                $('#failModal').modal();
-                            }
-                        });
-
-                    }
-                });
-
-
-            }, 1000);
-        },
         //获取用例
         getCase:function(currentPage, pageSize, order, sort) {
             var _this = this;
@@ -1371,14 +1325,60 @@ var app = new Vue({
                             subTr.append(iconTd, checkTd, codeTd, autTd, transTd, compositeTd, useTd, scriptTd, authorTd, executorTd, reviewerTd, executeMethodTd, misssionTd, priorityTd, caseTypeTd, casePropertyTd, testPointTd);
                             flowTr.after(subTr);
                         }
-
                     }
                 });
                 $(e.target).removeClass('icon-angle-right').addClass('icon-angle-down');
             } else {
-                $(".subShow").css("display", "none");
+                $(".subShow").remove();
                 $(e.target).removeClass('icon-angle-down').addClass('icon-angle-right');
             }
+            that.setDrag();
+        },
+        //移动流程节点
+        setDrag:function() {
+            var _this = this;
+            setTimeout(function () {
+                $( "#caseTable" ).sortable({  items: ".subShow",
+                    stop:function(event,ui){
+                        // if (+(ui.item[0].rowIndex - 1) === +ui.item[0].getAttribute('data-index')) {  // 如果没有改变顺序就return
+                        //     return
+                        // }
+                        var target = ui.item[0].rowIndex - 1;
+                        var start = ui.item[0].getAttribute('data-index');
+                        var testCaseId =ui.item[0].getAttribute('value');
+                        var testList=$("#caseTable").find(".subShow");
+                        console.log(testList);
+                        var testCaseIdList=[];
+                        for(var i=0;i<testList.length;i++){
+                            if(testList[i].getAttribute('value')==testCaseId){
+                                testCaseIdList.push(testList[i].getAttribute('id'));
+                            }
+                        }
+                        console.log(testCaseIdList);
+                        $.ajax({
+                            url: address3+'testcase/changeFlowNodeOrder',
+                            type: 'post',
+                            contentType: 'application/json',
+                            data: JSON.stringify({
+                                "caseLibId": testCaseId,
+                                "testCaseActionIds":testCaseIdList
+                            }),
+                            success: function(data) {
+                                console.info(data);
+                                if (data.respCode!=0000) {
+                                    $('#failModal').modal();
+                                }
+                            },
+                            error: function() {
+                                $('#failModal').modal();
+                            }
+                        });
+
+                    }
+                });
+
+
+            }, 1000);
         },
         ///删除流程节点
         deleteNode: function(){

@@ -35,10 +35,9 @@ var app = new Vue({
         //     _this.classClick();
         // });
         $('#methodSelect').change(function () {
-            _this.getElementTree();
-            _this.detailTabFresh();
-            _this.getObjTree();
-
+            // _this.getElementTree();
+            // _this.detailTabFresh();
+            // _this.getObjTree();
             _this.getScriptTemplate();
         });
 
@@ -121,7 +120,7 @@ var app = new Vue({
             var classId = $("#classSelect").find("option:selected").val();
             var _this = this;
             $.ajax({
-                url: address3 + '/omMethod/queryAutDirectOmMethods',
+                url: address3 + 'arcClass/queryArcVisibleOmMethods',
                 type: 'post',
                 contentType: 'application/json',
                 data: JSON.stringify({
@@ -130,7 +129,7 @@ var app = new Vue({
                 success: function (data) {
                     //         // $('#methodProp').children().remove();
                     if (data.respCode === '0000') {
-                        var methodList = data.omMethodRespDTOList;
+                        var methodList = data.arcMethodRespDTOList;
                         _this.methodList = methodList;
                         var str = "";
                         for (var i = 0; i < methodList.length; i++) {
