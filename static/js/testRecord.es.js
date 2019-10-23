@@ -115,14 +115,20 @@ var app = new Vue({
             //页数变化时的回调
             // getRecord(_this.currentPage, _this.pageSize, 'id', 'asc');
         },
-        viewCase: function (sceneId=15, caseid, sourcechannel, item) {
-			var o = {
-				sceneId,
-                recorderStatus: '2',
-                item
-            }
-            var args = encodeURIComponent(JSON.stringify(o));
-            window.open('case-operation.html?testcaseId='+caseid+'&activeName=element-library')
+        viewCase: function (item ) {
+			var o ={
+				batchId:sessionStorage.getItem('batchId'),
+				sceneId: item.sceneId,
+				caseId:item.caseId,
+				testPhase:item.testPhase ,
+				testRound:item.testRound ,
+				flowNodeId:item.flownodeId,
+				// executeround: this.executionround,
+				sourcechannel: item.sourcechannel,
+			}
+			var args = (JSON.stringify(o));
+			sessionStorage.setItem("executeInstanceInfo",args)
+            window.open('case-operation.html')
 			//window.open('case-operation.html?testcaseId='+caseid+'&activeName=exec-record&viewcaseargs='+args, 'case_record');
 		},
         //合并

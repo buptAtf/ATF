@@ -30,12 +30,29 @@ var execRecord = Vue.extend({
 	watch: {
 		queryData: function(newVal, oldVal) {
 			var me = this;
-			if (newVal) {
-				console.log(newVal)
-				console.log(oldVal)
-				me.caseId=newVal.caseId;
-				me.sceneId= newVal.sceneId;
-				me.batchId= newVal.batchId;
+			me.caseId=newVal.caseId;
+			me.sceneId= newVal.sceneId;
+			me.batchId= newVal.batchId;
+			if (newVal.flowNodeId == null) {
+				$.ajax({
+					url: address3+'testRecordController/querySingleRecordByCaseId',
+					type: 'post',
+					contentType: 'application/json',
+					data: JSON.stringify({
+					caseId: me.caseId,
+					sceneId:  me.sceneId ,
+					batchId:  me.batchId,
+					}),
+					success: function(res){
+						if(res.respCode == "0000"){
+							me.testRecord= res.recordEntity;
+							me.changeSrcDoc(address4 + res.recordEntity.resourcePath)
+						}
+						else{
+							Vac.alert(res.respMsg)
+						}
+					}
+				})
 			}
 		},
 		flownodeid: function(newVal, oldVal) {

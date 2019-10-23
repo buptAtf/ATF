@@ -1093,7 +1093,8 @@ var vBody = new Vue({
 			var that = this;
 			var o = {
 				batchId:that.batchId,
-				sceneId, caseId,
+				sceneId,
+				caseId,
 				testPhase:testPhase || this.testphaseValue,
 				testRound:testRound || this.testroundValue,
 				flowNodeId,
