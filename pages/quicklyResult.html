@@ -247,8 +247,8 @@
                                             <input type="checkbox" v-model="checked" v-on:click="" name="chk_all" id="chk_all" />
                                         </th>
                                         <th class="text-center">场景名称</th>
-                                        <th class="text-center">测试阶段</th>
-                                        <th class="text-center">测试轮次</th>
+                                        <!-- <th class="text-center">测试阶段</th>
+                                        <th class="text-center">测试轮次</th> -->
                                         <th class="text-center">执行轮次</th>
                                         <th class="text-center" date-order="casecode" date-sort="asc" onclick="myResort(this)">用例编号&nbsp;<span class="icon-sort-down" aria-hidden="true"></span></th>
                                         <th class="text-center">节点名称</th>
@@ -266,8 +266,8 @@
                                             <input type="checkbox" v-model="" name="chk_list" id="{{item.id}}" />
                                         </td>
                                         <td class="center" width="5%">{{ item.sceneName }}</td>
-                                        <td class="center" width="10%">{{ item.testPhase }}</td>
-                                        <td width="">{{ item.testRound }}</td>
+                                        <!-- <td class="center" width="10%">{{ item.testPhase }}</td>
+                                        <td width="">{{ item.testRound }}</td> -->
                                         <td class="" width="">{{item.executeRound}}</td>
                                         <td class="" width="">{{item.casecode}}</td>
                                         <td class="" width="">{{item.flownodeName}}</td>
