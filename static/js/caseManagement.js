@@ -1289,7 +1289,7 @@ var app = new Vue({
                         that.subCaseList = data.testcaseActionViewList;
                         // console.log(that.subCaseList);
                         for (var i = that.subCaseList.length-1; i >-1; i--) {
-                            var subTr = $("<tr class='subShow' track-by='id' id="+that.subCaseList[i].id+" data-index="+i+" value="+flowId+"></tr>"),
+                            var subTr = $("<tr class='subShow'style='background-color: #f9f9f9' track-by='id' id="+that.subCaseList[i].id+" data-index="+i+" value="+flowId+"></tr>"),
                                 iconTd = $("<td class='move'> <a style='color:tomato' class='icon-move'></a></td>"),
                                 checkTd = $("<td><input type='checkbox' id="+that.subCaseList[i].id+" name='chksub_list'/></td>"),
                                 codeTd = $("<td></td>"),
