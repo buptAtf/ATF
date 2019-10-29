@@ -158,7 +158,8 @@
                                     <tbody id="sceneTable">
                                         <tr class="odd gradeX" v-for="scene in sceneList" id="{{scene.batchId}}">
                                             <td class="center " width="" :data-id="scene.batchId">
-                                                <button class="btn btn-xs btn-success" @click="getRecord(scene.batchId,scene.testPlan)">记录单</button>
+                                                <button class="btn btn-xs btn-success" @click="getRecord(scene.batchId,scene.testPlan)">查看记录单</button>
+                                                <button class="btn btn-xs btn-success" style=" margin-top: 5px;" @click="delete(scene.batchId)">归档</button>
                                             </td>
                                             <td class="center " width="">{{ scene.startUser }}</td>
                                             <!-- <td class="center " width="">{{ scene.createDatze }}</td> -->

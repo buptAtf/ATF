@@ -77,7 +77,32 @@ var app = new Vue({
         $('.3-ul').css({display: 'block'})
         $('.3-8').css({color: '#ff6c60'})
     },
-    methods: {        //时间格式化
+    methods: {
+        // 归档
+        delete(batchId){
+            $.ajax({
+                url: address3 + 'testRecordController/batchSaveTestRecord',
+                type: 'post',
+                contentType: 'application/json',
+                data: JSON.stringify({
+                    batchId
+                }),
+                success: function(data) {
+                    console.log(data);
+                    if (data.respCode == '0000') {
+                        $('#successModal').modal();
+                        _this.queryExecutionRecord(1, _this.listnum, 'id', 'asc');    
+                    } else {
+                        $('#failModal').modal();
+                    }
+                },
+                error: function() {
+                    $('#failModal').modal();
+                }
+            });
+        },
+        
+        //时间格式化
         formatDate(date){
             if(date){
                 var date = new Date(date);
