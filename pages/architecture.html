@@ -10,10 +10,9 @@
     <title>自动化构件管理</title>
     <style>
         .tableDiv {
-            width: 700px;
-            margin-left: 150px;
+            width: 66.9%;
+            margin-left: 16.5%;
         }
-
         .sectionHeight {
             height: 1000px;
             overflow: auto;
@@ -162,21 +161,22 @@
                                 </div>
                                 <div class="form-group">
                                     <label class="col-xs-2 control-label">展示方法信息</label>
-                                    <div class="col-xs-2">
+                                    <div class="col-xs-3">
                                     <select class="selectpicker form-control" id="methodSelect" v-model="methodId"
                                             data-live-search="true">
-
                                     </select>
                                     </div>
+                                    <div class="col-xs-1"></div>
                                     <div class="col-xs-4">
+                                         <input type="button" class="btn btn-primary" @click="methodClick()" value="确定">
+                                        <input type="button" class="btn btn-primary" @click="methodClick2()"
+                                               value="取消">
+                                           &nbsp;&nbsp;
                                         <a class="btn btn-white btn-sm" data-toggle="modal"
                                            @click="addShowMethod"><i class="icon-plus"></i></a>
                                         <a class="btn btn-white btn-sm" @click="delMethod"><i
                                                 class="icon-trash"></i></a>
-                                        &nbsp;&nbsp;
-                                        <input type="button" class="btn btn-primary" @click="methodClick()" value="确定">
-                                        <input type="button" class="btn btn-primary" @click="methodClick2()"
-                                                value="取消">
+
                                     </div>
                                 </div>
                                 <!-- <div class="form-group"> -->
@@ -191,12 +191,15 @@
                                 <!--  <input id="input-id" type="file" class="file" data-preview-file-type="text">
                              </div> -->
                                 <!-- </div> -->
+                                <div class="form-group">
+                                    <br/>
+                                 <label class="col-lg-2 control-label">运行时参数</label>
                                 <div class="tableDiv" id="tableSection">
-                                    <div class="property">
-                                        运行时参数
+                                    <div  class="property">
                                         <a class="btn btn-white btn-sm pull-right"
                                            @click="addRuntimeArgsPara($event)"><i class="icon-plus"></i></a>
-                                        <a class="btn btn-white btn-sm pull-right"
+                                        &nbsp;
+                                        <a class="btn btn-white btn-sm  pull-right"
                                            @click="delRuntimeArgsPara($event)"><i class="icon-minus"></i></a>
                                     </div>
                                     <div class="property">
@@ -220,1136 +223,1152 @@
                                             </tbody>
                                         </table>
                                     </div>
-                                    <div class="property">
-                                        支持的识别属性
-                                        <a class="btn btn-white btn-sm pull-right" @click="addSupRecPara($event)"><i
-                                                class="icon-plus"></i></a>
-                                        <a class="btn btn-white btn-sm pull-right" @click="delSupRecPara($event)"><i
-                                                class="icon-minus"></i></a>
                                     </div>
-                                    <div class="property">
-                                        <table class="table table-bordered c-right-table"
-                                               id="supportedRecognitionTable">
-                                            <thead>
-                                            <tr>
-                                                <th style="width:5%"></th>
-                                                <th id="name">属性名</th>
-                                                <th id="value">属性值</th>
-                                            </tr>
-                                            </thead>
-                                            <tbody id="supRecTbody">
-                                            <tr>
-                                                <td>
-                                                    <input type="checkbox" name="supRec_list"/>
-                                                </td>
-                                                <td contenteditable="true"></td>
-                                                <td contenteditable="true"></td>
+                                    </div>
+                                    <div class="form-group">
+                                    <label class="col-lg-2 control-label"> 支持的识别属性</label>
+                                        <div class="tableDiv" id="tableSection">
+                                            <div class="property">
+                                                <a class="btn btn-white btn-sm pull-right"
+                                                   @click="addSupRecPara($event)"><i
+                                                        class="icon-plus"></i></a>
+                                                <a class="btn btn-white btn-sm pull-right"
+                                                   @click="delSupRecPara($event)"><i
+                                                        class="icon-minus"></i></a>
+                                            </div>
+                                            <div class="property">
+                                                <table class="table table-bordered c-right-table"
+                                                       id="supportedRecognitionTable">
+                                                    <thead>
+                                                    <tr>
+                                                        <th style="width:5%"></th>
+                                                        <th id="name">属性名</th>
+                                                        <th id="value">属性值</th>
+                                                    </tr>
+                                                    </thead>
+                                                    <tbody id="supRecTbody">
+                                                    <tr>
+                                                        <td>
+                                                            <input type="checkbox" name="supRec_list"/>
+                                                        </td>
+                                                        <td contenteditable="true"></td>
+                                                        <td contenteditable="true"></td>
 
-                                            </tr>
-                                            </tbody>
-                                        </table>
+                                                    </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
                                     </div>
+                                <div class="form-group">
+                                    <label class="col-lg-2 control-label">  自识别属性</label>
+                                    <div class="tableDiv" id="tableSection">
+                                        <div class="property">
+                                            <a class="btn btn-white btn-sm pull-right" @click="addSelfRecPara($event)"><i
+                                                    class="icon-plus"></i></a>
+                                            <a class="btn btn-white btn-sm pull-right" @click="delSelfRecPara($event)"><i
+                                                    class="icon-minus"></i></a>
+                                        </div>
+                                        <div class="property">
+                                            <table class="table table-bordered c-right-table" id="selfRecTable">
+                                                <thead>
+                                                <tr>
+                                                    <th style="width:5%"></th>
+                                                    <th id="name">属性名</th>
+                                                    <th id="value">属性值</th>
+                                                </tr>
+                                                </thead>
+                                                <tbody id="selfRecTbody">
+                                                <tr>
+                                                    <td>
+                                                        <input type="checkbox" name="selfRec_list"/>
+                                                    </td>
+                                                    <td contenteditable="true"></td>
+                                                    <td contenteditable="true"></td>
 
-                                    <div class="property">
-                                        自识别属性
-                                        <a class="btn btn-white btn-sm pull-right" @click="addSelfRecPara($event)"><i
-                                                class="icon-plus"></i></a>
-                                        <a class="btn btn-white btn-sm pull-right" @click="delSelfRecPara($event)"><i
-                                                class="icon-minus"></i></a>
+                                                </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
                                     </div>
-                                    <div class="property">
-                                        <table class="table table-bordered c-right-table" id="selfRecTable">
-                                            <thead>
-                                            <tr>
-                                                <th style="width:5%"></th>
-                                                <th id="name">属性名</th>
-                                                <th id="value">属性值</th>
-                                            </tr>
-                                            </thead>
-                                            <tbody id="selfRecTbody">
-                                            <tr>
-                                                <td>
-                                                    <input type="checkbox" name="selfRec_list"/>
-                                                </td>
-                                                <td contenteditable="true"></td>
-                                                <td contenteditable="true"></td>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-lg-2 control-label">    辅助识别属性</label>
+                                    <div class="tableDiv" id="tableSection">
+                                        <div class="property">
+                                            <a class="btn btn-white btn-sm pull-right" @click="addAssistRecPara($event)"><i
+                                                    class="icon-plus"></i></a>
+                                            <a class="btn btn-white btn-sm pull-right" @click="delAssistRecPara($event)"><i
+                                                    class="icon-minus"></i></a>
+                                        </div>
+                                        <div class="property">
+                                            <table class="table table-bordered m-right-table" id="assistRecTable">
+                                                <thead>
+                                                <tr>
+                                                    <th style="width:5%"></th>
+                                                    <th id="name">属性名</th>
+                                                    <th id="value">属性值</th>
+                                                </tr>
+                                                </thead>
+                                                <tbody id="assistRecTbody">
+                                                <tr>
+                                                    <td>
+                                                        <input type="checkbox" name="assistRec_list"/>
+                                                    </td>
+                                                    <td contenteditable="true"></td>
+                                                    <td contenteditable="true"></td>
 
-                                            </tr>
-                                            </tbody>
-                                        </table>
+                                                </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
                                     </div>
-                                    <div class="property">
-                                        辅助识别属性
-                                        <a class="btn btn-white btn-sm pull-right" @click="addAssistRecPara($event)"><i
-                                                class="icon-plus"></i></a>
-                                        <a class="btn btn-white btn-sm pull-right" @click="delAssistRecPara($event)"><i
-                                                class="icon-minus"></i></a>
-                                    </div>
-                                    <div class="property">
-                                        <table class="table table-bordered m-right-table" id="assistRecTable">
-                                            <thead>
-                                            <tr>
-                                                <th style="width:5%"></th>
-                                                <th id="name">属性名</th>
-                                                <th id="value">属性值</th>
-                                            </tr>
-                                            </thead>
-                                            <tbody id="assistRecTbody">
-                                            <tr>
-                                                <td>
-                                                    <input type="checkbox" name="assistRec_list"/>
-                                                </td>
-                                                <td contenteditable="true"></td>
-                                                <td contenteditable="true"></td>
-
-                                            </tr>
-                                            </tbody>
-                                        </table>
-                                    </div>
+                                </div>
                                     <div class="row">
-                                        <a class="btn btn-info rightBtn" @click="updateClass">保存</a>
+                                        <a class="btn btn-info rightBtn" @click="updateClass" style="margin-left:79.3%">保存</a>
                                     </div>
+                                <br><br><br>
                                 </div>
 
-                                <!-- <div class="property">
-                                    对象识别属性列表
-                                </div>
-                                <div class="property">
-                                    <table class="table table-bordered">
-                                        <thead>
-                                            <tr>
-                                                <th style="width:20%">属性名</th>
-                                                <th >属性值</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody id="recProp">
-                                            <tr>
-                                                <td>runtime_args</td>
-                                                <td name="runtimeArgs" contenteditable="true"></td>
-                                            </tr>
-                                            <tr>
-                                                <td>self_recognition_pros</td>
-                                                <td name="selfRecognitionPros" contenteditable="true"></td>
-                                            </tr>
-                                            <tr>
-                                                <td>assist_recognition_pros</td>
-                                                <td name="assistRecognitionPros"  contenteditable="true"></td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                </div> -->
-                            </form>
+                        <!-- <div class="property">
+                            对象识别属性列表
+                        </div>
+                        <div class="property">
+                            <table class="table table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th style="width:20%">属性名</th>
+                                        <th >属性值</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="recProp">
+                                    <tr>
+                                        <td>runtime_args</td>
+                                        <td name="runtimeArgs" contenteditable="true"></td>
+                                    </tr>
+                                    <tr>
+                                        <td>self_recognition_pros</td>
+                                        <td name="selfRecognitionPros" contenteditable="true"></td>
+                                    </tr>
+                                    <tr>
+                                        <td>assist_recognition_pros</td>
+                                        <td name="assistRecognitionPros"  contenteditable="true"></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div> -->
+                        </form>
 
                         </div>
-                    </section>
+        </section>
+</div>
+<!-- class end -->
+<!-- method start -->
+<div class="col-lg-6 ">
+    <section class="panel sectionHeight" id="methodSection" style="display:none;">
+        <header class="panel-heading">
+            {{methodName}}
+        </header>
+        <div class="methodSec">
+            <form class="form-horizontal panel-pad" id="methodForm">
+                <div class="form-group">
+                    <label class="col-lg-2 control-label">名称</label>
+                    <div class="col-lg-3">
+                        <input type="text" name="name" class="form-control" value="">
+                    </div>
+                    <label class="col-lg-2 control-label">描述</label>
+                    <div class="col-lg-3">
+                        <input type="text" name="description" class="form-control" value="">
+                    </div>
                 </div>
-                    <!-- class end -->
-                    <!-- method start -->
-                <div class="col-lg-6 ">
-                    <section class="panel sectionHeight" id="methodSection" style="display:none;">
-                        <header class="panel-heading">
-                            {{methodName}}
-                        </header>
-                        <div class="methodSec">
-                            <form class="form-horizontal panel-pad" id="methodForm">
-                                <div class="form-group">
-                                    <label class="col-lg-2 control-label">名称</label>
-                                    <div class="col-lg-3">
-                                        <input type="text" name="name" class="form-control" value="">
-                                    </div>
-                                    <label class="col-lg-2 control-label">描述</label>
-                                    <div class="col-lg-3">
-                                        <input type="text" name="description" class="form-control" value="">
-                                    </div>
-                                </div>
-                                <!-- <div class="form-group">
-                                    <label class="col-lg-2 control-label">创建者</label>
-                                    <div class="col-lg-3">
-                                        <input type="text" name="creator" class="form-control" value="" disabled>
-                                    </div>
-                                    <label class="col-lg-2 control-label">创建时间</label>
-                                    <div class="col-lg-3">
-                                        <input type="text" name="createTime" class="form-control" value="" disabled>
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label class="col-lg-2 control-label">修改者</label>
-                                    <div class="col-lg-3">
-                                        <input type="text" name="modifier" class="form-control" value="" disabled>
-                                    </div>
-                                    <label class="col-lg-2 control-label">修改时间</label>
-                                    <div class="col-lg-3">
-                                        <input type="text" name="modifiedTime" class="form-control" value="" disabled>
-                                    </div>
-                                </div> -->
-                                <div class="form-group">
-                                    <label class="col-lg-2 control-label">继承标志</label>
-                                    <div class="col-lg-3">
-                                        <select class="form-control" size="1" name="overrideFlag"
-                                                style="margin-top:5px">
-                                            <option value="">-请选择-</option>
-                                            <option value="1">自身方法</option>
-                                            <option value="4">禁用</option>
-                                        </select>
-                                    </div>
-                                    <label class="col-lg-2 control-label">继承可见性</label>
-                                    <div class="col-lg-3">
-                                        <select class="form-control" size="1" class="visibilityFlag"
-                                                name="visibilityFlag"
-                                                style="margin-top:5px">
-                                            <option value="">-请选择-</option>
-                                            <option value="1">公共</option>
-                                            <option value="0">私有</option>
-                                        </select>
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label class="col-lg-2 control-label">标志参数化列</label>
-                                    <div class="col-lg-3">
-                                        <input type="text" name="labelArgument" class="form-control">
-                                    </div>
-                                </div>
-                                <div class="property">
-                                    参数列表
-                                    <a class="btn btn-white btn-sm pull-right" @click="addMethodPara($event)"><i
-                                            class="icon-plus"></i></a>
-                                    <a class="btn btn-white btn-sm pull-right" @click="delMethodPara($event)"><i
-                                            class="icon-minus"></i></a>
-                                </div>
-                                <div class="property">
-                                    <table class="table table-bordered m-right-table" id="pTable">
-                                        <thead>
-                                        <tr>
-                                            <th style="width:5%"></th>
-                                            <th id="name">参数名称</th>
-                                            <th id="type">值类型</th>
-                                            <th id="parameterizeColumn">参数化列</th>
-                                            <th id="desc">描述</th>
-                                        </tr>
-                                        </thead>
-                                        <tbody id="methodPara">
-                                        <tr v-for="item in paraList">
-                                            <td>
-                                                <input type="checkbox" name="chk_list"/>
-                                            </td>
-                                            <td contenteditable="true">{{item.name}}</td>
-                                            <td contenteditable="true">{{item.type}}</td>
-                                            <td contenteditable="true">{{item.parameterizeColumn}}</td>
-                                            <td contenteditable="true">{{item.desc}}</td>
-                                        </tr>
-                                        </tbody>
-                                    </table>
-                                </div>
-                                <div class="form-group">
-                                    <label class="col-lg-2 control-label">等待时间</label>
-                                    <div class="col-lg-3">
-                                        <input type="text" name="waittime" class="form-control">
-                                    </div>
-                                    <label class="col-lg-2 control-label">超时时间</label>
-                                    <div class="col-lg-3">
-                                        <input type="text" name="timeout" class="form-control">
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label class="col-lg-2 control-label">目标代码</label>
-                                    <div class="col-lg-8">
+                <!-- <div class="form-group">
+                    <label class="col-lg-2 control-label">创建者</label>
+                    <div class="col-lg-3">
+                        <input type="text" name="creator" class="form-control" value="" disabled>
+                    </div>
+                    <label class="col-lg-2 control-label">创建时间</label>
+                    <div class="col-lg-3">
+                        <input type="text" name="createTime" class="form-control" value="" disabled>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-lg-2 control-label">修改者</label>
+                    <div class="col-lg-3">
+                        <input type="text" name="modifier" class="form-control" value="" disabled>
+                    </div>
+                    <label class="col-lg-2 control-label">修改时间</label>
+                    <div class="col-lg-3">
+                        <input type="text" name="modifiedTime" class="form-control" value="" disabled>
+                    </div>
+                </div> -->
+                <div class="form-group">
+                    <label class="col-lg-2 control-label">继承标志</label>
+                    <div class="col-lg-3">
+                        <select class="form-control" size="1" name="overrideFlag"
+                                style="margin-top:5px">
+                            <option value="">-请选择-</option>
+                            <option value="1">自身方法</option>
+                            <option value="4">禁用</option>
+                        </select>
+                    </div>
+                    <label class="col-lg-2 control-label">继承可见性</label>
+                    <div class="col-lg-3">
+                        <select class="form-control" size="1" class="visibilityFlag"
+                                name="visibilityFlag"
+                                style="margin-top:5px">
+                            <option value="">-请选择-</option>
+                            <option value="1">公共</option>
+                            <option value="0">私有</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-lg-2 control-label">标志参数化列</label>
+                    <div class="col-lg-3">
+                        <input type="text" name="labelArgument" class="form-control">
+                    </div>
+                </div>
+                <div class="property">
+                    参数列表
+                    <a class="btn btn-white btn-sm pull-right" @click="addMethodPara($event)"><i
+                            class="icon-plus"></i></a>
+                    <a class="btn btn-white btn-sm pull-right" @click="delMethodPara($event)"><i
+                            class="icon-minus"></i></a>
+                </div>
+                <div class="property">
+                    <table class="table table-bordered m-right-table" id="pTable">
+                        <thead>
+                        <tr>
+                            <th style="width:5%"></th>
+                            <th id="name">参数名称</th>
+                            <th id="type">值类型</th>
+                            <th id="parameterizeColumn">参数化列</th>
+                            <th id="desc">描述</th>
+                        </tr>
+                        </thead>
+                        <tbody id="methodPara">
+                        <tr v-for="item in paraList">
+                            <td>
+                                <input type="checkbox" name="chk_list"/>
+                            </td>
+                            <td contenteditable="true">{{item.name}}</td>
+                            <td contenteditable="true">{{item.type}}</td>
+                            <td contenteditable="true">{{item.parameterizeColumn}}</td>
+                            <td contenteditable="true">{{item.desc}}</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="form-group">
+                    <label class="col-lg-2 control-label">等待时间</label>
+                    <div class="col-lg-3">
+                        <input type="text" name="waittime" class="form-control">
+                    </div>
+                    <label class="col-lg-2 control-label">超时时间</label>
+                    <div class="col-lg-3">
+                        <input type="text" name="timeout" class="form-control">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-lg-2 control-label">目标代码</label>
+                    <div class="col-lg-8">
                                     <textarea type="text" name="targetCodeContent" class="form-control"
                                               rows='15'></textarea>
-                                    </div>
-                                </div>
-                                <!-- <div class="form-group">
-                                    <label class="col-lg-2 control-label">mtype</label>
-                                    <div class="col-lg-3">
-                                        <input type="text" name="mtype" class="form-control" value="">
-                                    </div>
-                                    <label class="col-lg-2 control-label">author</label>
-                                    <div class="col-lg-3">
-                                        <input type="text" name="author" class="form-control" value="">
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label class="col-lg-2 control-label">outputvaluedesc</label>
-                                    <div class="col-lg-3">
-                                        <input type="text" name="outputvaluedesc" class="form-control" value="">
-                                    </div>
-                                    <label class="col-lg-2 control-label">inputargdesc</label>
-                                    <div class="col-lg-3">
-                                        <input type="text" name="inputargdesc" class="form-control" value="">
-                                    </div>
-                                </div> -->
-                                <!--    <div class="form-group">
-                                    <label class="col-lg-2 control-label">有无参数</label>
-                                    <div class="col-lg-3">
-                                        <select class="form-control" name="isPara">
-                                            <option>有</option>
-                                            <option>无</option>
-                                        </select>
-                                    </div>
-                                </div> -->
-
-                                <!-- <div class="form-group">
-                                    <label class="col-lg-2 control-label">等待时间</label>
-                                    <div class="col-lg-3">
-                                        <input type="text" name="waittime" class="form-control" value="">
-                                    </div>
-                                    <label class="col-lg-2 control-label">超时时间</label>
-                                    <div class="col-lg-3">
-                                        <input type="text" name="timeout" class="form-control" value="">
-                                    </div>
-                                </div> -->
-                                <!--  <div class="form-group">
-                                     <label class="col-lg-2 control-label">目标代码</label>
-                                     <div class="col-lg-9">
-                                         <textarea class="form-control" rows="10" name="objectcode"></textarea>
-                                     </div>
-                                 </div> -->
-                            </form>
-                            <a class="btn btn-info rightBtn" @click="updateMethod">保存</a>
-                        </div>
-                    </section>
-                </div>
-                    <!-- method end -->
-                    </span>
-            </div>
-            <!--<div class="row">-->
-            <!--<div class="col-lg-3">-->
-            <!--<section class="panel tree-panel">-->
-            <!--<header class="panel-heading">-->
-            <!--开发架构-->
-            <!--<div class="archi-btn">-->
-            <!--<a class="btn btn-white btn-sm" data-toggle="modal" href="#addArchModal"><i-->
-            <!--class="icon-plus" @click="getArchiList"></i></a>-->
-            <!--&lt;!&ndash; <a class="btn btn-white btn-sm " @click="delArchi"><i class="icon-remove"></i></a> &ndash;&gt;-->
-            <!--<a class="btn btn-white btn-sm " data-toggle="modal" @click="beforeUpdateArchi"><i-->
-            <!--class="icon-edit"></i></a>-->
-            <!--</div>-->
-            <!--</header>-->
-            <!--&lt;!&ndash;<div id="menuContent" class="menuContent treeMenu">&ndash;&gt;-->
-            <!--&lt;!&ndash;<h5 class="archi-title">抽象架构</h5>&ndash;&gt;-->
-            <!--&lt;!&ndash;<ul id="archiTree" class="ztree tree"></ul>&ndash;&gt;-->
-            <!--&lt;!&ndash;&lt;!&ndash; <h5 class="archi-title">全局方法</h5>&ndash;&gt;-->
-            <!--&lt;!&ndash;<ul id="gmethodTree" class="ztree tree"></ul> &ndash;&gt;&ndash;&gt;-->
-            <!--&lt;!&ndash;</div>&ndash;&gt;-->
-            <!--</section>-->
-            <!--</div>-->
-            <!--<div class="col-lg-3 archi">-->
-            <!--<section class="panel" id="">-->
-            <!--<header class="panel-heading">-->
-            <!--{{archiName}}-->
-            <!--</header>-->
-            <!--<div class="elementContent" style="height:835px; overflow:auto">-->
-            <!--<section class="panel">-->
-            <!--<div class="property">-->
-            <!--构件类型-->
-            <!--<a class="btn btn-white btn-sm pull-right" data-toggle="modal"-->
-            <!--href="#addClassModal"><i class="icon-plus"></i></a>-->
-            <!--<a class="btn btn-white btn-sm pull-right" @click="delClass($event)"><i-->
-            <!--class="icon-minus"></i></a>-->
-            <!--</div>-->
-            <!--<div class="property table-responsive">-->
-            <!--<table class="table table-bordered">-->
-            <!--<thead>-->
-            <!--<tr>-->
-            <!--<th style="width:5%"></th>-->
-            <!--<th style="width:25%">继承标志</th>-->
-            <!--<th style="width:25%">英文名称</th>-->
-            <!--<th>中文名称</th>-->
-            <!--</tr>-->
-            <!--</thead>-->
-            <!--<tbody id="classProp">-->
-            <!--<tr>-->
-            <!--<td style="width:5%">-->
-            <!--<input type="radio" name="class"/>-->
-            <!--</td>-->
-            <!--<td style="width:25%"></td>-->
-            <!--<td style="width:25%"></td>-->
-            <!--<td></td>-->
-            <!--</tr>-->
-            <!--</tbody>-->
-            <!--</table>-->
-            <!--</div>-->
-            <!--<div class="property">-->
-            <!--方法-->
-            <!--<a class="btn btn-white btn-sm pull-right" data-toggle="modal"-->
-            <!--href="#addMethodModal"><i class="icon-plus"></i></a>-->
-            <!--<a class="btn btn-white btn-sm pull-right" @click="delMethod"><i-->
-            <!--class="icon-minus"></i></a>-->
-            <!--</div>-->
-            <!--<div class="property table-responsive">-->
-            <!--<table class="table table-bordered">-->
-            <!--<thead>-->
-            <!--<tr>-->
-            <!--<th style="width:5%"></th>-->
-            <!--<th style="width:25%">继承标志</th>-->
-            <!--<th style="width:25%">名称</th>-->
-            <!--<th>描述</th>-->
-            <!--</tr>-->
-            <!--</thead>-->
-            <!--<tbody id="methodProp">-->
-            <!--<tr>-->
-            <!--<td style="width:5%">-->
-            <!--<input type="radio" name="method"/>-->
-            <!--</td>-->
-            <!--<td style="width:25%"></td>-->
-            <!--<td style="width:25%"></td>-->
-            <!--<td></td>-->
-            <!--</tr>-->
-            <!--</tbody>-->
-            <!--</table>-->
-            <!--</div>-->
-            <!--</section>-->
-            <!--</div>-->
-            <!--</section>-->
-            <!--</div>-->
-            <!--&lt;!&ndash; class start &ndash;&gt;-->
-            <!--<div class="col-lg-6">-->
-            <!--<section class="panel" id="classSection">-->
-            <!--<header class="panel-heading">-->
-            <!--{{className}}-->
-            <!--</header>-->
-            <!--<div class="rightContent">-->
-            <!--<form class="form-horizontal panel-pad" id="classForm">-->
-            <!--<div class="form-group">-->
-            <!--<label class="col-lg-2 control-label">英文名称</label>-->
-            <!--<div class="col-lg-3">-->
-            <!--<input type="text" name="name" class="form-control" value="">-->
-            <!--</div>-->
-            <!--<label class="col-lg-2 control-label">中文名称</label>-->
-            <!--<div class="col-lg-3">-->
-            <!--<input type="text" name="chsName" class="form-control" value="">-->
-            <!--</div>-->
-            <!--</div>-->
-            <!--<div class="form-group">-->
-            <!--<label class="col-lg-2 control-label">描述</label>-->
-            <!--<div class="col-lg-3">-->
-            <!--<input type="text" name="descShort" class="form-control" value="">-->
-            <!--</div>-->
-            <!--<label class="col-lg-2 control-label">默认方法</label>-->
-            <!--<div class="col-lg-3">-->
-            <!--<select class="form-control" size="1" id="defaultMethodSelect"-->
-            <!--style="margin-top:5px">-->
-            <!--<option value="">-选择默认方法-</option>-->
-            <!--<option v-for="item in methodList" value="{{item.id}}">{{item.name}}-->
-            <!--</option>-->
-            <!--</select>-->
-            <!--</div>-->
-            <!--</div>-->
-
-            <!--<div class="form-group">-->
-            <!--<label class="col-lg-2 control-label">继承标志</label>-->
-            <!--<div class="col-lg-3">-->
-            <!--<select class="form-control" size="1" id="overideFlag" style="margin-top:5px">-->
-            <!--<option value="">请选择</option>-->
-            <!--<option value="1">自身构件</option>-->
-            <!--<option value="4">禁用</option>-->
-            <!--<option value="5">重定义</option>-->
-            <!--</select>-->
-            <!--</div>-->
-            <!--<label class="col-lg-2 control-label">继承可见性</label>-->
-            <!--<div class="col-lg-3">-->
-            <!--<select class="form-control" size="1" id="visibilityFlag"-->
-            <!--style="margin-top:5px">-->
-            <!--<option value="">-请选择-</option>-->
-            <!--<option value="1">公共</option>-->
-            <!--<option value="0">私有</option>-->
-            <!--</select>-->
-            <!--</div>-->
-            <!--</div>-->
-
-            <!--<div class="property">-->
-            <!--运行时参数-->
-            <!--<a class="btn btn-white btn-sm pull-right" @click="addRuntimeArgsPara($event)"><i-->
-            <!--class="icon-plus"></i></a>-->
-            <!--<a class="btn btn-white btn-sm pull-right" @click="delRuntimeArgsPara($event)"><i-->
-            <!--class="icon-minus"></i></a>-->
-            <!--</div>-->
-            <!--<div class="property">-->
-            <!--<table class="table table-bordered c-right-table" id="runtimeArgsTable">-->
-            <!--<thead>-->
-            <!--<tr>-->
-            <!--<th style="width:5%"></th>-->
-            <!--<th id="name">属性名</th>-->
-            <!--<th id="value">属性值</th>-->
-            <!--</tr>-->
-            <!--</thead>-->
-            <!--<tbody id="runtimeArgsTbody">-->
-            <!--<tr>-->
-            <!--<td>-->
-            <!--<input type="checkbox" name="runtimeArgs_list"/>-->
-            <!--</td>-->
-            <!--<td contenteditable="true"></td>-->
-            <!--<td contenteditable="true"></td>-->
-            <!--</tr>-->
-            <!--</tbody>-->
-            <!--</table>-->
-            <!--</div>-->
-            <!--<div class="property">-->
-            <!--支持的识别属性-->
-            <!--<a class="btn btn-white btn-sm pull-right" @click="addSupRecPara($event)"><i-->
-            <!--class="icon-plus"></i></a>-->
-            <!--<a class="btn btn-white btn-sm pull-right" @click="delSupRecPara($event)"><i-->
-            <!--class="icon-minus"></i></a>-->
-            <!--</div>-->
-            <!--<div class="property">-->
-            <!--<table class="table table-bordered c-right-table" id="supportedRecognitionTable">-->
-            <!--<thead>-->
-            <!--<tr>-->
-            <!--<th style="width:5%"></th>-->
-            <!--<th id="name">属性名</th>-->
-            <!--<th id="value">属性值</th>-->
-            <!--</tr>-->
-            <!--</thead>-->
-            <!--<tbody id="supRecTbody">-->
-            <!--<tr>-->
-            <!--<td>-->
-            <!--<input type="checkbox" name="supRec_list"/>-->
-            <!--</td>-->
-            <!--<td contenteditable="true"></td>-->
-            <!--<td contenteditable="true"></td>-->
-            <!--</tr>-->
-            <!--</tbody>-->
-            <!--</table>-->
-            <!--</div>-->
-            <!--<div class="property">-->
-            <!--自识别属性-->
-            <!--<a class="btn btn-white btn-sm pull-right" @click="addSelfRecPara($event)"><i-->
-            <!--class="icon-plus"></i></a>-->
-            <!--<a class="btn btn-white btn-sm pull-right" @click="delSelfRecPara($event)"><i-->
-            <!--class="icon-minus"></i></a>-->
-            <!--</div>-->
-            <!--<div class="property">-->
-            <!--<table class="table table-bordered c-right-table" id="selfRecTable">-->
-            <!--<thead>-->
-            <!--<tr>-->
-            <!--<th style="width:5%"></th>-->
-            <!--<th id="name">属性名</th>-->
-            <!--<th id="value">属性值</th>-->
-            <!--</tr>-->
-            <!--</thead>-->
-            <!--<tbody id="selfRecTbody">-->
-            <!--<tr>-->
-            <!--<td>-->
-            <!--<input type="checkbox" name="selfRec_list"/>-->
-            <!--</td>-->
-            <!--<td contenteditable="true"></td>-->
-            <!--<td contenteditable="true"></td>-->
-            <!--</tr>-->
-            <!--</tbody>-->
-            <!--</table>-->
-            <!--</div>-->
-            <!--<div class="property">-->
-            <!--辅助识别属性-->
-            <!--<a class="btn btn-white btn-sm pull-right" @click="addAssistRecPara($event)"><i-->
-            <!--class="icon-plus"></i></a>-->
-            <!--<a class="btn btn-white btn-sm pull-right" @click="delAssistRecPara($event)"><i-->
-            <!--class="icon-minus"></i></a>-->
-            <!--</div>-->
-            <!--<div class="property">-->
-            <!--<table class="table table-bordered c-right-table" id="assistRecTable">-->
-            <!--<thead>-->
-            <!--<tr>-->
-            <!--<th style="width:5%"></th>-->
-            <!--<th id="name">属性名</th>-->
-            <!--<th id="value">属性值</th>-->
-            <!--</tr>-->
-            <!--</thead>-->
-            <!--<tbody id="assistRecTbody">-->
-            <!--<tr>-->
-            <!--<td>-->
-            <!--<input type="checkbox" name="assistRec_list"/>-->
-            <!--</td>-->
-            <!--<td contenteditable="true"></td>-->
-            <!--<td contenteditable="true"></td>-->
-            <!--</tr>-->
-            <!--</tbody>-->
-            <!--</table>-->
-            <!--</div>-->
-
-            <!--</form>-->
-            <!--<a class="btn btn-info rightBtn" @click="updateClass">保存</a>-->
-            <!--</div>-->
-            <!--</section>-->
-            <!--</div>-->
-            <!--&lt;!&ndash; class end &ndash;&gt;-->
-            <!--&lt;!&ndash; method start &ndash;&gt;-->
-            <!--<div class="col-lg-6">-->
-            <!--<section class="panel" id="methodSection" style="display:none;">-->
-            <!--<header class="panel-heading">-->
-            <!--{{methodName}}-->
-            <!--</header>-->
-            <!--<div class="rightContent">-->
-            <!--<form class="form-horizontal panel-pad" id="methodForm">-->
-            <!--<div class="form-group">-->
-            <!--<label class="col-lg-2 control-label">名称</label>-->
-            <!--<div class="col-lg-3">-->
-            <!--<input type="text" name="name" class="form-control" value="">-->
-            <!--</div>-->
-            <!--<label class="col-lg-2 control-label">描述</label>-->
-            <!--<div class="col-lg-3">-->
-            <!--<input type="text" name="description" class="form-control" value="">-->
-            <!--</div>-->
-            <!--</div>-->
-            <!--&lt;!&ndash; <div class="form-group">-->
-            <!--<label class="col-lg-2 control-label">创建者</label>-->
-            <!--<div class="col-lg-3">-->
-            <!--<input type="text" name="creator" class="form-control" value="" disabled>-->
-            <!--</div>-->
-            <!--<label class="col-lg-2 control-label">创建时间</label>-->
-            <!--<div class="col-lg-3">-->
-            <!--<input type="text" name="createTime" class="form-control" value="" disabled>-->
-            <!--</div>-->
-            <!--</div>-->
-            <!--<div class="form-group">-->
-            <!--<label class="col-lg-2 control-label">修改者</label>-->
-            <!--<div class="col-lg-3">-->
-            <!--<input type="text" name="modifier" class="form-control" value="" disabled>-->
-            <!--</div>-->
-            <!--<label class="col-lg-2 control-label">修改时间</label>-->
-            <!--<div class="col-lg-3">-->
-            <!--<input type="text" name="modifiedTime" class="form-control" value="" disabled>-->
-            <!--</div>-->
-            <!--</div> &ndash;&gt;-->
-            <!--<div class="form-group">-->
-            <!--<label class="col-lg-2 control-label">继承标志</label>-->
-            <!--<div class="col-lg-3">-->
-            <!--<select class="form-control" size="1" name="overrideFlag"-->
-            <!--style="margin-top:5px">-->
-            <!--<option value="">-请选择-</option>-->
-            <!--<option value="1">自身方法</option>-->
-            <!--<option value="4">禁用</option>-->
-            <!--</select>-->
-            <!--</div>-->
-            <!--<label class="col-lg-2 control-label">继承可见性</label>-->
-            <!--<div class="col-lg-3">-->
-            <!--<select class="form-control" size="1" class="visibilityFlag"-->
-            <!--name="visibilityFlag" style="margin-top:5px">-->
-            <!--<option value="">-请选择-</option>-->
-            <!--<option value="1">公共</option>-->
-            <!--<option value="0">私有</option>-->
-            <!--</select>-->
-            <!--</div>-->
-            <!--</div>-->
-            <!--<div class="form-group">-->
-            <!--<label class="col-lg-2 control-label">标志参数化列</label>-->
-            <!--<div class="col-lg-3">-->
-            <!--<input type="text" name="labelArgument" class="form-control">-->
-            <!--</div>-->
-            <!--</div>-->
-            <!--<div class="property">-->
-            <!--参数列表-->
-            <!--<a class="btn btn-white btn-sm pull-right" @click="addMethodPara($event)"><i-->
-            <!--class="icon-plus"></i></a>-->
-            <!--<a class="btn btn-white btn-sm pull-right" @click="delMethodPara($event)"><i-->
-            <!--class="icon-minus"></i></a>-->
-            <!--</div>-->
-            <!--<div class="property">-->
-            <!--<table class="table table-bordered m-right-table" id="pTable">-->
-            <!--<thead>-->
-            <!--<tr>-->
-            <!--<th style="width:5%"></th>-->
-            <!--<th id="name">参数名称</th>-->
-            <!--<th id="type">值类型</th>-->
-            <!--<th id="parameterizeColumn">参数化列</th>-->
-            <!--<th id="desc">描述</th>-->
-            <!--</tr>-->
-            <!--</thead>-->
-            <!--<tbody id="methodPara">-->
-            <!--<tr v-for="item in paraList">-->
-            <!--<td>-->
-            <!--<input type="checkbox" name="chk_list"/>-->
-            <!--</td>-->
-            <!--<td contenteditable="true">{{item.name}}</td>-->
-            <!--<td contenteditable="true">{{item.type}}</td>-->
-            <!--<td contenteditable="true">{{item.parameterizeColumn}}</td>-->
-            <!--<td contenteditable="true">{{item.desc}}</td>-->
-            <!--</tr>-->
-            <!--</tbody>-->
-            <!--</table>-->
-            <!--</div>-->
-            <!--<div class="form-group">-->
-            <!--<label class="col-lg-2 control-label">等待时间</label>-->
-            <!--<div class="col-lg-3">-->
-            <!--<input type="text" name="waittime" class="form-control">-->
-            <!--</div>-->
-            <!--<label class="col-lg-2 control-label">超时时间</label>-->
-            <!--<div class="col-lg-3">-->
-            <!--<input type="text" name="timeout" class="form-control">-->
-            <!--</div>-->
-            <!--</div>-->
-            <!--<div class="form-group">-->
-            <!--<label class="col-lg-2 control-label">目标代码</label>-->
-            <!--&lt;!&ndash; <div class="col-lg-8">-->
-            <!--<textarea type="text" name="targetCodeContent" class="form-control" rows='15'></textarea>-->
-            <!--</div> &ndash;&gt;-->
-            <!--</div>-->
-            <!--<div class="form-group">-->
-            <!--<div class="col-lg-11" style="margin-left: 15px;">-->
-            <!--<textarea type="text" name="targetCodeContent" class="form-control"-->
-            <!--rows='15'></textarea>-->
-            <!--</div>-->
-            <!--</div>-->
-            <!--&lt;!&ndash; <div class="form-group">-->
-            <!--<label class="col-lg-2 control-label">mtype</label>-->
-            <!--<div class="col-lg-3">-->
-            <!--<input type="text" name="mtype" class="form-control" value="">-->
-            <!--</div>-->
-            <!--<label class="col-lg-2 control-label">author</label>-->
-            <!--<div class="col-lg-3">-->
-            <!--<input type="text" name="author" class="form-control" value="">-->
-            <!--</div>-->
-            <!--</div>-->
-            <!--<div class="form-group">-->
-            <!--<label class="col-lg-2 control-label">outputvaluedesc</label>-->
-            <!--<div class="col-lg-3">-->
-            <!--<input type="text" name="outputvaluedesc" class="form-control" value="">-->
-            <!--</div>-->
-            <!--<label class="col-lg-2 control-label">inputargdesc</label>-->
-            <!--<div class="col-lg-3">-->
-            <!--<input type="text" name="inputargdesc" class="form-control" value="">-->
-            <!--</div>-->
-            <!--</div> &ndash;&gt;-->
-            <!--&lt;!&ndash;    <div class="form-group">-->
-            <!--<label class="col-lg-2 control-label">有无参数</label>-->
-            <!--<div class="col-lg-3">-->
-            <!--<select class="form-control" name="isPara">-->
-            <!--<option>有</option>-->
-            <!--<option>无</option>-->
-            <!--</select>-->
-            <!--</div>-->
-            <!--</div> &ndash;&gt;-->
-
-            <!--&lt;!&ndash; <div class="form-group">-->
-            <!--<label class="col-lg-2 control-label">等待时间</label>-->
-            <!--<div class="col-lg-3">-->
-            <!--<input type="text" name="waittime" class="form-control" value="">-->
-            <!--</div>-->
-            <!--<label class="col-lg-2 control-label">超时时间</label>-->
-            <!--<div class="col-lg-3">-->
-            <!--<input type="text" name="timeout" class="form-control" value="">-->
-            <!--</div>-->
-            <!--</div> &ndash;&gt;-->
-            <!--&lt;!&ndash;  <div class="form-group">-->
-            <!--<label class="col-lg-2 control-label">目标代码</label>-->
-            <!--<div class="col-lg-9">-->
-            <!--<textarea class="form-control" rows="10" name="objectcode"></textarea>-->
-            <!--</div>-->
-            <!--</div> &ndash;&gt;-->
-            <!--</form>-->
-            <!--<a class="btn btn-info rightBtn" @click="updateMethod">保存</a>-->
-            <!--</div>-->
-            <!--</section>-->
-            <!--</div>-->
-            <!--&lt;!&ndash; method end &ndash;&gt;-->
-            <!--&lt;!&ndash; gmethod start &ndash;&gt;-->
-            <!--&lt;!&ndash;  <div class="col-lg-6">-->
-            <!--<section class="panel" id="">-->
-            <!--<header class="panel-heading">-->
-            <!--{{gmethodName}}-->
-            <!--</header>-->
-            <!--<div class="elementContent">-->
-            <!--<form class="form-horizontal panel-pad" id="">-->
-            <!--<div class="form-group">-->
-            <!--<label class="col-lg-3 control-label">名称</label>-->
-            <!--<div class="col-lg-3">-->
-            <!--<input type="text" name="name" class="form-control" value="">-->
-            <!--</div>-->
-            <!--<label class="col-lg-2 control-label">描述</label>-->
-            <!--<div class="col-lg-3">-->
-            <!--<input type="text" name="name" class="form-control" value="">-->
-            <!--</div>-->
-            <!--</div>-->
-            <!--<div class="form-group">-->
-            <!--<label class="col-lg-3 control-label">有无参数</label>-->
-            <!--<div class="col-lg-3">-->
-            <!--<select class="form-control">-->
-            <!--<option>有</option>-->
-            <!--<option>无</option>-->
-            <!--</select>-->
-            <!--</div>-->
-            <!--</div>-->
-            <!--<div class="form-group">-->
-            <!--<label class="col-lg-3 control-label">无参数化列名</label>-->
-            <!--<div class="col-lg-3">-->
-            <!--<input type="text" name="" class="form-control">-->
-            <!--</div>-->
-            <!--</div>-->
-            <!--<div class="form-group">-->
-            <!--<label class="col-lg-3 control-label">执行插件</label>-->
-            <!--<div class="col-lg-3">-->
-            <!--<select class="form-control"></select>-->
-            <!--</div>-->
-
-            <!--</div>-->
-            <!--<div class="form-group">-->
-            <!--<label class="col-lg-3 control-label">目标代码</label>-->
-            <!--<div class="col-lg-9">-->
-            <!--<textarea class="form-control" rows="10"></textarea>-->
-            <!--</div>-->
-            <!--</div>-->
-            <!--</form>-->
-            <!--<a class="btn btn-info" @click="updateObj">保存</a>-->
-            <!--</div>-->
-            <!--</section>-->
-            <!--</div> &ndash;&gt;-->
-            <!--&lt;!&ndash; gmethod end &ndash;&gt;-->
-            <!-- successModal start -->
-            <div class="modal fade" id="successModal" tabindex="-1" role="dialog"
-                 aria-labelledby="successModalLabel" aria-hidden="true">
-                <div class="modal-dialog">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <button type="button" class="close" data-dismiss="modal"
-                                    aria-hidden="true">&times;</button>
-                            <h4 class="modal-title">操作成功</h4>
-                        </div>
-                        <div class="modal-body">
-                            <h4>操作成功！</h4>
-                        </div>
-                        <div class="modal-footer">
-                            <button data-dismiss="modal" class="btn btn-success" type="button">确定</button>
-                        </div>
                     </div>
                 </div>
-            </div>
-            <!-- successModal end -->
-            <!-- failModal start -->
-            <div class="modal fade" id="failModal" tabindex="-1" role="dialog" aria-labelledby="failModalLabel"
-                 aria-hidden="true">
-                <div class="modal-dialog">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <button type="button" class="close" data-dismiss="modal"
-                                    aria-hidden="true">&times;</button>
-                            <h4 class="modal-title">操作失败</h4>
-                        </div>
-                        <div class="modal-body">
-                            <h4>操作失败！</h4>
-                        </div>
-                        <div class="modal-footer">
-                            <button data-dismiss="modal" class="btn btn-success" type="button">确定</button>
-                        </div>
+                <!-- <div class="form-group">
+                    <label class="col-lg-2 control-label">mtype</label>
+                    <div class="col-lg-3">
+                        <input type="text" name="mtype" class="form-control" value="">
+                    </div>
+                    <label class="col-lg-2 control-label">author</label>
+                    <div class="col-lg-3">
+                        <input type="text" name="author" class="form-control" value="">
                     </div>
                 </div>
-            </div>
-            <!-- failModal end -->
-            <!-- failModal2 start -->
-            <div class="modal fade" id="failModal2" tabindex="-1" role="dialog" aria-labelledby="failModalLabel"
-                 aria-hidden="true">
-                <div class="modal-dialog">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <button type="button" class="close" data-dismiss="modal"
-                                    aria-hidden="true">&times;</button>
-                            <h4 class="modal-title">操作失败</h4>
-                        </div>
-                        <div class="modal-body">
-                            <h4>请选择一个开发架构！</h4>
-                        </div>
-                        <div class="modal-footer">
-                            <button data-dismiss="modal" class="btn btn-success" type="button">确定</button>
-                        </div>
+                <div class="form-group">
+                    <label class="col-lg-2 control-label">outputvaluedesc</label>
+                    <div class="col-lg-3">
+                        <input type="text" name="outputvaluedesc" class="form-control" value="">
                     </div>
+                    <label class="col-lg-2 control-label">inputargdesc</label>
+                    <div class="col-lg-3">
+                        <input type="text" name="inputargdesc" class="form-control" value="">
+                    </div>
+                </div> -->
+                <!--    <div class="form-group">
+                    <label class="col-lg-2 control-label">有无参数</label>
+                    <div class="col-lg-3">
+                        <select class="form-control" name="isPara">
+                            <option>有</option>
+                            <option>无</option>
+                        </select>
+                    </div>
+                </div> -->
+
+                <!-- <div class="form-group">
+                    <label class="col-lg-2 control-label">等待时间</label>
+                    <div class="col-lg-3">
+                        <input type="text" name="waittime" class="form-control" value="">
+                    </div>
+                    <label class="col-lg-2 control-label">超时时间</label>
+                    <div class="col-lg-3">
+                        <input type="text" name="timeout" class="form-control" value="">
+                    </div>
+                </div> -->
+                <!--  <div class="form-group">
+                     <label class="col-lg-2 control-label">目标代码</label>
+                     <div class="col-lg-9">
+                         <textarea class="form-control" rows="10" name="objectcode"></textarea>
+                     </div>
+                 </div> -->
+            </form>
+            <a class="btn btn-info rightBtn" @click="updateMethod">保存</a>
+        </div>
+    </section>
+</div>
+<!-- method end -->
+</span>
+</div>
+<!--<div class="row">-->
+<!--<div class="col-lg-3">-->
+<!--<section class="panel tree-panel">-->
+<!--<header class="panel-heading">-->
+<!--开发架构-->
+<!--<div class="archi-btn">-->
+<!--<a class="btn btn-white btn-sm" data-toggle="modal" href="#addArchModal"><i-->
+<!--class="icon-plus" @click="getArchiList"></i></a>-->
+<!--&lt;!&ndash; <a class="btn btn-white btn-sm " @click="delArchi"><i class="icon-remove"></i></a> &ndash;&gt;-->
+<!--<a class="btn btn-white btn-sm " data-toggle="modal" @click="beforeUpdateArchi"><i-->
+<!--class="icon-edit"></i></a>-->
+<!--</div>-->
+<!--</header>-->
+<!--&lt;!&ndash;<div id="menuContent" class="menuContent treeMenu">&ndash;&gt;-->
+<!--&lt;!&ndash;<h5 class="archi-title">抽象架构</h5>&ndash;&gt;-->
+<!--&lt;!&ndash;<ul id="archiTree" class="ztree tree"></ul>&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash; <h5 class="archi-title">全局方法</h5>&ndash;&gt;-->
+<!--&lt;!&ndash;<ul id="gmethodTree" class="ztree tree"></ul> &ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;</div>&ndash;&gt;-->
+<!--</section>-->
+<!--</div>-->
+<!--<div class="col-lg-3 archi">-->
+<!--<section class="panel" id="">-->
+<!--<header class="panel-heading">-->
+<!--{{archiName}}-->
+<!--</header>-->
+<!--<div class="elementContent" style="height:835px; overflow:auto">-->
+<!--<section class="panel">-->
+<!--<div class="property">-->
+<!--构件类型-->
+<!--<a class="btn btn-white btn-sm pull-right" data-toggle="modal"-->
+<!--href="#addClassModal"><i class="icon-plus"></i></a>-->
+<!--<a class="btn btn-white btn-sm pull-right" @click="delClass($event)"><i-->
+<!--class="icon-minus"></i></a>-->
+<!--</div>-->
+<!--<div class="property table-responsive">-->
+<!--<table class="table table-bordered">-->
+<!--<thead>-->
+<!--<tr>-->
+<!--<th style="width:5%"></th>-->
+<!--<th style="width:25%">继承标志</th>-->
+<!--<th style="width:25%">英文名称</th>-->
+<!--<th>中文名称</th>-->
+<!--</tr>-->
+<!--</thead>-->
+<!--<tbody id="classProp">-->
+<!--<tr>-->
+<!--<td style="width:5%">-->
+<!--<input type="radio" name="class"/>-->
+<!--</td>-->
+<!--<td style="width:25%"></td>-->
+<!--<td style="width:25%"></td>-->
+<!--<td></td>-->
+<!--</tr>-->
+<!--</tbody>-->
+<!--</table>-->
+<!--</div>-->
+<!--<div class="property">-->
+<!--方法-->
+<!--<a class="btn btn-white btn-sm pull-right" data-toggle="modal"-->
+<!--href="#addMethodModal"><i class="icon-plus"></i></a>-->
+<!--<a class="btn btn-white btn-sm pull-right" @click="delMethod"><i-->
+<!--class="icon-minus"></i></a>-->
+<!--</div>-->
+<!--<div class="property table-responsive">-->
+<!--<table class="table table-bordered">-->
+<!--<thead>-->
+<!--<tr>-->
+<!--<th style="width:5%"></th>-->
+<!--<th style="width:25%">继承标志</th>-->
+<!--<th style="width:25%">名称</th>-->
+<!--<th>描述</th>-->
+<!--</tr>-->
+<!--</thead>-->
+<!--<tbody id="methodProp">-->
+<!--<tr>-->
+<!--<td style="width:5%">-->
+<!--<input type="radio" name="method"/>-->
+<!--</td>-->
+<!--<td style="width:25%"></td>-->
+<!--<td style="width:25%"></td>-->
+<!--<td></td>-->
+<!--</tr>-->
+<!--</tbody>-->
+<!--</table>-->
+<!--</div>-->
+<!--</section>-->
+<!--</div>-->
+<!--</section>-->
+<!--</div>-->
+<!--&lt;!&ndash; class start &ndash;&gt;-->
+<!--<div class="col-lg-6">-->
+<!--<section class="panel" id="classSection">-->
+<!--<header class="panel-heading">-->
+<!--{{className}}-->
+<!--</header>-->
+<!--<div class="rightContent">-->
+<!--<form class="form-horizontal panel-pad" id="classForm">-->
+<!--<div class="form-group">-->
+<!--<label class="col-lg-2 control-label">英文名称</label>-->
+<!--<div class="col-lg-3">-->
+<!--<input type="text" name="name" class="form-control" value="">-->
+<!--</div>-->
+<!--<label class="col-lg-2 control-label">中文名称</label>-->
+<!--<div class="col-lg-3">-->
+<!--<input type="text" name="chsName" class="form-control" value="">-->
+<!--</div>-->
+<!--</div>-->
+<!--<div class="form-group">-->
+<!--<label class="col-lg-2 control-label">描述</label>-->
+<!--<div class="col-lg-3">-->
+<!--<input type="text" name="descShort" class="form-control" value="">-->
+<!--</div>-->
+<!--<label class="col-lg-2 control-label">默认方法</label>-->
+<!--<div class="col-lg-3">-->
+<!--<select class="form-control" size="1" id="defaultMethodSelect"-->
+<!--style="margin-top:5px">-->
+<!--<option value="">-选择默认方法-</option>-->
+<!--<option v-for="item in methodList" value="{{item.id}}">{{item.name}}-->
+<!--</option>-->
+<!--</select>-->
+<!--</div>-->
+<!--</div>-->
+
+<!--<div class="form-group">-->
+<!--<label class="col-lg-2 control-label">继承标志</label>-->
+<!--<div class="col-lg-3">-->
+<!--<select class="form-control" size="1" id="overideFlag" style="margin-top:5px">-->
+<!--<option value="">请选择</option>-->
+<!--<option value="1">自身构件</option>-->
+<!--<option value="4">禁用</option>-->
+<!--<option value="5">重定义</option>-->
+<!--</select>-->
+<!--</div>-->
+<!--<label class="col-lg-2 control-label">继承可见性</label>-->
+<!--<div class="col-lg-3">-->
+<!--<select class="form-control" size="1" id="visibilityFlag"-->
+<!--style="margin-top:5px">-->
+<!--<option value="">-请选择-</option>-->
+<!--<option value="1">公共</option>-->
+<!--<option value="0">私有</option>-->
+<!--</select>-->
+<!--</div>-->
+<!--</div>-->
+
+<!--<div class="property">-->
+<!--运行时参数-->
+<!--<a class="btn btn-white btn-sm pull-right" @click="addRuntimeArgsPara($event)"><i-->
+<!--class="icon-plus"></i></a>-->
+<!--<a class="btn btn-white btn-sm pull-right" @click="delRuntimeArgsPara($event)"><i-->
+<!--class="icon-minus"></i></a>-->
+<!--</div>-->
+<!--<div class="property">-->
+<!--<table class="table table-bordered c-right-table" id="runtimeArgsTable">-->
+<!--<thead>-->
+<!--<tr>-->
+<!--<th style="width:5%"></th>-->
+<!--<th id="name">属性名</th>-->
+<!--<th id="value">属性值</th>-->
+<!--</tr>-->
+<!--</thead>-->
+<!--<tbody id="runtimeArgsTbody">-->
+<!--<tr>-->
+<!--<td>-->
+<!--<input type="checkbox" name="runtimeArgs_list"/>-->
+<!--</td>-->
+<!--<td contenteditable="true"></td>-->
+<!--<td contenteditable="true"></td>-->
+<!--</tr>-->
+<!--</tbody>-->
+<!--</table>-->
+<!--</div>-->
+<!--<div class="property">-->
+<!--支持的识别属性-->
+<!--<a class="btn btn-white btn-sm pull-right" @click="addSupRecPara($event)"><i-->
+<!--class="icon-plus"></i></a>-->
+<!--<a class="btn btn-white btn-sm pull-right" @click="delSupRecPara($event)"><i-->
+<!--class="icon-minus"></i></a>-->
+<!--</div>-->
+<!--<div class="property">-->
+<!--<table class="table table-bordered c-right-table" id="supportedRecognitionTable">-->
+<!--<thead>-->
+<!--<tr>-->
+<!--<th style="width:5%"></th>-->
+<!--<th id="name">属性名</th>-->
+<!--<th id="value">属性值</th>-->
+<!--</tr>-->
+<!--</thead>-->
+<!--<tbody id="supRecTbody">-->
+<!--<tr>-->
+<!--<td>-->
+<!--<input type="checkbox" name="supRec_list"/>-->
+<!--</td>-->
+<!--<td contenteditable="true"></td>-->
+<!--<td contenteditable="true"></td>-->
+<!--</tr>-->
+<!--</tbody>-->
+<!--</table>-->
+<!--</div>-->
+<!--<div class="property">-->
+<!--自识别属性-->
+<!--<a class="btn btn-white btn-sm pull-right" @click="addSelfRecPara($event)"><i-->
+<!--class="icon-plus"></i></a>-->
+<!--<a class="btn btn-white btn-sm pull-right" @click="delSelfRecPara($event)"><i-->
+<!--class="icon-minus"></i></a>-->
+<!--</div>-->
+<!--<div class="property">-->
+<!--<table class="table table-bordered c-right-table" id="selfRecTable">-->
+<!--<thead>-->
+<!--<tr>-->
+<!--<th style="width:5%"></th>-->
+<!--<th id="name">属性名</th>-->
+<!--<th id="value">属性值</th>-->
+<!--</tr>-->
+<!--</thead>-->
+<!--<tbody id="selfRecTbody">-->
+<!--<tr>-->
+<!--<td>-->
+<!--<input type="checkbox" name="selfRec_list"/>-->
+<!--</td>-->
+<!--<td contenteditable="true"></td>-->
+<!--<td contenteditable="true"></td>-->
+<!--</tr>-->
+<!--</tbody>-->
+<!--</table>-->
+<!--</div>-->
+<!--<div class="property">-->
+<!--辅助识别属性-->
+<!--<a class="btn btn-white btn-sm pull-right" @click="addAssistRecPara($event)"><i-->
+<!--class="icon-plus"></i></a>-->
+<!--<a class="btn btn-white btn-sm pull-right" @click="delAssistRecPara($event)"><i-->
+<!--class="icon-minus"></i></a>-->
+<!--</div>-->
+<!--<div class="property">-->
+<!--<table class="table table-bordered c-right-table" id="assistRecTable">-->
+<!--<thead>-->
+<!--<tr>-->
+<!--<th style="width:5%"></th>-->
+<!--<th id="name">属性名</th>-->
+<!--<th id="value">属性值</th>-->
+<!--</tr>-->
+<!--</thead>-->
+<!--<tbody id="assistRecTbody">-->
+<!--<tr>-->
+<!--<td>-->
+<!--<input type="checkbox" name="assistRec_list"/>-->
+<!--</td>-->
+<!--<td contenteditable="true"></td>-->
+<!--<td contenteditable="true"></td>-->
+<!--</tr>-->
+<!--</tbody>-->
+<!--</table>-->
+<!--</div>-->
+
+<!--</form>-->
+<!--<a class="btn btn-info rightBtn" @click="updateClass">保存</a>-->
+<!--</div>-->
+<!--</section>-->
+<!--</div>-->
+<!--&lt;!&ndash; class end &ndash;&gt;-->
+<!--&lt;!&ndash; method start &ndash;&gt;-->
+<!--<div class="col-lg-6">-->
+<!--<section class="panel" id="methodSection" style="display:none;">-->
+<!--<header class="panel-heading">-->
+<!--{{methodName}}-->
+<!--</header>-->
+<!--<div class="rightContent">-->
+<!--<form class="form-horizontal panel-pad" id="methodForm">-->
+<!--<div class="form-group">-->
+<!--<label class="col-lg-2 control-label">名称</label>-->
+<!--<div class="col-lg-3">-->
+<!--<input type="text" name="name" class="form-control" value="">-->
+<!--</div>-->
+<!--<label class="col-lg-2 control-label">描述</label>-->
+<!--<div class="col-lg-3">-->
+<!--<input type="text" name="description" class="form-control" value="">-->
+<!--</div>-->
+<!--</div>-->
+<!--&lt;!&ndash; <div class="form-group">-->
+<!--<label class="col-lg-2 control-label">创建者</label>-->
+<!--<div class="col-lg-3">-->
+<!--<input type="text" name="creator" class="form-control" value="" disabled>-->
+<!--</div>-->
+<!--<label class="col-lg-2 control-label">创建时间</label>-->
+<!--<div class="col-lg-3">-->
+<!--<input type="text" name="createTime" class="form-control" value="" disabled>-->
+<!--</div>-->
+<!--</div>-->
+<!--<div class="form-group">-->
+<!--<label class="col-lg-2 control-label">修改者</label>-->
+<!--<div class="col-lg-3">-->
+<!--<input type="text" name="modifier" class="form-control" value="" disabled>-->
+<!--</div>-->
+<!--<label class="col-lg-2 control-label">修改时间</label>-->
+<!--<div class="col-lg-3">-->
+<!--<input type="text" name="modifiedTime" class="form-control" value="" disabled>-->
+<!--</div>-->
+<!--</div> &ndash;&gt;-->
+<!--<div class="form-group">-->
+<!--<label class="col-lg-2 control-label">继承标志</label>-->
+<!--<div class="col-lg-3">-->
+<!--<select class="form-control" size="1" name="overrideFlag"-->
+<!--style="margin-top:5px">-->
+<!--<option value="">-请选择-</option>-->
+<!--<option value="1">自身方法</option>-->
+<!--<option value="4">禁用</option>-->
+<!--</select>-->
+<!--</div>-->
+<!--<label class="col-lg-2 control-label">继承可见性</label>-->
+<!--<div class="col-lg-3">-->
+<!--<select class="form-control" size="1" class="visibilityFlag"-->
+<!--name="visibilityFlag" style="margin-top:5px">-->
+<!--<option value="">-请选择-</option>-->
+<!--<option value="1">公共</option>-->
+<!--<option value="0">私有</option>-->
+<!--</select>-->
+<!--</div>-->
+<!--</div>-->
+<!--<div class="form-group">-->
+<!--<label class="col-lg-2 control-label">标志参数化列</label>-->
+<!--<div class="col-lg-3">-->
+<!--<input type="text" name="labelArgument" class="form-control">-->
+<!--</div>-->
+<!--</div>-->
+<!--<div class="property">-->
+<!--参数列表-->
+<!--<a class="btn btn-white btn-sm pull-right" @click="addMethodPara($event)"><i-->
+<!--class="icon-plus"></i></a>-->
+<!--<a class="btn btn-white btn-sm pull-right" @click="delMethodPara($event)"><i-->
+<!--class="icon-minus"></i></a>-->
+<!--</div>-->
+<!--<div class="property">-->
+<!--<table class="table table-bordered m-right-table" id="pTable">-->
+<!--<thead>-->
+<!--<tr>-->
+<!--<th style="width:5%"></th>-->
+<!--<th id="name">参数名称</th>-->
+<!--<th id="type">值类型</th>-->
+<!--<th id="parameterizeColumn">参数化列</th>-->
+<!--<th id="desc">描述</th>-->
+<!--</tr>-->
+<!--</thead>-->
+<!--<tbody id="methodPara">-->
+<!--<tr v-for="item in paraList">-->
+<!--<td>-->
+<!--<input type="checkbox" name="chk_list"/>-->
+<!--</td>-->
+<!--<td contenteditable="true">{{item.name}}</td>-->
+<!--<td contenteditable="true">{{item.type}}</td>-->
+<!--<td contenteditable="true">{{item.parameterizeColumn}}</td>-->
+<!--<td contenteditable="true">{{item.desc}}</td>-->
+<!--</tr>-->
+<!--</tbody>-->
+<!--</table>-->
+<!--</div>-->
+<!--<div class="form-group">-->
+<!--<label class="col-lg-2 control-label">等待时间</label>-->
+<!--<div class="col-lg-3">-->
+<!--<input type="text" name="waittime" class="form-control">-->
+<!--</div>-->
+<!--<label class="col-lg-2 control-label">超时时间</label>-->
+<!--<div class="col-lg-3">-->
+<!--<input type="text" name="timeout" class="form-control">-->
+<!--</div>-->
+<!--</div>-->
+<!--<div class="form-group">-->
+<!--<label class="col-lg-2 control-label">目标代码</label>-->
+<!--&lt;!&ndash; <div class="col-lg-8">-->
+<!--<textarea type="text" name="targetCodeContent" class="form-control" rows='15'></textarea>-->
+<!--</div> &ndash;&gt;-->
+<!--</div>-->
+<!--<div class="form-group">-->
+<!--<div class="col-lg-11" style="margin-left: 15px;">-->
+<!--<textarea type="text" name="targetCodeContent" class="form-control"-->
+<!--rows='15'></textarea>-->
+<!--</div>-->
+<!--</div>-->
+<!--&lt;!&ndash; <div class="form-group">-->
+<!--<label class="col-lg-2 control-label">mtype</label>-->
+<!--<div class="col-lg-3">-->
+<!--<input type="text" name="mtype" class="form-control" value="">-->
+<!--</div>-->
+<!--<label class="col-lg-2 control-label">author</label>-->
+<!--<div class="col-lg-3">-->
+<!--<input type="text" name="author" class="form-control" value="">-->
+<!--</div>-->
+<!--</div>-->
+<!--<div class="form-group">-->
+<!--<label class="col-lg-2 control-label">outputvaluedesc</label>-->
+<!--<div class="col-lg-3">-->
+<!--<input type="text" name="outputvaluedesc" class="form-control" value="">-->
+<!--</div>-->
+<!--<label class="col-lg-2 control-label">inputargdesc</label>-->
+<!--<div class="col-lg-3">-->
+<!--<input type="text" name="inputargdesc" class="form-control" value="">-->
+<!--</div>-->
+<!--</div> &ndash;&gt;-->
+<!--&lt;!&ndash;    <div class="form-group">-->
+<!--<label class="col-lg-2 control-label">有无参数</label>-->
+<!--<div class="col-lg-3">-->
+<!--<select class="form-control" name="isPara">-->
+<!--<option>有</option>-->
+<!--<option>无</option>-->
+<!--</select>-->
+<!--</div>-->
+<!--</div> &ndash;&gt;-->
+
+<!--&lt;!&ndash; <div class="form-group">-->
+<!--<label class="col-lg-2 control-label">等待时间</label>-->
+<!--<div class="col-lg-3">-->
+<!--<input type="text" name="waittime" class="form-control" value="">-->
+<!--</div>-->
+<!--<label class="col-lg-2 control-label">超时时间</label>-->
+<!--<div class="col-lg-3">-->
+<!--<input type="text" name="timeout" class="form-control" value="">-->
+<!--</div>-->
+<!--</div> &ndash;&gt;-->
+<!--&lt;!&ndash;  <div class="form-group">-->
+<!--<label class="col-lg-2 control-label">目标代码</label>-->
+<!--<div class="col-lg-9">-->
+<!--<textarea class="form-control" rows="10" name="objectcode"></textarea>-->
+<!--</div>-->
+<!--</div> &ndash;&gt;-->
+<!--</form>-->
+<!--<a class="btn btn-info rightBtn" @click="updateMethod">保存</a>-->
+<!--</div>-->
+<!--</section>-->
+<!--</div>-->
+<!--&lt;!&ndash; method end &ndash;&gt;-->
+<!--&lt;!&ndash; gmethod start &ndash;&gt;-->
+<!--&lt;!&ndash;  <div class="col-lg-6">-->
+<!--<section class="panel" id="">-->
+<!--<header class="panel-heading">-->
+<!--{{gmethodName}}-->
+<!--</header>-->
+<!--<div class="elementContent">-->
+<!--<form class="form-horizontal panel-pad" id="">-->
+<!--<div class="form-group">-->
+<!--<label class="col-lg-3 control-label">名称</label>-->
+<!--<div class="col-lg-3">-->
+<!--<input type="text" name="name" class="form-control" value="">-->
+<!--</div>-->
+<!--<label class="col-lg-2 control-label">描述</label>-->
+<!--<div class="col-lg-3">-->
+<!--<input type="text" name="name" class="form-control" value="">-->
+<!--</div>-->
+<!--</div>-->
+<!--<div class="form-group">-->
+<!--<label class="col-lg-3 control-label">有无参数</label>-->
+<!--<div class="col-lg-3">-->
+<!--<select class="form-control">-->
+<!--<option>有</option>-->
+<!--<option>无</option>-->
+<!--</select>-->
+<!--</div>-->
+<!--</div>-->
+<!--<div class="form-group">-->
+<!--<label class="col-lg-3 control-label">无参数化列名</label>-->
+<!--<div class="col-lg-3">-->
+<!--<input type="text" name="" class="form-control">-->
+<!--</div>-->
+<!--</div>-->
+<!--<div class="form-group">-->
+<!--<label class="col-lg-3 control-label">执行插件</label>-->
+<!--<div class="col-lg-3">-->
+<!--<select class="form-control"></select>-->
+<!--</div>-->
+
+<!--</div>-->
+<!--<div class="form-group">-->
+<!--<label class="col-lg-3 control-label">目标代码</label>-->
+<!--<div class="col-lg-9">-->
+<!--<textarea class="form-control" rows="10"></textarea>-->
+<!--</div>-->
+<!--</div>-->
+<!--</form>-->
+<!--<a class="btn btn-info" @click="updateObj">保存</a>-->
+<!--</div>-->
+<!--</section>-->
+<!--</div> &ndash;&gt;-->
+<!--&lt;!&ndash; gmethod end &ndash;&gt;-->
+<!-- successModal start -->
+<div class="modal fade" id="successModal" tabindex="-1" role="dialog"
+     aria-labelledby="successModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"
+                        aria-hidden="true">&times;</button>
+                <h4 class="modal-title">操作成功</h4>
+            </div>
+            <div class="modal-body">
+                <h4>操作成功！</h4>
+            </div>
+            <div class="modal-footer">
+                <button data-dismiss="modal" class="btn btn-success" type="button">确定</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- successModal end -->
+<!-- failModal start -->
+<div class="modal fade" id="failModal" tabindex="-1" role="dialog" aria-labelledby="failModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"
+                        aria-hidden="true">&times;</button>
+                <h4 class="modal-title">操作失败</h4>
+            </div>
+            <div class="modal-body">
+                <h4>操作失败！</h4>
+            </div>
+            <div class="modal-footer">
+                <button data-dismiss="modal" class="btn btn-success" type="button">确定</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- failModal end -->
+<!-- failModal2 start -->
+<div class="modal fade" id="failModal2" tabindex="-1" role="dialog" aria-labelledby="failModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"
+                        aria-hidden="true">&times;</button>
+                <h4 class="modal-title">操作失败</h4>
+            </div>
+            <div class="modal-body">
+                <h4>请选择一个开发架构！</h4>
+            </div>
+            <div class="modal-footer">
+                <button data-dismiss="modal" class="btn btn-success" type="button">确定</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- failModal 2end -->
+<!-- failModal3 start -->
+<div class="modal fade" id="failModal3" tabindex="-1" role="dialog" aria-labelledby="failModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"
+                        aria-hidden="true">&times;</button>
+                <h4 class="modal-title">操作失败</h4>
+            </div>
+            <div class="modal-body">
+                <h4>请选择一个控件！</h4>
+            </div>
+            <div class="modal-footer">
+                <button data-dismiss="modal" class="btn btn-success" type="button">确定</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- failModal 3end -->
+<!-- showArchModal start -->
+<div class="modal fade" id="showArchModal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"
+                        aria-hidden="true">&times;</button>
+                <h4 class="modal-title">选择开发架构</h4>
+            </div>
+            <div class="modal-body">
+                <div id="" class="menuContent treeMenu">
+                    <h5 class="archi-title">抽象架构</h5>
+                    <ul id="archiTree" class="ztree tree"></ul>
+                    <!-- <h5 class="archi-title">全局方法</h5>
+                    <ul id="gmethodTree" class="ztree tree"></ul> -->
                 </div>
             </div>
-            <!-- failModal 2end -->
-            <!-- failModal3 start -->
-            <div class="modal fade" id="failModal3" tabindex="-1" role="dialog" aria-labelledby="failModalLabel"
-                 aria-hidden="true">
-                <div class="modal-dialog">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <button type="button" class="close" data-dismiss="modal"
-                                    aria-hidden="true">&times;</button>
-                            <h4 class="modal-title">操作失败</h4>
-                        </div>
-                        <div class="modal-body">
-                            <h4>请选择一个控件！</h4>
-                        </div>
-                        <div class="modal-footer">
-                            <button data-dismiss="modal" class="btn btn-success" type="button">确定</button>
-                        </div>
-                    </div>
-                </div>
+            <div class="modal-footer">
+                <button data-dismiss="modal" class="btn btn-success" type="button">确定</button>
             </div>
-            <!-- failModal 3end -->
-            <!-- showArchModal start -->
-            <div class="modal fade" id="showArchModal" tabindex="-1" role="dialog" aria-hidden="true">
-                <div class="modal-dialog">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <button type="button" class="close" data-dismiss="modal"
-                                    aria-hidden="true">&times;</button>
-                            <h4 class="modal-title">选择开发架构</h4>
-                        </div>
-                        <div class="modal-body">
-                            <div id="" class="menuContent treeMenu">
-                                <h5 class="archi-title">抽象架构</h5>
-                                <ul id="archiTree" class="ztree tree"></ul>
-                                <!-- <h5 class="archi-title">全局方法</h5>
-                                <ul id="gmethodTree" class="ztree tree"></ul> -->
+        </div>
+    </div>
+</div>
+<!-- showArchModal end -->
+<!-- addArchiModal start -->
+<div class="modal fade" id="addArchModal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"
+                        aria-hidden="true">&times;</button>
+                <h4 class="modal-title">添加开发架构</h4>
+            </div>
+            <div class="modal-body">
+                <!-- modal-body start -->
+                <section class="panel">
+                    <form id="addArchForm" class="form-horizontal" role="form">
+                        <div class="form-group">
+                            <label class="col-lg-3 control-label">编码</label>
+                            <div class="col-lg-5">
+                                <input type="text" class="form-control" name="code" id="">
                             </div>
                         </div>
-                        <div class="modal-footer">
-                            <button data-dismiss="modal" class="btn btn-success" type="button">确定</button>
+                        <div class="form-group">
+                            <label class="col-lg-3 control-label">中文名称</label>
+                            <div class="col-lg-5">
+                                <input type="text" class="form-control" name="name" id="">
+                            </div>
                         </div>
-                    </div>
-                </div>
-            </div>
-            <!-- showArchModal end -->
-            <!-- addArchiModal start -->
-            <div class="modal fade" id="addArchModal" tabindex="-1" role="dialog" aria-hidden="true">
-                <div class="modal-dialog">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <button type="button" class="close" data-dismiss="modal"
-                                    aria-hidden="true">&times;</button>
-                            <h4 class="modal-title">添加开发架构</h4>
+                        <!-- <div class="form-group">
+                            <label class="col-lg-3 control-label">类型</label>
+                            <div class="col-lg-5">
+                                <select class="form-control">
+                                    <option>抽象架构</option>
+                                    <option>全局方法</option>
+                                </select>
+                            </div>
+                        </div> -->
+                        <div class="form-group">
+                            <label class="col-lg-3 control-label">父架构</label>
+                            <div class="col-lg-5">
+                                <select class="form-control" name="parentArcId">
+                                    <option value=''>-- 请选择父架构 --</option>
+                                    <option v-for="item in archiList" value="{{item.id}}">
+                                        {{item.name}}
+                                    </option>
+                                </select>
+                            </div>
                         </div>
-                        <div class="modal-body">
-                            <!-- modal-body start -->
-                            <section class="panel">
-                                <form id="addArchForm" class="form-horizontal" role="form">
-                                    <div class="form-group">
-                                        <label class="col-lg-3 control-label">编码</label>
-                                        <div class="col-lg-5">
-                                            <input type="text" class="form-control" name="code" id="">
-                                        </div>
-                                    </div>
-                                    <div class="form-group">
-                                        <label class="col-lg-3 control-label">中文名称</label>
-                                        <div class="col-lg-5">
-                                            <input type="text" class="form-control" name="name" id="">
-                                        </div>
-                                    </div>
-                                    <!-- <div class="form-group">
-                                        <label class="col-lg-3 control-label">类型</label>
-                                        <div class="col-lg-5">
-                                            <select class="form-control">
-                                                <option>抽象架构</option>
-                                                <option>全局方法</option>
-                                            </select>
-                                        </div>
-                                    </div> -->
-                                    <div class="form-group">
-                                        <label class="col-lg-3 control-label">父架构</label>
-                                        <div class="col-lg-5">
-                                            <select class="form-control" name="parentArcId">
-                                                <option value=''>-- 请选择父架构 --</option>
-                                                <option v-for="item in archiList" value="{{item.id}}">
-                                                    {{item.name}}
-                                                </option>
-                                            </select>
-                                        </div>
-                                    </div>
 
-                                    <div class="form-group">
-                                        <label class="col-lg-3 control-label">描述</label>
-                                        <div class="col-lg-5">
-                                            <textarea class="form-control" rows="4" name="descShort"></textarea>
-                                        </div>
-                                    </div>
-                                    <input type="reset" name="reset" style="display: none;">
-                                </form>
-                            </section>
-                            <!-- modal-body end -->
+                        <div class="form-group">
+                            <label class="col-lg-3 control-label">描述</label>
+                            <div class="col-lg-5">
+                                <textarea class="form-control" rows="4" name="descShort"></textarea>
+                            </div>
                         </div>
-                        <div class="modal-footer">
-                            <button data-dismiss="modal" class="btn btn-default">取消</button>
-                            <button data-dismiss="modal" class="btn btn-success" @click="addArchi">添加</button>
-                        </div>
-                    </div>
-                </div>
+                        <input type="reset" name="reset" style="display: none;">
+                    </form>
+                </section>
+                <!-- modal-body end -->
             </div>
-            <!-- addArchiModal end -->
-            <!-- updateArchiModal start -->
-            <div class="modal fade" id="updateArchModal" tabindex="-1" role="dialog" aria-hidden="true">
-                <div class="modal-dialog">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <button type="button" class="close" data-dismiss="modal"
-                                    aria-hidden="true">&times;</button>
-                            <h4 class="modal-title">修改开发架构</h4>
-                        </div>
-                        <div class="modal-body">
-                            <!-- modal-body start -->
-                            <section class="panel">
-                                <form id="updateArchForm" class="form-horizontal" role="form">
-                                    <div class="form-group">
-                                        <label class="col-lg-3 control-label">编码</label>
-                                        <div class="col-lg-5">
-                                            <input type="text" class="form-control" name="code" id="">
-                                        </div>
-                                    </div>
-                                    <div class="form-group">
-                                        <label class="col-lg-3 control-label">中文名称</label>
-                                        <div class="col-lg-5">
-                                            <input type="text" class="form-control" name="name" id="">
-                                        </div>
-                                    </div>
-                                    <!-- <div class="form-group">
-                                        <label class="col-lg-3 control-label">类型</label>
-                                        <div class="col-lg-5">
-                                            <select class="form-control">
-                                                <option>抽象架构</option>
-                                                <option>全局方法</option>
-                                            </select>
-                                        </div>
-                                    </div> -->
-                                    <div class="form-group">
-                                        <label class="col-lg-3 control-label">父架构</label>
-                                        <div class="col-lg-5">
-                                            <select class="form-control" name="parentArcId">
-                                                <option value=''>-- 请选择父架构 --</option>
-                                                <option v-for="item in archiList" value="{{item.id}}">
-                                                    {{item.name}}
-                                                </option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <div class="form-group">
-                                        <label class="col-lg-3 control-label">描述</label>
-                                        <div class="col-lg-5">
-                                            <textarea class="form-control" rows="4" name="descShort"></textarea>
-                                        </div>
-                                    </div>
-                                    <input type="reset" name="reset" style="display: none;">
-                                </form>
-                            </section>
-                            <!-- modal-body end -->
-                        </div>
-                        <div class="modal-footer">
-                            <button data-dismiss="modal" class="btn btn-default">取消</button>
-                            <button data-dismiss="modal" class="btn btn-success" @click="updateArchi">添加</button>
-                        </div>
-                    </div>
-                </div>
+            <div class="modal-footer">
+                <button data-dismiss="modal" class="btn btn-default">取消</button>
+                <button data-dismiss="modal" class="btn btn-success" @click="addArchi">添加</button>
             </div>
-            <!-- updateArchiModal end -->
-            <!-- addClassModal start -->
-            <div class="modal fade" id="addClassModal" tabindex="-1" role="dialog" aria-hidden="true">
-                <div class="modal-dialog">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <button type="button" class="close" data-dismiss="modal"
-                                    aria-hidden="true">&times;</button>
-                            <h4 class="modal-title">添加构件类型</h4>
-                        </div>
-                        <div class="modal-body">
-                            <!-- modal-body start -->
-                            <section class="panel">
-                                <form id="addClassForm" class="form-horizontal" role="form">
-                                    <div class="form-group">
-                                        <label class="col-lg-3 control-label">英文名称</label>
-                                        <div class="col-lg-5">
-                                            <input type="text" class="form-control" name="name" id="">
-                                        </div>
-                                    </div>
-                                    <div class="form-group">
-                                        <label class="col-lg-3 control-label">中文名称</label>
-                                        <div class="col-lg-5">
-                                            <input type="text" class="form-control" name="chsName" id="">
-                                        </div>
-                                    </div>
-                                    <input type="reset" name="reset" style="display: none;">
-                                </form>
-                            </section>
-                            <!-- modal-body end -->
-                        </div>
-                        <div class="modal-footer">
-                            <button data-dismiss="modal" class="btn btn-default">取消</button>
-                            <button data-dismiss="modal" class="btn btn-success" @click="addClass">添加</button>
-                        </div>
-                    </div>
-                </div>
+        </div>
+    </div>
+</div>
+<!-- addArchiModal end -->
+<!-- updateArchiModal start -->
+<div class="modal fade" id="updateArchModal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"
+                        aria-hidden="true">&times;</button>
+                <h4 class="modal-title">修改开发架构</h4>
             </div>
-            <!-- addClassModal end -->
-            <!-- addMethodModal start -->
-            <div class="modal fade" id="addMethodModal" tabindex="-1" role="dialog" aria-hidden="true">
-                <div class="modal-dialog">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <button type="button" class="close" data-dismiss="modal"
-                                    aria-hidden="true">&times;</button>
-                            <h4 class="modal-title">添加方法</h4>
+            <div class="modal-body">
+                <!-- modal-body start -->
+                <section class="panel">
+                    <form id="updateArchForm" class="form-horizontal" role="form">
+                        <div class="form-group">
+                            <label class="col-lg-3 control-label">编码</label>
+                            <div class="col-lg-5">
+                                <input type="text" class="form-control" name="code" id="">
+                            </div>
                         </div>
-                        <div class="modal-body">
-                            <!-- modal-body start -->
-                            <section class="panel">
-                                <form id="addMethodForm" class="form-horizontal" role="form">
-                                    <div class="form-group">
-                                        <label class="col-lg-3 control-label">名称</label>
-                                        <div class="col-lg-5">
-                                            <input type="text" class="form-control" name="methodname" id="">
-                                        </div>
-                                    </div>
-                                    <div class="form-group">
-                                        <label class="col-lg-3 control-label">方法描述</label>
-                                        <div class="col-lg-5">
-                                            <input type="text" class="form-control" name="methoddescription" id="">
-                                        </div>
-                                    </div>
-                                    <div class="form-group">
-                                        <label class="col-lg-3 control-label">有无参数</label>
-                                        <div class="col-lg-3">
-                                            <select class="form-control" name="isparameter">
-                                                <option value="1">有</option>
-                                                <option value="0">无</option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <div class="form-group">
-                                        <label class="col-lg-3 control-label">等待时间</label>
-                                        <div class="col-lg-3">
-                                            <input type="text" name="waittime" class="form-control" value="">
-                                        </div>
-                                        <label class="col-lg-2 control-label">超时时间</label>
-                                        <div class="col-lg-3">
-                                            <input type="text" name="timeout" class="form-control" value="">
-                                        </div>
-                                    </div>
-                                    <div class="form-group">
-                                        <label class="col-lg-3 control-label">目标代码</label>
-                                        <div class="col-lg-9">
-                                            <textarea class="form-control" rows="10" name="objectcode"></textarea>
-                                        </div>
-                                    </div>
-                                    <input type="reset" name="reset" style="display: none;">
-                                </form>
-                            </section>
-                            <!-- modal-body end -->
+                        <div class="form-group">
+                            <label class="col-lg-3 control-label">中文名称</label>
+                            <div class="col-lg-5">
+                                <input type="text" class="form-control" name="name" id="">
+                            </div>
                         </div>
-                        <div class="modal-footer">
-                            <button data-dismiss="modal" class="btn btn-default">取消</button>
-                            <button data-dismiss="modal" class="btn btn-success" @click="addMethod">添加</button>
+                        <!-- <div class="form-group">
+                            <label class="col-lg-3 control-label">类型</label>
+                            <div class="col-lg-5">
+                                <select class="form-control">
+                                    <option>抽象架构</option>
+                                    <option>全局方法</option>
+                                </select>
+                            </div>
+                        </div> -->
+                        <div class="form-group">
+                            <label class="col-lg-3 control-label">父架构</label>
+                            <div class="col-lg-5">
+                                <select class="form-control" name="parentArcId">
+                                    <option value=''>-- 请选择父架构 --</option>
+                                    <option v-for="item in archiList" value="{{item.id}}">
+                                        {{item.name}}
+                                    </option>
+                                </select>
+                            </div>
                         </div>
-                    </div>
-                </div>
+                        <div class="form-group">
+                            <label class="col-lg-3 control-label">描述</label>
+                            <div class="col-lg-5">
+                                <textarea class="form-control" rows="4" name="descShort"></textarea>
+                            </div>
+                        </div>
+                        <input type="reset" name="reset" style="display: none;">
+                    </form>
+                </section>
+                <!-- modal-body end -->
             </div>
-            <!-- addMethodModal end -->
-            <!-- selectAlertModal start -->
-            <div class="modal fade" id="selectAlertModal" tabindex="-1" role="dialog" aria-hidden="true">
-                <div class="modal-dialog">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <button type="button" class="close" data-dismiss="modal"
-                                    aria-hidden="true">&times;</button>
-                            <h4 class="modal-title">操作失败</h4>
-                        </div>
-                        <div class="modal-body">
-                            <h4>请先选中一条数据！</h4>
-                        </div>
-                        <div class="modal-footer">
-                            <button data-dismiss="modal" class="btn btn-success" type="button">确定</button>
-                        </div>
-                    </div>
-                </div>
+            <div class="modal-footer">
+                <button data-dismiss="modal" class="btn btn-default">取消</button>
+                <button data-dismiss="modal" class="btn btn-success" @click="updateArchi">添加</button>
             </div>
-            <!-- selectAlertModal end -->
-            <!--</div>-->
-        </section>
-        <link rel="import" href="./common/copy-right.html?__inline">
-    </section>
-    <!--main content end-->
+        </div>
+    </div>
+</div>
+<!-- updateArchiModal end -->
+<!-- addClassModal start -->
+<div class="modal fade" id="addClassModal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"
+                        aria-hidden="true">&times;</button>
+                <h4 class="modal-title">添加构件类型</h4>
+            </div>
+            <div class="modal-body">
+                <!-- modal-body start -->
+                <section class="panel">
+                    <form id="addClassForm" class="form-horizontal" role="form">
+                        <div class="form-group">
+                            <label class="col-lg-3 control-label">英文名称</label>
+                            <div class="col-lg-5">
+                                <input type="text" class="form-control" name="name" id="">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-lg-3 control-label">中文名称</label>
+                            <div class="col-lg-5">
+                                <input type="text" class="form-control" name="chsName" id="">
+                            </div>
+                        </div>
+                        <input type="reset" name="reset" style="display: none;">
+                    </form>
+                </section>
+                <!-- modal-body end -->
+            </div>
+            <div class="modal-footer">
+                <button data-dismiss="modal" class="btn btn-default">取消</button>
+                <button data-dismiss="modal" class="btn btn-success" @click="addClass">添加</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- addClassModal end -->
+<!-- addMethodModal start -->
+<div class="modal fade" id="addMethodModal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"
+                        aria-hidden="true">&times;</button>
+                <h4 class="modal-title">添加方法</h4>
+            </div>
+            <div class="modal-body">
+                <!-- modal-body start -->
+                <section class="panel">
+                    <form id="addMethodForm" class="form-horizontal" role="form">
+                        <div class="form-group">
+                            <label class="col-lg-3 control-label">名称</label>
+                            <div class="col-lg-5">
+                                <input type="text" class="form-control" name="methodname" id="">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-lg-3 control-label">方法描述</label>
+                            <div class="col-lg-5">
+                                <input type="text" class="form-control" name="methoddescription" id="">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-lg-3 control-label">有无参数</label>
+                            <div class="col-lg-3">
+                                <select class="form-control" name="isparameter">
+                                    <option value="1">有</option>
+                                    <option value="0">无</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-lg-3 control-label">等待时间</label>
+                            <div class="col-lg-3">
+                                <input type="text" name="waittime" class="form-control" value="">
+                            </div>
+                            <label class="col-lg-2 control-label">超时时间</label>
+                            <div class="col-lg-3">
+                                <input type="text" name="timeout" class="form-control" value="">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-lg-3 control-label">目标代码</label>
+                            <div class="col-lg-9">
+                                <textarea class="form-control" rows="10" name="objectcode"></textarea>
+                            </div>
+                        </div>
+                        <input type="reset" name="reset" style="display: none;">
+                    </form>
+                </section>
+                <!-- modal-body end -->
+            </div>
+            <div class="modal-footer">
+                <button data-dismiss="modal" class="btn btn-default">取消</button>
+                <button data-dismiss="modal" class="btn btn-success" @click="addMethod">添加</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- addMethodModal end -->
+<!-- selectAlertModal start -->
+<div class="modal fade" id="selectAlertModal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"
+                        aria-hidden="true">&times;</button>
+                <h4 class="modal-title">操作失败</h4>
+            </div>
+            <div class="modal-body">
+                <h4>请先选中一条数据！</h4>
+            </div>
+            <div class="modal-footer">
+                <button data-dismiss="modal" class="btn btn-success" type="button">确定</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- selectAlertModal end -->
+<!--</div>-->
+</section>
+<link rel="import" href="./common/copy-right.html?__inline">
+</section>
+<!--main content end-->
 </div>
 </body>
 
