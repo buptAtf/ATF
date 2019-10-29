@@ -12,7 +12,7 @@ var template=`<div class="row">
                     <br>
                 </div>
                 <div class="form-group form-horizontal">
-                    <div class="col-xs-12">
+                    <div class="col-xs-12 " style="padding-top: 10px;">
                         <a class="btn btn-info btn-sm" data-toggle="modal" href="#addUIModal">添加UI</a>
                         <a class="btn btn-info btn-sm" @click="delUI">删除UI</a>
                         <a class="btn btn-info btn-sm" data-toggle="modal" @click="checkAddElement">添加元素</a>

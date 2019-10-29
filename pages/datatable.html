@@ -28,7 +28,7 @@
     }
 
     .panel-body {
-      padding: 0 15px 15px 15px;
+      padding: 0 15px 5px 15px;
     }
 
     .panel-body>label {
@@ -49,6 +49,7 @@
     }
 
     .filterButtons {
+      padding-left: 3px;
       margin-bottom: 10px;
     }
 
@@ -974,7 +975,7 @@
                     <span v-else>收起筛选</span>
                     <i :class="{'icon-angle-down':!iconflag, 'icon-angle-up':iconflag}"></i>
                   </a>
-                  <a  style="float: right;">
+                  <a>
                     <span onclick="location.href='datatable_flowcase.html'" class="btn btn-white btn-bg">切换流程用例展示 <i class="glyphicon glyphicon-retweet"></i></span>
                   </a>
                 </h4>
@@ -988,7 +989,7 @@
               <div class="panel-body">
                 <div class="filterButtons">
                   <button class="btn btn-primary" @click="filterCase">查询&nbsp;&nbsp;</button>
-                  <button class="btn btn-primary btn-xs" @click="addFilter()" id="add_btn"><i
+                  <button class="btn btn-primary " @click="addFilter()" id="add_btn"><i
                       class="icon-plus"></i></button>
                 </div>
                 <ul class="filterList">
@@ -1026,7 +1027,7 @@
           </div>
         </div>
       </div>
-      <hr style='border:1px dashed #708090;width:80%; height:0px;  size:2' />
+      <hr style='border:1px dashed #708090;width:97.5%; height:0px;  size:2;    margin-top: 0px;' />
 
       <section class="content-wrapper">
         <div class="treeMenu" v-bind:class="{'close1': !flag, 'open2': flag}" id="submenu">
@@ -1045,7 +1046,7 @@
               </label>
             </div>
           </div> -->
-          <div v-show="!checkedArray.length" style="font-size: 13px; padding: 5px 0 0 30px;">请在上方选择数据</div>
+          <div v-show="!checkedArray.length" style="font-size: 13px; padding: 5px 0 0 19px;">请在上方选择数据</div>
           <div class="tree-wrapper ztree" id="tree-wrapper">
 
           </div>

@@ -13,6 +13,16 @@
         color: #FF6C60;
         font-size: 16px;
     }
+    .table-center{
+        padding-top: 3px;
+        position: absolute;
+        top: 50%;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        margin: auto;
+        transform: translateY(-50%);
+    }
     </style>
 </head>
 
@@ -40,7 +50,7 @@
                 <!-- breadcrumb end -->
                 <!--top-button start-->
                 <div class="row">
-                    <div class="col-lg-6 top-btn">
+                    <div class="col-lg-5 top-btn">
                         <a class="btn btn-white" data-toggle="modal" href="#insertModal"><i class="icon-plus"></i> 添加</a>
                         <a class="btn btn-white" @click="checkDel"><i class="icon-trash"></i> 删除</a>
                         <a class="btn btn-white" @click="checkUpdate"><i class="icon-edit"></i> 修改</a>
@@ -274,7 +284,8 @@
                         </div>
                         <!-- selectAlertModal end -->
                     </div>
-                    <form class="form-horizontal col-lg-3" style="left:500px">
+                    <div class="form-horizontal col-lg-4"></div>
+                    <form class="form-horizontal col-lg-3">
                         <div class="form-group" >
                             <label class="col-lg-3 control-label">搜索</label>
                             <div class="col-lg-6">
@@ -340,11 +351,31 @@
                                         <td width="5%">
                                             <input type="radio" v-model="" name="chk_list" id="{{scene.id}}"  @click.stop=" return true "/>
                                         </td>
-                                        <td class="center hidden-phone" width="20%">{{ scene.nameMedium }}</td>
-                                        <td width="25%">{{ scene.descShort }}</td>
-                                        <td width="15%">{{ formatDate(scene.createTime) }}</td>
-                                        <td width="15%">{{ formatDate(scene.modifiedTime) }}</td>
-                                        <td class="hidden-phone" width="15%"><a class="btn btn-primary btn-xs" @click="toSceneManagement($event)">管理</a></td>
+                                        <td class="center hidden-phone" width="20%">
+                                            <span class ="table-center">
+                                                {{ scene.nameMedium }}
+                                            </span>
+                                        </td>
+                                        <td width="25%">
+                                            <span class ="table-center">
+                                                {{ scene.descShort }}
+                                            </span>
+                                        </td>
+                                        <td width="15%">
+                                            <span class ="table-center">
+                                                {{ formatDate(scene.createTime) }}
+                                            </span>
+                                        </td>
+                                        <td width="15%">
+                                            <span class ="table-center">
+                                                {{ formatDate(scene.modifiedTime) }}
+                                            </span>
+                                        </td>
+                                        <td class="hidden-phone" width="15%">
+                                            <span class ="table-center">
+                                                <a class="btn btn-primary btn-xs" @click="toSceneManagement($event)">管理</a>
+                                            </span>
+                                        </td>
                                     </tr>
                                 </tbody>
                             </table>

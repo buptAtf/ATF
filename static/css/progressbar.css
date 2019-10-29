@@ -1,6 +1,6 @@
 #progressbar{
     margin-left:180px;
-    background-color: #f6f6f6;
+    background-color: #f1f2f7;
     user-select:none; 
     -webkit-user-select:none; 
     position:absolute;
@@ -152,9 +152,8 @@
   background-color: #f1f2f7;
   vertical-align: middle;
   text-align: center;
-  padding: 2px 3px;
+  padding: 6px 5px;
   float: left;
-  border:2px solid #00b8f5;
 }
   .step {
     counter-reset: flag;

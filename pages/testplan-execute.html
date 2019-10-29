@@ -328,12 +328,12 @@
                                  v-for="scene in testSceneList">
                                 <i class="icon-move handle2" style="color: #5a3c3c;"></i>&nbsp;&nbsp;
                                 <div class="checkbox-wrapper"
-                                     style="display: inline-block;vertical-align: top;padding: 2px 5px; position: relative; top: 5px;"
+                                     style="display: inline-block;vertical-align: top;padding: 2px 5px; position: relative; top: 9px;"
                                      @mousedown.stop="1">
                                     <input type="checkbox" :value="scene.sceneId" class="checkscene"
                                            v-bind:name="scene.id" v-model="selectedScenes"> <!-- lrqlrq-->
                                 </div>
-                                <span class="scene-list-title list-title" style="top: 8px;">{{scene.sceneName}}</span>
+                                <span class="scene-list-title list-title" style="top: 2px;">{{scene.sceneName}}</span>
                                 <button class="hide-case-list btn btn-xs btn-info" @click="hideCaseList($event)"
                                         @mousedown.stop="1"><span>收起</span>&nbsp;&nbsp;<i class="icon-caret-down"></i>
                                 </button>
