@@ -227,8 +227,9 @@ var app = new Vue({
         },
         //传递当前页选中的场景id到场景管理页面
         toSceneManagement: function(e) {
-            var sceneid = $(e.target).parent().parent().attr('id'),
-                scenename = $(e.target).parent().prev().prev().prev().prev().html();
+            var sceneid = $(e.target).parent().parent().parent().attr('id'),
+                scenename = $(e.target).parent().parent().prev().prev().prev().prev().children().html();
+            console.log(sceneid,scenename);
             location.href = "scene-setting.html?sceneid=" + sceneid + "&" + "scenename=" + scenename;
         },
         //时间格式化
