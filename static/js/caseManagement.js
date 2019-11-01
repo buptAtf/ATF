@@ -45,7 +45,8 @@ var app = new Vue({
         caselibid: sessionStorage.getItem('caselibId'), //用例库id
         userId:sessionStorage.getItem('userId'),
         failMSG:"操作失败啦",
-        projectName: sessionStorage.getItem('projectNameStorage')
+        projectName: sessionStorage.getItem('projectNameStorage'),
+        loadingFlag:true // 用于是否加载完成
     },
     ready: function() {
         console.log(sessionStorage.getItem("userId"));
@@ -927,7 +928,8 @@ var app = new Vue({
                 }
             }
         });
-        
+        $(".loadingHidden").css('display','block')
+        $(".loading").css('display','none')
     },
     created: function(){
         console.log(sessionStorage.getItem("userId"));
