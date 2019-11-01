@@ -322,7 +322,7 @@
                         </div>
                         <div v-for="time in case_wrapper">
                           <div class="case-wrapper" v-for="case in time">
-                            <div class="" style="height: 30px; width: 30px; border-width: 15px; border-style: solid; border-color: transparent transparent  transparent #bebaba;margin: 0 -30px 0 20px; position: relative; top: 0%;"></div>
+                            <!-- <div class="" style="height: 30px; width: 30px; border-width: 15px; border-style: solid; border-color: transparent transparent  transparent #bebaba;margin: 0 -30px 0 20px; position: relative; top: 0%;"></div> -->
                             <div class="case"  @click="changeCase(case.id, 1)"  @mousedown.stop="1" :style="{ marginRight: (index !== time.length - 1) ? '0px' :170 + 'px'}">
                               <div class="case-header">
                                 <p :title="case.casecode" style="margin-left: 5px;">{{case.casecode}}</p>
@@ -340,7 +340,7 @@
                         </div>
                         <div class="case-wrapper">
                           <template v-for="(key, time) in case_wrapper">
-                            <div class="" style="height: 30px; width: 30px; border-width: 15px; border-style: solid; border-color: transparent transparent  transparent #bebaba;margin: 0 -30px 0 20px; position: relative; top: 0%;"></div>
+                            <!-- <div class="" style="height: 30px; width: 30px; border-width: 15px; border-style: solid; border-color: transparent transparent  transparent #bebaba;margin: 0 -30px 0 20px; position: relative; top: 0%;"></div> -->
                             <div class="case" v-for="(index, case) in time" @mousedown.stop="1"
                               @click="changeCase(case.id, 2)" 
                               :style="{ marginRight: (index !== time.length - 1) ? '0px' : 170 + 'px'}">

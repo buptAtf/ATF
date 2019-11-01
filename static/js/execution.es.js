@@ -80,6 +80,7 @@ var app = new Vue({
     methods: {
         // 归档
         delete(batchId){
+            var _this = this
             $.ajax({
                 url: address3 + 'testRecordController/batchSaveTestRecord',
                 type: 'post',
@@ -226,11 +227,15 @@ var app = new Vue({
             console.log("1231111111111")
             var _this=this;
             var today = new Date();
-            var endTime = ''+ today.getFullYear()+'-'+(today.getMonth()+1)+'-'+(today.getDate()+1);
+            var endTime = ''+ today.getFullYear()+'-'+(today.getMonth()+1)+'-'+(today.getDate());
+            console.log('endTime')
+            console.log(endTime)
             var startTime = '1990-1-1';
             let tempDate = _this.creatTimeChange(startTime,endTime);
             startTime = tempDate[0];
             endTime = tempDate[1];
+            console.log('endTime')
+            console.log(tempDate)
             $.ajax({
                 url: address3 + 'batchRunCtrlController/pagedBatchQueryBatchRunCtrl',
                 type: 'post',
