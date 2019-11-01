@@ -355,6 +355,44 @@ var app = new Vue({
                     }
                 });
             },
+            // 初始化查询当前控件类型下的方法
+            getMethodOrigin: function () {
+                var _this = this;
+                var classId = _this.classList[0].id;
+                $.ajax({
+                    url: address3 + 'arcClass/queryArcVisibleOmMethods',
+                    type: 'post',
+                    contentType: 'application/json',
+                    data: JSON.stringify({
+                        id: classId,
+                    }),
+                    success: function (data) {
+                        //         // $('#methodProp').children().remove();
+                        if (data.respCode === '0000') {
+                            var methodList = data.arcMethodRespDTOList;
+                            _this.methodList = methodList;
+                            var str = "";
+                            for (var i = 0; i < methodList.length; i++) {
+                                if (methodList[i].overrideFlag == 0 || methodList[i].overrideFlag == 1) {
+                                    str += " <option value='" + methodList[i].id + "' name='" + i + "'>" + methodList[i].name + "</option> ";
+                                }
+                            }
+                            $('#methodSelect').html(str);
+                            // if (str == "") {
+                            //     Vac.alert("该控件无方法");
+                            //     return;
+                            // }
+                            // _this.detailTabFresh();
+                            // _this.getElementTree();
+                            // _this.classtypeSelect();
+                            // _this.getObjTree();
+                            // _this.getScriptTemplate();
+
+                        }
+
+                    }
+                });
+            },
             //选择方法
             methodSelect(){
                 var classId = $("#classSelect").find("option:selected").val();
@@ -670,7 +708,7 @@ var app = new Vue({
                 var _this = this;
                 // if ( $("#classSelect").find("option:selected")) {
                 //查询当前构件类型对应的方法
-                _this.getMethod();
+                // _this.getMethod();
                 //classForm内容封装
                 $('#classForm input[name="name"]').val('');
                 $('#classForm input[name="chsName"]').val('');
@@ -789,7 +827,12 @@ var app = new Vue({
             },
             // 勾选方法
             methodClick: function () {
-                $('#tableSection').removeClass();
+                var select=$('#classForm').find("div[name='tableSection']");
+                for(var i=0;i<select.length;i++){
+                    console.log( select[i]);
+                    select[i].setAttribute("class","");
+                }
+                // console.log(select);
                 $('#classPart').removeClass().addClass("col-lg-6");
                 $('#classSec').addClass("methodSec");
                 $('#methodSection').css('display', 'block');
@@ -836,7 +879,11 @@ var app = new Vue({
 
             },
             methodClick2: function (){
-                $('#tableSection').addClass("tableDiv");
+                var select=$('#classForm').find("div[name='tableSection']");
+                for(var i=0;i<select.length;i++){
+                    console.log( select[i]);
+                    select[i].setAttribute("class","tableDiv");
+                }
                 $('#classPart').removeClass().addClass("col-lg-12");
                 $('#classSec').removeClass("methodSec");
                 $('#methodSection').css('display', 'none');
@@ -1223,7 +1270,7 @@ var setting1 = {
                     app.classList = classList;
                     app.classSelectId=classList[0].id;
                     app.classOrigin();
-                    app.getMethod();
+                    app.getMethodOrigin();
                     // console.log(classList)
                     // if (classList.length !== 0) {
                         // $('#classProp').children().remove();

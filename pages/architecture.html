@@ -13,6 +13,7 @@
             width: 66.9%;
             margin-left: 16.5%;
         }
+
         .sectionHeight {
             height: 1000px;
             overflow: auto;
@@ -191,15 +192,15 @@
                                 <!--  <input id="input-id" type="file" class="file" data-preview-file-type="text">
                              </div> -->
                                 <!-- </div> -->
+                                 <br/>
                                 <div class="form-group">
-                                    <br/>
                                  <label class="col-lg-2 control-label">运行时参数</label>
-                                <div class="tableDiv" id="tableSection">
-                                    <div  class="property">
+                                <div class="tableDiv" name="tableSection">
+                                    <div class="property">
+                                        <!--<div class="col-xs-5"></div>-->
                                         <a class="btn btn-white btn-sm pull-right"
                                            @click="addRuntimeArgsPara($event)"><i class="icon-plus"></i></a>
-                                        &nbsp;
-                                        <a class="btn btn-white btn-sm  pull-right"
+                                        <a class="btn btn-white btn-sm pull-right"
                                            @click="delRuntimeArgsPara($event)"><i class="icon-minus"></i></a>
                                     </div>
                                     <div class="property">
@@ -227,8 +228,9 @@
                                     </div>
                                     <div class="form-group">
                                     <label class="col-lg-2 control-label"> 支持的识别属性</label>
-                                        <div class="tableDiv" id="tableSection">
+                                        <div class="tableDiv" name="tableSection">
                                             <div class="property">
+                                                  <div class="col-xs-5"></div>
                                                 <a class="btn btn-white btn-sm pull-right"
                                                    @click="addSupRecPara($event)"><i
                                                         class="icon-plus"></i></a>
@@ -262,7 +264,7 @@
                                     </div>
                                 <div class="form-group">
                                     <label class="col-lg-2 control-label">  自识别属性</label>
-                                    <div class="tableDiv" id="tableSection">
+                                    <div class="tableDiv" name="tableSection">
                                         <div class="property">
                                             <a class="btn btn-white btn-sm pull-right" @click="addSelfRecPara($event)"><i
                                                     class="icon-plus"></i></a>
@@ -294,7 +296,7 @@
                                 </div>
                                 <div class="form-group">
                                     <label class="col-lg-2 control-label">    辅助识别属性</label>
-                                    <div class="tableDiv" id="tableSection">
+                                    <div class="tableDiv" name="tableSection">
                                         <div class="property">
                                             <a class="btn btn-white btn-sm pull-right" @click="addAssistRecPara($event)"><i
                                                     class="icon-plus"></i></a>
@@ -325,10 +327,9 @@
                                     </div>
                                 </div>
                                     <div class="row">
-                                        <a class="btn btn-info rightBtn" @click="updateClass" style="margin-left:79.3%">保存</a>
+                                        <a class="btn btn-info rightBtn" @click="updateClass" style="margin-left:1000px">保存</a>
                                     </div>
                                 <br><br><br>
-                                </div>
 
                         <!-- <div class="property">
                             对象识别属性列表
