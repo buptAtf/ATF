@@ -530,7 +530,6 @@ var app = new Vue({
             console.log("aaaa");
             var _this = this;
             // if ( $("#classSelect").find("option:selected")) {
-
             //查询当前构件类型对应的方法
             app.classId = $("#classSelect").find("option:selected").val();
             _this.getMethod();
@@ -593,6 +592,129 @@ var app = new Vue({
             // $('#classForm input[name="modifiedTime"]').val('');
             var i = $("#classSelect").find("option:selected").attr("name");
             var curClass = app.classList[i];
+            // console.log(curClass)
+            $('#classForm input[name="chsName"]').val(curClass.chsName);
+            $('#classForm input[name="name"]').val(curClass.name);
+            $('#classForm input[name="descShort"]').val(curClass.descShort);
+            // $('#classForm input[name="creator"]').val(curClass.creatorId);
+            // $('#classForm input[name="createTime"]').val(curClass.createTime);
+            // $('#classForm input[name="modifier"]').val(curClass.modifierId);
+            // $('#classForm input[name="modifiedTime"]').val(curClass.modifiedTime);
+            // $('#previewImg').attr("src", curClass.picSample);
+            $('#overideFlag').val(curClass.overideFlag);
+            $('#defaultMethod').val(curClass.defaultMethod);
+            $('#visibilityFlag').val(curClass.visibilityFlag);
+
+            supRecList = JSON.parse(curClass.supportedRecognitionPros);
+            if ($('#supRecTbody').children()) {
+                $('#supRecTbody').children().remove();
+            }
+            if (supRecList) {
+                for (let i = 0; i < supRecList.length; i++) {
+                    var paraTr = $('<tr></tr>'),
+                        paraCheckTd = $('<td><input type="checkbox" name="supRec_list"/></td>'),
+                        paraNameTd = $('<td contenteditable="true"></td>'),
+                        paraDescriptionTd = $('<td contenteditable="true"></td>');
+                    paraNameTd.html(supRecList[i].name);
+                    paraDescriptionTd.html(supRecList[i].value);
+                    paraTr.append(paraCheckTd, paraNameTd, paraDescriptionTd);
+                    $('#supRecTbody').append(paraTr);
+                }
+            }
+
+
+            runtimeArgsList = JSON.parse(curClass.runtimeArgs);
+            if ($('#runtimeArgsTbody').children()) {
+                $('#runtimeArgsTbody').children().remove();
+            }
+            if (runtimeArgsList) {
+                for (let i = 0; i < runtimeArgsList.length; i++) {
+                    var paraTr = $('<tr></tr>'),
+                        paraCheckTd = $('<td><input type="checkbox" name="runtimeArgs_list"/></td>'),
+                        paraNameTd = $('<td contenteditable="true"></td>'),
+                        paraDescriptionTd = $('<td contenteditable="true"></td>');
+                    paraNameTd.html(runtimeArgsList[i].name);
+                    paraDescriptionTd.html(runtimeArgsList[i].value);
+                    paraTr.append(paraCheckTd, paraNameTd, paraDescriptionTd);
+                    $('#runtimeArgsTbody').append(paraTr);
+                }
+            }
+
+
+            selfRecList = JSON.parse(curClass.selfRecognitionPros);
+            $('#selfRecTbody').children().remove();
+            if (selfRecList) {
+                for (let i = 0; i < selfRecList.length; i++) {
+                    var paraTr = $('<tr></tr>'),
+                        paraCheckTd = $('<td><input type="checkbox" name="selfRec_list"/></td>'),
+                        paraNameTd = $('<td contenteditable="true"></td>'),
+                        paraDescriptionTd = $('<td contenteditable="true"></td>');
+                    paraNameTd.html(selfRecList[i].name);
+                    paraDescriptionTd.html(selfRecList[i].value);
+                    paraTr.append(paraCheckTd, paraNameTd, paraDescriptionTd);
+                    $('#selfRecTbody').append(paraTr);
+                }
+            }
+
+            assistRecList = JSON.parse(curClass.assistRecognitionPros);
+            if ($('#assistRecTbody').children()) {
+                $('#assistRecTbody').children().remove();
+            }
+            if (assistRecList) {
+                for (let i = 0; i < assistRecList.length; i++) {
+                    var paraTr = $('<tr></tr>'),
+                        paraCheckTd = $('<td><input type="checkbox" name="assistRec_list"/></td>'),
+                        paraNameTd = $('<td contenteditable="true"></td>'),
+                        paraDescriptionTd = $('<td contenteditable="true"></td>');
+                    paraNameTd.html(assistRecList[i].name);
+                    paraDescriptionTd.html(assistRecList[i].value);
+                    paraTr.append(paraCheckTd, paraNameTd, paraDescriptionTd);
+                    $('#assistRecTbody').append(paraTr);
+                }
+            }
+
+
+            var overrideFlag = curClass.overideFlag;
+            // console.log(overrideFlag)
+            if (overrideFlag == '继承自父类') {//不能修改/刪除  不能添加方法
+                $('#classForm input').attr('disabled', 'disabled');
+                $('#classForm select').attr('disabled', 'disabled');
+                $('.c-right-table tr td').attr('contenteditable', false);
+                $('#addMethodBtn').attr('disabled', 'disabled');
+                $('#delMethodBtn').attr('disabled', 'disabled');
+            } else if (overrideFlag == '禁用') {//可以修改/刪除   不能添加方法
+                $('#classForm input').attr('disabled', false);
+                $('#classForm select').attr('disabled', false);
+                $('.c-right-table tr td').attr('contenteditable', true);
+                $('#addMethodBtn').attr('disabled', 'disabled');
+                $('#delMethodBtn').attr('disabled', 'disabled');
+            } else {//可以修改/刪除， 可以添加方法
+                $('#classForm input').attr('disabled', false);
+                $('#classForm select').attr('disabled', false);
+                $('.c-right-table tr td').attr('contenteditable', true);
+                $('#addMethodBtn').attr('disabled', false);
+                $('#delMethodBtn').attr('disabled', false);
+            }
+        },
+        //初始化class界面
+        classOrigin: function () {
+            console.log("aaaa");
+            var _this = this;
+            // if ( $("#classSelect").find("option:selected")) {
+            //查询当前构件类型对应的方法
+            _this.getMethod();
+            //classForm内容封装
+            $('#classForm input[name="name"]').val('');
+            $('#classForm input[name="chsName"]').val('');
+            $('#classForm input[name="descShort"]').val('');
+            $('#overideFlag').val('');
+            $('#defaultMethod').val('');
+            $('#visibilityFlag').val('');
+            // $('#classForm input[name="creator"]').val('');
+            // $('#classForm input[name="createTime"]').val('');
+            // $('#classForm input[name="modifier"]').val('');
+            // $('#classForm input[name="modifiedTime"]').val('');
+            var curClass = app.classList[0];
             // console.log(curClass)
             $('#classForm input[name="chsName"]').val(curClass.chsName);
             $('#classForm input[name="name"]').val(curClass.name);
@@ -770,6 +892,8 @@ function getClass() {
             // $('#classProp').children().remove();
             var classList = data.omClassRespDTOList;
             app.classList = classList;
+            app.classId=classList[0].id;
+            app.classOrigin();
             console.log(classList)
             if (classList) {
                 for (var i = 0; i < classList.length; i++) {

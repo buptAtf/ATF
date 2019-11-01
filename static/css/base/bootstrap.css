@@ -1085,13 +1085,13 @@ html {
 
   -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
 }
-body {
-  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-  font-size: 14px;
-  line-height: 1.42857143;
-  color: #333;
-  background-color: #fff;
-}
+/*body {*/
+  /*font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;*/
+  /*font-size: 14px;*/
+  /*line-height: 1.42857143;*/
+  /*color: #333;*/
+  /*background-color: #fff;*/
+/*}*/
 input,
 button,
 select,
@@ -3883,11 +3883,11 @@ select[multiple].input-group-sm > .input-group-btn > .btn {
   position: relative;
   display: block;
 }
-.nav > li > a {
-  position: relative;
-  display: block;
-  padding: 10px 15px;
-}
+/*.nav > li > a {*/
+  /*position: relative;*/
+  /*display: block;*/
+  /*padding: 10px 15px;*/
+/*}*/
 .nav > li > a:hover,
 .nav > li > a:focus {
   text-decoration: none;
@@ -3990,18 +3990,18 @@ select[multiple].input-group-sm > .input-group-btn > .btn {
 .nav-pills > li {
   float: left;
 }
-.nav-pills > li > a {
-  border-radius: 4px;
-}
+/*.nav-pills > li > a {*/
+  /*border-radius: 4px;*/
+/*}*/
 .nav-pills > li + li {
   margin-left: 2px;
 }
-.nav-pills > li.active > a,
-.nav-pills > li.active > a:hover,
-.nav-pills > li.active > a:focus {
-  color: #fff;
-  background-color: #337ab7;
-}
+/*.nav-pills > li.active > a,*/
+/*.nav-pills > li.active > a:hover,*/
+/*.nav-pills > li.active > a:focus {*/
+  /*color: #fff;*/
+  /*background-color: #337ab7;*/
+/*}*/
 .nav-stacked > li {
   float: none;
 }
@@ -4009,16 +4009,14 @@ select[multiple].input-group-sm > .input-group-btn > .btn {
   margin-top: 2px;
   margin-left: 0;
 }
-.nav-justified {
-  width: 100%;
-}
+
 .nav-justified > li {
   float: none;
 }
-.nav-justified > li > a {
-  margin-bottom: 5px;
-  text-align: center;
-}
+/*.nav-justified > li > a {*/
+  /*margin-bottom: 5px;*/
+  /*text-align: center;*/
+/*}*/
 .nav-justified > .dropdown .dropdown-menu {
   top: auto;
   left: auto;
@@ -5750,11 +5748,7 @@ button.close {
   overflow-x: hidden;
   overflow-y: auto;
 }
-.modal-dialog {
-  position: relative;
-  width: auto;
-  margin: 10px;
-}
+
 .modal-content {
   position: relative;
   background-color: #fff;
@@ -5823,10 +5817,6 @@ button.close {
   overflow: scroll;
 }
 @media (min-width: 768px) {
-  .modal-dialog {
-    width: 600px;
-    margin: 30px auto;
-  }
   .modal-content {
     -webkit-box-shadow: 0 5px 15px rgba(0, 0, 0, .5);
             box-shadow: 0 5px 15px rgba(0, 0, 0, .5);

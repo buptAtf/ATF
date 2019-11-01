@@ -33,18 +33,22 @@ var app = new Vue({
         },
         getautdata() {
             $.ajax({
-                url: address3 + 'dataPool/querySingleDataPool',
+                url: address3 + 'dataPool/pagedBatchQueryDataPool',
                 type: 'post',contentType: 'application/json',
                 data: JSON.stringify({
                     'poolName': '被测系统数据池',
                     'poolObjId': this.autId,
                     'dataName': '',
+                    'pageSize': 10,
+                    'currentPage': 1,
+                    'orderType': '',
+                    'orderColumns':'',
                 }),
                 success: function(data) {
                     if (data.respCode == 0000) {
-                        console.log(data.obj);
-                        app.autdataList = data.obj;
-                        app.autdataListLength = data.obj.length;
+                        console.log(data.list);
+                        app.autdataList = data.list;
+                        app.autdataListLength = data.list.length;
                     }
                 }
             });
@@ -125,7 +129,7 @@ var app = new Vue({
                 }),
                 success: function(data) {
                     console.info(data);
-                    if (data.success) {
+                    if (!data.success) {
                         $('#successModal').modal();
                         getautdata();
                     } else {
@@ -155,14 +159,13 @@ var app = new Vue({
                     data: JSON.stringify({
                         'id':app.ids,
                         'poolName': '被测系统数据池',
-                        'poolObjId': $("#upid").val(),
                         'dataName': $("#dataupname").val(),
                         'dataValue':$("#dataupvalue").val(),
                         'dataDesc':$("#dataupdesc").val(),
                     }),
                     success: function(data) {
                         console.info(data);
-                        if (data.success) {
+                        if (!data.success) {
                             $('#successModal').modal();
                             getautdata();
                         } else {

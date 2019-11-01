@@ -1,5 +1,5 @@
 
-	__inline('./scene-management/checked.js')
+__inline('./scene-management/checked.js')
 var vBody = new Vue({
 	el: '#v-body',
 	data: {
@@ -97,18 +97,28 @@ var vBody = new Vue({
 		exeScope: null,
 		isDebugInfoShow: false,
 		//以下参数用于移动端设备配置
-        platformName:"",    //设备类型
-        deviceName:"",      //设备名
-        automationName:"",  //？？？
-        appPackage:"",      //应用包名
-        appActivity:"",     // 启动activity
-        noReset:true,        //禁止重置
-        appiumurl:"",             //连接URL
-        mobileId:-1,
+		platformName:"",    //设备类型
+		deviceName:"",      //设备名
+		automationName:"",  //？？？
+		appPackage:"",      //应用包名
+		appActivity:"",     // 启动activity
+		noReset:true,        //禁止重置
+		appiumurl:"",             //连接URL
+		mobileId:-1,
 	},
 	computed: {
 		panelHeight: function(){
 			return { height: (this.tooltipFlag	? 0 : 200 ) + 'px' };
+		}
+	},
+	watch: {
+		/**
+		 * 监听后端的返回结果集
+		 */
+		caseSelectA:function () {
+			this.$nextTick(function () {
+				$('#caseSelect').selectpicker('refresh');
+			})
 		}
 	},
 	ready:function(){
@@ -145,11 +155,11 @@ var vBody = new Vue({
 			this.setBackground()
 		},
 		"checkedFlowNodes": function(value, oldVal) {
-			
+
 			for(let key of this.flowNodeIds.keys()) {
 				if(this.flowNodeIds.get(key).every((value) => {
-					return this.checkedFlowNodes.includes(value)
-				}))
+						return this.checkedFlowNodes.includes(value)
+					}))
 				{
 					this.pushNoRepeat(this.selectedCases, +key)
 				} else
@@ -167,28 +177,28 @@ var vBody = new Vue({
 		//获取上级页面选中的场景id和名称
 		setVal:function(){
 			var thisURL = document.URL;
-            var getval = thisURL.split('?')[1];
-            if (!getval) {
-            	var promise = Vac.confirm('#vac-confirm', '.okConfirm', '.cancelConfirm', "请从场景管理页面进入！");
-            	promise.then(() => {
-            		location.href = "scene.html"
-            	}, () => {
-            		location.href = "scene.html"
-            	})
-            	
-            }
-            var keyval = getval.split('&');
-            this.url = document.URL;
-            
-            this.sceneid = keyval[0].split('=')[1],
-            this.scenename = decodeURI(keyval[1].split('=')[1]);
+			var getval = thisURL.split('?')[1];
+			if (!getval) {
+				var promise = Vac.confirm('#vac-confirm', '.okConfirm', '.cancelConfirm', "请从场景管理页面进入！");
+				promise.then(() => {
+					location.href = "scene.html"
+			}, () => {
+					location.href = "scene.html"
+				})
+
+			}
+			var keyval = getval.split('&');
+			this.url = document.URL;
+
+			this.sceneid = keyval[0].split('=')[1],
+				this.scenename = decodeURI(keyval[1].split('=')[1]);
 		},
 		//添加场景用例
 		insert: function() {
 			// this.getIds();
 			var id_array = new Array();
 			$("#caseSelect option:selected").each(function() {
-				 id_array.push($(this).val());
+				id_array.push($(this).val());
 			});
 			var selectedInput =  $("#caseSelect option:selected");
 			if (selectedInput.length === 0) {
@@ -207,7 +217,7 @@ var vBody = new Vue({
 					}),
 					success: function(data) {
 						if (data.respCode=='0000') {
-							 location.href = "scene-setting.html?sceneid=" + that.sceneid + "&" + "scenename=" + that.scenename;
+							location.href = "scene-setting.html?sceneid=" + that.sceneid + "&" + "scenename=" + that.scenename;
 							$('#successModal').modal();
 						} else {
 							$('#failModal').modal();
@@ -240,7 +250,15 @@ var vBody = new Vue({
 				success: function(data) {
 					// console.log(data);
 					_this.caseList = data.testcaseViewRespDTOList;
-					console.log(_this.caseList);
+					console.log($('#caseSelect'));
+					for(let item of _this.caseList){
+						if(item.scriptTemplateName==null){
+							$('#caseSelect').append(`<option value="${item.id}">${item.casecode} | ${item.autName} | ${item.transName} | 无</option>`);
+						}else{
+							$('#caseSelect').append(`<option value="${item.id}">${item.casecode} | ${item.autName} | ${item.transName} | ${item.scriptTemplateName}</option>`);
+						}
+					}
+					$('#caseSelect').selectpicker('refresh');
 					_this.tt = data.totalCount;
 					_this.totalPage = Math.ceil(_this.tt / pageSize);
 					_this.pageSize = pageSize;
@@ -331,7 +349,7 @@ var vBody = new Vue({
 						}
 						Vue.nextTick(() => {
 							$('#sortable').width($('#sortable').width()+20)
-						})
+					})
 					}
 				}
 			});
@@ -371,7 +389,7 @@ var vBody = new Vue({
 		},
 		//打开tooltipWindow，并根据传入的参数显示相应的操作内容
 		operationType: function(type){
-		// 时间规划
+			// 时间规划
 			this.tooltipType = type;
 			this.tooltipFlag = false;
 			// 触发器设置
@@ -386,7 +404,7 @@ var vBody = new Vue({
 			} else if (type == 1) {
 				setTimeout(() => {
 					$('#datetimepicker').datetimepicker();
-				}, 500);
+			}, 500);
 			}
 		},
 		// 获取执行策略
@@ -451,7 +469,7 @@ var vBody = new Vue({
 								$('.value',trs[i]).val(conditions[i].value);
 								$('.btn-default', trs[i]).click(_this.removeTriggerCondition);
 							}
-							
+
 							var divs = $('.action-item-wrapper');
 							for(var i=0; i<divs.length;i++){
 								$('.id', divs[i]).prop('data-actionid',actions[i].id);
@@ -471,22 +489,22 @@ var vBody = new Vue({
 			var _this = this;
 			if(this.triggerInfo.selectedTrigger.length > 0){
 				var promise = Vac.confirm('#vac-confirm', '.okConfirm', '.cancelConfirm');
-				
+
 				promise.then(() => {
 					Vac.ajax({
-						url: address3 + 'trigerController/deleteTriger',
-						data: { id:  _this.triggerInfo.selectedTrigger[0] },
-						success: function(data, statusText){
-							if(data.respCode === '0000') {
-								Vac.alert(data.respMsg);
-								_this.getTriggers();
-							}else {
-								Vac.alert('删除失败' + data.respMsg);
-							}
+					url: address3 + 'trigerController/deleteTriger',
+					data: { id:  _this.triggerInfo.selectedTrigger[0] },
+					success: function(data, statusText){
+						if(data.respCode === '0000') {
+							Vac.alert(data.respMsg);
+							_this.getTriggers();
+						}else {
+							Vac.alert('删除失败' + data.respMsg);
 						}
-					});
-				}, () => {
-					
+					}
+				});
+			}, () => {
+
 				});
 			}else {
 				Vac.alert('请选择要删除的触发器！');
@@ -508,7 +526,7 @@ var vBody = new Vue({
 		removeTriggerCondition: function(event){
 			// event.target.click(null);
 			var deleteTr = event.target.parentNode.parentNode;
-			
+
 			deleteTr.parentNode.removeChild(deleteTr);
 			deleteTr = null;
 		},
@@ -534,11 +552,11 @@ var vBody = new Vue({
 			var _this = this;
 			switch(this.saveTriggerType){
 				case 1: save1();
-						break;
+					break;
 				case 2: save2();
-						break;
+					break;
 				case 3: save3();
-						break;
+					break;
 			}
 			// 新增保存
 			function save1(){
@@ -548,11 +566,11 @@ var vBody = new Vue({
 					desc: _this.editTriggerData.desc,
 					occasions: '[' + _this.editTriggerData.occasions.map(v => `"${v}"`) + ']',
 					conditionRelate: _this.editTriggerData.Conditionrelate
-				};
+			};
 				var obj = getDataInTable(1);
 				data.conditions = obj.conditions;
 				data.actions = obj.actions;
-				
+
 				Vac.ajax({
 					url: address3 + 'trigerController/insertTriger',
 					data: data,
@@ -570,12 +588,12 @@ var vBody = new Vue({
 			}
 			// 简单修改保存
 			function save3(){
-				
+
 			}
 
 			// 修改保存
 			function save2(){
-				
+
 				var data = {
 					id: +_this.triggerInfo.selectedTrigger[0],
 					name: _this.editTriggerData.name,
@@ -584,11 +602,11 @@ var vBody = new Vue({
 					conditionRelate: _this.editTriggerData.Conditionrelate,
 					modifyType: 2
 				};
-				
+
 				var obj = getDataInTable(2);
 				data.conditions = obj.conditions;
 				data.actions = obj.actions;
-				
+
 				Vac.ajax({
 					url: address3 + 'trigerController/updataTriger',
 					data: data,
@@ -639,7 +657,7 @@ var vBody = new Vue({
 			for(var i=0;i<trs.length;i++){
 				var item = {};
 				item.id = trs[i].querySelector('input').value;
-				
+
 				item.state = trs[i].querySelector('select').value;
 				// dataArray.push(JSON.stringify(item))
 				dataArray.push(item);
@@ -684,7 +702,7 @@ var vBody = new Vue({
 						Vac.alert(data.respMsg);
 						_this.getCases();
 					} else {
-						Vac.alert(data.respMsg);						
+						Vac.alert(data.respMsg);
 					}
 				},
 				error: function(){
@@ -705,24 +723,24 @@ var vBody = new Vue({
 					id: _this.sceneid,
 					caseIds: _this.selectedCases
 				};
-				Vac.ajax({
-					url: address3 + 'sceneController/deleteTestcaseFromScene',
-					data: data,
-					success: function(data){
-						if(data.respCode === '0000'){
-							Vac.alert("删除成功！");
-							_this.selectedCases = [];
-							_this.getCases()
-						}else {
-							Vac.alert('删除失败！');
-						}
-					},
-					error: function(){
-						Vac.alert('移除失败，请重新尝试！')
+			Vac.ajax({
+				url: address3 + 'sceneController/deleteTestcaseFromScene',
+				data: data,
+				success: function(data){
+					if(data.respCode === '0000'){
+						Vac.alert("删除成功！");
+						_this.selectedCases = [];
+						_this.getCases()
+					}else {
+						Vac.alert('删除失败！');
 					}
-				});
+				},
+				error: function(){
+					Vac.alert('移除失败，请重新尝试！')
+				}
 			});
-			
+		});
+
 
 		},
 		// 执行时间规划
@@ -790,8 +808,8 @@ var vBody = new Vue({
 			var _this = this;
 			var data = {
 				pageSize: 10000,
-        		currentPage: 1,
-        		orderType: 'asc',
+				currentPage: 1,
+				orderType: 'asc',
 				orderColumns: 'id',
 				poolName: '场景数据池',
 				poolObjId: 2,
@@ -863,7 +881,7 @@ var vBody = new Vue({
 							_this.getDataPool();
 							_this.selectedPool.shift();
 						}
-						Vac.alert(data.respMsg);										
+						Vac.alert(data.respMsg);
 					},
 					error: function(){
 						Vac.alert('移除数据池数据失败！')
@@ -887,9 +905,9 @@ var vBody = new Vue({
 
 							var promise = Vac.confirm('#vac-confirm', '.okConfirm', '.cancelConfirm');
 							promise.then(() => {
-								
+
 							}, () => {
-								
+
 							});
 						}
 					}
@@ -913,7 +931,7 @@ var vBody = new Vue({
 			// 删除选中的用例中节点用例,并生成要发送的数据
 			let sendData = []
 			let flowCases = [...this.flowNodeIds.keys()]
-			
+
 			let set = new Set(this.selectedCases)
 			for(let caseId of set) {
 				if(flowCases.includes(caseId)) {
@@ -935,21 +953,21 @@ var vBody = new Vue({
 				sendData.push(obj)
 			}
 			var _this = this
-			
+
 			var data = {
 				debuground: _this.debugRound,
 				sceneId: _this.sceneid,
-				exeScope: _this.exeScope, 
+				exeScope: _this.exeScope,
 				selectState: +_this.exeScope === 1 ? "" : JSON.stringify(sendData)
 			}
-		
+
 			$.ajax({
 				url: address3 + 'executeController/scenedubug',
 				data: data,
 				type: 'post',
 				dataType: 'json',
 				success: function(data, textStatux) {
-		
+
 				}
 			})
 		},
@@ -960,7 +978,7 @@ var vBody = new Vue({
 			for(var i = 0;i<domNodes.length;i++){
 				var caseId = $(domNodes[i]).attr("value");
 				arrCaseIds.push(+caseId);
-			} 	
+			}
 			Vac.ajax({
 				url:address3+"sceneController/sceneTestcaseSortSave",
 				data:{
@@ -978,69 +996,69 @@ var vBody = new Vue({
 				}
 			})
 		},
-		
-        //添加
-        initMobile: function() {
+
+		//添加
+		initMobile: function() {
 			var _this = this;
 			console.error("我福林是SB")
-            if(_this.mobileId == -1){
-                $.ajax({
-                    url: address3+'mobileController/initMobile',
-                    type: 'POST',
-                    contentType: 'application/json',
-                    data: JSON.stringify({
-                        'sceneId': _this.sceneid,
-                        'platformName': _this.platformName,
-                        'deviceName': _this.deviceName,
-                        'automationName': _this.automationName,
-                        'appPackage':_this.appPackage,
-                        'appActivity': _this.appActivity,
-                        'noReset':_this.noReset=="1"?true:false,
-                        'url': _this.appiumurl
-                    }),
-                    success: function(data) {
-                        if(data.respCode=="0000"){
+			if(_this.mobileId == -1){
+				$.ajax({
+					url: address3+'mobileController/initMobile',
+					type: 'POST',
+					contentType: 'application/json',
+					data: JSON.stringify({
+						'sceneId': _this.sceneid,
+						'platformName': _this.platformName,
+						'deviceName': _this.deviceName,
+						'automationName': _this.automationName,
+						'appPackage':_this.appPackage,
+						'appActivity': _this.appActivity,
+						'noReset':_this.noReset=="1"?true:false,
+						'url': _this.appiumurl
+					}),
+					success: function(data) {
+						if(data.respCode=="0000"){
 							Vac.alert(data.respMsg);
-                        }else{
+						}else{
 							Vac.alert(data.respMsg);
-                        }
-                    },
-                    error: function() {
-                        alert("ajax请求失败，请稍后访问......")
-                    }
-                });
-            }
-            else{
-                $.ajax({
-                    url: address3+'mobileController/updateMobile',
-                    type: 'POST',
-                    contentType: 'application/json',
-                    data: JSON.stringify({
-                        'sceneId': _this.sceneid,
-                        'platformName': _this.platformName,
-                        'deviceName': _this.deviceName,
-                        'automationName': _this.automationName,
-                        'appPackage':_this.appPackage,
-                        'appActivity': _this.appActivity,
-                        'noReset':_this.noReset=="1"?true:false,
-                        'url': _this.appiumurl,
-                        "id" : _this.mobileId
-                    }),
-                    success: function(data) {
-                        if(data.respCode=="0000"){
+						}
+					},
+					error: function() {
+						alert("ajax请求失败，请稍后访问......")
+					}
+				});
+			}
+			else{
+				$.ajax({
+					url: address3+'mobileController/updateMobile',
+					type: 'POST',
+					contentType: 'application/json',
+					data: JSON.stringify({
+						'sceneId': _this.sceneid,
+						'platformName': _this.platformName,
+						'deviceName': _this.deviceName,
+						'automationName': _this.automationName,
+						'appPackage':_this.appPackage,
+						'appActivity': _this.appActivity,
+						'noReset':_this.noReset=="1"?true:false,
+						'url': _this.appiumurl,
+						"id" : _this.mobileId
+					}),
+					success: function(data) {
+						if(data.respCode=="0000"){
 							Vac.alert(data.respMsg);
-					    }else{
+						}else{
 							Vac.alert(data.respMsg);
-                        }
-                    },
-                    error: function() {
+						}
+					},
+					error: function() {
 						Vac.alert("ajax请求失败，请稍后访问......")
-                    }
-                });
-            }
+					}
+				});
+			}
 		},
 		terminalSet(){
-            var _this = this;
+			var _this = this;
 			$.ajax({
 				url: address3+'mobileController/queryMobile',
 				type: 'post',
@@ -1050,15 +1068,15 @@ var vBody = new Vue({
 				}),
 				success: function(data) {
 					if (data.respCode=="0000") {
-					_this.platformName = data.mobileProperties.platformName;
-					_this.deviceName = data.mobileProperties.deviceName;
-					_this.automationName = data.mobileProperties.automationName;
-					_this.appPackage = data.mobileProperties.appPackage;
-					_this.appActivity = data.mobileProperties.appActivity;
-					_this.noReset = data.mobileProperties.noReset?"1":"0";
-					_this.appiumurl = data.mobileProperties.url;
-					_this.mobileId = data.mobileEntity.id;
-					
+						_this.platformName = data.mobileProperties.platformName;
+						_this.deviceName = data.mobileProperties.deviceName;
+						_this.automationName = data.mobileProperties.automationName;
+						_this.appPackage = data.mobileProperties.appPackage;
+						_this.appActivity = data.mobileProperties.appActivity;
+						_this.noReset = data.mobileProperties.noReset?"1":"0";
+						_this.appiumurl = data.mobileProperties.url;
+						_this.mobileId = data.mobileEntity.id;
+
 					} else if(data.respMsg == "该被测系统无移动端内容") {
 						_this.mobileId = -1;
 						_this.platformName = "";

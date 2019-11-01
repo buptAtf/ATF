@@ -2,26 +2,26 @@
 <html>
 
 <head>
-  <link rel="import" href="./common/header.html?__inline">
-  <!-- css for this page only -->
-  <!-- 引入样式 -->
-  <!-- <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-default/index.css"> -->
-  <link rel="stylesheet" type="text/css" href="../static/css/index.css">
-  <link rel="stylesheet" type="text/css" href="../static/css/elementLibrary.css">
-  <link rel="stylesheet" type="text/css" href="../static/css/metroStyle.css">
-  <link rel="stylesheet" href="text/css" href="../static/css/case-operation.scss">
-  <title>用例信息查看</title>
-  <style>
-    #menuContent,
-    .elementContent,
-    .tab-content {
-      background-color: #fff;
-    }
-  </style>
+    <link rel="import" href="./common/header.html?__inline">
+    <!-- css for this page only -->
+    <!-- 引入样式 -->
+    <!-- <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-default/index.css"> -->
+    <link rel="stylesheet" type="text/css" href="../static/css/index.css">
+    <link rel="stylesheet" type="text/css" href="../static/css/elementLibrary.css">
+    <link rel="stylesheet" type="text/css" href="../static/css/metroStyle.css">
+    <link rel="stylesheet" href="text/css" href="../static/css/case-operation.scss">
+    <title>用例信息查看</title>
+    <style>
+        #menuContent,
+        .elementContent,
+        .tab-content {
+            background-color: #fff;
+        }
+    </style>
 </head>
 
 <body id="" v-cloak>
-  <di class="content" id="app1">
+<di class="content" id="app1">
     <!--header start-->
     <!-- <link rel="import" href="./common/header-guide.html?__inline"> -->
     <!--header end-->
@@ -30,214 +30,214 @@
     <!--sidebar end-->
     <!--main content start-->
     <div class="row">
-      <div class="col-xs-12">
-          <section class="panel panel-pad panel-bottom bar">
-              <!-- select start -->
-              <form class="form-horizontal">
-                  <div class="form-group bar ">
-                      <!-- <label class="col-xs-2 control-label">被测系统</label>
-                      <div class="col-xs-2">
-                          <input class="form-control" id="autid" v-model="autName" readonly>
-                          </input>
-                      </div>
-                      <label class="col-xs-1 control-label">功能点</label>
-                      <div class="col-xs-2">
-                          <input class="form-control " id="transid" v-model="transName" readonly>
-                          </input>
-                      </div> -->
-                      <label class="col-xs-2 control-label">测试项目</label>
-                      <div class="col-xs-2">
-                          <input class="form-control" id="caselibid" v-model="caselibid" readonly>
-                          </input>
-                      </div>
-                      <label class="col-xs-1 control-label">用例编号</label>
-                      <div class="col-xs-2">
-                          <input class="form-control " id="transid" v-model="casecode" readonly>
-                          </input>
-                      </div>
-                      <label class="col-xs-1 control-label" v-if="caseCompositeType==2">流程节点</label>
-                      <div class="col-xs-2" v-if="caseCompositeType==2">
-                          <select  class="form-control " id="flowcase" v-model="flowNodeId">
-                              <option v-for ="item in flowTestcase" :value="item.id" >{{item.actioncasecode}}</option>
-                          </select>
-                      </div>
-                  </div>
-              </form>
-              <!-- select end -->
-          </section>
-      </div>
-  </div>
+        <div class="col-xs-12">
+            <section class="panel panel-pad panel-bottom bar">
+                <!-- select start -->
+                <form class="form-horizontal">
+                    <div class="form-group bar ">
+                        <!-- <label class="col-xs-2 control-label">被测系统</label>
+                        <div class="col-xs-2">
+                            <input class="form-control" id="autid" v-model="autName" readonly>
+                            </input>
+                        </div>
+                        <label class="col-xs-1 control-label">功能点</label>
+                        <div class="col-xs-2">
+                            <input class="form-control " id="transid" v-model="transName" readonly>
+                            </input>
+                        </div> -->
+                        <label class="col-xs-2 control-label">测试项目</label>
+                        <div class="col-xs-2">
+                            <input class="form-control" id="caselibid" v-model="caselibid" readonly>
+                            </input>
+                        </div>
+                        <label class="col-xs-1 control-label">用例编号</label>
+                        <div class="col-xs-2">
+                            <input class="form-control " id="transid" v-model="casecode" readonly>
+                            </input>
+                        </div>
+                        <label class="col-xs-1 control-label" v-if="caseCompositeType==2">流程节点</label>
+                        <div class="col-xs-2" v-if="caseCompositeType==2">
+                            <select class="form-control " id="flowcase" v-model="flowNodeId">
+                                <option v-for="item in flowTestcase" :value="item.id">{{item.actioncasecode}}</option>
+                            </select>
+                        </div>
+                    </div>
+                </form>
+                <!-- select end -->
+            </section>
+        </div>
+    </div>
     <section id="main-content" style="margin-left: 0;">
-      <section class="wrapper" style="margin-top: 0;">
-        <ul class="nav nav-tabs" role="tablist">
-          <li role="presentation" :class="{active: activeName=='exec-record'}">
-            <a href="#exec-record" aria-controls="exec-record" role="tab" data-toggle="tab">执行结果</a>
-          </li>
-          <li role="presentation" :class="{active: activeName=='element-library'}">
-            <a href="#element-library" aria-controls="element-library" role="tab" data-toggle="tab">元素库</a>
-          </li>
-          <li role="presentation" :class="{active: activeName=='object-rep'}">
-            <a href="#object-rep" aria-controls="object-rep" role="tab" data-toggle="tab">对象库</a>
-          </li>
-          <li role="presentation" :class="{active: activeName=='view-script'}">
-              <a href="#view-script" aria-controls="view-script" role="tab" data-toggle="tab">查看脚本</a>
-          </li>
-          <li role="presentation" :class="{active: activeName=='messages'}">
-            <a href="#messages" aria-controls="messages" role="tab" data-toggle="tab">用例数据</a>
-          </li>
-          <li role="presentation" :class="{active: activeName=='detailModel'}">
-            <a href="#detailModel" aria-controls="detailModel" role="tab" data-toggle="tab">用例详情</a>
-          </li>
-          <!-- <li role="presentation" :class="{active: activeName=='exec-record'}">
-            <a href="#exec-record" aria-controls="exec-record" role="tab" data-toggle="tab">执行记录</a>
-          </li> -->
-          <!-- <li role="presentation" :class="{active: activeName=='view-script'}">
-              <a href="#view-script" aria-controls="view-script" role="tab" data-toggle="tab">用例详情</a>
-          </li>
-          <li role="presentation" :class="{active: activeName=='view-script'}">
-              <a href="#view-script" aria-controls="view-script" role="tab" data-toggle="tab">自动化脚本</a>
-          </li>
-          <li role="presentation" :class="{active: activeName=='view-script'}">
-              <a href="#view-script" aria-controls="view-script" role="tab" data-toggle="tab">对象库元素库</a>
-          </li> -->
-        </ul>
+        <section class="wrapper" style="margin-top: 0;">
+            <ul class="nav nav-tabs" role="tablist">
+                <li role="presentation" :class="{active: activeName=='exec-record'}">
+                    <a href="#exec-record" aria-controls="exec-record" role="tab" data-toggle="tab">执行结果</a>
+                </li>
+                <li role="presentation" :class="{active: activeName=='element-library'}">
+                    <a href="#element-library" aria-controls="element-library" role="tab" data-toggle="tab">元素库</a>
+                </li>
+                <li role="presentation" :class="{active: activeName=='object-rep'}">
+                    <a href="#object-rep" aria-controls="object-rep" role="tab" data-toggle="tab">对象库</a>
+                </li>
+                <li role="presentation" :class="{active: activeName=='view-script'}">
+                    <a href="#view-script" aria-controls="view-script" role="tab" data-toggle="tab">查看脚本</a>
+                </li>
+                <li role="presentation" :class="{active: activeName=='messages'}">
+                    <a href="#messages" aria-controls="messages" role="tab" data-toggle="tab">用例数据</a>
+                </li>
+                <li role="presentation" :class="{active: activeName=='detailModel'}">
+                    <a href="#detailModel" aria-controls="detailModel" role="tab" data-toggle="tab">用例详情</a>
+                </li>
+                <!-- <li role="presentation" :class="{active: activeName=='exec-record'}">
+                  <a href="#exec-record" aria-controls="exec-record" role="tab" data-toggle="tab">执行记录</a>
+                </li> -->
+                <!-- <li role="presentation" :class="{active: activeName=='view-script'}">
+                    <a href="#view-script" aria-controls="view-script" role="tab" data-toggle="tab">用例详情</a>
+                </li>
+                <li role="presentation" :class="{active: activeName=='view-script'}">
+                    <a href="#view-script" aria-controls="view-script" role="tab" data-toggle="tab">自动化脚本</a>
+                </li>
+                <li role="presentation" :class="{active: activeName=='view-script'}">
+                    <a href="#view-script" aria-controls="view-script" role="tab" data-toggle="tab">对象库元素库</a>
+                </li> -->
+            </ul>
 
-        <!-- Tab panes -->
-        <di class="tab-content">
-          <div role="tabpanel" class="tab-pane" :class="{active: activeName=='object-rep'}" id="object-rep">
-            <object-repo :bread-show="false" :top-select="true" :component-mode="true" :transid="transid" :autid="autid"></object-repo>
-          </div>
-          <div role="tabpanel" class="tab-pane" id="element-library" :class="{active: activeName=='element-library'}">
-            <element-library :transid="transid" :autid="autid"></element-library>
-          </div>
-          <div role="tabpanel" class="tab-pane" id="messages" :class="{active: activeName=='messages'}">
-            <case-data></case-data>
-          </div>
-          <div role="tabpanel" class="tab-pane" id="detailModel" :class="{active: activeName=='detailModel'}">
-            <detail-modal :test-case="testcase" :flow-cases="flowTestcase" ></detail-modal>
-          </div>
-          <div role="tabpanel" class="tab-pane" id="exec-record" :class="{active: activeName=='exec-record'}">
-            <exec-record :recorddata="recordData"  :flownodeid="flowNodeId" ></exec-record>
-          </div>
-          <di role="tabpanel" class="tab-pane" id="view-script" :class="{active: activeName=='view-script'}">
-            <view-script :testcaseid="viewScriptTestcaseId" :flownodeid="flowNodeId" :casecompositetype="caseCompositeType"></view-script>
-          </di>
-        </di>
-    
-        <!-- <el-tab-pane label="对象库" name="first"><object-repo></object-repo></el-tab-pane> -->
+            <!-- Tab panes -->
+            <di class="tab-content">
+                <div role="tabpanel" class="tab-pane" :class="{active: activeName=='object-rep'}" id="object-rep">
+                    <object-repo :bread-show="false" :top-select="true" :component-mode="true" :transid="transid"
+                                 :autid="autid"></object-repo>
+                </div>
+                <div role="tabpanel" class="tab-pane" id="element-library"
+                     :class="{active: activeName=='element-library'}">
+                    <element-library :transid="transid" :autid="autid"></element-library>
+                </div>
+                <div role="tabpanel" class="tab-pane" id="messages" :class="{active: activeName=='messages'}">
+                    <case-data></case-data>
+                </div>
+                <div role="tabpanel" class="tab-pane" id="detailModel" :class="{active: activeName=='detailModel'}">
+                    <detail-modal :test-case="testcase" :flow-cases="flowTestcase"></detail-modal>
+                </div>
+                <div role="tabpanel" class="tab-pane" id="exec-record" :class="{active: activeName=='exec-record'}">
+                    <exec-record :recorddata="recordData" :flownodeid="flowNodeId"></exec-record>
+                </div>
+                <di role="tabpanel" class="tab-pane" id="view-script" :class="{active: activeName=='view-script'}">
+                    <view-script :testcaseid="viewScriptTestcaseId" :flownodeid="flowNodeId"
+                                 :casecompositetype="caseCompositeType"></view-script>
+                </di>
+            </di>
 
-        </el-tabs>
-      </section>
+            <!-- <el-tab-pane label="对象库" name="first"><object-repo></object-repo></el-tab-pane> -->
+
+            </el-tabs>
+        </section>
     </section>
     <!-- <object-repo></object-repo> -->
 
     <!--main content end-->
     <div class="footer">
-      <link rel="import" href="./common/copy-right.html?__inline">
+        <link rel="import" href="./common/copy-right.html?__inline">
     </div>
-  </di>
+</di>
 <script type="text/x-template" id="case-data">
-	<div class="tab-content">
-		<div class="top-selector">
-			<label class="checkbox-inline">
-					<input type="checkbox" id="" v-model="checkall" @change="toggleCheckAll"> 全选
-				</label>
-			<label class="checkbox-inline">
-				<input type="checkbox" id="inlineCheckbox1" value="input-data" v-model="conditions"> 输入数据
-			</label>
-			<label class="checkbox-inline">
-				<input type="checkbox" id="inlineCheckbox2" value="flow-data" v-model="conditions"> 流程数据
-			</label>
-			<label class="checkbox-inline">
-					<input type="checkbox" id="inlineCheckbox2" value="scene-data" v-model="conditions"> 场景数据
-				</label>
-			<label class="checkbox-inline">
-				<input type="checkbox" id="inlineCheckbox3" value="global-data" v-model="conditions"> 全局数据
-			</label>
-			<label class="checkbox-inline">
-					<button type="button" class="btn btn-info"> 搜 索 </button>
-			</label>
-			<label class="checkbox-inline">
-					<button type="button" class="btn btn-info"> 刷 新 </button>
-			</label>
-			<label class="checkbox-inline">
-				<button type="button" class="btn btn-info"> 保 存 </button>
-			</label>
-		</div>
-		<div class="table-wrapper">
-      <table class="table table-bordered">
-        <thead>
-          <tr>
-            <th>数据名称</th>
-            <th>数据值</th>
-            <th>数据池名称</th>
-            <th>对象名称</th>
-            <th>描述</th>
-            <th>操作</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr v-for="(index,item) in dataList">
-            <td>{{ item.dataName }}</td>
-            <td>{{ item.dataValue }}</td>
-            <td>{{ item.dataPoolName }}</td>
-            <td>{{ item.objectName }}</td>
-            <td>{{ item.description }}</td>
-            <td><button class="btn btn-info" @click="alterData()">修改</button></td>
-          </tr>
-          <tr v-if="dataList.length === 0"></tr>
-        </tbody>
-      </table>
+    <div class="tab-content">
+        <div class="top-selector">
+            <label class="checkbox-inline">
+                <input type="checkbox" id="" v-model="checkall" @change="toggleCheckAll"> 全选
+            </label>
+            <label class="checkbox-inline">
+                <input type="checkbox" id="inlineCheckbox1" value="input-data" v-model="conditions"> 输入数据
+            </label>
+            <label class="checkbox-inline">
+                <input type="checkbox" id="inlineCheckbox2" value="flow-data" v-model="conditions"> 流程数据
+            </label>
+            <label class="checkbox-inline">
+                <input type="checkbox" id="inlineCheckbox2" value="scene-data" v-model="conditions"> 场景数据
+            </label>
+            <label class="checkbox-inline">
+                <input type="checkbox" id="inlineCheckbox3" value="global-data" v-model="conditions"> 全局数据
+            </label>
+            <label class="checkbox-inline">
+                <button type="button" class="btn btn-info"> 搜 索</button>
+            </label>
+            <label class="checkbox-inline">
+                <button type="button" class="btn btn-info"> 刷 新</button>
+            </label>
+            <label class="checkbox-inline">
+                <button type="button" class="btn btn-info"> 保 存</button>
+            </label>
+        </div>
+        <div class="table-wrapper">
+            <table class="table table-bordered">
+                <thead>
+                <tr>
+                    <th>数据名称</th>
+                    <th>数据值</th>
+                    <th>流程节点名称</th>
+                    <th>对象名称</th>
+                    <th>描述</th>
+                    <th>操作</th>
+                </tr>
+                </thead>
+                <tbody  id="flowData">
+                </tbody>
+            </table>
+        </div>
+        <div class="modal fade" tabindex="-1" role="dialog" id="alterModal">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                                aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title">修改数据</h4>
+                    </div>
+                    <div class="modal-body">
+                        <form class="form-horizontal" id="alter-form">
+                            <div class="form-group form-group">
+                                <label class="col-sm-3 control-label" for="data-name">数据名</label>
+                                <div class="col-sm-8">
+                                    <input class="form-control" type="email" id="data-name" placeholder=""
+                                           name="data-name" required>
+                                </div>
+                            </div>
+                            <div class="form-group form-group">
+                                <label class="col-sm-3 control-label" for="data-value">数据值</label>
+                                <div class="col-sm-8">
+                                    <input class="form-control" type="url" id="data-value" placeholder=""
+                                           name="data-value" required>
+                                </div>
+                            </div>
+                            <div class="form-group form-group">
+                                <label class="col-sm-3 control-label" for="formGroupInputLarge">数据池名称</label>
+                                <div class="col-sm-8">
+                                    <input class="form-control" type="text" id="formGroupInputLarge"
+                                           placeholder="Large input">
+                                </div>
+                            </div>
+                            <div class="form-group form-group">
+                                <label class="col-sm-3 control-label" for="formGroupInputSmall">对象名称</label>
+                                <div class="col-sm-8">
+                                    <input class="form-control" type="text" id="formGroupInputSmall"
+                                           placeholder="Small input">
+                                </div>
+                            </div>
+                            <div class="form-group form-group">
+                                <label class="col-sm-3 control-label" for="formGroupInputLarge">数据描述</label>
+                                <div class="col-sm-8">
+                                    <input class="form-control" type="text" id="formGroupInputLarge"
+                                           placeholder="Large input">
+                                </div>
+                            </div>
+                            <div class="text-center">
+                                <button type="button" class="btn btn-default " data-dismiss="modal">取 消</button>
+                                <button type="submit" class="btn btn-info">保 存</button>
+                            </div>
+                        </form>
+                    </div>
+                </div><!-- /.modal-content -->
+            </div><!-- /.modal-dialog -->
+        </div><!-- /.modal -->
     </div>
-    <div class="modal fade" tabindex="-1" role="dialog" id="alterModal">
-      <div class="modal-dialog" role="document">
-        <div class="modal-content">
-          <div class="modal-header">
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-            <h4 class="modal-title">修改数据</h4>
-          </div>
-          <div class="modal-body">
-            <form class="form-horizontal" id="alter-form">
-              <div class="form-group form-group">
-                <label class="col-sm-3 control-label" for="data-name">数据名</label>
-                <div class="col-sm-8">
-                  <input class="form-control" type="email" id="data-name" placeholder="" name="data-name" required>
-                </div>
-              </div>
-              <div class="form-group form-group">
-                <label class="col-sm-3 control-label" for="data-value">数据值</label>
-                <div class="col-sm-8">
-                  <input class="form-control" type="url" id="data-value" placeholder="" name="data-value" required>
-                </div>
-              </div>
-              <div class="form-group form-group">
-                <label class="col-sm-3 control-label" for="formGroupInputLarge">数据池名称</label>
-                <div class="col-sm-8">
-                  <input class="form-control" type="text" id="formGroupInputLarge" placeholder="Large input">
-                </div>
-              </div>
-              <div class="form-group form-group">
-                <label class="col-sm-3 control-label" for="formGroupInputSmall">对象名称</label>
-                <div class="col-sm-8">
-                  <input class="form-control" type="text" id="formGroupInputSmall" placeholder="Small input">
-                </div>
-              </div>
-              <div class="form-group form-group">
-                <label class="col-sm-3 control-label" for="formGroupInputLarge">数据描述</label>
-                <div class="col-sm-8">
-                  <input class="form-control" type="text" id="formGroupInputLarge" placeholder="Large input">
-                </div>
-              </div>
-              <div class="text-center">
-                <button type="button" class="btn btn-default " data-dismiss="modal">取 消</button>
-                <button type="submit" class="btn btn-info">保 存</button>
-              </div>
-            </form>
-          </div>
-        </div><!-- /.modal-content -->
-      </div><!-- /.modal-dialog -->
-    </div><!-- /.modal -->
-	</div>
 </script>
 <script type="text/x-template" id="execution-record">
   <div class="tab-content" style="display: flex; flex-direction: column;">
@@ -306,124 +306,153 @@
 <!-- 引入组件库 -->
 <!-- <script src="https://unpkg.com/element-ui/lib/index.js"></script> -->
 <script>
-  var app = new Vue({
-    el: '#app1',
-    data: function () {
-      return {
-        batchId:null,
-        senceId:null,
-        caseid:null,
-        testcase:{},
-        sourcechannel:null,
-        flowTestcase:[],
-        caseCompositeType:-1,
-        activeName: 'object-repo',
-        recordData: '',
-        viewScriptTestcaseId: '',
-        autid:"",
-        transid:"",
-        autName:"",
-        transName:"",
-        casecode:null,
-        caselibid:null,
-        flowNodeId:null,
-        testRecord:null
-      }
-    },
-    ready: function() {
-      var _this=this;
-      var executeInstanceInfo = JSON.parse(sessionStorage.getItem('executeInstanceInfo'));
-      // var queryArgs = location.search.slice(1);
-      // var o = {};
-      // var arr = queryArgs.split('&');
-      // for (let item of arr) {
-      //   let a = item.split('=');
-      //   o[a[0]] = a[1];
-      // }
-      // console.log(o)
-      
-      // _this.recordData = o.viewcaseargs ?  o.viewcaseargs : '';
-      // console.log( _this.recordData);
-      // _this.activeName = o.activeName;//链接过来我是要看哪个界面的
-      _this.activeName = "exec-record";
-      _this.viewScriptTestcaseId = executeInstanceInfo.caseId;
-      _this.batchId = executeInstanceInfo.batchId;
-      _this.sceneId = executeInstanceInfo.sceneId;
-      _this.sourcechannel = executeInstanceInfo.sourcechannel;
-      _this.recordData=executeInstanceInfo
-      _this.flowNodeId=executeInstanceInfo.flowNodeId
-      console.log(executeInstanceInfo)
-      $.ajax({
-            url: address3+'testcase/getSingleTestCaseInfo',
-            type: 'post',
-            contentType: 'application/json',
-            data: JSON.stringify({
-                "id": _this.viewScriptTestcaseId
-            }),
-            success: function(res){
-                var caseData=res.testcaseViewRespDTO;
-                _this.testcase=res.testcaseViewRespDTO;
-                _this.caselibid=res.testcaseViewRespDTO.caseLibId;
-                _this.caseCompositeType=caseData.caseCompositeType;
-                if(caseData.caseCompositeType==2){
-                  _this.flowTestcase=res.testcaseActionList;
-                }
-                _this.autid=caseData.autId;
-                _this.transid=caseData.transId;
-                _this.autName=caseData.autName;
-                _this.transName=caseData.transName;
-                _this.casecode=caseData.casecode;
+    var app = new Vue({
+        el: '#app1',
+        data: function () {
+            return {
+                batchId: null,
+                senceId: null,
+                caseid: null,
+                testPlanId: null,
+                testcase: {},
+                sourcechannel: null,
+                flowTestcase: [],
+                flowDataList:[],
+                caseCompositeType: -1,
+                activeName: 'object-repo',
+                recordData: '',
+                viewScriptTestcaseId: '',
+                autid: "",
+                transid: "",
+                autName: "",
+                transName: "",
+                casecode: null,
+                caselibid: null,
+                flowNodeId: null,
+                testRecord: null
             }
-        });
-        $.ajax({
-            url: address3+'testRecordController/querySingleRecordByCaseId',
-            type: 'post',
-            contentType: 'application/json',
-            data: JSON.stringify({
-              caseId: _this.viewScriptTestcaseId,
-              sceneId: _this.sceneId ,
-              batchId: _this.batchId,
-              flownodeId: _this.flownodeId
-             }),
-            success: function(res){
-              _this.testRecord= res;
-             }
-        })
-      if(_this.activeName=='exec-record'){
-        _this.caseId = executeInstanceInfo.caseid;
-        _this.caseCompositeType = executeInstanceInfo.type;
-      }
-      else if(_this.activeName=='view-script'){
+        },
+        ready: function () {
+            var _this = this;
+            var executeInstanceInfo = JSON.parse(sessionStorage.getItem('executeInstanceInfo'));
+            // var queryArgs = location.search.slice(1);
+            // var o = {};
+            // var arr = queryArgs.split('&');
+            // for (let item of arr) {
+            //   let a = item.split('=');
+            //   o[a[0]] = a[1];
+            // }
+            // console.log(o)
 
-      }
-      else if(_this.activeName=='object-rep'){
-        _this.viewScriptTestcaseId = executeInstanceInfo.testcaseId;
-      }
-      else if(_this.activeName=='exec-record'){
-        _this.viewScriptTestcaseId = executeInstanceInfo.testcaseId;
-      }
-      else{}
-      console.log(' _this.autid'+ _this.autid+'_this.transid'+_this.transid)
-      // $('#'+this.activeName).tab('show')
-    },
-    watch:{
-      flownodeId:function(newVal, oldVal) {
-		  console.log('watch'+this.flownodeId);
-		  // 监听到 flownodeid 改变后请求接口改变数据
-        $.ajax({
-            url: address3+'testRecordController/querySingleRecordByCaseId',
-            type: 'post',
-            contentType: 'application/json',
-            data: JSON.stringify({
-              caseId: _this.viewScriptTestcaseId,
-              sceneId: _this.sceneId ,
-              batchId: _this.batchId,
-              flownodeId: newVal
-             }),
-            success: function(res){
-              _this.testRecord= res;
-             }
-        })
-		}}
-  })
+            // _this.recordData = o.viewcaseargs ?  o.viewcaseargs : '';
+            // console.log( _this.recordData);
+            // _this.activeName = o.activeName;//链接过来我是要看哪个界面的
+            _this.activeName = "exec-record";
+            _this.viewScriptTestcaseId = executeInstanceInfo.caseId;
+            _this.batchId = executeInstanceInfo.batchId;
+            _this.sceneId = executeInstanceInfo.sceneId;
+            _this.sourcechannel = executeInstanceInfo.sourcechannel;
+            _this.recordData = executeInstanceInfo
+            _this.flowNodeId = executeInstanceInfo.flowNodeId
+            _this.testPlanId = executeInstanceInfo.testPlanId
+                    console.log(executeInstanceInfo)
+            $.ajax({
+                url: address3 + 'flowDataController/getFlowDataByTestPlanId',
+                type: 'post',
+                contentType: 'application/json',
+                data: JSON.stringify({
+                    testcaseId: _this.viewScriptTestcaseId,
+                    testPlanId: _this.testPlanId,
+                    batchId: _this.batchId,
+                }),
+                success: function (res) {
+                    _this.flowDataList= res.flowData;
+                    _this.flowDataList.forEach(function(item){
+                        $("#flowData").append("<tr> " +
+                                "<td >" + item.dataName + "</td>" +
+                                "<td >" + item.data + "</td>" +
+                                "<td>" + item.nodeName + "</td>" +
+                                "<td >无</td>" +
+                                "<td >无</td>" +
+                                "<td >无</td>" +
+                                "</tr>");
+                        console.log("ahahahah",item);
+                    });
+                }
+            });
+            $.ajax({
+                url: address3 + 'testcase/getSingleTestCaseInfo',
+                type: 'post',
+                contentType: 'application/json',
+                data: JSON.stringify({
+                    "id": _this.viewScriptTestcaseId
+                }),
+                success: function (res) {
+                    var caseData = res.testcaseViewRespDTO;
+                    _this.testcase = res.testcaseViewRespDTO;
+                    _this.caselibid = res.testcaseViewRespDTO.caseLibId;
+                    _this.caseCompositeType = caseData.caseCompositeType;
+                    if (caseData.caseCompositeType == 2) {
+                        _this.flowTestcase = res.testcaseActionList;
+                    }
+                    _this.autid = caseData.autId;
+                    _this.transid = caseData.transId;
+                    _this.autName = caseData.autName;
+                    _this.transName = caseData.transName;
+                    _this.casecode = caseData.casecode;
+                }
+            });
+            $.ajax({
+                url: address3 + 'testRecordController/querySingleRecordByCaseId',
+                type: 'post',
+                contentType: 'application/json',
+                data: JSON.stringify({
+                    caseId: _this.viewScriptTestcaseId,
+                    sceneId: _this.sceneId,
+                    batchId: _this.batchId,
+                    flownodeId: _this.flownodeId
+                }),
+                success: function (res) {
+                    _this.testRecord = res;
+                }
+            });
+            if (_this.activeName == 'exec-record') {
+                _this.caseId = executeInstanceInfo.caseid;
+                _this.caseCompositeType = executeInstanceInfo.type;
+            }
+            else if (_this.activeName == 'view-script') {
+
+            }
+            else if (_this.activeName == 'object-rep') {
+                _this.viewScriptTestcaseId = executeInstanceInfo.testcaseId;
+            }
+            else if (_this.activeName == 'exec-record') {
+                _this.viewScriptTestcaseId = executeInstanceInfo.testcaseId;
+            }
+            else {
+            }
+            console.log(' _this.autid' + _this.autid + '_this.transid' + _this.transid)
+            // $('#'+this.activeName).tab('show')
+        },
+        watch: {
+            flownodeId: function (newVal, oldVal) {
+                console.log('watch' + this.flownodeId);
+                // 监听到 flownodeid 改变后请求接口改变数据
+                $.ajax({
+                    url: address3 + 'testRecordController/querySingleRecordByCaseId',
+                    type: 'post',
+                    contentType: 'application/json',
+                    data: JSON.stringify({
+                        caseId: _this.viewScriptTestcaseId,
+                        sceneId: _this.sceneId,
+                        batchId: _this.batchId,
+                        flownodeId: newVal
+                    }),
+                    success: function (res) {
+                        _this.testRecord = res;
+                    }
+                })
+            }
+        }
+    })
 </script>

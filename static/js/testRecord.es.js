@@ -125,6 +125,7 @@ var app = new Vue({
 				flowNodeId:item.flownodeId,
 				// executeround: this.executionround,
 				sourcechannel: item.sourcechannel,
+                testPlanId: item.testPlanId,
 			}
 			var args = (JSON.stringify(o));
 			sessionStorage.setItem("executeInstanceInfo",args)

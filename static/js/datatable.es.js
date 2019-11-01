@@ -132,7 +132,7 @@ $(document).ready(function () {
 		                let compareSelect=$(event.target).parent().next().children('select');
 		                $(compareSelect).on('change',function(){
 		                        $(this).parent().next().next().remove();
-		                        $(this).parent().next().after('<input type="text" class="form-control val_select">');
+		                        $(this).parent().next().after('<input type="text" class="form-control val_select" style=" width: 220px; " style=" width: 220px; ">');
 		                        $(this).parent().next().next().selectpicker('refresh');  
 		                });
 		            }else if(selectedProp=='priority'){
@@ -624,7 +624,7 @@ $(document).ready(function () {
 		                let compareSelect=$(event.target).parent().next().children('select');
 		                $(compareSelect).on('change',function(){
 		                        $(this).parent().next().next().remove();
-		                        $(this).parent().next().after('<input type="text" class="form-control val_select">');
+		                        $(this).parent().next().after('<input type="text" class="form-control val_select" style=" width: 220px; ">');
 		                        $(this).parent().next().next().selectpicker('refresh');  
 		                });   
 		            }else if(selectedProp=='preRequisites'){
@@ -636,7 +636,7 @@ $(document).ready(function () {
 		                let compareSelect=$(event.target).parent().next().children('select');
 		                $(compareSelect).on('change',function(){
 		                        $(this).parent().next().next().remove();
-		                        $(this).parent().next().after('<input type="text" class="form-control val_select">');
+		                        $(this).parent().next().after('<input type="text" class="form-control val_select" style=" width: 220px; ">');
 		                        $(this).parent().next().next().selectpicker('refresh');  
 		                });   
 		            }else if(selectedProp=='dataRequest'){
@@ -648,7 +648,7 @@ $(document).ready(function () {
 		                let compareSelect=$(event.target).parent().next().children('select');
 		                $(compareSelect).on('change',function(){
 		                        $(this).parent().next().next().remove();
-		                        $(this).parent().next().after('<input type="text" class="form-control val_select">');
+		                        $(this).parent().next().after('<input type="text" class="form-control val_select" style=" width: 220px; ">');
 		                        $(this).parent().next().next().selectpicker('refresh');  
 		                });
 		            }else if(selectedProp=='testStep'){
@@ -660,7 +660,7 @@ $(document).ready(function () {
 		                let compareSelect=$(event.target).parent().next().children('select');
 		                $(compareSelect).on('change',function(){
 		                        $(this).parent().next().next().remove();
-		                        $(this).parent().next().after('<input type="text" class="form-control val_select">');
+		                        $(this).parent().next().after('<input type="text" class="form-control val_select" style=" width: 220px; ">');
 		                        $(this).parent().next().next().selectpicker('refresh');  
 		                });   
 		            }else if(selectedProp=='expectResult'){
@@ -672,7 +672,7 @@ $(document).ready(function () {
 		                let compareSelect=$(event.target).parent().next().children('select');
 		                $(compareSelect).on('change',function(){
 		                        $(this).parent().next().next().remove();
-		                        $(this).parent().next().after('<input type="text" class="form-control val_select">');
+		                        $(this).parent().next().after('<input type="text" class="form-control val_select" style=" width: 220px; ">');
 		                        $(this).parent().next().next().selectpicker('refresh');  
 		                });
 		            }else if(selectedProp=='checkPoint'){
@@ -684,7 +684,7 @@ $(document).ready(function () {
 		                let compareSelect=$(event.target).parent().next().children('select');
 		                $(compareSelect).on('change',function(){
 		                        $(this).parent().next().next().remove();
-		                        $(this).parent().next().after('<input type="text" class="form-control val_select">');
+		                        $(this).parent().next().after('<input type="text" class="form-control val_select" style=" width: 220px; ">');
 		                        $(this).parent().next().next().selectpicker('refresh');  
 		                });
 		            }else if(selectedProp=='sceneId'){
