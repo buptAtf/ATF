@@ -96,7 +96,7 @@
     }
 
     .filter {
-      margin-bottom: 8px;
+      margin-bottom: 10px;
     }
 
     .bootstrap-table .table {
@@ -1015,7 +1015,7 @@
                     </select>
                     <select name="compareType" class="selectpicker compare_select">
                     </select>
-                    <label>值</label>
+                    <label style="padding-right: 5px;">值</label>
                     <select name="propertyValue" class="selectpicker val_select">
                     </select>
                     <button class="btn btn-xs btn-danger" @click="removeFilter($index,$event)"><i
@@ -1027,7 +1027,7 @@
           </div>
         </div>
       </div>
-      <hr style='border:1px dashed #708090;width:97.5%; height:0px;  size:2;    margin-top: 0px;' />
+      <hr style='border-top:1px dashed #708090;width:97.5%; height:0px;  size:2;    margin-top: 0px;' />
 
       <section class="content-wrapper">
         <div class="treeMenu" v-bind:class="{'close1': !flag, 'open2': flag}" id="submenu">
@@ -1116,7 +1116,7 @@
             
           </di> -->
 
-          <div class="dataTable-wrapper" style="margin-left: 15px;margin-right: 15px; padding: 0;z-index:-5">
+          <div class="dataTable-wrapper" style="margin-left: 15px;margin-right: 15px; padding: 0;z-index:1">
             <div id="no-data-tip" style="text-align: center;margin: 20px auto;">请双击脚本获取数据</div>
             <div id="handsontable">
             </div>
