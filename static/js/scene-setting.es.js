@@ -269,15 +269,28 @@ var vBody = new Vue({
 			});
 		},
 		showFunc:function(){
-			if(this.flag==1){
-				$('#func').css("display","none");
-				$('#showFunc').text("展示高级功能");
-				this.flag=0;
-			}else{
-				$('#func').css("display","block");
-				$('#showFunc').text("隐藏高级功能");
-				this.flag=1;
-			}
+			// if(this.flag==1){
+			// 	$('#func').css("display","none");
+			// 	$('#showFuncHidden').css("display","none");
+			// 	$('#showFunc').text("展示高级功能");
+			// 	console.log("展示高级功能");
+			// 	this.flag=0;
+			// }else{
+			// 	$('#func').css("display","block");
+			// 	$('#showFunc').text("隐藏高级功能");
+			// 	console.log("隐藏高级功能");
+			// 	this.flag=1;
+			// }
+			$('#showFunc').css("display","none");
+			$('#func').css("display","block");
+			$('#showFuncHidden').css("display","block");
+			console.log("点击showFunc");
+		},
+		showFuncHidden:function(){
+			$('#showFuncHidden').css("display","none");
+			$('#func').css("display","none");
+			$('#showFunc').css("display","block");
+			console.log("点击showFuncHidden");
 		},
 		getCases: function(){
 			var _this = this;

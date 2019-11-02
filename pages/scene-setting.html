@@ -280,8 +280,12 @@
                     <a class="btn btn-white" data-toggle="modal" href="#addCaseModal"><i class="icon-plus"></i> 添加用例</a>
                     <a class="btn btn-white" @click="removeCases()"><i class="icon-remove"></i>
                         移除用例</a>
-                    <a class="btn btn-white" @click="showFunc" id="showFunc">展示高级功能 </a>
-                    <div id="func" style="display:none">
+                    <div class="expandHigh" @click="showFunc" id="showFunc" 
+                         style="display: block;float: left; margin-top: 8px;">
+                        <i class="icon-double-angle-right"></i>
+                        <span>展开高级功能</span>
+                    </div>
+                    <div id="func" style="display:none;float: left;">
                         <a class="btn btn-white" @click="operationType(1);"><i class="icon-calendar"></i>
                             执行时间规划</a>
                         <a class="btn btn-white" @click="operationType(2);"><i class="icon-cog"></i>
@@ -297,6 +301,12 @@
                         <a class="btn btn-white" @click="saveSort();"><i class="icon-refresh"></i>
                             保存顺序</a>
                     </div>
+                    <div class="expandHigh" @click="showFuncHidden" id="showFuncHidden" 
+                         style="display: none;float: left; margin-top: 8px;">
+                        <i class="icon-double-angle-left"></i>
+                        <span>隐藏高级功能</span>
+                    </div>
+                    
                     <!--  <button class="btn btn-white"><i class="icon-file"></i>
                     生成报告</button> -->
                 </div>

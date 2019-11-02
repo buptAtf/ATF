@@ -3006,6 +3006,19 @@ select[multiple].form-group-lg .form-control {
   background-image: none;
   border: 1px solid transparent;
   border-radius: 4px;
+  float: left;
+  margin-right: 7px;
+}
+#func{
+  width: fit-content;
+  overflow: hidden;
+  clear: none;
+}
+.expandHigh{
+  height: fit-content;
+  margin: 0px 7px;
+  padding: auto 1px;
+  text-align: center;
 }
 .btn:focus,
 .btn:active:focus,
