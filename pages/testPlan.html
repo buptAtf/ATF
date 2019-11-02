@@ -46,8 +46,8 @@
                                     <th scope="col" class="text-center"  data-sort="desc" data-order="id" onclick="resort(this);">id<span class="icon-sort-up" aria-hidden="true"></span></th>
                                     <th scope="col" class="text-center">测试计划名称</th>
                                     <th scope="col" class="text-center">测试计划描述</th>
-                                    <th scope="col" class="text-center">测试阶段</th>
-                                    <th scope="col" class="text-center">测试轮次</th>
+                                    <!-- <th scope="col" class="text-center">测试阶段</th>
+                                    <th scope="col" class="text-center">测试轮次</th> -->
                                     <th scope="col" class="text-center">操作</th>
                                 </tr>
                             </thead>
@@ -59,8 +59,8 @@
                                     <td>{{testPlan.id}}</td>
                                     <td>{{testPlan.nameMedium}}</td>
                                     <td>{{testPlan.descMedium}}</td>
-                                    <td>{{testPlan.testPhaseName}}</td>
-                                    <td>{{testPlan.testRoundName}}</td>
+                                    <!-- <td>{{testPlan.testPhaseName}}</td>
+                                    <td>{{testPlan.testRoundName}}</td> -->
                                     <td class="center " width="" >
                                         <button class="btn btn-xs btn-success" @click="showUpdateModal(testPlan.Id)">修改</button>
                                     </td>

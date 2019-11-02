@@ -77,7 +77,33 @@ var app = new Vue({
         $('.3-ul').css({display: 'block'})
         $('.3-8').css({color: '#ff6c60'})
     },
-    methods: {        //时间格式化
+    methods: {
+        // 归档
+        delete(batchId){
+            var _this = this
+            $.ajax({
+                url: address3 + 'testRecordController/batchSaveTestRecord',
+                type: 'post',
+                contentType: 'application/json',
+                data: JSON.stringify({
+                    batchId
+                }),
+                success: function(data) {
+                    console.log(data);
+                    if (data.respCode == '0000') {
+                        $('#successModal').modal();
+                        _this.queryExecutionRecord(1, _this.listnum, 'id', 'asc');    
+                    } else {
+                        $('#failModal').modal();
+                    }
+                },
+                error: function() {
+                    $('#failModal').modal();
+                }
+            });
+        },
+        
+        //时间格式化
         formatDate(date){
             if(date){
                 var date = new Date(date);
@@ -201,11 +227,15 @@ var app = new Vue({
             console.log("1231111111111")
             var _this=this;
             var today = new Date();
-            var endTime = ''+ today.getFullYear()+'-'+(today.getMonth()+1)+'-'+(today.getDate()+1);
+            var endTime = ''+ today.getFullYear()+'-'+(today.getMonth()+1)+'-'+(today.getDate());
+            console.log('endTime')
+            console.log(endTime)
             var startTime = '1990-1-1';
             let tempDate = _this.creatTimeChange(startTime,endTime);
             startTime = tempDate[0];
             endTime = tempDate[1];
+            console.log('endTime')
+            console.log(tempDate)
             $.ajax({
                 url: address3 + 'batchRunCtrlController/pagedBatchQueryBatchRunCtrl',
                 type: 'post',

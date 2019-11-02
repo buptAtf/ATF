@@ -45,7 +45,8 @@ var app = new Vue({
         caselibid: sessionStorage.getItem('caselibId'), //用例库id
         userId:sessionStorage.getItem('userId'),
         failMSG:"操作失败啦",
-        projectName: sessionStorage.getItem('projectNameStorage')
+        projectName: sessionStorage.getItem('projectNameStorage'),
+        loadingFlag:true // 用于是否加载完成
     },
     ready: function() {
         console.log(sessionStorage.getItem("userId"));
@@ -927,7 +928,8 @@ var app = new Vue({
                 }
             }
         });
-        
+        $(".loadingHidden").css('display','block')
+        $(".loading").css('display','none')
     },
     created: function(){
         console.log(sessionStorage.getItem("userId"));
@@ -1345,34 +1347,95 @@ var app = new Vue({
                         // }
                         var target = ui.item[0].rowIndex - 1;
                         var start = ui.item[0].getAttribute('data-index');
+                        var id = ui.item[0].getAttribute('id');
                         var testCaseId =ui.item[0].getAttribute('value');
                         var testList=$("#caseTable").find(".subShow");
-                        console.log(testList);
+                        var subCaseList=[];
                         var testCaseIdList=[];
-                        for(var i=0;i<testList.length;i++){
-                            if(testList[i].getAttribute('value')==testCaseId){
-                                testCaseIdList.push(testList[i].getAttribute('id'));
-                            }
-                        }
-                        console.log(testCaseIdList);
                         $.ajax({
-                            url: address3+'testcase/changeFlowNodeOrder',
+                            url: address3 + 'testcase/queryTestcaseActionList',
                             type: 'post',
                             contentType: 'application/json',
-                            data: JSON.stringify({
-                                "caseLibId": testCaseId,
-                                "testCaseActionIds":testCaseIdList
-                            }),
-                            success: function(data) {
-                                console.info(data);
-                                if (data.respCode!=0000) {
-                                    $('#failModal').modal();
+                            data: JSON.stringify({'id': testCaseId}),
+                            success: function (data) {
+                                subCaseList = data.testcaseActionViewList;
+                                var dependentId=subCaseList[start].dependentId;
+                                var beDependentId =subCaseList[start].beDependentId;;
+                                var initTestListId=[];
+                                for(var j=0;j<subCaseList.length;j++){
+                                    initTestListId[j]=subCaseList[j].id;
                                 }
-                            },
-                            error: function() {
-                                $('#failModal').modal();
+                                console.log(initTestListId);
+                                for(var i=0;i<testList.length;i++){
+                                    if(testList[i].getAttribute('value')==testCaseId){
+                                             testCaseIdList.push(testList[i].getAttribute('id'));
+                                    }
+                                }
+                                console.log(testCaseIdList);
+                                var front=0;
+                                var behind=0;
+                                if(dependentId){
+                                    for(var i=0;i<dependentId.length;i++){
+                                        for(var j=0;j<testCaseIdList.length;j++){
+                                            if(testCaseIdList[j]==dependentId[i]){
+                                                front=j;
+                                            }
+                                            if(testCaseIdList[j]==id){
+                                                behind=j;
+                                            }
+                                        }
+                                        if(front>behind){
+                                            testCaseIdList=initTestListId;
+                                            $('#failModal3').modal();
+                                            _this.getCase( _this.currentPage,  _this.pageSize,  _this.order, _this.sort);
+                                            return;
+                                        }
+                                    }
+
+                                }
+                                if(beDependentId){
+                                    for(var i=0;i<beDependentId.length;i++){
+                                        for(var j=0;j<testCaseIdList.length;j++){
+                                            if(testCaseIdList[j]==beDependentId[i]){
+                                                behind=j;
+                                            }
+                                            if(testCaseIdList[j]==id){
+                                                front=j;
+                                            }
+                                        }
+                                        if(front>behind){
+                                            testCaseIdList=initTestListId;
+                                            $('#failModal3').modal();
+                                            _this.getCase( _this.currentPage,  _this.pageSize,  _this.order, _this.sort);
+                                            return;
+                                        }
+                                    }
+
+                                }
+                                console.log(testCaseIdList);
+                                $.ajax({
+                                    url: address3+'testcase/changeFlowNodeOrder',
+                                    type: 'post',
+                                    contentType: 'application/json',
+                                    data: JSON.stringify({
+                                        "caseLibId": testCaseId,
+                                        "testCaseActionIds":testCaseIdList
+                                    }),
+                                    success: function(data) {
+                                        console.info(data);
+                                        if (data.respCode!=0000) {
+                                            $('#failModal').modal();
+                                        }
+                                    },
+                                    error: function() {
+                                        $('#failModal').modal();
+                                    }
+                                });
                             }
                         });
+                        console.log(testList);
+
+
 
                     }
                 });
