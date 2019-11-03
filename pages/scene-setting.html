@@ -327,18 +327,18 @@
                         </button>
                     </div>
                 </div>
-                <div class="main-content" @mousedown="setSelect" style="padding: 5px 0px;">
-                    <div class="check-all-case" @mousedown.stop="1" style="margin-left: 15px;">
-                        <input type="checkbox" @change="checkallBox($event)" v-model="checkall"> &nbsp;&nbsp;全选
-                    </div>
-                    <div style="height: 30px;margin-left: 50px;">
+                <div class="main-content" @mousedown="setSelect" style="padding: 7px 0px;">
+                    <div style="height: 30px;margin-left: 43px;margin-bottom: 7px;">
                         <div v-for="val in turnNumArr" @mousedown.stop="1"
-                             style="float: left;height: 30px;margin-left: 20px;
-                    text-align: center;border: 1px solid #ddd5d5;line-height: 30px;
-                    font-size: 20px;"
-                             :style="{ width: 170 + 'px'}">
+                             style="float: left;height: 30px;margin-left: 12px;
+                                    text-align: center;border: 1px solid #ddd5d5;line-height: 30px;
+                                    font-size: 20px;"
+                             :style="{ width: 155 + 'px'}">
                             T+{{val}}
                         </div>
+                    </div>
+                    <div class="check-all-case" @mousedown.stop="1" style="margin-left: 15px;">
+                        <input type="checkbox" @change="checkallBox($event)" v-model="checkall"> &nbsp;&nbsp;全选
                     </div>
                     <div id="sortable">
                         <template v-for="group in sceneInfo.caseGroup">
@@ -381,7 +381,7 @@
                                             <!--<div class="" style="height: 30px; width: 30px; border-width: 15px; border-style: solid; border-color: transparent transparent  transparent #bebaba;margin: 0 -30px 0 20px; position: relative; top: 0%;"></div>-->
                                             <div class="case" v-for="(index, case) in time" @mousedown.stop="1"
                                                  @click="changeCase(case.id, 2)"
-                                                 :style="{ marginRight: (index !== time.length - 1) ? '0px' : 170 + 'px'}">
+                                                 :style="{ marginRight: (index !== time.length - 1) ? '12px' : 170 + 'px'}">
                                                 <div class="case-header">
                                                     <p :title="case.casecode" style="margin-left: 5px;">
                                                         {{case.casecode}}</p>
