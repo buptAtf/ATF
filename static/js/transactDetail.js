@@ -701,12 +701,15 @@ var app = new Vue({
         },
         //切换tab页
         switchTab(flag){
+            var _this = this;
             if(flag == 1){
-                eleFlag =true;
+                _this.eleFlag =true;
+                console.log("1111111111111111")
                 progressbar.progressList[0].item[3].status = ""
             }
             else{
-                eleFlag =false
+                _this.eleFlag =false
+                console.log("22222222222")
                 progressbar.progressList[0].item[3].status = "active"
             }
 

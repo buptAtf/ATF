@@ -8,7 +8,7 @@ var app = new Vue({
         sceneList:[],//场景下拉列表
         testphase: '',//测试阶段
         testround: '',//测试轮次
-        recorderstate:'2',//记录单状态
+        recorderstate:'',//记录单状态
         tt: 0, //总条数
         pageSize: 20, //页面大小
         currentPage: 1, //当前页
@@ -108,9 +108,9 @@ var app = new Vue({
             //更新当前页
             _this.currentPage = pageNum;
             if(_this.querymode==='rounds'){
-                _this.queryByRounds();
+                getRecord(pageNum, _this.pageSize, 'casecode', 'asc');
             } else if(_this.querymode==='batch'){
-                _this.queryByBatchs();
+                getRecord(pageNum, _this.pageSize, 'casecode', 'asc');
             }
             //页数变化时的回调
             // getRecord(_this.currentPage, _this.pageSize, 'id', 'asc');
@@ -200,7 +200,7 @@ var app = new Vue({
                 contentType: 'application/json',
                 data: JSON.stringify({
                     'testRound': _this.testround,
-                    'recorderStatus':+_this.recorderstate,  //在字符串类型前加+，将类型转换为整形"123"+5
+                    'recorderStatus':_this.recorderstate===''?'':+_this.recorderstate,  //在字符串类型前加+，将类型转换为整形"123"+5
                     'casecode': _this.casecode,
                     'sceneId': _this.sceneId,
                     'pageSize': _this.pageSize,     //整形
