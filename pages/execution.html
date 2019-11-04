@@ -10,6 +10,11 @@
     <link rel="stylesheet" type="text/css" href="../static/css/bootstrap-datetimepicker.min.css">
     <script src="http://d3js.org/d3.v3.min.js"></script>
     <title>批量执行管理</title>
+    <style>
+    .btn-success{
+        margin: 1px;
+    }
+    </style>
 </head>
 
 <body id="scene" v-cloak>
@@ -138,8 +143,8 @@
                                             <th class="hidden-phone text-center" data-order="transId">用例来源</th>
                                             <!-- <th class="hidden-phone text-center" data-order="transId">用例库</th> -->
                                             <th class="hidden-phone text-center" data-order="transId">测试计划</th>
-                                            <th class="hidden-phone text-center" data-order="transId">测试阶段</th>
-                                            <th class="hidden-phone text-center" data-order="transId">测试轮次</th>
+                                            <!-- <th class="hidden-phone text-center" data-order="transId">测试阶段</th>
+                                            <th class="hidden-phone text-center" data-order="transId">测试轮次</th> -->
                                             <th class="hidden-phone text-center" data-order="transId">执行轮次</th>
                                             <!-- <th class="hidden-phone text-center" data-order="transId">场景名称</th> -->
                                             <th class="hidden-phone text-center" data-order="transId">用例总数</th>
@@ -158,7 +163,8 @@
                                     <tbody id="sceneTable">
                                         <tr class="odd gradeX" v-for="scene in sceneList" id="{{scene.batchId}}">
                                             <td class="center " width="" :data-id="scene.batchId">
-                                                <button class="btn btn-xs btn-success" @click="getRecord(scene.batchId,scene.testPlan)">记录单</button>
+                                                <button class="btn btn-xs btn-success" @click="getRecord(scene.batchId,scene.testPlan)">查看记录单</button>
+                                                <button class="btn btn-xs btn-success" style=" margin-top: 5px;" @click="delete(scene.batchId)">归档</button>
                                             </td>
                                             <td class="center " width="">{{ scene.startUser }}</td>
                                             <!-- <td class="center " width="">{{ scene.createDatze }}</td> -->
@@ -171,8 +177,8 @@
                                             <td class="center " width="" >
                                                 <button class="btn btn-xs btn-success" @click="goTestExec(scene.testPlan)">{{ scene.testPlanName }}</button>
                                             </td>
-                                            <td class="center " width="">{{ scene.testPhase }}</td>
-                                            <td class="center " width="">{{ scene.testRound }}</td>
+                                            <!-- <td class="center " width="">{{ scene.testPhase }}</td>
+                                            <td class="center " width="">{{ scene.testRound }}</td> -->
                                             <td class="center " width="">{{ scene.executionRound }}</td>
                                             <!-- <td class="center " width="">{{ scene.sceneId }}</td> -->
                                             <!-- <td class="center " width="">{{ runScopeFlag[scene.runScopeFlag] }}</td> -->
@@ -315,6 +321,24 @@
                     </div>
                     <!-- updateModal end -->
                     
+                  <!-- successModal start -->
+                  <div class="modal fade" id="successModal" tabindex="-1" role="dialog" aria-labelledby="successModalLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                                <h4 class="modal-title">操作成功</h4>
+                            </div>
+                            <div class="modal-body">
+                                <h4>操作成功！</h4>
+                            </div>
+                            <div class="modal-footer">
+                                <button data-dismiss="modal" class="btn btn-success" type="button">确定</button>
+                            </div>
+                        </div>
+                    </div>
+                  </div>
+                  <!-- successModal end -->
             </section>
             <link rel="import" href="./common/copy-right.html?__inline">
         </section>
