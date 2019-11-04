@@ -14,6 +14,7 @@ var app = new Vue({
         currentPage: 1, //当前页
         totalPage: 1, //总页数
         listnum: 10, //页面大小
+        queryflag:true,//判断当前页面数据拉取方式，用于turnToPage
         order: 'id',
         sort: 'asc',
         isPageNumberError: false,
@@ -113,7 +114,7 @@ var app = new Vue({
                 getRecord(pageNum, _this.pageSize, 'casecode', 'asc');
             }
             //页数变化时的回调
-            // getRecord(_this.currentPage, _this.pageSize, 'id', 'asc');
+            //  getRecord(_this.currentPage, _this.pageSize, 'id', 'asc');
         },
         viewCase: function (item ) {
 			var o ={
@@ -203,7 +204,7 @@ var app = new Vue({
                     'recorderStatus':_this.recorderstate===''?'':+_this.recorderstate,  //在字符串类型前加+，将类型转换为整形"123"+5
                     'casecode': _this.casecode,
                     'sceneId': _this.sceneId,
-                    'pageSize': _this.pageSize,     //整形
+                    'pageSize': +_this.pageSize,   //整形
                     'currentPage': _this.currentPage,   //整形
                     "executeStatus": _this.executeStatus,
                     'orderType': orderType,
