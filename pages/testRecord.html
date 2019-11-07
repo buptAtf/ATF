@@ -239,6 +239,7 @@
                                             <label class="col-sm-1 control-label" v-else>执行轮次</label>
                                             <div class="col-sm-2" v-if="querymode=='rounds'">
                                                 <select class="form-control" v-model="recorderstate" ><!--通过测试轮次查询，选择记录单状态 -->
+                                                    <option value="">全部</option>
                                                     <option value="2">激活</option>
                                                     <option value="1">未激活</option>
                                                     <option value="3">已删除</option>

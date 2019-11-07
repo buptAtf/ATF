@@ -32,7 +32,7 @@
       	position:absolute;
       	left:30px;
       	top:15px;
-      	background-color:#1f77b4;
+      	background-color:#22ee55;
       }
       .color1{
       	width:90px;
@@ -40,7 +40,7 @@
       	position:absolute;
       	left:30px;
       	top:95px;
-      	background-color:#ff7f0e;
+      	background-color:#e72210;
       }
       .color2{
       	width:90px;
@@ -48,7 +48,7 @@
       	position:absolute;
       	left:30px;
       	top:175px;
-      	background-color:#2ca02c;
+      	background-color:#53becc;
       }
       .font{
       	line-height: 80px;
@@ -67,76 +67,88 @@
 <script src="http://d3js.org/d3.v3.min.js"></script>
 <script>
 
-    var width = 400;
-    var height = 400;
-    var successCount=parseInt(sessionStorage.getItem("success"));
-    var failedCount=parseInt(sessionStorage.getItem("failed"));
-    var notRunCount=parseInt(sessionStorage.getItem("notRun"));
- 
-    var dataset = [ successCount,  failedCount, notRunCount];
+    (function(){
+        var width = 400;
+        var height = 400;
+        var successCount=parseInt(sessionStorage.getItem("success"));
+        var failedCount=parseInt(sessionStorage.getItem("failed"));
+        var notRunCount=parseInt(sessionStorage.getItem("notRun"));
+        console.log(successCount);
+        console.log(failedCount);
+        console.log(notRunCount);
     
-    
-    var svg = d3.select("body")
-            .append("svg")
-            .attr("width", width)
-            .attr("height", height);
+        var dataset = [ successCount,  failedCount, notRunCount];
+        
+        var svg = d3.select("body")
+                .append("svg")
+                .attr("width", width)
+                .attr("height", height);
 
-    var pie = d3.layout.pie();
+        var pie = d3.layout.pie();
 
-    var piedata = pie(dataset);
+        var piedata = pie(dataset);
 
-    var outerRadius = 150;  //外半径
-    var innerRadius = 0;    //内半径，为0则中间没有空白
+        var outerRadius = 150;  //外半径
+        var innerRadius = 0;    //内半径，为0则中间没有空白
 
-    var arc = d3.svg.arc()  //弧生成器
-            .innerRadius(innerRadius)   //设置内半径
-            .outerRadius(outerRadius);  //设置外半径
+        var arc = d3.svg.arc()  //弧生成器
+                .innerRadius(innerRadius)   //设置内半径
+                .outerRadius(outerRadius);  //设置外半径
 
-    var color = d3.scale.category10();
+        var color = d3.scale.category10();
+        console.log(typeof color);
 
-    var arcs = svg.selectAll("g")
-            .data(piedata)
-            .enter()
-            .append("g")
-            .attr("transform","translate("+ (width/2) +","+ (width/2) +")");
+        var arcs = svg.selectAll("g")
+                .data(piedata)
+                .enter()
+                .append("g")
+                .attr("transform","translate("+ (width/2) +","+ (width/2) +")");
 
-    arcs.append("path")
-            .attr("fill",function(d,i){
-                return color(i);
-            })
-            .attr("d",function(d){
-                return arc(d);
-            });
+        arcs.append("path")
+                .attr("fill",function(d,i){
+                    if(i === 0){
+                        return '#22ee55';
+                    }else if(i == 1){
+                        return '#e72210';
+                    }else{
+                        return '#53becc';
+                    }
+                })
+                .attr("d",function(d){
+                    return arc(d);
+                });
 
-    arcs.append("text")
+        arcs.append("text")
             .attr("transform",function(d){
                 return "translate(" + arc.centroid(d) + ")";
             })
             .attr("text-anchor","middle")
             .text(function(d){
                 if(d.data>0){
-                	 return d.data;
+                    return d.data;
                 }     
             });  
             console.log(color(0));
             console.log(color(1));
             console.log(color(2));      
-
+    })()
+        
+    
 </script>
 
 <div class="box">
 <table>
    <tr>
       <td ><div class="color0"></div></td>
-      <td class="font">success count</td>
+      <td class="font">成功用例数</td>
    </tr>
    <tr>
       <td ><div class="color1"></div></td>
-      <td class="font">failed count</td>
+      <td class="font">失败用例数</td>
    </tr>
    <tr>
       <td ><div class="color2"></div></td>
-      <td class="font">not run count</td>
+      <td class="font">跳过用例数</td>
    </tr>
 </table>
 </div>

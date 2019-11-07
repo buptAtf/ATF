@@ -9,11 +9,49 @@
     <!-- <link rel="stylesheet" type="text/css" href="../static/css/base/bootstrap.min.css"> -->
     <link rel="stylesheet" type="text/css" href="../static/css/bootstrap-datetimepicker.min.css">
     <script src="http://d3js.org/d3.v3.min.js"></script>
+    <script type="text/javascript" src="../lib/jquery-1.8.3.min.js"></script>
     <title>批量执行管理</title>
     <style>
     .btn-success{
         margin: 1px;
     }
+    .box{
+      	position:relative;
+      }
+    table .chartTable{
+      	width:300px;
+      	height: 240px;
+      	border:2px solid lightblue;
+      	position:absolute;
+        left: 450px;
+        top:80px;
+      	border-collapse: collapse;
+      }
+    .chartTable td{
+      	width:150px;
+      	height:80px;
+      	border:2px solid lightblue;
+      }
+    .color0{
+      	width:90px;
+      	height:50px;
+      	background-color:#22ee55;
+      }
+      .color1{
+      	width:90px;
+      	height:50px;
+      	background-color:#e72210;
+      }
+      .color2{
+      	width:90px;
+      	height:50px;
+      	background-color:#53becc;
+      }
+      .font{
+      	line-height: 80px;
+      	text-align:center;
+      	font-weight:1.5px;
+      }
     </style>
 </head>
 
@@ -186,9 +224,14 @@
                                             <td class="center " width="" >{{ scene.successInsCount }}</td>
                                             <td class="center " width="" >{{ scene.failedInsCount }}</td>
                                             <td class="center " width="" >{{ scene.notRunInsCount }}</td>
+                                            <!--此处修改模态框显示饼状图-->
                                             <td class="center " width="">
-                                                <button class="btn btn-xs btn-success" data-toggle="modal" @click="getCount(scene.successInsCount,scene.failedInsCount,scene.notRunInsCount)">饼状图</button>
+                                                <button class="btn btn-xs btn-success" data-toggle="modal" href="#insertModal" 
+                                                onClick="drawChart('{{scene.successInsCount}}','{{scene.failedInsCount}}','{{scene.notRunInsCount}}');"
+                                                >饼状图</button>
                                             </td>
+                                            <!--drawChart(scene.successInsCount,scene.failedInsCount,scene.notRunInsCount)-->
+                                            <!--getCount(scene.successInsCount,scene.failedInsCount,scene.notRunInsCount)-->
                                             <td class="center " width="">{{ scene.executingStatus }}</td>
                                             <td class="center " width="" v-if="scene.executedResult==null">执行中</td>
                                             <td class="center " width="" v-else>{{ scene.executedResult }}</td>
@@ -206,7 +249,9 @@
                                         </tr>
                                     </tbody>
                                 </table>
+
                             </div>
+                            
                             <!-- 分页 -->
                             <pagination   :total-count="page.totalCount" :current-page="page.currentPage" :total-page="page.totalPage" :page-size="page.pageSize"  v-on:turn-topage="getExecutionRecord"></pagination>
                             <!-- <div class="row">
@@ -343,13 +388,125 @@
             <link rel="import" href="./common/copy-right.html?__inline">
         </section>
     </div>
+    <!--模态图显示饼状图-->>
+    <div class="modal fade" id="insertModal" tabindex="-1" role="dialog" aria-labelledby="insertModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content" style="width: 700px; margin-top: 160px;">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                        <h4 class="modal-title">饼状图详情</h4>
+                    </div>
+                    <div class="modal-body">
+                        <!-- modal-body start -->
+                        <section class="panel" style="width: 680px; overflow: hidden;margin-bottom: -15px;">
+                            <div class="add" id="addId" style="float: left;">
+                            </div>
+                               
+                            <div class="box" style="float: left; margin-left: 30px;margin-top: 30px;">
+                                <table class="chartTable">
+                                    <tr>
+                                        <td align="center"><div class="color0"></div></td>
+                                        <td class="font">成功用例数</td>
+                                    </tr>
+                                    <tr>
+                                        <td align="center"><div class="color1"></div></td>
+                                        <td class="font">失败用例数</td>
+                                    </tr>
+                                    <tr>
+                                        <td align="center"><div class="color2"></div></td>
+                                        <td class="font">跳过用例数</td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </section>
+                    <!-- modal-body end -->
+                    </div>
+                    <div class="modal-footer">
+                        <button data-dismiss="modal" class="btn btn-default" type="button">关闭</button>
+                    </div>
+                </div>
+            </div>
+        </div>
 </body>
 
 </html>
+<!--模态图显示图表-->>
 <link rel="import" href="./common/footer.html?__inline">
 <script src="../lib/vue-resource.min.js"></script>
 
+<script src="http://d3js.org/d3.v3.min.js"></script>
+<script>
+function drawChart(successInsCount,failedInsCount,notRunInsCount){
+    var addContent = $('.add').html();
+    console.log($('.add').html());
+    if(addContent!=null){
+        $('.add').empty();
+        console.log('清空div');
+    }
+    var width = 300;
+    var height = 300;
+    var successCount=parseInt(successInsCount);
+    var failedCount=parseInt(failedInsCount);
+    var notRunCount=parseInt(notRunInsCount);
+    console.log(successInsCount);
+    console.log(failedInsCount);
+    console.log(notRunInsCount);
+    
+    var dataset = [ successCount,  failedCount, notRunCount];
+    var svg = d3.select("div.add")
+        .append("svg")
+        .attr("width", width)
+        .attr("height", height);
 
+    var pie = d3.layout.pie();
+
+    var piedata = pie(dataset);
+
+    var outerRadius = 150;  //外半径
+    var innerRadius = 0;    //内半径，为0则中间没有空白
+
+    var arc = d3.svg.arc()  //弧生成器
+            .innerRadius(innerRadius)   //设置内半径
+            .outerRadius(outerRadius);  //设置外半径
+
+    var color = d3.scale.category10();
+    console.log(typeof color);
+
+    var arcs = svg.selectAll("g")
+            .data(piedata)
+            .enter()
+            .append("g")
+            .attr("transform","translate("+ (width/2) +","+ (width/2) +")");
+
+    arcs.append("path")
+            .attr("fill",function(d,i){
+                if(i === 0){
+                    return '#22ee55';
+                }else if(i == 1){
+                    return '#e72210';
+                }else{
+                    return '#53becc';
+                }
+            })
+            .attr("d",function(d){
+                return arc(d);
+            });
+
+    arcs.append("text")
+        .attr("transform",function(d){
+            return "translate(" + arc.centroid(d) + ")";
+        })
+        .attr("text-anchor","middle")
+        .text(function(d){
+            if(d.data>0){
+                return d.data;
+            }     
+        });  
+        console.log(color(0));
+        console.log(color(1));
+        console.log(color(2));      
+}
+</script>
 <script type="text/javascript" src="../lib/jquery-1.8.3.min.js"></script>
 <script type="text/javascript" src="../lib/bootstrap-datetimepicker.min.js"></script>
 <script type="text/javascript" src="../lib/bootstrap-datetimepicker.zh-CN.js"></script>
