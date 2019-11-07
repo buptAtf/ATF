@@ -39,7 +39,31 @@
         .icon-angle-down {
             top: 7px;
         }
-
+        .arrow-right{
+            float: right;
+            width:15px;
+            height:30px;
+            line-height: 30px;
+        }
+        #main-content .content-wrapper .main .main-content .caseFlow{
+            margin-right: 5px;
+            display: inline-block;
+            margin-bottom: 0;
+            min-width: 50px;
+            width: 175px;
+            height: 30px;
+            border: 0px solid #ddd5d5;
+        }
+        #main-content .content-wrapper .main .main-content .case .case-header-Flow{
+            height: 30px;
+            width:155px;
+            padding:0;
+            position: relative;
+            background: white;
+            border: 1px solid #ddd5d5;
+            border-radius: 5px;
+            flex: 0 0 auto;
+        }
         .optionStyle {
             font: 12px '微软雅黑 Light';
             margin: 5px 0;
@@ -47,6 +71,10 @@
 
         .selectStyle {
             line-height: 40px;
+        }
+        #main-content .content-wrapper .main .main-content .caseStyle{
+            margin-top:15px;
+            padding:15px 5px 10px 5px;
         }
     </style>
     <script>
@@ -342,7 +370,7 @@
                     </div>
                     <div id="sortable">
                         <template v-for="group in sceneInfo.caseGroup">
-                            <div class="case-lib" v-for="case_wrapper in group">
+                            <div class="case-lib caseStyle" v-for="case_wrapper in group">
                                 <template v-if="case_wrapper.caseCompositeType == '1'">
                                     <div class="checkbox-wrapper">
                                         <i class="icon-move handle" style="color: #ff6c60;"></i> &nbsp;&nbsp;
@@ -374,22 +402,25 @@
                                              @mousedown.stop="1"><input type="checkbox" :value="case_wrapper.id"
                                                                         name="sort" class="checkall"
                                                                         v-model="selectedCases"
-                                                                        @change="checkallToggle($event)"></div>
+                                                                        @change="checkallToggle($event)">
+                                        </div>
                                     </div>
                                     <div class="case-wrapper">
                                         <template v-for="(key, time) in case_wrapper">
                                             <!--<div class="" style="height: 30px; width: 30px; border-width: 15px; border-style: solid; border-color: transparent transparent  transparent #bebaba;margin: 0 -30px 0 20px; position: relative; top: 0%;"></div>-->
-                                            <div class="case" v-for="(index, case) in time" @mousedown.stop="1"
+                                            <div class="case caseFlow" v-for="(index, case) in time" @mousedown.stop="1"
                                                  @click="changeCase(case.id, 2)"
                                                  :style="{ marginRight: (index !== time.length - 1) ? '12px' : 170 + 'px'}">
-                                                <div class="case-header">
+                                                <div class="case-header case-header-Flow" style="display: inline-block">
                                                     <p :title="case.casecode" style="margin-left: 5px;">
                                                         {{case.casecode}}</p>
                                                     <input type="checkbox" v-bind:value="case.id"
                                                            class="check-case" @change="checkChanged($event)"
                                                            v-model="checkedFlowNodes">
                                                 </div>
+                                                <div class="arrow-right" :style="{display:(index != (time.length - 1)? 'inline-block':'none')}"><i class="icon-long-arrow-right"></i></div>
                                             </div>
+
                                         </template>
                                     </div>
                                 </template>

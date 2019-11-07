@@ -4,13 +4,13 @@ var checkFunction = {
 		this.$nextTick(function () {
         	$.each(caseCbs, function(index, ele) {
 				if(ele.checked) {
-					$(ele).parents('.case').css({"border-color": "rgb(69, 185, 177)"})
-					$(ele).parents('.case').css({"background-color": "rgb(69, 185, 177)"})
-					$('p', $(ele).parents('.case')).css({"color": "#fff"})
+					$(ele).parents('.case-header').css({"border-color": "rgb(69, 185, 177)"})
+					$(ele).parents('.case-header').css({"background-color": "rgb(69, 185, 177)"})
+					$('p', $(ele).parents('.case-header')).css({"color": "#fff"})
 				}else {
-					$(ele).parents('.case').css({"border-color": "#ddd5d5"})
-					$(ele).parents('.case').css({"background-color": "#fff"})
-					$('p', $(ele).parents('.case')).css({"color": "#797979"})
+					$(ele).parents('.case-header').css({"border-color": "#ddd5d5"})
+					$(ele).parents('.case-header').css({"background-color": "#fff"})
+					$('p', $(ele).parents('.case-header')).css({"color": "#797979"})
 				}
 			})
       	})

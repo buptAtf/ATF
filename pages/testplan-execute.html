@@ -105,6 +105,36 @@
             height: 100%;
             z-index:100;
         }
+        .case-lib-pad{
+            margin:10px 5px;
+        }
+        .arrow-right{
+            float: right;
+            width:15px;
+            height:30px;
+            line-height: 30px;
+            margin-top: 10px;
+        }
+        #main-content .content-wrapper .main .main-content .caseFlow{
+            margin-right: 5px;
+            display: inline-block;
+            margin-bottom: 0;
+            min-width: 50px;
+            width: 175px;
+            height: 30px;
+            border: 0px solid #ddd5d5;
+        }
+        #main-content .content-wrapper .main .main-content .case .case-header-Flow{
+            height: 30px;
+            width:155px;
+            margin-top: 10px;
+            position: relative;
+            background: white;
+            border: 1px solid #ddd5d5;
+            border-radius: 5px;
+            flex: 0 0 auto;
+            display: inline-block;
+        }
     </style>
 </head>
 <body>
@@ -335,13 +365,13 @@
                                 </div>
                                 <span class="scene-list-title list-title" style="top: 2px;">{{scene.sceneName}}</span>
                                 <button class="hide-case-list btn btn-xs btn-info" @click="hideCaseList($event)"
-                                        @mousedown.stop="1"><span>收起</span>&nbsp;&nbsp;<i class="icon-caret-down"></i>
+                                        @mousedown.stop="1"><span>展开</span>&nbsp;&nbsp;<i class="icon-caret-right"></i>
                                 </button>
                                 <button class="hide-case-list btn btn-xs btn-info" @mousedown.stop="1"
                                         @click="saveSort(scene.sceneId)">保存排序
                                 </button>
                                 <!-- <div class="case-list"> -->
-                                <div class="case-list">
+                                <div class="case-list" style="display:none">
                                     <div class="check-all-case" v-if="scene.testCaseList.length"
                                          style="padding: 2px 5px;margin: 10px 10px;" @mousedown.stop="1">全选用例
                                         <input type="checkbox" @change="checkAllInScene($event)"
@@ -350,7 +380,7 @@
                                                style="position: relative; top: 3px;">
                                     </div>
                                     <div class="sortable_scene_caselist">
-                                        <div class="case-lib" v-for="case_wrapper in scene.testCaseList">
+                                        <div class="case-lib case-lib-pad" v-for="case_wrapper in scene.testCaseList">
                                             <template v-if="case_wrapper.caseCompositeType == '1'">
                                                 <div class="checkbox-wrapper">
                                                     <i class="icon-move handle1" style="color: #B8860B;"></i>&nbsp;&nbsp;
@@ -429,10 +459,10 @@
                                                         </div>
                                                     </div> -->
                                                 <div class="case-wrapper">
-                                                    <div class="case" v-for="item in case_wrapper.flowNodes"
+                                                    <div class="case caseFlow" v-for="(index,item) in case_wrapper.flowNodes"
                                                          @mousedown.stop="1"
                                                          @click="changeCase(scene.sceneId+ '-' + case_wrapper.caseId + '-' + item.flowNodeId, 3)">
-                                                        <div class="case-header">
+                                                        <div class="case-header case-header-Flow">
                                                             <img :src="exeImgs[0]"
                                                                  :id="'img' + '-' + scene.sceneId+ '-' + case_wrapper.caseId + '-' + item.flowNodeId">
                                                             <p class="width-limit"  :title="item.flowNodeCode">{{item.flowNodeCode}} </p>
@@ -449,6 +479,7 @@
                                                                    <!-- <a class="view-case"
                                                                       @click.stop="viewCase(scene.sceneId, case_wrapper.caseId, 'PE6')"><span>查看</span></a> -->
                                                         </div>
+                                                        <div class="arrow-right" :style="{display:(index != (case_wrapper.flowNodes.length - 1)? 'inline-block':'none')}"><i class="icon-long-arrow-right"></i></div>
                                                         <!-- <div class="case-main">
                                                         </div> -->
                                                         <footer class="case-footer">
