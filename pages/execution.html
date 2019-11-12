@@ -52,6 +52,16 @@
       	text-align:center;
       	font-weight:1.5px;
       }
+	  .tooltip {
+	  	position: absolute;
+	  	width: 100px;
+	  	height: auto;
+	  	font-size: 14px;
+	  	text-align: center;
+	  	border: 1px solid #666;
+	  	border-radius: 5px;
+	  	background:rgba(255, 255, 255, 0.5)
+	  }
     </style>
 </head>
 
@@ -390,8 +400,8 @@
     </div>
     <!--模态图显示饼状图-->>
     <div class="modal fade" id="insertModal" tabindex="-1" role="dialog" aria-labelledby="insertModalLabel" aria-hidden="true">
-            <div class="modal-dialog">
-                <div class="modal-content" style="width: 700px; margin-top: 160px;">
+            <div class="modal-dialog1" style="width: 100%;">
+                <div class="modal-content" style="width: 700px; margin: 160px auto;">
                     <div class="modal-header">
                         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                         <h4 class="modal-title">饼状图详情</h4>
@@ -438,7 +448,6 @@
 <script>
 function drawChart(successInsCount,failedInsCount,notRunInsCount){
     var addContent = $('.add').html();
-    console.log($('.add').html());
     if(addContent!=null){
         $('.add').empty();
         console.log('清空div');
@@ -451,23 +460,47 @@ function drawChart(successInsCount,failedInsCount,notRunInsCount){
     console.log(successInsCount);
     console.log(failedInsCount);
     console.log(notRunInsCount);
+	var sum = successCount + failedCount + notRunCount;
+	var successRate = successCount/sum;
+	var failedRate = failedCount/sum;
+	var notRunRate = notRunCount/sum;
+	var successPercent = Math.round(successRate * 100) + "%";
+	var failedPercent = Math.round(failedRate * 100) + "%";
+	var notRunPercent = Math.round(notRunRate * 100) + "%";
+	var rate = [successPercent,failedPercent,notRunPercent];
+	var count = 0;
+	
+	console.log("比率为：" +successPercent + "\n" + failedPercent + "\n" + notRunPercent + "\n");
     
-    var dataset = [ successCount,  failedCount, notRunCount];
+    var dataset = [ 
+			["成功用例数",successCount],  
+			["失败用例数",failedCount], 
+			["跳过用例数",notRunCount]
+		];
+	
     var svg = d3.select("div.add")
         .append("svg")
         .attr("width", width)
         .attr("height", height);
 
-    var pie = d3.layout.pie();
+    var pie = d3.layout.pie().sort(null)
+				.value(function(d){return d[1];});
 
     var piedata = pie(dataset);
 
-    var outerRadius = 150;  //外半径
+    var outerRadius = 145;  //外半径
     var innerRadius = 0;    //内半径，为0则中间没有空白
+	
+	var outerRadiusFinal = 150;	//鼠标放上去的外半径
+	var innerRadiusFinal = 0;	//鼠标放上去的内半径
 
     var arc = d3.svg.arc()  //弧生成器
             .innerRadius(innerRadius)   //设置内半径
             .outerRadius(outerRadius);  //设置外半径
+	
+	var arcFinal = d3.svg.arc()	//放大弧生成器
+					 .innerRadius(innerRadius)
+					 .outerRadius(outerRadiusFinal);
 
     var color = d3.scale.category10();
     console.log(typeof color);
@@ -479,6 +512,7 @@ function drawChart(successInsCount,failedInsCount,notRunInsCount){
             .attr("transform","translate("+ (width/2) +","+ (width/2) +")");
 
     arcs.append("path")
+			.attr("d",function(d){return arc(d);})
             .attr("fill",function(d,i){
                 if(i === 0){
                     return '#22ee55';
@@ -488,23 +522,48 @@ function drawChart(successInsCount,failedInsCount,notRunInsCount){
                     return '#53becc';
                 }
             })
-            .attr("d",function(d){
-                return arc(d);
-            });
+			.on("click",function(d){console.log(d3.event.pageX+"px");alert(d.data[0]+":"+d.data[1]);})
+			.on("mouseover",function(d){
+				tooltip.html(d.data[0]+":"+d.data[1])
+					   .style("top", "158px")
+					   .style("left","134px")
+					   .style("opacity",1);
+				d3.select(this).transition()
+				  .duration(150).attr("d",arcFinal);
+				
+			})
+			.on("mouseout",function(d){
+				d3.select(this).transition()
+				  .duration(150).attr("d",arc);
+				tooltip.style("opacity",0);
+			});
 
     arcs.append("text")
         .attr("transform",function(d){
-            return "translate(" + arc.centroid(d) + ")";
+			var x = arc.centroid(d)[0] * 1.1;//显示文字的横坐标
+			var y = arc.centroid(d)[1] * 1.1;//显示文字的纵坐标
+            return `translate(${x},${y})`;
         })
         .attr("text-anchor","middle")
+		.attr("fill","#FFFFFF")
         .text(function(d){
-            if(d.data>0){
-                return d.data;
-            }     
-        });  
+			console.log(sum);
+            if(d.data[1]>0){
+				if(sum !=0){
+					return Number(d.data[1]/sum * 100).toFixed(2) + "%";
+				}
+            }   
+        })
+		.style("font-size","15px");  
+	
         console.log(color(0));
         console.log(color(1));
-        console.log(color(2));      
+        console.log(color(2));  
+	var tooltip = d3.select("div.add")
+					.append("div")
+					.attr("class","tooltip")
+					.style("z-index",1)
+					.style("opacity",0);
 }
 </script>
 <script type="text/javascript" src="../lib/jquery-1.8.3.min.js"></script>
