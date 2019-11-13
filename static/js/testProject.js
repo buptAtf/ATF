@@ -165,12 +165,12 @@ var app = new Vue({
                                       }
                                     },
                                 error: function() {
-                                Vac.alert('出错啦~7');
+                                    Vac.alert('出错啦~7');
                                 }
                         }),
                             $('#successModal').modal();
                         } else {
-                            $('#failModal').modal();
+                            Vac.alert(data.respMsg);
                         }
                     },
                     error: function() {

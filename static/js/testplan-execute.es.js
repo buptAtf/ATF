@@ -1092,6 +1092,7 @@ var vBody = new Vue({
 		viewCase: function (sceneId, caseId, sourcechannel,flowNodeId, testPhase, testRound, recorderStatus) {
 			var that = this;
 			var o = {
+				testPlanId:that.testPlanId,
 				batchId:that.batchId,
 				sceneId,
 				caseId,
