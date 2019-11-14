@@ -113,7 +113,7 @@
                     <element-library :transid="transid" :autid="autid"></element-library>
                 </div>
                 <div role="tabpanel" class="tab-pane" id="messages" :class="{active: activeName=='messages'}">
-                    <case-data></case-data>
+                    <case-data :autid="autid"></case-data>
                 </div>
                 <div role="tabpanel" class="tab-pane" id="detailModel" :class="{active: activeName=='detailModel'}">
                     <detail-modal :test-case="testcase" :flow-cases="flowTestcase"></detail-modal>
@@ -167,12 +167,13 @@
                 <button type="button" class="btn btn-info"> 保 存</button>
             </label>
         </div>
-        <div class="table-wrapper">
+        <div class="table-wrapper" id="flowDataTab">
             <table class="table table-bordered">
                 <thead>
                 <tr>
                     <th>数据名称</th>
                     <th>数据值</th>
+                    <th>数据池名</th>
                     <th>流程节点名称</th>
                     <th>对象名称</th>
                     <th>描述</th>
@@ -183,6 +184,18 @@
                 </tbody>
             </table>
         </div>
+        <!--<div class="table-wrapper" id="inputDataTab">-->
+            <!--<table class="table table-bordered">-->
+                <!--<thead>-->
+                <!--<tr>-->
+                    <!--<th>数据类型</th>-->
+                    <!--<th>输入数据</th>-->
+                <!--</tr>-->
+                <!--</thead>-->
+                <!--<tbody  id="inputData">-->
+                <!--</tbody>-->
+            <!--</table>-->
+        <!--</div>-->
         <div class="modal fade" tabindex="-1" role="dialog" id="alterModal">
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
@@ -318,6 +331,8 @@
                 sourcechannel: null,
                 flowTestcase: [],
                 flowDataList:[],
+                inputDataList:[],
+                inputDataStr:{},
                 caseCompositeType: -1,
                 activeName: 'object-repo',
                 recordData: '',
@@ -327,9 +342,9 @@
                 autName: "",
                 transName: "",
                 casecode: null,
-                caselibid: null,
                 flowNodeId: null,
-                testRecord: null
+                testRecord: null,
+                caseCompositeType:'1',
             }
         },
         ready: function () {
@@ -355,6 +370,7 @@
             _this.recordData = executeInstanceInfo
             _this.flowNodeId = executeInstanceInfo.flowNodeId
             _this.testPlanId = executeInstanceInfo.testPlanId
+            _this.caseCompositeType=executeInstanceInfo.caseCompositeType
                     console.log(executeInstanceInfo)
             $.ajax({
                 url: address3 + 'flowDataController/getFlowDataByTestPlanId',
@@ -367,17 +383,72 @@
                 }),
                 success: function (res) {
                     _this.flowDataList= res.flowData;
-                    _this.flowDataList.forEach(function(item){
-                        $("#flowData").append("<tr> " +
-                                "<td >" + item.dataName + "</td>" +
-                                "<td >" + item.data + "</td>" +
-                                "<td>" + item.nodeName + "</td>" +
-                                "<td >无</td>" +
-                                "<td >无</td>" +
-                                "<td >无</td>" +
-                                "</tr>");
-                        console.log("ahahahah",item);
-                    });
+                    if(_this.flowDataList){
+                        _this.flowDataList.forEach(function(item){
+                            $("#flowData").append("<tr> " +
+                                    "<td >" + item.dataName + "</td>" +
+                                    "<td >" + item.data + "</td>" +
+                                    "<td >无</td>" +
+                                    "<td>" + item.nodeName + "</td>" +
+                                    "<td >无</td>" +
+                                    "<td >无</td>" +
+                                    "<td >无</td>" +
+                                    "</tr>");
+                        });
+                    }
+                }
+            });
+            $.ajax({
+                url: address3 + 'testRecordController/queryInputData',
+                type: 'post',
+                contentType: 'application/json',
+                data: JSON.stringify({
+                    caseId: _this.viewScriptTestcaseId,
+                    testPlanId: _this.testPlanId,
+                    batchId: _this.batchId,
+                    caseCompositeType: _this.caseCompositeType
+                }),
+                success: function (res) {
+                    var type = res.type;
+                    if (type == 1) {
+                        _this.inputDataList = res.scriptList;
+                    if (_this.inputDataList) {
+                            _this.inputDataList.forEach(function (item,index) {
+                                $("#flowData").append("<tr> " +
+                                        "<td >" + "UI(" + item.ui + "). 元素(" + item.element + "). 方法(" + item.method + ")" + "</td>" +
+                                        "<td id="+'inputValue'+index+">" +"</td>" +
+                                        "<td >无</td>" +
+                                        "<td >无</td>" +
+                                        "<td >无</td>" +
+                                        "<td >无</td>" +
+                                        "<td >无</td>" +
+                                        "</tr>");
+                                var str="inputValue"+index;
+                                console.log(str);
+                                item.parameters.forEach(function(parameter,i){
+                                    var j=i+1;
+                                    $("#"+str).append("<span>"+"参数"+j+": "+parameter+"</span>");
+                                });
+
+                            });
+                        }
+                    }else if(type==2) {
+                        _this.inputDataStr = JSON.parse(res.bodyContent);
+                        for(var key in _this.inputDataStr){
+                            if(!_this.inputDataStr[key]){
+                                _this.inputDataStr[key]="无";
+                            }
+                            $("#flowData").append("<tr> " +
+                                    "<td >" + key + "</td>" +
+                                    "<td >" +_this.inputDataStr[key]+"</td>" +
+                                    "<td >无</td>" +
+                                    "<td >无</td>" +
+                                    "<td >无</td>" +
+                                    "<td >无</td>" +
+                                    "<td >无</td>" +
+                                    "</tr>");
+                        }
+                    }
                 }
             });
             $.ajax({

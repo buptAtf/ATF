@@ -1,33 +1,15 @@
 var caseData = Vue.extend({
   template: '#case-data',
+  props: {
+    'autid': {
+    }
+  },
   data: function () {
     var _this = this;
     return {
       conditions: [],
       checkall: false,
-      dataList: [
-        {
-          dataName: 333,
-          dataValue: 9999,
-          dataPoolName: 32323,
-          objectName: 32323,
-          description: '这是假数据，阿卡大家福利卡京东方'
-        },
-        {
-          dataName: 333,
-          dataValue: 9999,
-          dataPoolName: 32323,
-          objectName: 32323,
-          description: '这是假数据，阿卡大家福利卡京东方'
-        },
-        {
-          dataName: 333,
-          dataValue: 9999,
-          dataPoolName: 32323,
-          objectName: 32323,
-          description: '这是假数据，阿卡大家福利卡京东方'
-        },
-      ]
+      dataList: []
     }
   },
   watch: {
@@ -37,7 +19,13 @@ var caseData = Vue.extend({
         return
       }
       this.checkall = false;
-    }
+    },
+    autid: {
+      handler(newValue, oldValue) {
+        this.OverallData();
+      },
+      deep: true
+    },
   },
   ready: function() {
     $('#alter-form').validate({
@@ -55,6 +43,36 @@ var caseData = Vue.extend({
       } else {
         this.conditions = []
       }
+    },
+    OverallData:function(){
+      var _this = this;
+      if(!_this.autid)
+        return
+      $.ajax({
+        url: address3 + 'dataPool/batchQueryDataPool',
+        type: 'post',
+        contentType: 'application/json',
+        data: JSON.stringify({
+          poolName: "被测系统数据池",
+          poolObjId: _this.autid,
+        }),
+        success: function (res) {
+          _this.dataList=res.dataPoolList;
+          if(_this.dataList){
+            _this.dataList.forEach(function(item){
+              $("#flowData").append("<tr> " +
+                  "<td >" + item.dataName + "</td>" +
+                  "<td >" + item.dataValue + "</td>" +
+                  "<td >"+ item.poolName +"</td>" +
+                  "<td> 无 </td>" +
+                  "<td >无</td>" +
+                  "<td >无</td>" +
+                  "<td >无</td>" +
+                  "</tr>");
+            });
+          }
+        }
+      });
     },
     changeCondition: function() {
       if(this.conditions.length === 4) {
