@@ -13,64 +13,74 @@
         .banner {
             position: fixed;
             top: 0;bottom: 0;left: 0;right: 0;
-            background: linear-gradient(180deg,#0d1a44 13%,#3c4f91 56%,#5fc1e4);
+            background-image: url("../static/images/login1.png");
+            background-repeat:no-repeat;
+            background-size:100% 100%;
+            background-position: center 0;
         }
-        #introduction {
-            background-color: #fff;
-            color: #108ee9!important;
-        }
-        #introduction div, #introduction ul li {
-            color: #108ee9!important;
+        /*#introduction {*/
+            /*background-color: #fff;*/
+            /*color: #108ee9!important;*/
+        /*}*/
+        /*#introduction div, #introduction ul li {*/
+            /*color: #108ee9!important;*/
+        /*}*/
+        .backgroundIm{
+            width:100%;
+            padding: 0;
+            margin:0;
         }
     </style>
 </head>
 
 <body>
+<!--<div>-->
+    <!--<img src="../static/images/login1.png" alt="" class="backgroundIm">-->
+<!--</div>-->
     <div class="banner">
-    <div id="title">
-        <span class="titleATF">
-                ATF
-        </span>
-        <span class="titleWord">
-                云测试平台
-        </span>
-    </div>
+    <!--<div id="title">-->
+        <!--<span class="titleATF">-->
+                <!--ATF-->
+        <!--</span>-->
+        <!--<span class="titleWord">-->
+                <!--云测试平台-->
+        <!--</span>-->
+    <!--</div>-->
     <div id="main">
-        <div id="introduction">
-            <div id="introductionATF">
-                <div class="div1">
-                    A
-                </div>
-                <div class="div2">
-                    T
-                </div>
-                <div class="div3">
-                    F
-                </div>
-            </div>
-            <div id="welcome">
-                Welcome
-            </div>
-            <div id="introductionWord">
-                <ul>
-                    <li>
-                        提供自动化测试工具
-                    </li>
-                    <li>
-                        帮助管理测试项目
-                    </li>
-                    <li>
-                        节约公司服务器成本
-                    </li>
-                    <li>
-                        专业定制
-                    </li>
-                </ul>
-            </div>
-        </div>
+        <!--<div id="introduction">-->
+            <!--<div id="introductionATF">-->
+                <!--<div class="div1">-->
+                    <!--A-->
+                <!--</div>-->
+                <!--<div class="div2">-->
+                    <!--T-->
+                <!--</div>-->
+                <!--<div class="div3">-->
+                    <!--F-->
+                <!--</div>-->
+            <!--</div>-->
+            <!--<div id="welcome">-->
+                <!--Welcome-->
+            <!--</div>-->
+            <!--<div id="introductionWord">-->
+                <!--<ul>-->
+                    <!--<li>-->
+                        <!--提供自动化测试工具-->
+                    <!--</li>-->
+                    <!--<li>-->
+                        <!--帮助管理测试项目-->
+                    <!--</li>-->
+                    <!--<li>-->
+                        <!--节约公司服务器成本-->
+                    <!--</li>-->
+                    <!--<li>-->
+                        <!--专业定制-->
+                    <!--</li>-->
+                <!--</ul>-->
+            <!--</div>-->
+        <!--</div>-->
         <div id="Login">
             <div id="loginTitle">
-                登 录
                 <span id="result">
                     </span>
             </div>
@@ -79,26 +89,17 @@
                 </div>
                 <form action="" id="form" method="post">
                     <div class="form-group">
-                        <span>
-                                用户名
-                        </span>
-                        <input class="username" id="username" name="username" type="text" />
+                        <input class="username" id="username" name="username" type="text" placeholder="请输入用户名"/>
                         <img class="error" src="../static/images/error.png">
                         </img>
                     </div>
                     <div class="form-group">
-                        <span>
-                                密    码
-                            </span>
-                        <input class="password" id="password" name="password" type="password" />
+                        <input class="password" id="password" name="password" type="password" placeholder="请输入密码"/>
                         <img class="error" src="../static/images/error.png">
                         </img>
                     </div>
                     <div class="form-group">
-                        <span>
-                            验证码
-                        </span>
-                        <input class="authCode" id="authCode" keyup="validate()" name="authCode" type="text" />
+                        <input class="authCode" id="authCode" keyup="validate()" name="authCode" type="text" placeholder="请输入验证码"/>
                         <img id="codeImage" onclick="chageCode()" title="图片看不清？点击重新得到验证码" type="image" />
                         <img class="error" src="../static/images/error.png">
                         </img>
@@ -163,7 +164,7 @@
         // console.log(address3);
         getautocode();
         $('#authCode').blur(function() {
-            checkAuthcode();       
+            checkAuthcode();
         });
         $('#loginInput').click(function() {
             login();
@@ -187,9 +188,9 @@
             $.ajax({
                 type: 'post',
                 url: address3 + "userController/checkauthcode",
-                data: { 
-                    "authCode": $("#authCode").val(), 
-                    "sessionId": sessionStorage.getItem('sessionId') 
+                data: {
+                    "authCode": $("#authCode").val(),
+                    "sessionId": sessionStorage.getItem('sessionId')
                 },
                 dataType: "json",
                 success: function(data) {
@@ -295,9 +296,9 @@
                         $.ajax({
                             type: 'post',
                             url: address3 + "userController/checkauthcode",
-                            data: { 
-                                "authCode": $("#authCode").val(), 
-                                "sessionId": sessionStorage.getItem('sessionId') 
+                            data: {
+                                "authCode": $("#authCode").val(),
+                                "sessionId": sessionStorage.getItem('sessionId')
                             },
                             dataType: "json",
                             success: function(data) {
