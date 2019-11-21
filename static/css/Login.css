@@ -26,30 +26,33 @@ body{
 }
 #main{
 	transform: scale(0.8);
-	width:800px;
-	height:350px;
+	width:40%;
+	height:60%;
 	position:absolute;
-	left:78%;
-	top:52%;
-	margin: -150px 0 0 -400px;
-	font-weight:700; 
+	left:52%;
+	top:30%;
+	font-weight:700;
 }
-#introduction{
+.formA{
+	width:100%;
+	height:100%;
+}
+/*#introduction{*/
 
-	width:300px;
-	height:300px;
-	float:left;
-	background-color:#108ee9;
-	border-radius:3px;
-	padding-top:50px;
-}
-#introductionATF{
-	font-family:Comic Sans MS, cursive;
-	font-weight:600; 
-	font-size:24px; 
-	color:#FFF;
-	width:50px;height:50px;
-}
+	/*width:300px;*/
+	/*height:300px;*/
+	/*float:left;*/
+	/*background-color:#108ee9;*/
+	/*border-radius:3px;*/
+	/*padding-top:50px;*/
+/*}*/
+/*#introductionATF{*/
+	/*font-family:Comic Sans MS, cursive;*/
+	/*font-weight:600; */
+	/*font-size:24px; */
+	/*color:#FFF;*/
+	/*width:50px;height:50px;*/
+/*}*/
 
 #welcome{
 
@@ -73,8 +76,8 @@ body{
 }
 #Login{
 	color: #108ee9;
-	width:460px;
-	height:500px;
+	width:70%;
+	height:90%;
 	float:left;
 	border-radius:3px;
 }
@@ -93,65 +96,74 @@ body{
 	font-family: "微软雅黑";
 }
 #loginForm{
-
+    width:100%;
+	height:100%;
 	font-family:Verdana, Geneva, sans-serif;
 	text-align:left;
 	float:left;
-	font-size:18px; 
 
 }
-#loginForm div{
-	margin:22px 0 15px 30px;
+/*#loginForm div{*/
+	/*margin:5% 0 3% 7%;*/
+/*}*/
+.form-group{
+	width:100%;
+	height:17%;
 }
 .clear{
         clear:borh
 }
 #loginInput{
-	height:50px;
-	width:150px;
+	height:13%;
+	width:33%;
 	text-align:center;
 	background-color:#FF9900;
 	color:#FFF;
 	border-radius: 5px;
-	font-size:20px;
+	font-size:24px;
     position:absolute;
-	left:30px;
-	top:215px;
+	left:0;
+	top:55%;
 	border:0;
 	cursor: pointer;
 }
 .username{
-	width:300px;
-	height:30px;
+	width:90%;
+	height:55%;
+	padding:0 5%;
+	font-size:20px;
 }
 .password{
-	width:300px;
-    height:30px;
+	width:90%;
+	height:55%;
+	padding:0 5%;
+	font-size:20px;
 }
 .authCode{
-	width:170px;
-    height:30px;
+	width:60%;
+	height:55%;
+	padding:0 5%;
+	font-size:20px;
 }
 .error{
 	display:none
 }
 #codeImage{
-	width:103px;
-    height:30px;
+	width:20%;
+    height:50%;
 	position:relative;
-	top:9px;
-	left:20px;
+	top:20%;
+	left:8%;
 }
 #tips{
-	width:200px;
-	height:20px;
+	width:40%;
+	height:20%;
 	text-align:center;
-	font-size:16px;
-	line-height:20px;
+	font-size:20px;
+	line-height:20%;
 	position:absolute;
-	left: 31%;
-	top:5%;
-	margin: 220px 0 0 -50px;
+	left: 38%;
+	top:62%;
 	font-weight:700; 
 }
 #tips a{

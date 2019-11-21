@@ -4,6 +4,7 @@
     <list default="true" id="356d9cfa-19f8-42d0-9a6b-181f54b55dfd" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/pages/Login.html" afterPath="$PROJECT_DIR$/pages/Login.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/pages/scene-setting.html" afterPath="$PROJECT_DIR$/pages/scene-setting.html" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/static/css/Login.css" afterPath="$PROJECT_DIR$/static/css/Login.css" />
     </list>
     <ignored path="ATF.iws" />
@@ -28,19 +29,31 @@
       <file leaf-file-name="Login.html" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/pages/Login.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="421">
-              <caret line="91" column="43" selection-start-line="91" selection-start-column="43" selection-end-line="91" selection-end-column="43" />
+            <state relative-caret-position="2300">
+              <caret line="92" column="45" selection-start-line="92" selection-start-column="45" selection-end-line="92" selection-end-column="45" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="Login.css" pinned="false" current-in-tab="true">
+      <file leaf-file-name="Login.css" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/static/css/Login.css">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="225">
-              <caret line="27" column="26" selection-start-line="27" selection-start-column="26" selection-end-line="27" selection-end-column="26" />
+            <state relative-caret-position="350">
+              <caret line="164" column="12" selection-start-line="164" selection-start-column="12" selection-end-line="164" selection-end-column="12" />
               <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="scene-setting.html" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/pages/scene-setting.html">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="288">
+              <caret line="46" column="26" selection-start-line="46" selection-start-column="26" selection-end-line="46" selection-end-column="26" />
+              <folding>
+                <element signature="n#template#0;n#div#0;n#template#0;n#div#2;n#div#3;n#main#0;n#section#0;n#section#0;n#div#3;n#body#0;n#html#0;n#!!top" expanded="false" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -84,7 +97,6 @@
         <option value="$PROJECT_DIR$/output/public/static/js/scene-setting.es_f4f47dc.js" />
         <option value="$PROJECT_DIR$/static/js/scene-management/checked.js" />
         <option value="$PROJECT_DIR$/static/js/testplan-execute.es.js" />
-        <option value="$PROJECT_DIR$/pages/scene-setting.html" />
         <option value="$PROJECT_DIR$/pages/testplan-execute.html" />
         <option value="$PROJECT_DIR$/static/js/testexecution/check.js" />
         <option value="$PROJECT_DIR$/static/js/case-operation/case-data.js" />
@@ -92,6 +104,7 @@
         <option value="$PROJECT_DIR$/static/js/testRecord.es.js" />
         <option value="$PROJECT_DIR$/pages/Login.html" />
         <option value="$PROJECT_DIR$/static/css/Login.css" />
+        <option value="$PROJECT_DIR$/pages/scene-setting.html" />
       </list>
     </option>
   </component>
@@ -132,6 +145,8 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+      <pane id="Scratches" />
+      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -220,8 +235,6 @@
           </PATH>
         </subPane>
       </pane>
-      <pane id="Scratches" />
-      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -350,12 +363,14 @@
       <workItem from="1573199304597" duration="11004000" />
       <workItem from="1573696910648" duration="11930000" />
       <workItem from="1573722634528" duration="92000" />
-      <workItem from="1573870344499" duration="9546000" />
+      <workItem from="1573870344499" duration="11069000" />
+      <workItem from="1574129174852" duration="5851000" />
+      <workItem from="1574300007397" duration="570000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="231816000" />
+    <option name="totallyTimeSpent" value="239760000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-7" y="0" width="1379" height="735" extended-state="0" />
@@ -367,7 +382,7 @@
       <window_info id="npm" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.15588723" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
+      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.15614618" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="true" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
@@ -424,13 +439,6 @@
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="jar://$APPLICATION_HOME_DIR$/lib/webstorm.jar!/resources/html5-schema/html5/common.rnc">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="194">
-          <caret line="122" column="18" selection-start-line="122" selection-start-column="18" selection-end-line="122" selection-end-column="18" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/pages/testProject.html">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="323">
@@ -566,6 +574,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-30">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
         </state>
       </provider>
     </entry>
@@ -682,20 +691,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/pages/scene-setting.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="18150">
-          <caret line="751" column="126" selection-start-line="751" selection-start-column="125" selection-end-line="751" selection-end-column="126" />
-          <folding>
-            <element signature="n#template#0;n#div#0;n#template#0;n#div#2;n#div#3;n#main#0;n#section#0;n#section#0;n#div#3;n#body#0;n#html#0;n#!!top" expanded="false" />
-            <element signature="n#style#0;n#div#0;n#div#0;n#template#0;n#div#0;n#template#0;n#div#2;n#div#3;n#main#0;n#section#0;n#section#0;n#div#3;n#body#0;n#html#0;n#!!top" expanded="false" />
-            <element signature="n#style#0;n#div#0;n#div#0;n#template#1;n#div#0;n#template#0;n#div#2;n#div#3;n#main#0;n#section#0;n#section#0;n#div#3;n#body#0;n#html#0;n#!!top" expanded="false" />
-            <element signature="n#style#0;n#div#0;n#div#0;n#template#0;n#div#1;n#template#1;n#div#0;n#template#0;n#div#2;n#div#3;n#main#0;n#section#0;n#section#0;n#div#3;n#body#0;n#html#0;n#!!top" expanded="false" />
-            <element signature="n#style#0;n#p#0;n#div#0;n#div#0;n#template#0;n#div#1;n#template#1;n#div#0;n#template#0;n#div#2;n#div#3;n#main#0;n#section#0;n#section#0;n#div#3;n#body#0;n#html#0;n#!!top" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/static/css/elementLibrary.css">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
@@ -714,17 +709,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="23975">
           <caret line="959" column="43" selection-start-line="959" selection-start-column="43" selection-end-line="959" selection-end-column="43" />
-          <folding>
-            <marker date="1572837683751" expanded="true" signature="76109:76134" placeholder="..." />
-            <marker date="1572837683751" expanded="true" signature="76295:76307" placeholder="..." />
-            <marker date="1572837683751" expanded="true" signature="103298:105230" placeholder="..." />
-            <marker date="1572837683751" expanded="true" signature="103471:104703" placeholder="..." />
-            <marker date="1572837683751" expanded="true" signature="104791:104883" placeholder="..." />
-            <marker date="1572837683751" expanded="true" signature="105018:105052" placeholder="..." />
-            <marker date="1572837683751" expanded="true" signature="105285:106537" placeholder="..." />
-            <marker date="1572837683751" expanded="true" signature="105460:106165" placeholder="..." />
-            <marker date="1572837683751" expanded="true" signature="106325:106359" placeholder="..." />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -740,10 +724,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="9300">
           <caret line="372" column="73" selection-start-line="372" selection-start-column="73" selection-end-line="372" selection-end-column="73" />
-          <folding>
-            <element signature="e#20176#22859#0" expanded="false" />
-            <element signature="e#22881#23904#0" expanded="false" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -751,7 +731,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="175">
           <caret line="771" column="22" selection-start-line="771" selection-start-column="22" selection-end-line="771" selection-end-column="22" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -759,23 +738,39 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="430">
           <caret line="75" column="6" selection-start-line="75" selection-start-column="6" selection-end-line="75" selection-end-column="6" />
-          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$USER_HOME$/Documents/WeChat Files/renpinsheng/FileStorage/File/2019-10/新建文件夹/recorder_template.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="163">
+          <caret line="99" column="20" selection-start-line="99" selection-start-column="20" selection-end-line="99" selection-end-column="20" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/pages/Login.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="421">
-          <caret line="91" column="43" selection-start-line="91" selection-start-column="43" selection-end-line="91" selection-end-column="43" />
+        <state relative-caret-position="2300">
+          <caret line="92" column="45" selection-start-line="92" selection-start-column="45" selection-end-line="92" selection-end-column="45" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/static/css/Login.css">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="225">
-          <caret line="27" column="26" selection-start-line="27" selection-start-column="26" selection-end-line="27" selection-end-column="26" />
+        <state relative-caret-position="350">
+          <caret line="164" column="12" selection-start-line="164" selection-start-column="12" selection-end-line="164" selection-end-column="12" />
           <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/pages/scene-setting.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="288">
+          <caret line="46" column="26" selection-start-line="46" selection-start-column="26" selection-end-line="46" selection-end-column="26" />
+          <folding>
+            <element signature="n#template#0;n#div#0;n#template#0;n#div#2;n#div#3;n#main#0;n#section#0;n#section#0;n#div#3;n#body#0;n#html#0;n#!!top" expanded="false" />
+          </folding>
         </state>
       </provider>
     </entry>
