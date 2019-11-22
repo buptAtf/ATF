@@ -78,8 +78,9 @@ var app = new Vue({
         $('.3-8').css({color: '#ff6c60'})
     },
     methods: {
+
         // 归档
-        delete(batchId){
+        delete(batchId){ 
             var _this = this
             $.ajax({
                 url: address3 + 'testRecordController/batchSaveTestRecord',
@@ -252,6 +253,7 @@ var app = new Vue({
                         _this.totalPage = data.totalPage;
                         _this.page.totalCount=data.totalCount;
                         _this.page.totalPage=data.totalPage;
+						console.log("查询"+_this.sceneList);
                     } else {
                         _this.sceneList = [];
                         _this.tt = 0;
@@ -261,6 +263,7 @@ var app = new Vue({
                 }
             });
         },
+        
         getExecutionRecord(page) {  //使用翻页组件时，调用的函数
             var _this=this;
             var pageSize = page?page.pageSize:this.page.pageSize,
@@ -299,6 +302,10 @@ var app = new Vue({
                         _this.sceneList = data.batchRunCtrlList;
                         _this.page.totalCount=data.totalCount;
                         _this.page.totalPage=data.totalPage;
+						for(var i = 0 ;i < _this.sceneList.length; i++){
+							console.log("print"+_this.sceneList[i].executionRound)
+						}
+						
                         // _this.page.currentPage = 1;
 					} else {
 						Vac.alert('出错啦~');
@@ -309,6 +316,10 @@ var app = new Vue({
 				}
 			});
         },
+		//获取指定测试计划的最后一个scen
+		getLastSceneByTestPlanName(name){
+			
+		},
         //改变页面大小
         changeListNum: function(){
             var _this=this;

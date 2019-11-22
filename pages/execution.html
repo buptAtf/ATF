@@ -62,6 +62,12 @@
 	  	border-radius: 5px;
 	  	background:rgba(255, 255, 255, 0.5)
 	  }
+	  .allFailed{
+		  color:red;
+	  }
+	  .notAllFailed{
+		 
+	  }
     </style>
 </head>
 
@@ -185,8 +191,7 @@
                                         <tr>
                                             <th class="hidden-phone text-center" data-order="casecode" data-sort="desc">操作</th>
                                             <th class="text-center" data-order="autId" data-sort="desc">发起用户</th>
-                                            <!-- <th class="hidden-phone text-center" data-order="transId">创建日期</th> -->
-                                            <th class="hidden-phone text-center" width="120px" data-order="transId">创建时间</th>
+                                           
                                             <!-- <th class="hidden-phone text-center" data-order="transId">执行产品</th> -->
                                             <th class="hidden-phone text-center" data-order="transId">用例来源</th>
                                             <!-- <th class="hidden-phone text-center" data-order="transId">用例库</th> -->
@@ -204,6 +209,8 @@
                                             <th class="hidden-phone text-center" data-order="transId">执行状态</th>
                                             <th class="hidden-phone text-center" data-order="transId">执行结果</th>
                                             <!-- <th class="hidden-phone text-center" data-order="transId">执行结果信息</th> -->
+											<!-- <th class="hidden-phone text-center" data-order="transId">创建日期</th> -->
+											<th class="hidden-phone text-center" width="150px" data-order="transId">创建时间</th>
                                             <!-- <th class="hidden-phone text-center" data-order="transId">完成日期</th> -->
                                             <th class="hidden-phone text-center" data-order="transId">完成时间</th>
                                         </tr>
@@ -215,8 +222,7 @@
                                                 <button class="btn btn-xs btn-success" style=" margin-top: 5px;" @click="delete(scene.batchId)">归档</button>
                                             </td>
                                             <td class="center " width="">{{ scene.startUser }}</td>
-                                            <!-- <td class="center " width="">{{ scene.createDatze }}</td> -->
-                                            <td class="center " width="">{{ formatDate(scene.createTime) }}</td>
+                                   
                                             <!-- <td class="center " width="">{{ executeProduct[scene.executeProduct] }}</td> -->
                                             <!-- <td class="center " width="">{{ caseSourceChannel[scene.caseSourceChannel] }}</td> -->
                                             <td class="center " width="">{{ scene.instanceSource }}</td>                                        
@@ -232,7 +238,7 @@
                                             <!-- <td class="center " width="">{{ runScopeFlag[scene.runScopeFlag] }}</td> -->
                                             <td class="center " width="">{{ scene.totalInsCount }}</td>
                                             <td class="center " width="" >{{ scene.successInsCount }}</td>
-                                            <td class="center " width="" >{{ scene.failedInsCount }}</td>
+                                            <td class="center " width="" style="color:red;">{{ scene.failedInsCount }}</td>
                                             <td class="center " width="" >{{ scene.notRunInsCount }}</td>
                                             <!--此处修改模态框显示饼状图-->
                                             <td class="center " width="">
@@ -244,7 +250,19 @@
                                             <!--getCount(scene.successInsCount,scene.failedInsCount,scene.notRunInsCount)-->
                                             <td class="center " width="">{{ scene.executingStatus }}</td>
                                             <td class="center " width="" v-if="scene.executedResult==null">执行中</td>
-                                            <td class="center " width="" v-else>{{ scene.executedResult }}</td>
+                                            <!-- <td id="executeResultId" class="center " width="" v-else onclick="console.log('{{scene.executedResult}}')">{{ scene.executedResult }}</td> -->
+											<!-- <td  v-bind:class="String(scene.executedResult) =='全部失败' ? allFailed :
+											notAllFailed" width="" v-else @click="alert('scene.executedResult')">
+											{{ scene.executedResult }}</td> -->
+											
+											
+											<td  
+												v-else
+												:class="scene.executedResult ==='全部失败' ? 'allFailed' :'notAllFailed'">
+												{{ scene.executedResult }}
+											</td>
+											
+											
                                             <!-- <td class="center " width="">{{ scene.resultMessage }}</td> -->
 
                                             <!-- <td class="center " width="">{{ recordSaveType[scene.recordSaveType] }}</td>
@@ -255,6 +273,8 @@
                                             <td class="center " width="">{{ scene.runResultMessage }}</td> -->
                                             <!-- <td class="center " width="">{{ scene.creatorId }}</td>
                                             <td class="center " width="">{{ scene.finishDate }}</td> -->
+											<!-- <td class="center " width="">{{ scene.createDatze }}</td> -->
+											<td class="center " width="">{{ formatDate(scene.createTime) }}</td>
                                             <td class="center " width="">{{ formatDate(scene.finishTime) }}</td>
                                         </tr>
                                     </tbody>
