@@ -34,8 +34,7 @@
       }
     .color0{
       	width:90px;
-      	height:50px;
-      	background-color:#22ee55;
+      	height:50px;      	background-color:#22ee55;
       }
       .color1{
       	width:90px;
@@ -66,7 +65,7 @@
 		  color:red;
 	  }
 	  .notAllFailed{
-		 
+
 	  }
     </style>
 </head>
@@ -126,7 +125,7 @@
                                                 <!-- <input type="hidden" id="dtp_input1" value=""/> -->
                                             <label class="col-sm-1 control-label">时间段</label>
                                             <div class="col-sm-2">
-                                                <select class="form-control" v-model="period_flag" @change="creatTimeInit()">                                                                                                         
+                                                <select class="form-control" v-model="period_flag" @change="creatTimeInit()">
                                                     <option value="1" selected>一天内</option>
                                                     <option value="2" >近一周内</option>
                                                     <option value="3" >近一月内</option>                                                                                                                                                                                                                                        <!--原来是 item.phasename -->
@@ -142,8 +141,8 @@
                                         <div class="form-group">
                                             <label class="col-sm-1 control-label">用例来源</label>
                                             <div class="col-sm-2">
-                                                <select class="form-control" v-model="caseSourceChannel">       
-                                                    
+                                                <select class="form-control" v-model="caseSourceChannel">
+
                                                     <option value="1" selected>测试计划</option>
                                                     <option value="2" >场景</option>
                                                     <option value="3" >数据编写</option>
@@ -152,21 +151,21 @@
                                             </div>
                                             <label class="col-sm-1 control-label">测试计划</label>
                                             <div class="col-sm-2">
-                                                <select class="form-control"  v-model="testPlanId">       
+                                                <select class="form-control"  v-model="testPlanId">
                                                     <option value= ""  selected>请选择</option>
                                                     <option v-for="(index,item) in testPlans" v-bind:value="item.id">{{item.nameMedium}}</option>                                                                                                                                                                                                                                                       <!--原来是 item.phasename -->
                                                 </select>
                                             </div>
                                             <label class="col-sm-1 control-label">执行状态</label>
                                             <div class="col-sm-2">
-                                                <select class="form-control"  v-model="runStatus"> 
-                                                    <option selected  >请选择</option> 
-                                                    <option value="0" >初始</option> 
-                                                    <option value="1" >执行中</option>     
-                                                    <option value="2" >执行完毕</option>   
+                                                <select class="form-control"  v-model="runStatus">
+                                                    <option selected  >请选择</option>
+                                                    <option value="0" >初始</option>
+                                                    <option value="1" >执行中</option>
+                                                    <option value="2" >执行完毕</option>
                                                     <option value="3" >错误终止</option>
                                                     <option value="4" >人工终止</option>
-                                                    
+
                                                 </select>
                                             </div>
                                             <div class="col-sm-1">
@@ -191,7 +190,7 @@
                                         <tr>
                                             <th class="hidden-phone text-center" data-order="casecode" data-sort="desc">操作</th>
                                             <th class="text-center" data-order="autId" data-sort="desc">发起用户</th>
-                                           
+
                                             <!-- <th class="hidden-phone text-center" data-order="transId">执行产品</th> -->
                                             <th class="hidden-phone text-center" data-order="transId">用例来源</th>
                                             <!-- <th class="hidden-phone text-center" data-order="transId">用例库</th> -->
@@ -222,10 +221,10 @@
                                                 <button class="btn btn-xs btn-success" style=" margin-top: 5px;" @click="delete(scene.batchId)">归档</button>
                                             </td>
                                             <td class="center " width="">{{ scene.startUser }}</td>
-                                   
+
                                             <!-- <td class="center " width="">{{ executeProduct[scene.executeProduct] }}</td> -->
                                             <!-- <td class="center " width="">{{ caseSourceChannel[scene.caseSourceChannel] }}</td> -->
-                                            <td class="center " width="">{{ scene.instanceSource }}</td>                                        
+                                            <td class="center " width="">{{ scene.instanceSource }}</td>
                                             <!-- <td class="center " width="">{{ scene.caseLibId }}</td> -->
                                             <!-- <td class="center " width=""  @click="goTestExec(scene.testPlan)">{{ scene.testPlanName }}</td> -->
                                             <td class="center " width="" >
@@ -242,7 +241,7 @@
                                             <td class="center " width="" >{{ scene.notRunInsCount }}</td>
                                             <!--此处修改模态框显示饼状图-->
                                             <td class="center " width="">
-                                                <button class="btn btn-xs btn-success" data-toggle="modal" href="#insertModal" 
+                                                <button class="btn btn-xs btn-success" data-toggle="modal" href="#insertModal"
                                                 onClick="drawChart('{{scene.successInsCount}}','{{scene.failedInsCount}}','{{scene.notRunInsCount}}');"
                                                 >饼状图</button>
                                             </td>
@@ -254,15 +253,15 @@
 											<!-- <td  v-bind:class="String(scene.executedResult) =='全部失败' ? allFailed :
 											notAllFailed" width="" v-else @click="alert('scene.executedResult')">
 											{{ scene.executedResult }}</td> -->
-											
-											
-											<td  
+
+
+											<td
 												v-else
 												:class="scene.executedResult ==='全部失败' ? 'allFailed' :'notAllFailed'">
 												{{ scene.executedResult }}
 											</td>
-											
-											
+
+
                                             <!-- <td class="center " width="">{{ scene.resultMessage }}</td> -->
 
                                             <!-- <td class="center " width="">{{ recordSaveType[scene.recordSaveType] }}</td>
@@ -281,7 +280,7 @@
                                 </table>
 
                             </div>
-                            
+
                             <!-- 分页 -->
                             <pagination   :total-count="page.totalCount" :current-page="page.currentPage" :total-page="page.totalPage" :page-size="page.pageSize"  v-on:turn-topage="getExecutionRecord"></pagination>
                             <!-- <div class="row">
@@ -395,7 +394,7 @@
                         </div>
                     </div>
                     <!-- updateModal end -->
-                    
+
                   <!-- successModal start -->
                   <div class="modal fade" id="successModal" tabindex="-1" role="dialog" aria-labelledby="successModalLabel" aria-hidden="true">
                     <div class="modal-dialog">
@@ -431,7 +430,7 @@
                         <section class="panel" style="width: 680px; overflow: hidden;margin-bottom: -15px;">
                             <div class="add" id="addId" style="float: left;">
                             </div>
-                               
+
                             <div class="box" style="float: left; margin-left: 30px;margin-top: 30px;">
                                 <table class="chartTable">
                                     <tr>
@@ -489,15 +488,15 @@ function drawChart(successInsCount,failedInsCount,notRunInsCount){
 	var notRunPercent = Math.round(notRunRate * 100) + "%";
 	var rate = [successPercent,failedPercent,notRunPercent];
 	var count = 0;
-	
+
 	console.log("比率为：" +successPercent + "\n" + failedPercent + "\n" + notRunPercent + "\n");
-    
-    var dataset = [ 
-			["成功用例数",successCount],  
-			["失败用例数",failedCount], 
+
+    var dataset = [
+			["成功用例数",successCount],
+			["失败用例数",failedCount],
 			["跳过用例数",notRunCount]
 		];
-	
+
     var svg = d3.select("div.add")
         .append("svg")
         .attr("width", width)
@@ -510,14 +509,14 @@ function drawChart(successInsCount,failedInsCount,notRunInsCount){
 
     var outerRadius = 145;  //外半径
     var innerRadius = 0;    //内半径，为0则中间没有空白
-	
+
 	var outerRadiusFinal = 150;	//鼠标放上去的外半径
 	var innerRadiusFinal = 0;	//鼠标放上去的内半径
 
     var arc = d3.svg.arc()  //弧生成器
             .innerRadius(innerRadius)   //设置内半径
             .outerRadius(outerRadius);  //设置外半径
-	
+
 	var arcFinal = d3.svg.arc()	//放大弧生成器
 					 .innerRadius(innerRadius)
 					 .outerRadius(outerRadiusFinal);
@@ -550,7 +549,7 @@ function drawChart(successInsCount,failedInsCount,notRunInsCount){
 					   .style("opacity",1);
 				d3.select(this).transition()
 				  .duration(150).attr("d",arcFinal);
-				
+
 			})
 			.on("mouseout",function(d){
 				d3.select(this).transition()
@@ -572,13 +571,13 @@ function drawChart(successInsCount,failedInsCount,notRunInsCount){
 				if(sum !=0){
 					return Number(d.data[1]/sum * 100).toFixed(2) + "%";
 				}
-            }   
+            }
         })
-		.style("font-size","15px");  
-	
+		.style("font-size","15px");
+
         console.log(color(0));
         console.log(color(1));
-        console.log(color(2));  
+        console.log(color(2));
 	var tooltip = d3.select("div.add")
 					.append("div")
 					.attr("class","tooltip")
