@@ -47,7 +47,7 @@ function getExecytionRoundByTestPlanId(testPlanName) {
 						console.log(sceneList[i]);
 						result = sceneList[i].executionRound;
 						console.log('测试轮次:' + ++result)
-						round = result;
+						round = result + 1;
 						break;
 					}else{
 						round = 1;
