@@ -24,7 +24,7 @@ function getExecytionRoundByTestPlanId(testPlanName) {
     console.log("1231");
     //获取list通用方法，只需要传入多个所需参数
     $.ajax({
-        url: 'http://10.101.167.184:8080/atfcloud2.0a/batchRunCtrlController/pagedBatchQueryBatchRunCtrl',
+        url: 'http://140.143.16.21:8080/atfcloud2.0a/batchRunCtrlController/pagedBatchQueryBatchRunCtrl',
         type: 'POST',
         contentType: 'application/json',
         data: JSON.stringify({

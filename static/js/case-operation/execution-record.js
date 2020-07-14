@@ -8,7 +8,7 @@ var execRecord = Vue.extend({
 	props: ['recorddata', "flownodeid" ],
 	data: function () {
 		return {
-			address: address.slice(0, -10), // address: 10.101.167.184:8080/ATFCloud
+			address: address.slice(0, -10), // address: 140.143.16.21:8080/ATFCloud
 			srcDoc: '',
 			srcs: [],
 			testRecord:null,
