@@ -605,7 +605,7 @@ var vBody = new Vue({
 		setResultIcon: function(data) {
 			if(!data) {
 				[...document.querySelectorAll('img[id^="img-"]')].forEach((item) => {
-					item.src = this.exeImgs['2'];
+					item.src = this.exeImgs['0'];
 				});
 				return;
 			}
