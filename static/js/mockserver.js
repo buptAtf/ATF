@@ -62,11 +62,11 @@ var app = new Vue({
 
                 }),
                 success:function(data){
-                    _this.curExpecation = data[0];                  //当前期望设置为第一条
+                    _this.curExpecation = data.expectationEntityList[0];                  //当前期望设置为第一条
                     _this.selectedExpId = _this.curExpecation.id;   //默认选中第一条期望
-                    _this.allExpecation = data;                     //得到所有的期望
+                    _this.allExpecation = data.expectationEntityList;                     //得到所有的期望
                     _this.queryExpecation(_this.selectedExpId);     //查询第一条期望的详细信息
-
+                  console.log('映射规则列表',_this.allExpecation);
                 }
 
             })
@@ -84,7 +84,7 @@ var app = new Vue({
                 success:function(data){
                     _this.curExpecation = data;                  //得到当前的数据，用于展示
                     _this.respforwardFlag = data.type;           //判断当前的一条数据是response还是forward
-                    
+
                     _this.editCurData.id = data.id;
                     _this.editCurData.expectationName = data.expectationName;
                     _this.editCurData.creator = data.creator;
@@ -101,12 +101,12 @@ var app = new Vue({
                     if(data.runRequestId!==null){
                         _this.queryRunInfo(data.runRequestId);
                     }
-
-                    _this.curExpecationRet = JSON.stringify(_this.curExpecationRet, null, 2);   //将返回的数据解析为JSON数据,解析后的数据有双引号转义，强行用正则进行处理
+                  console.log('getExpectationById', data);
+                  _this.curExpecationRet = JSON.stringify(_this.curExpecationRet, null, 2);   //将返回的数据解析为JSON数据,解析后的数据有双引号转义，强行用正则进行处理
                     let temp = _this.curExpecationRet.replace(/\\n/g,'');   //第一步把\n去掉
                     _this.curExpecationRet = temp.replace(/\\"/g,"'");   //第二步把反斜杠去掉
                     // _this.processDisplayData();    //处理返回的数据，用于显示编辑页面中的headers等类型的数据
-                    
+                    _this.runData = data.httpRequest
                 }
             }) 
             
@@ -122,6 +122,7 @@ var app = new Vue({
                 },
                 success: function(data) {
                     _this.runData = data;
+                    console.log('getRunRequest')
                     _this.processDisplayData();    //处理返回的数据，用于显示编辑页面中的headers等类型的数据  放在这里的原因是，异步请求，如果不放在这里，运行的参数为空
                     
                 }
@@ -366,7 +367,10 @@ var app = new Vue({
             _this.runData.headers = processPostData(_this.runHeaders);      //处理请求的headers
             _this.runData.cookies = processPostData(_this.runCookies);      //处理请求的cookies
             _this.runData.queryParameters = processPostData(_this.runParams);   //处理请求的参数
-            
+            delete  _this.runData.id
+            _this.runData.methodType = false
+            _this.runData.pathType = false
+            console.log("runData", _this.runData)
             $.ajax({
                 url: address3 + "/mockServer/runExpectation",
                 type: "post",
@@ -377,7 +381,7 @@ var app = new Vue({
                     _this.runExpecationRet = JSON.stringify(data, null, 2); ;
                     
                     if(data.respCode==='0000'){
-                        let temprunData = _this.runData;
+                        let temprunData = _this.runData
                         temprunData.expectationId = _this.selectedExpId;
                         //运行结束，保存当前数据
                         $.ajax({

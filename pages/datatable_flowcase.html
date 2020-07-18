@@ -63,7 +63,7 @@
 
         <div class="row" style="margin-top:20px;">
             <div class="col-lg-3">
-              <section class=" panel  panel-info" style="width: 250px; position:fixed; top: 130px; left: 220px; " >
+              <section class=" panel  panel-info" style="width: 250px; position:relative; top: 10px; left: 0px; " >
                 <div class="panel-heading text-center " >流程用例</div>
                 <div class="list-group" >
                   <a :class="selectedCaseId==item.id?'list-group-item text-center active': 'list-group-item text-center'" v-for="item in flowcaseList" @click=queryThisCase(item.id)>{{ item.casecode }}</a>

@@ -707,6 +707,7 @@ var vBody = new Vue({
 				exeStrategy3Status: _this.exeStrategy3Status,
 				exeStrategyErr: _this.exeStrategyErr
 			};
+			console.log('ajax保存', o)
 			Vac.ajax({
 				url: address3 + 'sceneController/sceneStrategySetting',
 				data: o,
@@ -780,9 +781,9 @@ var vBody = new Vue({
 				data: data,
 				success: function(data){
 					if(data.respCode === '0000'){
-						Vac.alert(data.respMsg);
+						Vac.alert('保存成功');
 					} else {
-						Vac.alert(data.respMsg)
+						Vac.alert('保存失败')
 					}
 				},
 				error: function(){
@@ -831,7 +832,7 @@ var vBody = new Vue({
 				dataDesc: ''
 			};
 			Vac.ajax({
-				url: address3 + 'dataPoolController/pagedBatchQueryDataPool',
+				url: address3 + 'dataPool/pagedBatchQueryDataPool',
 				data: data,
 				success: function(data){
 					if(data.respCode === '0000'){
@@ -859,7 +860,7 @@ var vBody = new Vue({
 			if(_this.editPoolType == 2){
 				data.id = _this.selectedPool[0];
 			}
-			var url = _this.editPoolType === 1 ? 'dataPoolController/addSingleDataPool' : 'dataPoolController/modifySingleDataPool';
+			var url = _this.editPoolType === 1 ? 'dataPool/addSingleDataPool' : 'dataPool/modifySingleDataPool';
 			Vac.ajax({
 				url: address3 + url,
 				data: data,
@@ -887,7 +888,7 @@ var vBody = new Vue({
 					dataDesc: _this.poolData.dataDesc,
 				} = data);
 				Vac.ajax({
-					url: address3 + 'dataPoolController/deleteSingleDataPool',
+					url: address3 + 'dataPool/deleteSingleDataPool',
 					data: {id:  _this.selectedPool[0]},
 					success: function(data){
 						if (data.respCode === '0000') {
@@ -902,7 +903,7 @@ var vBody = new Vue({
 				});
 				return;
 				Vac.ajax({
-					url: address3 + 'dataPoolController/querySingleDataPool',
+					url: address3 + 'dataPool/querySingleDataPool',
 					data: data,
 					success: function(data){
 						if(data.list instanceof Array){
@@ -1037,7 +1038,7 @@ var vBody = new Vue({
 						}
 					},
 					error: function() {
-						alert("ajax请求失败，请稍后访问......")
+						// alert("ajax请求失败，请稍后访问......")
 					}
 				});
 			}
@@ -1065,7 +1066,7 @@ var vBody = new Vue({
 						}
 					},
 					error: function() {
-						Vac.alert("ajax请求失败，请稍后访问......")
+						// Vac.alert("ajax请求失败，请稍后访问......")
 					}
 				});
 			}
@@ -1080,7 +1081,8 @@ var vBody = new Vue({
 					'sceneId': _this.sceneid,
 				}),
 				success: function(data) {
-					if (data.respCode=="0000") {
+          console.log('data',data);
+          if (data.respCode=="0000") {
 						_this.platformName = data.mobileProperties.platformName;
 						_this.deviceName = data.mobileProperties.deviceName;
 						_this.automationName = data.mobileProperties.automationName;

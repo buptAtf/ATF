@@ -18,7 +18,6 @@
     <script type="text/javascript" src="../lib/vue.js"></script>
     <link rel="stylesheet" href="../static/css/base/bootstrap.css">
     <link rel="stylesheet" href="../static/css/bootstrap-select.min.css">
-
     <title>场景设置</title>
     <style>
         .tooltipwindow-top {
@@ -76,6 +75,11 @@
         #main-content .content-wrapper .main .main-content .caseStyle{
             margin-top:15px;
             padding:15px 5px 10px 5px;
+        }
+        .bottomSave {
+            float: right;
+            width: 55px;
+            height: 33px;
         }
     </style>
     <script>
@@ -324,7 +328,7 @@
                             数据资源池配置</a>
                         <a class="btn btn-white" @click="operationType(5);"><i class="icon-mobile-phone"></i>
                             移动端配置</a>
-                        <a class="btn btn-white" @click="debug();"><i class="icon-wrench"></i>
+                        <a class="btn btn-white" style="display: none" @click="debug();"><i class="icon-wrench"></i>
                             调试</a>
                         <a class="btn btn-white" @click="saveSort();"><i class="icon-refresh"></i>
                             保存顺序</a>
@@ -487,9 +491,7 @@
                         <input type="text" v-model="executeDateFlag">
                     </div>
                     <div>
-                        <button class="btn btn-info exeTimeSave" @click="saveExecuteTime()">
-                            保存
-                        </button>
+                        <input value="保存"  class="btn btn-info bottomSave" @click="saveExecuteTime()"/>
                     </div>
                 </div>
                 <!-- 触发器设置 -->
@@ -535,9 +537,7 @@
                         </table>
                     </div>
                     <div>
-                        <button class="btn btn-info triggerSave" @click='saveTriggerState();'>
-                            保存
-                        </button>
+                        <input value="保存" class="btn btn-info bottomSave" @click='saveTriggerState()'/>
                     </div>
                 </div>
                 <!-- 执行过程控制 -->
@@ -633,7 +633,7 @@
                         </div>
                     </div>
                     <div class="processControl-footer">
-                        <button class="btn btn-info processControlSave" @click="saveStrategy();">保存</button>
+                        <input type="button" value="保存" class="btn btn-info processControlSave" @click="saveStrategy()"></input>
                     </div>
                 </div>
                 <!-- 数据资源池设置 -->
@@ -723,9 +723,7 @@
                         <input type="text" id="appiumurl" v-model="appiumurl">
                     </div>
                     <div>
-                        <button class="btn btn-info exeTimeSave" @click="initMobile()">
-                            保存
-                        </button>
+                        <input value="保存"  class="btn btn-info bottomSave" @click="initMobile()" />
                     </div>
                 </div>
             </div>
